@@ -1,95 +1,151 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import Image from "next/image";
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
+// import { axiosClient } from "class/axiosConfig.js";
+import { ErrorAlert } from "class/AlertManage.js";
+// import Loading from "components/commonComponents/loading/loading";
+import { logo } from "@/components/commonComponents/imagepath";
+import "public/assets/css/bootstrap.min.css";
+import "public/assets/css/feather.css";
+import "public/assets/css/feathericon.min.css";
+import "public/assets/css/font-awesome.min.css";
+import "public/assets/css/select2.min.css";
+import "public/assets/css/style.css";
+import Cookies from "js-cookie";
+// import { setSession } from "@/lib/SessionMange";
 
-export default function Home() {
+export default function Page() {
+  const { control } = useForm();
+  const router = useRouter();
+  const [eye, setEye] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const onEyeClick = () => setEye(!eye);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // setIsLoading(true);
+
+    // await axiosClient
+    //   .post("AdminUser/loginUser", {
+    //     UserName: document.getElementById("UserName").value,
+    //     Password: document.getElementById("Password").value,
+    //   })
+    //   .then(async function (response) {
+    //     setIsLoading(false);
+    //     let roles = response.data.roles;
+    //     response.data.roles = null;
+    //     const session = response.data;
+    //     let rolesSession = await setSession(roles);
+    //     var in30Minutes = 1 / 24;
+    //     Cookies.set("roles", rolesSession, { expires: in30Minutes });
+
+    //     let resSession = await setSession(session);
+    //     Cookies.set("session", resSession, { expires: in30Minutes });
+    //     router.push("/dashboard");
+    //   })
+    //   .catch(function (error) {
+    //     // setIsLoading(false);
+    //     console.log(error);
+    //     error.message == "Network Error"
+    //       ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
+    //       : ErrorAlert("خطا", "اطلاعات اشتباه وارد شده است!");
+    //   });
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
+    <>
+      {/* {!isLoading ? (
+        <Loading />
+      ) : ( */}
+      <div className="row loginBg p-0 d-flex align-items-center">
+        <div className="col-md-6 login-bg p-0">
+          <div className="login-banner">
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+              src={logo}
+              alt="login-banner"
+              unoptimized={true}
+              priority={true}
             />
-          </a>
+          </div>
+        </div>
+        <div className="col-md-6 login-wrap-bg">
+          <div className="login-page">
+            <div className="login-wrapper">
+              <div className="loginbox">
+                <h3 className="loginTitle stretch">ایران نوبت</h3>
+                <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
+
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group form-focus">
+                    <Controller
+                      control={control}
+                      name="UserName"
+                      render={({ field: { value, onChange } }) => (
+                        <input
+                          className="form-control floating"
+                          type="text"
+                          id="UserName"
+                          name="UserName"
+                          autoComplete="false"
+                          placeholder="نام کاربری"
+                          required
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="form-group form-focus">
+                    <Controller
+                      control={control}
+                      name="password"
+                      render={({ field: { value, onChange } }) => (
+                        <div className="pass-group">
+                          <input
+                            className="form-control floating"
+                            type={eye ? "password" : "text"}
+                            autoComplete="false"
+                            placeholder="رمز عبور"
+                            id="Password"
+                            required
+                          />
+                          <span
+                            onClick={onEyeClick}
+                            className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                              }`}
+                          />
+                        </div>
+                      )}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-6">
+                        <label className="custom_check mr-2 mb-0 d-inline-flex">
+                          مرا به خاطر داشته باش
+                          <input type="checkbox" name="radio" />
+                          <span className="checkmark" />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-grid">
+                    <button
+                      className="btn btn-primary loginBtn"
+                      type="submit"
+                    >
+                      ورود
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      {/* )} */}
+    </>
   )
 }

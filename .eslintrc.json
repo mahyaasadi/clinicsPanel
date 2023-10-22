@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "parserOptions": {
+    "project": "jsconfig.json",
+    "jsconfigRootDir": "./",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": ["plugin:@next/next/recommended", "next/core-web-vitals"]
 }

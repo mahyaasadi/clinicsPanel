@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
 
-module.exports = nextConfig
+const nextConfig = {
+    distDir: "build",
+    // output: "export",
+    // trailingSlash: true,
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+};
+
+module.exports = nextConfig;
