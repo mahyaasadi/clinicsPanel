@@ -1,6 +1,5 @@
 export { default as headerLogo } from "public/assets/img/irannobatLogo.png";
 export { default as logo } from "public/assets/img/clinicLogo.jpg";
-// export { default as loginheader } from "public/assets/img/loginHeader.png";
 export { default as logoSmall } from "public/assets/img/logo-small.png";
 export { default as payment } from "public/assets/img/icon/payment-48.png";
 export { default as eventsAccepted } from "public/assets/img/icon/acceptedAppointment.png";
@@ -56,5 +55,4 @@ export { default as flag02 } from "public/assets/img/flags/flag-02.png";
 export { default as flag03 } from "public/assets/img/flags/flag-03.png";
 export { default as flag04 } from "public/assets/img/flags/flag-04.png";
 export { default as flag05 } from "public/assets/img/flags/flag-05.png";
-export { default as prescription } from "public/assets/img/icon/prescription.png";
 export { default as loading } from "public/assets/img/inoLoading.gif";
