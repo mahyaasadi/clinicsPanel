@@ -1384,7 +1384,7 @@ table .badge {
 
 .bg-primary,
 .badge-primary {
-  background-color: #e0bc28 !important;
+  background-color: #d1ae24 !important;
 }
 
 a.bg-primary:focus,
@@ -1490,8 +1490,8 @@ button.bg-danger:hover {
 }
 
 .btn-primary {
-  background-color: #e0bc28 !important;
-  border: 1px solid #e0bc28 !important;
+  background-color: #d1ae24 !important;
+  border: 1px solid #d1ae24 !important;
   box-shadow: none !important;
   opacity: 0.8;
 }
@@ -4681,6 +4681,29 @@ html.menu-opened body {
   width: 100%;
   padding: 44px 18px;
   max-width: 530px;
+}
+
+.articleCurrentImg {
+  position: relative;
+}
+
+.removeImgBtn {
+  color: red;
+  fill: white;
+  position: absolute;
+  top: -20px;
+  left: 40%;
+}
+
+.removeImgBtnIcon {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+
+.removeLogoBtnIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .login-wrapper .loginbox .img-logo {
@@ -9144,7 +9167,7 @@ ul li .active {
 }
 
 .themecolor {
-  color: #e0bc28 !important;
+  color: #d1ae24 !important;
 }
 
 .phone-input {
@@ -9720,7 +9743,7 @@ ul li .active {
 }
 
 .rmdp-today span {
-  background-color: #e0bc28 !important;
+  background-color: #d1ae24 !important;
 }
 
 .scheduleFeatures {
@@ -9736,7 +9759,7 @@ ul li .active {
 }
 
 .featureBtn:hover {
-  color: #e0bc28 !important;
+  color: #d1ae24 !important;
   transform: scale(1.2);
 }
 
