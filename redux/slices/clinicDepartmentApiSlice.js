@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const clinicDepartmentApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.irannobat.ir/" }),
+  tagTypes: ['ClinicDepartment'],
   endpoints: (builder) => ({
     getAllClinicDepartments: builder.query({
       query: (ClinicID) => `ClinicDepartment/getAll/${ClinicID}`,

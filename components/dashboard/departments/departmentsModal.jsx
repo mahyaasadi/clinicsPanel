@@ -67,6 +67,7 @@ const DepartmentsModal = ({
             </div>
           </div>
 
+          <input type="hidden" value={data.Icon} name="currentIcon" />
           <div className="change-photo-btn">
             <div>
               <i>
@@ -80,18 +81,17 @@ const DepartmentsModal = ({
               id="clinicIcon"
               name="clinicIcon"
               onChange={displayPreview}
-              required
             />
           </div>
 
           <div className="previewImgContainer">
-            <Image
-              src=""
+            <img
+              src={mode == "edit" ? data.Icon : ""}
               alt=""
               width="200"
               id="clinicIconPreview"
               className="d-block m-auto previewImg"
-            />
+            ></img>
           </div>
 
           <div className="submit-section">

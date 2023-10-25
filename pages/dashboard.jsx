@@ -36,6 +36,7 @@ const Dashboard = ({ ClinicUser }) => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </>

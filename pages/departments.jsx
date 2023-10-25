@@ -115,7 +115,7 @@ const Dashboard = ({ ClinicUser }) => {
       DepartmentID: formProps.departmentID,
       Name: formProps.departmentName,
       EngName: formProps.departmentEngName,
-      Icon: newClinicIcon,
+      Icon: newClinicIcon ? newClinicIcon : formProps.currentIcon,
     };
 
     console.log({ updatedDepartment });
