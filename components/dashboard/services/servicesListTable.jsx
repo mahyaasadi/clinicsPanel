@@ -5,41 +5,13 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
+const ServicesListTable = ({ data, openEditModal }) => {
   const columns = [
     {
       name: "نام",
       selector: (row) => row.Name,
       sortable: true,
       width: "270px",
-    },
-    {
-      name: "نام تخصصی",
-      selector: (row) => row.EngName,
-      sortable: true,
-      width: "270px",
-    },
-    {
-      name: "آیکون",
-      selector: (row) => row.Icon,
-      cell: (row) =>
-        row.Icon ? (
-          <div className="articleCurrentImg">
-            <img style={{ width: "35px" }} src={row.Icon} alt="" />
-            <Tooltip target=".removeImgBtn">حذف آیکون</Tooltip>
-            <button
-              className="btn removeImgBtn tooltip-button"
-              type="button"
-              data-pr-position="top"
-              // onClick={}
-            >
-              <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
-            </button>
-          </div>
-        ) : (
-          ""
-        ),
-      width: "650px",
     },
     {
       name: "عملیات ها",
@@ -49,7 +21,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
         <div className="actions d-flex gap-1">
           <button
             className="btn btn-sm btn-outline-danger removeBtn"
-            onClick={() => deleteDepartment(row._id)}
+            // onClick={() => deleteDepartment(row._id)}
             data-pr-position="top"
           >
             <Tooltip target=".removeBtn">حذف</Tooltip>
@@ -103,4 +75,4 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
   );
 };
 
-export default DepartmentsListTable;
+export default ServicesListTable;

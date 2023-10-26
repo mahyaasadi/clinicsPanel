@@ -2,21 +2,19 @@ import Head from "next/head";
 import { getSession } from "lib/session";
 import { axiosClient } from "@/class/axiosConfig";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import FeatherIcon from "feather-icons-react";
-// import { setUser } from "redux/slices/userSlice";
-// import { addPost } from "redux/slices/postsSlice";
-import {
-  useGetAllClinicDepartmentsQuery,
-  useAddClinicDepartmentMutation,
-  useEditClinicDepartmentMutation,
-  useDeleteClinicDepartmentMutation,
-} from "redux/slices/clinicDepartmentApiSlice";
-import Loading from "components/commonComponents/loading/loading";
-import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import { convertBase64 } from "utils/convertBase64";
+import { ErrorAlert, QuestionAlert } from "class/AlertManage";
+import Loading from "components/commonComponents/loading/loading";
 import DepartmentsModal from "components/dashboard/departments/departmentsModal";
 import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
+import {
+  useGetAllQuery,
+  useAddMutation,
+  useEditMutation,
+  useDeleteMutation,
+} from "redux/slices/clinicDepartmentsApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -49,12 +47,12 @@ const Dashboard = ({ ClinicUser }) => {
     data: clinicDepartments,
     error,
     isLoading,
-  } = useGetAllClinicDepartmentsQuery(ClinicID);
+  } = useGetAllQuery(ClinicID);
 
   // Mutations
-  const [addClinicDepartment] = useAddClinicDepartmentMutation();
-  const [editClinicDepartment] = useEditClinicDepartmentMutation();
-  const [deleteClinicDepartment] = useDeleteClinicDepartmentMutation();
+  const [addClinicDepartment] = useAddMutation();
+  const [editClinicDepartment] = useEditMutation();
+  const [deleteClinicDepartment] = useDeleteMutation();
 
   // add department
   const openAddModal = () => {
@@ -225,40 +223,3 @@ const Dashboard = ({ ClinicUser }) => {
 };
 
 export default Dashboard;
-
-//   const dispatch = useDispatch();
-//   const user = useSelector((state) => state.user);
-//   const posts = useSelector((state) => state.posts);
-//   const [departmentsData, setDepartmentsData] = useState([]);
-
-// const getDepartmentsData = () => {
-//   let url = `ClinicDepartment/getAll/${ClinicID}`;
-
-//   axiosClient
-//     .get(url)
-//     .then((response) => {
-//       dispatch(setUser(response.data));
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
-
-// const getDepartments = () => {
-//   let url = `ClinicDepartment/getAll/${ClinicID}`;
-
-//   axiosClient
-//     .get(url)
-//     .then((response) => {
-//       setDepartmentsData(response.data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
-
-// useEffect(() => {
-// getDepartmentsData();
-// console.log({ user });
-// console.log({ departmentsData });
-// }, []);
