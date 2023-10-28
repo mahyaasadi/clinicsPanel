@@ -58,7 +58,7 @@ export default function createGeneralApiSlice({
   editUrl,
   deleteUrl,
 }) {
-  console.log({ tagType, getAllUrl });
+
   return createApi({
     baseQuery: fetchBaseQuery({ baseUrl: "https://api.irannobat.ir/" }),
     tagTypes: [tagType],

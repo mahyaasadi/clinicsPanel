@@ -14,7 +14,7 @@ export const reducer = clinicServicesApi.reducer;
 export const middleware = clinicServicesApi.middleware;
 
 export const {
-  useGetAllQuery,
+  // useGetAllQuery,
   useAddMutation,
   useEditMutation,
   useDeleteMutation,

@@ -7,11 +7,11 @@ import Loading from "components/commonComponents/loading/loading";
 import ServicesModal from "components/dashboard/services/servicesModal";
 import ServicesListTable from "components/dashboard/services/servicesListTable";
 import {
-  useGetAllQuery,
   useAddMutation,
   useEditMutation,
   useDeleteMutation,
 } from "redux/slices/clinicServicesApiSlice";
+import { useGetAllQuery } from "redux/slices/clinicDepartmentsApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -46,7 +46,7 @@ const Services = ({ ClinicUser }) => {
   const [editClinicDepartment] = useEditMutation();
   const [deleteClinicDepartment] = useDeleteMutation();
 
-  console.log({ clinicServices });
+  console.log(clinicServices);
 
   // add service
   const openAddModal = () => {
@@ -99,7 +99,7 @@ const Services = ({ ClinicUser }) => {
                   </div>
                   <ServicesListTable
                     data={clinicServices}
-                    // openEditModal={openEditModal}
+                  // openEditModal={openEditModal}
                   />
                 </div>
 
