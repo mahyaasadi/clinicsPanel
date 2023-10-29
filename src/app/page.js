@@ -50,11 +50,10 @@ export default function Page() {
         setIsLoading(false);
       })
       .catch(function (error) {
-        setIsLoading(false);
         console.log(error);
-        //     error.message == "Network Error"
-        //       ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
-        //       : ErrorAlert("خطا", "اطلاعات اشتباه وارد شده است!");
+        error.message == "Network Error"
+          ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
+          : ErrorAlert("خطا", "اطلاعات اشتباه وارد شده است!");
       });
   };
 

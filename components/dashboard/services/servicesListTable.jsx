@@ -5,13 +5,31 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const ServicesListTable = ({ data, openEditModal }) => {
+const ServicesListTable = ({ data, openEditModal, deleteService }) => {
   const columns = [
     {
-      name: "نام",
+      name: "کد داخلی",
+      selector: (row) => row.Code,
+      sortable: true,
+      width: "100px",
+    },
+    {
+      name: "نام خدمت",
       selector: (row) => row.Name,
       sortable: true,
       width: "270px",
+    },
+    {
+      name: "نام تخصصی خدمت",
+      selector: (row) => row.EngName,
+      sortable: true,
+      width: "270px",
+    },
+    {
+      name: "هزینه خدمت",
+      selector: (row) => row.Price,
+      sortable: true,
+      width: "500px",
     },
     {
       name: "عملیات ها",
@@ -21,7 +39,7 @@ const ServicesListTable = ({ data, openEditModal }) => {
         <div className="actions d-flex gap-1">
           <button
             className="btn btn-sm btn-outline-danger removeBtn"
-            // onClick={() => deleteDepartment(row._id)}
+            onClick={() => deleteService(row._id)}
             data-pr-position="top"
           >
             <Tooltip target=".removeBtn">حذف</Tooltip>

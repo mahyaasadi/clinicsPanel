@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -5,7 +7,15 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
+const DepartmentsListTable = ({
+  data,
+  openEditModal,
+  deleteDepartment,
+  openDepartmentServicesModal,
+}) => {
+  const router = useRouter();
+
+  console.log({ data });
   const columns = [
     {
       name: "نام",
@@ -39,7 +49,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
         ) : (
           ""
         ),
-      width: "650px",
+      width: "600px",
     },
     {
       name: "عملیات ها",
@@ -48,7 +58,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
-            className="btn btn-sm btn-outline-danger removeBtn"
+            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center"
             onClick={() => deleteDepartment(row._id)}
             data-pr-position="top"
           >
@@ -59,7 +69,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
             />
           </button>
           <button
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn"
+            className="btn btn-sm btn-outline-secondary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
             onClick={() => openEditModal(row)}
           >
@@ -69,6 +79,24 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
               style={{ width: "16px", height: "16px" }}
             />
           </button>
+          <Link
+            href={{
+              pathname: "/services",
+              query: {
+                id: row._id,
+                name: row.Name,
+              },
+            }}
+            className="btn btn-sm btn-outline-primary servicesBtn font-12 d-flex align-items-center gap-2"
+            data-pr-position="top"
+          >
+            <Tooltip target=".servicesBtn">سرویس ها</Tooltip>
+            سرویس ها
+            <FeatherIcon
+              style={{ width: "15px", height: "15px" }}
+              icon="layers"
+            />
+          </Link>
         </div>
       ),
       width: "200px",

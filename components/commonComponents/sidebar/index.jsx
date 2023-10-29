@@ -27,10 +27,10 @@ const Sidebar = () => {
                     icon="grid"
                     style={{ width: "15px", height: "15px" }}
                   />
-                  <span>مدیریت بخش ها</span>
+                  <span>بخش ها</span>
                 </Link>
               </li>
-              <li className={router.pathname == "/services" ? "active" : ""}>
+              {/* <li className={router.pathname == "/services" ? "active" : ""}>
                 <Link href="/services">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@ const Sidebar = () => {
                   </svg>
                   <span>سرویس ها</span>
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

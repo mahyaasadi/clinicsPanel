@@ -1,5 +1,5 @@
 export { default as headerLogo } from "public/assets/img/irannobatLogo.png";
-export { default as logo } from "public/assets/img/clinicLogo.jpg";
+export { default as logo } from "public/assets/img/clinicLogo2.jpg";
 export { default as logoSmall } from "public/assets/img/logo-small.png";
 export { default as payment } from "public/assets/img/icon/payment-48.png";
 export { default as eventsAccepted } from "public/assets/img/icon/acceptedAppointment.png";

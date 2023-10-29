@@ -13,16 +13,8 @@ const DepartmentsModal = ({
   const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن سرویس";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
-  //   const displayPreview = (e) => {
-  //     var urlCreator = window.URL || window.webkitURL;
-  //     if (e.target.files.length !== 0) {
-  //       var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-  //       $("#clinicIconPreview").attr("src", imageUrl);
-  //     }
-  //   };
-
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">{modalTitle}</p>
@@ -31,68 +23,98 @@ const DepartmentsModal = ({
 
       <Modal.Body>
         <form onSubmit={onSubmit}>
-          {/* {mode === "edit" && (
-            <input type="hidden" name="departmentID" value={data._id} />
-          )} */}
-
-          <div className="form-group">
-            <label className="lblAbs font-12">
-              نام <span className="text-danger">*</span>
-            </label>
-            <div className="col p-0">
+          {mode === "edit" && (
+            <input type="hidden" name="serviceID" value={data._id} />
+          )}
+          <div className="row">
+            <div className="form-group col">
+              <label className="lblAbs font-12">
+                نام خدمت <span className="text-danger">*</span>
+              </label>
               <input
-                className="form-control floating inputPadding rounded"
                 type="text"
-                name="departmentName"
+                className="form-control floating inputPadding rounded"
+                required
+                name="serviceName"
                 defaultValue={mode == "edit" ? data.Name : ""}
                 key={data.Name}
-                required
               />
             </div>
-          </div>
 
-          {/* <div className="form-group">
-            <label className="lblAbs font-12">
-              نام تخصصی <span className="text-danger">*</span>
-            </label>
-            <div className="col p-0">
+            <div className="form-group col">
+              <label className="lblAbs font-12">نام تخصصی خدمت</label>
               <input
-                className="form-control floating inputPadding rounded"
                 type="text"
-                name="departmentEngName"
+                className="form-control floating inputPadding rounded"
+                name="serviceEngName"
                 defaultValue={mode == "edit" ? data.EngName : ""}
                 key={data.EngName}
-                required
               />
             </div>
           </div>
 
-          <input type="hidden" value={data.Icon} name="currentIcon" />
-          <div className="change-photo-btn">
-            <div>
-              <i>
-                <FeatherIcon icon="upload" />
-              </i>
-              <p>آپلود تصویر</p>
-            </div>
+          <div className="form-group">
+            <label className="lblAbs font-12">کد داخلی</label>
             <input
-              type="file"
-              className="upload"
-              id="clinicIcon"
-              name="clinicIcon"
-              onChange={displayPreview}
+              type="text"
+              className="form-control floating inputPadding rounded"
+              name="internalCode"
+              defaultValue={mode == "edit" ? data.Code : ""}
+              key={data.Code}
             />
           </div>
 
-          <div className="previewImgContainer">
-            <img
-              src={mode == "edit" ? data.Icon : ""}
-              alt=""
-              width="200"
-              id="clinicIconPreview"
-              className="d-block m-auto previewImg"
-            ></img>
-          </div> */}
+          <div className="form-group">
+            <label className="lblAbs font-12">هزینه خدمت</label>
+            <input
+              type="text"
+              className="form-control floating inputPadding rounded"
+              name="servicePrice"
+              defaultValue={mode == "edit" ? data.Price : ""}
+              key={data.Price}
+            />
+          </div>
+
+          <div className="row media-flex-col">
+            <div className="col">
+              <div className="form-group ">
+                <label className="lblAbs font-12">سهم تامین</label>
+                <input
+                  type="number"
+                  className="form-control floating inputPadding rounded"
+                  name="taminShare"
+                  key={data.ST}
+                  defaultValue={mode == "edit" ? data.ST : ""}
+                />
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-group ">
+                <label className="lblAbs font-12">سهم سلامت</label>
+                <input
+                  type="number"
+                  className="form-control floating inputPadding rounded"
+                  name="salamatShare"
+                  key={data.SS}
+                  defaultValue={mode == "edit" ? data.SS : ""}
+                />
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="form-group ">
+                <label className="lblAbs font-12">سهم ارتش</label>
+                <input
+                  type="number"
+                  className="form-control floating inputPadding rounded"
+                  name="arteshShare"
+                  key={data.SA}
+                  defaultValue={mode == "edit" ? data.SA : ""}
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="submit-section">
             {!isLoading ? (

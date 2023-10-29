@@ -9,6 +9,8 @@ import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import DepartmentsModal from "components/dashboard/departments/departmentsModal";
 import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
+import DepServicesModal from "components/dashboard/services/depServicesListModal";
+import ServicesModal from "components/dashboard/services/servicesModal";
 import {
   useGetAllQuery,
   useAddMutation,
@@ -49,10 +51,13 @@ const Dashboard = ({ ClinicUser }) => {
     isLoading,
   } = useGetAllQuery(ClinicID);
 
-  // Mutations
+  // Departments Mutations
   const [addClinicDepartment] = useAddMutation();
   const [editClinicDepartment] = useEditMutation();
   const [deleteClinicDepartment] = useDeleteMutation();
+
+  // Services Mutations
+  const [addDepService] = useAddMutation();
 
   // add department
   const openAddModal = () => {
@@ -77,8 +82,6 @@ const Dashboard = ({ ClinicUser }) => {
       EngName: formProps.departmentEngName,
       Icon: clinicIcon,
     };
-
-    console.log({ newDepartment });
 
     try {
       const response = await addClinicDepartment(newDepartment).unwrap();
@@ -116,8 +119,6 @@ const Dashboard = ({ ClinicUser }) => {
       Icon: newClinicIcon ? newClinicIcon : formProps.currentIcon,
     };
 
-    console.log({ updatedDepartment });
-
     try {
       const response = await editClinicDepartment(updatedDepartment).unwrap();
       console.log({ response });
@@ -148,10 +149,6 @@ const Dashboard = ({ ClinicUser }) => {
       }
     }
   };
-
-  useEffect(() => {
-    console.log({ clinicDepartments });
-  }, [clinicDepartments]);
 
   return (
     <>
@@ -186,24 +183,15 @@ const Dashboard = ({ ClinicUser }) => {
                       <div className="col">
                         <h5 className="card-title font-16">لیست بخش ها</h5>
                       </div>
-                      <div className="col-auto d-flex flex-wrap">
-                        <div className="form-custom me-2">
-                          <div
-                            id="tableSearch"
-                            className="dataTables_wrapper"
-                          ></div>
-                        </div>
-                      </div>
                     </div>
                   </div>
+
                   <DepartmentsListTable
                     data={clinicDepartments}
                     openEditModal={openEditModal}
                     deleteDepartment={deleteDepartment}
                   />
                 </div>
-
-                <div id="tablepagination" className="dataTables_wrapper"></div>
               </div>
             </div>
           </div>

@@ -4633,7 +4633,7 @@ html.menu-opened body {
 }
 
 .loginBg {
-  background-image: url("/assets/img/clinicPanelBg.jpg");
+  background-image: url("/assets/img/clinicPanelBg2.jpg");
   height: 110vh;
   /* width: 100%; */
 }
@@ -8943,7 +8943,7 @@ ul li .active {
 }
 
 .rounded {
-  border-radius: 32px !important;
+  border-radius: 18px !important;
 }
 
 .rounded-left {
@@ -9099,6 +9099,10 @@ ul li .active {
 
 .padding-right-2 {
   padding-right: 2rem;
+}
+
+.padding-right-1 {
+  padding-right: 1rem;
 }
 
 .margin-top-25 {
@@ -10059,6 +10063,7 @@ ul li .active {
 .p-tooltip {
   font-size: 10px !important;
   box-shadow: none !important;
+  font-family: iranyekan;
 }
 
 .pincode-input-text {
