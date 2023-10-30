@@ -1,13 +1,14 @@
-import { useEffect } from "react";
 import { useGetAllQuery } from "redux/slices/clinicDepartmentsApiSlice";
 import DepartmentsHeader from "./departmentsHeader";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
+import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
 
 const ReceptionCard = ({
   ClinicID,
-  setDepartmentsServices,
-  servicesSearchInput,
+  handleDepTabChange,
   handleSearchService,
+  searchedServices,
+  // isLoading
 }) => {
   let activeClass = null;
 
@@ -24,20 +25,11 @@ const ReceptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  const handleSearchKeyUp = (e) => {
-    e.preventDefault();
-    if (e.key === "Enter") console.log({ e });
-  };
-
   const {
     data: clinicDepartments,
     error,
-    isLoading,
+    isLoading: depsFetchIsLoading,
   } = useGetAllQuery(ClinicID);
-
-  useEffect(() => {
-    console.log({ clinicDepartments });
-  }, [clinicDepartments]);
 
   return (
     <>
@@ -49,14 +41,14 @@ const ReceptionCard = ({
               <div className="prescript-btns d-flex gap-2">
                 <button
                   className="btn btn-primary border-radius font-13"
-                  //   onClick={}
+                //   onClick={}
                 >
                   ثبت نسخه نهایی
                 </button>
               </div>
             </div>
 
-            {/* departments hedear */}
+            {/* departments header */}
             <div className="card-body">
               <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
                 {clinicDepartments?.map((item, index) => {
@@ -65,7 +57,7 @@ const ReceptionCard = ({
                       key={index}
                       department={item}
                       activeClass={index == 0 ? "active" : ""}
-                      setDepartmentsServices={setDepartmentsServices}
+                      handleDepTabChange={handleDepTabChange}
                     />
                   );
                 })}
@@ -75,32 +67,20 @@ const ReceptionCard = ({
 
               <form
                 className="w-100 pt-2"
-                //   onSubmit={SearchTaminSrv}
+              //   onSubmit={SearchTaminSrv}
               >
                 <div className="input-group mb-3 inputServiceContainer">
                   <input type="hidden" name="srvCode" id="srvCode" />
                   <label className="lblAbs font-12">نام / کد خدمت</label>
                   <input
-                    // onFocus={handleOnFocus}
-                    // onBlur={handleOnBlur}
-                    onKeyUp={handleSearchKeyUp}
                     type="text"
-                    // autoComplete="off"
                     id="srvSearchInput"
                     name="srvSearchInput"
                     className="form-control rounded-right w-50 padding-right-2"
                     // onChange={(e) => handleSearchService(e.target.value)}
+                    onKeyUp={(e) => handleSearchService(e.target.value)}
                   />
 
-                  {/* search buttons */}
-                  {/* <button
-                    className="btn btn-primary rounded-left w-10 disNone"
-                    id="BtnActiveSearch"
-                    onClick={ActiveSearch}
-                    type="button"
-                  >
-                    <i className="fe fe-close"></i>
-                  </button> */}
                   <button
                     className="btn btn-primary rounded-left w-10"
                     id="BtnServiceSearch"
@@ -115,12 +95,12 @@ const ReceptionCard = ({
 
                 <div className="col-12" id="searchDiv">
                   <SearchedServiceItems
-                  // data={TaminSrvSearchList}
+                    data={searchedServices}
                   // SelectSrvSearch={SelectSrvSearch}
                   />
                 </div>
-
-                {/* <div className="unsuccessfullSearch">
+                {/* 
+                <div className="unsuccessfullSearch">
                   <p>موردی یافت نشد!</p>
                 </div> */}
               </form>
@@ -172,7 +152,7 @@ const ReceptionCard = ({
                 <div className="col-md-2 media-w-100">
                   <button
                     className="btn rounded w-100 addToListBtn font-12"
-                    //   onClick={FuAddToListItem}
+                  //   onClick={FuAddToListItem}
                   >
                     اضافه به لیست
                   </button>

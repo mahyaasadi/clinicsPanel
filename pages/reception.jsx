@@ -30,7 +30,6 @@ const Reception = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [patientInfo, setPatientInfo] = useState([]);
-  const [servicesSearchInput, setServicesSearchInput] = useState("");
   const [searchedServices, setSearchedServices] = useState([]);
 
   //get patient info
@@ -62,10 +61,16 @@ const Reception = ({ ClinicUser }) => {
   };
 
   // Search DepServices
-  const setDepartmentsServices = (services) => (Services = services);
+  const handleDepTabChange = (services) => {
+    Services = services;
+    $("#searchDiv").hide("")
+    $("#srvSearchInput").val("");
+    // $(".unsuccessfullSearch").hide("")
+  }
 
   const handleSearchService = (value) => {
-    console.log(value);
+    // setIsLoading(true);
+
     const filteredServices = Services.filter(
       (service) =>
         service.Name.includes(value) ||
@@ -73,14 +78,17 @@ const Reception = ({ ClinicUser }) => {
         service.Code.includes(value)
     );
 
-    console.log(filteredServices);
     setSearchedServices(filteredServices);
+    let searchInput = $("#srvSearchInput").val();
+    searchInput.length == 0 ? $("#searchDiv").hide("") : $("#searchDiv").show("");
+    // setIsLoading(false);
+    // filteredServices.length == 0 ? $(".unsuccessfullSearch").show("") : $(".unsuccessfullSearch").hide("")
   };
-  console.log({ searchedServices });
 
-  //   useEffect(() => {
-  //     console.log({ servicesSearchInput });
-  //   }, [servicesSearchInput]);
+  useEffect(() => {
+    console.log({ searchedServices });
+    // $(".unsuccessfullSearch").hide("")
+  }, [searchedServices])
 
   return (
     <>
@@ -100,9 +108,10 @@ const Reception = ({ ClinicUser }) => {
             <div className="col-xxl-9 col-xl-8 col-lg-6 col-12">
               <ReceptionCard
                 ClinicID={ClinicID}
-                setDepartmentsServices={setDepartmentsServices}
-                servicesSearchInput={servicesSearchInput}
+                handleDepTabChange={handleDepTabChange}
                 handleSearchService={handleSearchService}
+                searchedServices={searchedServices}
+              // isLoading={isLoading}
               />
             </div>
           </div>

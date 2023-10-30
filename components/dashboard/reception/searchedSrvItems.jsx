@@ -1,14 +1,19 @@
-const SearchedServiceItems = ({}) => {
+const SearchedServiceItems = ({ data }) => {
+  console.log({ data });
+
   return (
     <>
-      <button
-        className="btn btn-outline-secondary border-radius btn-sm w-100 mb-1 right-text"
+      {data?.map((x, index) => (
+        <button
+          key={index}
+          className="btn btn-outline-secondary border-radius btn-sm w-100 mb-1 right-text"
         // onClick={Select}
-      >
-        {/* {name}
-        {" | "}
-        {code} */}
-      </button>
+        >
+          {x.Code}
+          {" | "}
+          {x.Name}
+        </button>
+      ))}
     </>
   );
 };

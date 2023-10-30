@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { getSession } from "lib/session";
-import Loading from "components/commonComponents/loading/loading";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);

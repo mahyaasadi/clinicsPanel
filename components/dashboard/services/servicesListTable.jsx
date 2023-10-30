@@ -29,7 +29,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
       name: "هزینه خدمت",
       selector: (row) => row.Price,
       sortable: true,
-      width: "500px",
+      width: "400px",
     },
     {
       name: "عملیات ها",

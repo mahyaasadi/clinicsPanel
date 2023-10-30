@@ -1,15 +1,12 @@
 import Head from "next/head";
 import { getSession } from "lib/session";
-import { axiosClient } from "@/class/axiosConfig";
 import { useState, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
 import FeatherIcon from "feather-icons-react";
 import { convertBase64 } from "utils/convertBase64";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import DepartmentsModal from "components/dashboard/departments/departmentsModal";
 import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
-import ServicesModal from "components/dashboard/services/servicesModal";
 import {
   useGetAllQuery,
   useAddMutation,
@@ -34,7 +31,7 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID = null;
-const Dashboard = ({ ClinicUser }) => {
+const Departments = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [showModal, setShowModal] = useState(false);
@@ -204,4 +201,4 @@ const Dashboard = ({ ClinicUser }) => {
   );
 };
 
-export default Dashboard;
+export default Departments;

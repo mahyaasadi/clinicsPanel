@@ -40,7 +40,7 @@ const DepartmentsListTable = ({
               className="btn removeImgBtn tooltip-button"
               type="button"
               data-pr-position="top"
-              // onClick={}
+            // onClick={}
             >
               <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
             </button>
@@ -48,7 +48,7 @@ const DepartmentsListTable = ({
         ) : (
           ""
         ),
-      width: "700px",
+      width: "450px",
     },
     {
       name: "عملیات ها",
