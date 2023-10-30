@@ -8,12 +8,6 @@ import FeatherIcon from "feather-icons-react";
 import Loading from "components/commonComponents/loading/loading";
 import ServicesModal from "components/dashboard/services/servicesModal";
 import ServicesListTable from "components/dashboard/services/servicesListTable";
-import {
-  useGetAllQuery,
-  useAddMutation,
-  useEditMutation,
-  useDeleteMutation,
-} from "redux/slices/clinicServicesApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -66,8 +60,8 @@ const Services = ({ ClinicUser }) => {
 
   // add service
   const openAddModal = () => {
-    setShowModal(true);
     setModalMode("add");
+    setShowModal(true);
   };
 
   const addService = async (e) => {
@@ -93,7 +87,6 @@ const Services = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setServicesData([...servicesData, response.data]);
         setShowModal(false);
         setIsLoading(false);

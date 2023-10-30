@@ -15,7 +15,6 @@ const DepartmentsListTable = ({
 }) => {
   const router = useRouter();
 
-  console.log({ data });
   const columns = [
     {
       name: "نام",
@@ -49,7 +48,7 @@ const DepartmentsListTable = ({
         ) : (
           ""
         ),
-      width: "600px",
+      width: "700px",
     },
     {
       name: "عملیات ها",
@@ -87,10 +86,8 @@ const DepartmentsListTable = ({
                 name: row.Name,
               },
             }}
-            className="btn btn-sm btn-outline-primary servicesBtn font-12 d-flex align-items-center gap-2"
-            data-pr-position="top"
+            className="btn btn-sm btn-outline-primary font-12 d-flex align-items-center gap-2"
           >
-            <Tooltip target=".servicesBtn">سرویس ها</Tooltip>
             سرویس ها
             <FeatherIcon
               style={{ width: "15px", height: "15px" }}

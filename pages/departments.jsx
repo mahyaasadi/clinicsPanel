@@ -9,7 +9,6 @@ import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import DepartmentsModal from "components/dashboard/departments/departmentsModal";
 import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
-import DepServicesModal from "components/dashboard/services/depServicesListModal";
 import ServicesModal from "components/dashboard/services/servicesModal";
 import {
   useGetAllQuery,
@@ -51,13 +50,10 @@ const Dashboard = ({ ClinicUser }) => {
     isLoading,
   } = useGetAllQuery(ClinicID);
 
-  // Departments Mutations
+  // Mutations
   const [addClinicDepartment] = useAddMutation();
   const [editClinicDepartment] = useEditMutation();
   const [deleteClinicDepartment] = useDeleteMutation();
-
-  // Services Mutations
-  const [addDepService] = useAddMutation();
 
   // add department
   const openAddModal = () => {
@@ -85,7 +81,6 @@ const Dashboard = ({ ClinicUser }) => {
 
     try {
       const response = await addClinicDepartment(newDepartment).unwrap();
-      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);
@@ -121,7 +116,6 @@ const Dashboard = ({ ClinicUser }) => {
 
     try {
       const response = await editClinicDepartment(updatedDepartment).unwrap();
-      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);

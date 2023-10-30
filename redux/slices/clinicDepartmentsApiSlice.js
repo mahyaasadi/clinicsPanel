@@ -4,8 +4,8 @@ import createGeneralApiSlice from "redux/slices/ApiSlice";
 export const clinicDepartmentApi = createGeneralApiSlice({
   tagType: "ClinicDepartment",
   getAllUrl: "ClinicDepartment/getAll",
-  addUrl: "ClinicDepartment/AddService",
-  editUrl: "ClinicDepartment/EditService",
+  addUrl: "ClinicDepartment/add",
+  editUrl: "ClinicDepartment/edit",
   deleteUrl: "ClinicDepartment/delete",
 });
 

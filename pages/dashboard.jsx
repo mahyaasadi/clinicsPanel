@@ -19,7 +19,6 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 const Dashboard = ({ ClinicUser }) => {
-  console.log({ ClinicUser });
   return (
     <>
       <Head>
@@ -36,7 +35,6 @@ const Dashboard = ({ ClinicUser }) => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
@@ -44,4 +42,3 @@ const Dashboard = ({ ClinicUser }) => {
 };
 
 export default Dashboard;
-

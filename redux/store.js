@@ -1,16 +1,3 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import clinicDepartmentApi, {
-//   middleware as clinicApiMiddleware,
-// } from "redux/slices/clinicDepartmentApiSlice";
-
-// const store = configureStore({
-//   reducer: {
-//     [clinicDepartmentApi.reducerPath]: clinicDepartmentApi.reducer,
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(clinicApiMiddleware), // Add the middleware here
-// });
-
 import { configureStore } from "@reduxjs/toolkit";
 import {
   clinicDepartmentApi,
@@ -26,13 +13,9 @@ import {
 const store = configureStore({
   reducer: {
     [clinicDepartmentApi.reducerPath]: clinicDepartmentApi.reducer,
-    // [clinicServicesApi.reducerPath]: clinicServicesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      clinicDepartmentMiddleware
-      // clinicServiceMiddleware
-    ),
+    getDefaultMiddleware().concat(clinicDepartmentMiddleware),
 });
 
 export default store;
