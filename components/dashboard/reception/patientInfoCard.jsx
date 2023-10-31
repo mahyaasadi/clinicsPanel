@@ -2,15 +2,7 @@ import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
-const PatientInfoCard = ({
-  getPatientInfo,
-  ActivePatientID,
-  data,
-  //   changeInsuranceType,
-  //   insuranceType,
-  //   selectInsuranceType,
-  //   getAppointment,
-}) => {
+const PatientInfoCard = ({ getPatientInfo, ActivePatientID, data }) => {
   const dateFormat = (str) => {
     if (str !== " " || str !== null) {
       let date =
@@ -90,14 +82,14 @@ const PatientInfoCard = ({
               <p>نوع بیمه : {data.InsuranceTypeName}</p>
             </div>
 
-            <div className="appointmentBtn">
+            {/* <div className="appointmentBtn">
               <button
                 className="btn btn-primary w-100 font-13 rounded"
                 // onClick={getAppointment}
               >
                 دریافت نوبت
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

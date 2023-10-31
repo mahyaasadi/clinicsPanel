@@ -1,9 +1,11 @@
-const DepartmentsHeader = ({
-  department,
-  activeClass,
-  handleDepTabChange,
-}) => {
-  //   console.log({ department });
+import { useEffect } from "react";
+
+const DepartmentsHeader = ({ department, activeClass, handleDepTabChange }) => {
+  useEffect(() => {
+    if (activeClass) {
+      handleDepTabChange(department.Services);
+    }
+  }, []);
   return (
     <>
       <li className="nav-item">
@@ -14,12 +16,11 @@ const DepartmentsHeader = ({
           data-bs-toggle="tab"
           onClick={() => handleDepTabChange(department.Services)}
         >
-          {/* <Image src={img} alt="prescTypeIcon" height="20" width="20" /> &nbsp; */}
           {department.Name}
-          {/* <span
+          <span
             className="badge badge-primary"
-            id={"srvItemCountId" + id}
-          ></span> */}
+            id={"srvItemCountId" + department._id}
+          ></span>
         </a>
       </li>
     </>

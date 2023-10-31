@@ -8,7 +8,8 @@ const ReceptionCard = ({
   handleDepTabChange,
   handleSearchService,
   searchedServices,
-  // isLoading
+  selectSearchedSrv,
+  FuAddToList,
 }) => {
   let activeClass = null;
 
@@ -33,130 +34,110 @@ const ReceptionCard = ({
 
   return (
     <>
-      <div>
-        <div className="card presCard">
+      <div className="card presCard">
+        <div className="card-body">
+          <div className="marginb-1">
+            <div className="prescript-title fw-bold text-secondary">پذیرش</div>
+          </div>
+
+          {/* departments header */}
           <div className="card-body">
-            <div className="prescript-header">
-              <div className="prescript-title text-secondary">پذیرش</div>
-              <div className="prescript-btns d-flex gap-2">
+            <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+              {clinicDepartments?.map((item, index) => {
+                return (
+                  <DepartmentsHeader
+                    key={index}
+                    department={item}
+                    activeClass={index == 0 ? "active" : ""}
+                    handleDepTabChange={handleDepTabChange}
+                  />
+                );
+              })}
+            </ul>
+
+            <hr />
+
+            <div className="w-100 pt-2">
+              <div className="input-group mb-3 inputServiceContainer">
+                <input type="hidden" name="srvCode" id="srvCode" />
+                <label className="lblAbs font-12">نام / کد خدمت</label>
+                <input
+                  type="text"
+                  id="srvSearchInput"
+                  name="srvSearchInput"
+                  className="form-control rounded-right w-50 padding-right-2"
+                  onKeyUp={(e) => handleSearchService(e.target.value)}
+                />
+
                 <button
-                  className="btn btn-primary border-radius font-13"
-                //   onClick={}
+                  className="btn btn-primary rounded-left w-10"
+                  id="BtnServiceSearch"
                 >
-                  ثبت نسخه نهایی
+                  <i className="fe fe-search"></i>
                 </button>
+              </div>
+
+              <div className="col-12 SearchDiv" id="searchDiv">
+                <SearchedServiceItems
+                  data={searchedServices}
+                  selectSearchedSrv={selectSearchedSrv}
+                />
+              </div>
+
+              <div className="unsuccessfullSearch">
+                <p>موردی یافت نشد!</p>
               </div>
             </div>
 
-            {/* departments header */}
-            <div className="card-body">
-              <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
-                {clinicDepartments?.map((item, index) => {
-                  return (
-                    <DepartmentsHeader
-                      key={index}
-                      department={item}
-                      activeClass={index == 0 ? "active" : ""}
-                      handleDepTabChange={handleDepTabChange}
+            <div className="d-flex align-items-center media-flex-column media-gap margin-top-1 gap-2">
+              <div className="col-md-3  media-w-100">
+                <label className="lblAbs margin-top-left font-12">تعداد</label>
+                <div className="row">
+                  <div className="col-auto">
+                    <button
+                      className="btn btn-primary btn-rounded"
+                      onClick={() => QtyChange("+")}
+                    >
+                      <i className="fe fe-plus"></i>
+                    </button>
+                  </div>
+                  <div className="col p-0">
+                    <input
+                      type="text"
+                      className="form-control text-center rounded"
+                      id="QtyInput"
+                      name="QTY"
+                      dir="ltr"
+                      defaultValue="1"
                     />
-                  );
-                })}
-              </ul>
-
-              <hr />
-
-              <form
-                className="w-100 pt-2"
-              //   onSubmit={SearchTaminSrv}
-              >
-                <div className="input-group mb-3 inputServiceContainer">
-                  <input type="hidden" name="srvCode" id="srvCode" />
-                  <label className="lblAbs font-12">نام / کد خدمت</label>
-                  <input
-                    type="text"
-                    id="srvSearchInput"
-                    name="srvSearchInput"
-                    className="form-control rounded-right w-50 padding-right-2"
-                    // onChange={(e) => handleSearchService(e.target.value)}
-                    onKeyUp={(e) => handleSearchService(e.target.value)}
-                  />
-
-                  <button
-                    className="btn btn-primary rounded-left w-10"
-                    id="BtnServiceSearch"
-                  >
-                    {/* {isLoading ? (
-                      <ExtraSmallLoader />
-                    ) : ( */}
-                    <i className="fe fe-search"></i>
-                    {/* )} */}
-                  </button>
-                </div>
-
-                <div className="col-12" id="searchDiv">
-                  <SearchedServiceItems
-                    data={searchedServices}
-                  // SelectSrvSearch={SelectSrvSearch}
-                  />
-                </div>
-                {/* 
-                <div className="unsuccessfullSearch">
-                  <p>موردی یافت نشد!</p>
-                </div> */}
-              </form>
-              <div className="d-flex align-items-center gap-2 media-flex-column media-gap margin-top-1">
-                <div className="col-md-3 media-w-100">
-                  <label className="lblAbs margin-top-left font-12">
-                    تعداد
-                  </label>
-
-                  <div className="row">
-                    <div className="col-auto">
-                      <button
-                        className="btn btn-primary btn-rounded"
-                        onClick={() => QtyChange("+")}
-                      >
-                        <i className="fe fe-plus"></i>
-                      </button>
-                    </div>
-                    <div className="col p-0">
-                      <input
-                        type="text"
-                        className="form-control text-center rounded"
-                        id="QtyInput"
-                        name="QTY"
-                        dir="ltr"
-                        defaultValue="1"
-                      />
-                    </div>
-                    <div className="col-auto">
-                      <button
-                        className="btn btn-primary btn-rounded"
-                        onClick={() => QtyChange("-")}
-                      >
-                        <i className="fe fe-minus"></i>
-                      </button>
-                    </div>
+                  </div>
+                  <div className="col-auto">
+                    <button
+                      className="btn btn-primary btn-rounded"
+                      onClick={() => QtyChange("-")}
+                    >
+                      <i className="fe fe-minus"></i>
+                    </button>
                   </div>
                 </div>
+              </div>
 
-                <div className="col-md-7 media-w-100">
-                  <label className="lblAbs font-12">توضیحات</label>
-                  <input
-                    type="text"
-                    className="form-control rounded padding-right-2"
-                    id="eprscItemDescription"
-                  />
-                </div>
+              <div className="w-57 media-w-100">
+                <label className="lblAbs font-12">توضیحات</label>
+                <input
+                  type="text"
+                  className="form-control rounded padding-right-2"
+                  id="eprscItemDescription"
+                />
+              </div>
 
-                <div className="col-md-2 media-w-100">
-                  <button
-                    className="btn rounded w-100 addToListBtn font-12"
-                  //   onClick={FuAddToListItem}
-                  >
-                    اضافه به لیست
-                  </button>
-                </div>
+              <div className="col-md-2 media-w-100">
+                <button
+                  className="btn rounded w-100 addToListBtn font-12"
+                  onClick={FuAddToList}
+                >
+                  اضافه به لیست
+                </button>
               </div>
             </div>
           </div>
