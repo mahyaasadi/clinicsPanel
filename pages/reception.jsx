@@ -34,7 +34,8 @@ let ClinicID,
   ActiveSrvPrice,
   ActiveSalamatShare,
   ActiveTaminShare,
-  ActiveArteshShare = null;
+  ActiveArteshShare,
+  ActiveInsuranceType = null;
 
 const Reception = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -43,6 +44,7 @@ const Reception = ({ ClinicUser }) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
+  const [editSrvData, setEditSrvData] = useState([])
 
   //get patient info
   const getPatientInfo = (e) => {
@@ -63,6 +65,7 @@ const Reception = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         setIsLoading(false);
+        ActiveInsuranceType = response.data.user.InsuranceType
         setPatientInfo(response.data.user);
         $("#patientInfoCard").show("");
       })
@@ -111,6 +114,7 @@ const Reception = ({ ClinicUser }) => {
     $("#searchDiv").hide();
   };
 
+  // add item to list
   const FuAddToList = async (e) => {
     e.preventDefault();
 
@@ -139,6 +143,16 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
+  // edit service
+  const handleEditService = (srvData) => {
+    setEditSrvData(srvData);
+    // console.log({ srvData });
+    ActiveSrvName = srvData.Name;
+    ActiveSrvCode = srvData.Code;
+    $("#QtyInput").val(srvData.Qty);
+    // ActiveEditSrvCode = srvData.SrvCode;
+  }
+
   useEffect(() => $(".unsuccessfullSearch").hide(""), []);
 
   return (
@@ -164,15 +178,16 @@ const Reception = ({ ClinicUser }) => {
                 searchedServices={searchedServices}
                 selectSearchedSrv={selectSearchedSrv}
                 FuAddToList={FuAddToList}
+                editSrvData={editSrvData}
               />
 
               <div className="prescList">
-                <AddToListItems data={addedSrvItems} />
+                <AddToListItems data={addedSrvItems} handleEditService={handleEditService} />
               </div>
             </div>
           </div>
           <div className="col-12 mt-4">
-            <PrescInfo data={addedSrvItems} />
+            <PrescInfo data={addedSrvItems} ActiveInsuranceType={ActiveInsuranceType} />
           </div>
         </div>
       </div>

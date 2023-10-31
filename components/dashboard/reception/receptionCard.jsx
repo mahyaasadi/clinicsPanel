@@ -1,7 +1,6 @@
 import { useGetAllQuery } from "redux/slices/clinicDepartmentsApiSlice";
 import DepartmentsHeader from "./departmentsHeader";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
-import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
 
 const ReceptionCard = ({
   ClinicID,
@@ -10,6 +9,7 @@ const ReceptionCard = ({
   searchedServices,
   selectSearchedSrv,
   FuAddToList,
+  editSrvData
 }) => {
   let activeClass = null;
 
@@ -28,7 +28,6 @@ const ReceptionCard = ({
 
   const {
     data: clinicDepartments,
-    error,
     isLoading: depsFetchIsLoading,
   } = useGetAllQuery(ClinicID);
 
@@ -67,6 +66,7 @@ const ReceptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={(e) => handleSearchService(e.target.value)}
+                  value={editSrvData?.Name}
                 />
 
                 <button
@@ -109,6 +109,8 @@ const ReceptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
+                    // value={editSrvData?.Qty}
+
                     />
                   </div>
                   <div className="col-auto">
