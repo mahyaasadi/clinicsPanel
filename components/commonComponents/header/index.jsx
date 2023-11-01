@@ -7,10 +7,7 @@ import { useRouter } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
 import { ErrorAlert } from "class/AlertManage.js";
-import {
-  avatar01,
-  headerLogo,
-} from "components/commonComponents/imagepath";
+import { avatar01, headerLogo } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
   console.log({ ClinicUser });

@@ -3,48 +3,8 @@ import FeatherIcon from "feather-icons-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
-const AddToListItems = ({ data, handleEditService }) => {
-  //   console.log({ data });
-
-  const [totalQty, setTotalQty] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalSalamatShare, setTotalSalamatShare] = useState(0);
-  const [totalTaminShare, setTotalTaminShare] = useState(0);
-  const [totalArteshShare, setTotalArteshShare] = useState(0);
-
-
-  useEffect(() => {
-    let qty = 0;
-    let price = 0;
-    let ss = 0;
-    let st = 0;
-    let sa = 0;
-
-    data.forEach((srvItem) => {
-      const itemQty = parseInt(srvItem.Qty);
-      const itemPrice = parseInt(srvItem.Price);
-      const itemSS = parseInt(srvItem.SS);
-      const itemST = parseInt(srvItem.ST);
-      const itemSA = parseInt(srvItem.SA);
-
-      const itemTotalPrice = itemQty * itemPrice;
-      const itemTotalSS = itemQty * itemSS;
-      const itemTotalST = itemQty * itemST;
-      const itemTotalSA = itemQty * itemSA;
-
-      qty += itemQty;
-      price += itemTotalPrice;
-      ss += itemTotalSS;
-      st += itemTotalST;
-      sa += itemTotalSA;
-    });
-
-    setTotalQty(qty);
-    setTotalPrice(price);
-    setTotalSalamatShare(ss);
-    setTotalTaminShare(st);
-    setTotalArteshShare(sa)
-  }, [data]);
+const AddToListItems = ({ data, ActiveInsuranceType, handleEditService }) => {
+  // console.log({ data });
   return (
     <>
       <div dir="rtl">
@@ -82,6 +42,19 @@ const AddToListItems = ({ data, handleEditService }) => {
                       <Tooltip target=".removeBtn">حذف</Tooltip>
                       <FeatherIcon icon="trash" className="prescItembtns" />
                     </button>
+
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-primary removeBtn"
+                      //   onClick={() => _DeleteService(srv.SrvCode, srv.prescId)}
+                      data-pr-position="top"
+                    >
+                      <Tooltip target=".removeBtn">حذف</Tooltip>
+                      <FeatherIcon
+                        icon="more-horizontal"
+                        className="prescItembtns"
+                      />
+                    </button>
                   </div>
                 </div>
               }
@@ -89,19 +62,32 @@ const AddToListItems = ({ data, handleEditService }) => {
               <div className="row">
                 <div className="d-flex mt-2 gap-1 flex-wrap">
                   <div className="d-flex">
-                    <div className="srvTypeInfo">تعداد : {totalQty}</div>
+                    <div className="srvTypeInfo">تعداد : {srv.Qty}</div>
                   </div>
                   <div className="d-flex">
-                    <div className="srvTypeInfo">هزینه : {totalPrice}</div>
+                    <div className="srvTypeInfo">
+                      قیمت : {srv.Price?.toLocaleString()} تومان | جمع کل :{" "}
+                      {(srv.Qty * srv.Price)?.toLocaleString()} تومان
+                    </div>
                   </div>
+
                   <div className="d-flex">
-                    <div className="srvTypeInfo">سهم بیمه سلامت : {totalSalamatShare}</div>
-                  </div>
-                  <div className="d-flex">
-                    <div className="srvTypeInfo">سهم بیمه تامین : {totalTaminShare}</div>
-                  </div>
-                  <div className="d-flex">
-                    <div className="srvTypeInfo">سهم بیمه ارتش : {totalArteshShare}</div>
+                    <div className="srvTypeInfo">
+                      سهم سازمان :{" "}
+                      {(
+                        srv.Qty *
+                        `${
+                          ActiveInsuranceType === "1"
+                            ? srv.SS
+                            : ActiveInsuranceType === "2"
+                            ? srv.ST
+                            : ActiveInsuranceType === "3"
+                            ? srv.SA
+                            : ""
+                        }`
+                      )?.toLocaleString()}{" "}
+                      تومان
+                    </div>
                   </div>
                 </div>
               </div>

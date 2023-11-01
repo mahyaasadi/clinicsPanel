@@ -9,7 +9,8 @@ const ReceptionCard = ({
   searchedServices,
   selectSearchedSrv,
   FuAddToList,
-  editSrvData
+  editSrvData,
+  mode,
 }) => {
   let activeClass = null;
 
@@ -26,19 +27,13 @@ const ReceptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  const {
-    data: clinicDepartments,
-    isLoading: depsFetchIsLoading,
-  } = useGetAllQuery(ClinicID);
+  const { data: clinicDepartments, isLoading: depsFetchIsLoading } =
+    useGetAllQuery(ClinicID);
 
   return (
     <>
       <div className="card presCard">
         <div className="card-body">
-          <div className="marginb-1">
-            <div className="prescript-title fw-bold text-secondary">پذیرش</div>
-          </div>
-
           {/* departments header */}
           <div className="card-body">
             <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
@@ -66,7 +61,8 @@ const ReceptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={(e) => handleSearchService(e.target.value)}
-                  value={editSrvData?.Name}
+                  defaultValue={(mode = "edit" ? editSrvData?.Name : "")}
+                  key={editSrvData.Name}
                 />
 
                 <button
@@ -109,8 +105,7 @@ const ReceptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
-
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -129,7 +124,7 @@ const ReceptionCard = ({
                 <input
                   type="text"
                   className="form-control rounded padding-right-2"
-                  id="eprscItemDescription"
+                  id="ResPrescDescription"
                 />
               </div>
 

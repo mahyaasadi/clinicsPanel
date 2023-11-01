@@ -9017,12 +9017,6 @@ ul li .active {
   height: 35vh;
 }
 
-.prescript-header {
-  margin-bottom: 1rem;
-  display: flex;
-  /* justify-content: flex-end; */
-}
-
 .prescript-title {
   font-size: 15px;
 }
@@ -9167,7 +9161,7 @@ ul li .active {
 
 #patientInfoCard {
   display: none;
-  height: 50vh;
+  height: 53vh;
 }
 
 .themecolor {
@@ -9190,6 +9184,10 @@ ul li .active {
 
 .w-57 {
   width: 57%;
+}
+
+.w-96 {
+  width: 96%;
 }
 
 .disNone {
@@ -9269,6 +9267,7 @@ ul li .active {
   z-index: 90;
   background-color: white;
   margin-bottom: 1rem;
+  display: none;
 }
 
 .inputServiceContainer {
@@ -9290,10 +9289,10 @@ ul li .active {
   font-size: 12px;
   align-items: center;
   display: flex;
-  color: #594b0d;
+  color: gray;
   font-size: 12px;
-  border: 1px solid #594b0d;
-  border-radius: 30px;
+  border: 1px solid lightgray;
+  border-radius: 14px;
   padding: 8px 15px;
   transition: all 4s ease-in-out 1s;
   transition-delay: 1s;
@@ -9428,11 +9427,11 @@ ul li .active {
   direction: initial;
 }
 
-/* .prescInfoCard {
+.prescInfoCard {
+  bottom: -6.5rem;
   position: relative;
-  bottom: 0;
-  height: 20vh;
-} */
+  /* width: calc(100% - 230px); */
+}
 
 .tabs-scroll {
   flex-wrap: nowrap;

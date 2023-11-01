@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
 const PrescInfo = ({ data, ActiveInsuranceType }) => {
-  console.log({ data });
-
   const [totalQty, setTotalQty] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalSalamatShare, setTotalSalamatShare] = useState(0);
@@ -39,20 +37,20 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
     setTotalPrice(price);
     setTotalSalamatShare(ss);
     setTotalTaminShare(st);
-    setTotalArteshShare(sa)
+    setTotalArteshShare(sa);
   }, [data]);
 
   return (
     <>
       <div className="card mb-0">
         <div className="card-body">
-          <div className="prescript-header d-flex gap-2 align-items-center justify-between">
+          <div className="d-flex gap-2 align-items-center justify-between">
             <div className="">
-              <p className="text-secondary fw-bold">اطلاعات نسخه</p>
+              <p className="text-secondary fw-bold">اطلاعات پذیرش</p>
             </div>
             <button
               className="btn btn-primary border-radius px-4 font-13"
-            //   onClick={}
+              //   onClick={}
             >
               ثبت پذیرش
             </button>
@@ -60,21 +58,41 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
 
           <hr />
 
-          <div className="row text-secondary font-12">
+          <div className="row text-secondary font-13 fw-bold">
             <div className="col ">
               <p className="">تعداد کل : {totalQty}</p>
-              <p className="">میزان پرداختی کل : {totalPrice}</p>
+              <p className="">جمع کل : {totalPrice?.toLocaleString()}</p>
             </div>
 
-            {
-              ActiveInsuranceType === "1" ? <div className="col ">سهم بیمه سلامت : {totalSalamatShare}</div>
-                : ActiveInsuranceType === "2" ? <div className="col ">سهم بیمه تامین اجتماعی : {totalTaminShare}</div>
-                  : ActiveInsuranceType === "3" ? <div className="col ">سهم بیمه ارتش : {totalArteshShare}</div>
-                    : ""
-            }
+            <div className="col">
+              <p className="">
+                سهم سازمان :{" "}
+                {ActiveInsuranceType === "1"
+                  ? totalSalamatShare?.toLocaleString()
+                  : ActiveInsuranceType === "2"
+                  ? totalTaminShare?.toLocaleString()
+                  : ActiveInsuranceType === "3"
+                  ? totalArteshShare?.toLocaleString()
+                  : ""}
+              </p>
+              <p className="">
+                سهم بیمار :{" "}
+                {(
+                  totalPrice -
+                  `${
+                    ActiveInsuranceType === "1"
+                      ? totalSalamatShare
+                      : ActiveInsuranceType === "2"
+                      ? totalTaminShare
+                      : ActiveInsuranceType === "3"
+                      ? totalArteshShare
+                      : ""
+                  }`
+                )?.toLocaleString()}{" "}
+              </p>
+            </div>
 
             <div className="col">
-              <p className="">سهم بیمار : </p>
               <p className="">میزان تخفیف : </p>
             </div>
           </div>

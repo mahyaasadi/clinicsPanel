@@ -58,6 +58,23 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientID, data }) => {
 
             <div className="margin-right-1">
               <p className="mt-3">{data.Name}</p>
+              <div className="d-flex gap-2 align-items-center">
+                <div className="">
+                  جنسیت : {data.Gender ? data.Gender : "-"}
+                </div>
+                <Link
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#changeInsuranceTypeModal"
+                  className="changeInsuranceBtn"
+                  data-pr-position="top"
+                >
+                  <Tooltip target=".changeInsuranceBtn">تغییر نوع بیمه</Tooltip>
+                  <i className="margin-right-2 themecolor">
+                    <FeatherIcon icon="refresh-cw" />
+                  </i>
+                </Link>
+              </div>
               <p className="mt-3">سن بیمار : {data.Age}</p>
               <p className="mt-3">
                 تاریخ اعتبار تا {""}

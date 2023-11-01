@@ -44,7 +44,8 @@ const Reception = ({ ClinicUser }) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
-  const [editSrvData, setEditSrvData] = useState([])
+  const [editSrvData, setEditSrvData] = useState([]);
+  const [mode, setMode] = useState("");
 
   //get patient info
   const getPatientInfo = (e) => {
@@ -65,7 +66,8 @@ const Reception = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         setIsLoading(false);
-        ActiveInsuranceType = response.data.user.InsuranceType
+        console.log(response.data.user);
+        ActiveInsuranceType = response.data.user.InsuranceType;
         setPatientInfo(response.data.user);
         $("#patientInfoCard").show("");
       })
@@ -94,7 +96,6 @@ const Reception = ({ ClinicUser }) => {
     setSearchedServices(filteredServices);
     let searchInput = $("#srvSearchInput").val();
     searchInput.length == 0 ? $("#searchDiv").hide() : $("#searchDiv").show();
-    $(".unsuccessfullSearch").hide("");
 
     filteredServices.length == 0
       ? $(".unsuccessfullSearch").show("")
@@ -131,6 +132,7 @@ const Reception = ({ ClinicUser }) => {
         ST: ActiveTaminShare,
         SA: ActiveArteshShare,
         Qty: $("#QtyInput").val(),
+        Des: $("#ResPrescDescription").val(),
       };
 
       setAddedSrvItems([addData, ...addedSrvItems]);
@@ -146,14 +148,12 @@ const Reception = ({ ClinicUser }) => {
   // edit service
   const handleEditService = (srvData) => {
     setEditSrvData(srvData);
-    // console.log({ srvData });
+    setMode("edit");
     ActiveSrvName = srvData.Name;
     ActiveSrvCode = srvData.Code;
     $("#QtyInput").val(srvData.Qty);
     // ActiveEditSrvCode = srvData.SrvCode;
-  }
-
-  useEffect(() => $(".unsuccessfullSearch").hide(""), []);
+  };
 
   return (
     <>
@@ -170,7 +170,7 @@ const Reception = ({ ClinicUser }) => {
                 ActivePatientID={ActivePatientID}
               />
             </div>
-            <div className="col-xxl-9 col-xl-8 col-lg-6 col-12">
+            <div className="col-xxl-9 col-xl-8 col-lg-7 col-12">
               <ReceptionCard
                 ClinicID={ClinicID}
                 handleDepTabChange={handleDepTabChange}
@@ -179,15 +179,23 @@ const Reception = ({ ClinicUser }) => {
                 selectSearchedSrv={selectSearchedSrv}
                 FuAddToList={FuAddToList}
                 editSrvData={editSrvData}
+                mode={mode}
               />
 
               <div className="prescList">
-                <AddToListItems data={addedSrvItems} handleEditService={handleEditService} />
+                <AddToListItems
+                  data={addedSrvItems}
+                  handleEditService={handleEditService}
+                  ActiveInsuranceType={ActiveInsuranceType}
+                />
               </div>
             </div>
-          </div>
-          <div className="col-12 mt-4">
-            <PrescInfo data={addedSrvItems} ActiveInsuranceType={ActiveInsuranceType} />
+            <div className="mt-3 prescInfoCard">
+              <PrescInfo
+                data={addedSrvItems}
+                ActiveInsuranceType={ActiveInsuranceType}
+              />
+            </div>
           </div>
         </div>
       </div>
