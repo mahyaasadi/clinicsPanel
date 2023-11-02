@@ -1,10 +1,36 @@
 import { useState, useEffect } from "react";
+import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
+import { Dropdown } from "primereact/dropdown";
 
-const AddToListItems = ({ data, ActiveInsuranceType, handleEditService }) => {
+const AddToListItems = ({
+  data,
+  ActiveInsuranceType,
+  handleEditService,
+  ClinicID,
+  selectedDiscount,
+  setSelectedDiscount,
+}) => {
   // console.log({ data });
+  const [discountsList, setDiscountsList] = useState([]);
+
+  // get discounts list
+  const getDiscountsData = () => {
+    axiosClient
+      .get(`CenterDiscount/getAll/${ClinicID}`)
+      .then(function (response) {
+        console.log(response.data);
+        setDiscountsList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => getDiscountsData(), []);
+
   return (
     <>
       <div dir="rtl">
@@ -43,18 +69,18 @@ const AddToListItems = ({ data, ActiveInsuranceType, handleEditService }) => {
                       <FeatherIcon icon="trash" className="prescItembtns" />
                     </button>
 
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-primary removeBtn"
-                      //   onClick={() => _DeleteService(srv.SrvCode, srv.prescId)}
+                    <div
+                      className="discountOptions receptionPage"
                       data-pr-position="top"
                     >
-                      <Tooltip target=".removeBtn">حذف</Tooltip>
-                      <FeatherIcon
-                        icon="more-horizontal"
-                        className="prescItembtns"
+                      <Dropdown
+                        value={selectedDiscount}
+                        onChange={(e) => setSelectedDiscount(e.value)}
+                        options={discountsList}
+                        optionLabel="Name"
                       />
-                    </button>
+                      <Tooltip target=".discountOptions">سایر موارد</Tooltip>
+                    </div>
                   </div>
                 </div>
               }
@@ -87,6 +113,12 @@ const AddToListItems = ({ data, ActiveInsuranceType, handleEditService }) => {
                         }`
                       )?.toLocaleString()}{" "}
                       تومان
+                    </div>
+                  </div>
+
+                  <div className="d-flex">
+                    <div className="srvTypeInfo">
+                      میزان تخفیف : {selectedDiscount ? selectedDiscount : ""}
                     </div>
                   </div>
                 </div>

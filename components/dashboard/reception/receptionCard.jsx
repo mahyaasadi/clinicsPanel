@@ -73,7 +73,7 @@ const ReceptionCard = ({
                 </button>
               </div>
 
-              <div className="col-12 SearchDiv" id="searchDiv">
+              <div className="col-12 SearchDiv input-group" id="searchDiv">
                 <SearchedServiceItems
                   data={searchedServices}
                   selectSearchedSrv={selectSearchedSrv}

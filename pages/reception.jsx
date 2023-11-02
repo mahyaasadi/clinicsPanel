@@ -45,6 +45,7 @@ const Reception = ({ ClinicUser }) => {
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
+  const [selectedDiscount, setSelectedDiscount] = useState("");
   const [mode, setMode] = useState("");
 
   //get patient info
@@ -170,7 +171,7 @@ const Reception = ({ ClinicUser }) => {
                 ActivePatientID={ActivePatientID}
               />
             </div>
-            <div className="col-xxl-9 col-xl-8 col-lg-7 col-12">
+            <div className="col-xxl-9 col-xl-8 col-lg-7 col-12 receptionUpperSection">
               <ReceptionCard
                 ClinicID={ClinicID}
                 handleDepTabChange={handleDepTabChange}
@@ -187,6 +188,9 @@ const Reception = ({ ClinicUser }) => {
                   data={addedSrvItems}
                   handleEditService={handleEditService}
                   ActiveInsuranceType={ActiveInsuranceType}
+                  ClinicID={ClinicID}
+                  selectedDiscount={selectedDiscount}
+                  setSelectedDiscount={setSelectedDiscount}
                 />
               </div>
             </div>

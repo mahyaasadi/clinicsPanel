@@ -303,6 +303,10 @@ textarea.form-control {
   height: 5rem;
 }
 
+.receptionUpperSection {
+  height: 90vh;
+}
+
 /* .stretch {
 letter-spacing: 2px;
   display: inline-block;
@@ -9252,9 +9256,13 @@ ul li .active {
   overflow: auto;
   direction: ltr;
   position: absolute;
-  width: 97%;
+  /* width: 97%; */
   z-index: 999;
   background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
 }
 
 .unsuccessfullSearch {
@@ -9291,7 +9299,7 @@ ul li .active {
   display: flex;
   color: gray;
   font-size: 12px;
-  border: 1px solid lightgray;
+  border: 1px solid #f0f0f0;
   border-radius: 14px;
   padding: 8px 15px;
   transition: all 4s ease-in-out 1s;
@@ -9428,9 +9436,21 @@ ul li .active {
 }
 
 .prescInfoCard {
-  bottom: -6.5rem;
-  position: relative;
-  /* width: calc(100% - 230px); */
+  bottom: 0;
+  position: absolute;
+  width: calc(100% - 40px);
+}
+
+@media (max-width: 576px) {
+  .prescInfoCard {
+    width: 100%
+  }
+}
+
+@media (max-width: 375px) {
+  .receptionUpperSection {
+    height: 140vh;
+  }
 }
 
 .tabs-scroll {
@@ -10053,6 +10073,19 @@ ul li .active {
 
 .p-dropdown-panel {
   z-index: 2000 !important;
+}
+
+.receptionPage .p-dropdown {
+  width: 45%;
+  height: 40px;
+  border-radius: 9%;
+  position: relative;
+}
+
+.receptionPage .p-dropdown-trigger {
+  position: absolute;
+  left: 25%;
+  width: 0.75rem;
 }
 
 .p-accordion-header-link {
