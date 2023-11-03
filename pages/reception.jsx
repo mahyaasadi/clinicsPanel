@@ -45,7 +45,7 @@ const Reception = ({ ClinicUser }) => {
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
-  const [selectedDiscount, setSelectedDiscount] = useState("");
+  const [selectedDiscounts, setSelectedDiscounts] = useState([]);
   const [mode, setMode] = useState("");
 
   //get patient info
@@ -137,6 +137,7 @@ const Reception = ({ ClinicUser }) => {
       };
 
       setAddedSrvItems([addData, ...addedSrvItems]);
+      setSelectedDiscounts([null, ...selectedDiscounts]);
 
       // reset
       $("#srvSearchInput").val("");
@@ -164,35 +165,38 @@ const Reception = ({ ClinicUser }) => {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="row">
-            <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
-              <PatientInfoCard
-                data={patientInfo}
-                getPatientInfo={getPatientInfo}
-                ActivePatientID={ActivePatientID}
-              />
-            </div>
-            <div className="col-xxl-9 col-xl-8 col-lg-7 col-12 receptionUpperSection">
-              <ReceptionCard
-                ClinicID={ClinicID}
-                handleDepTabChange={handleDepTabChange}
-                handleSearchService={handleSearchService}
-                searchedServices={searchedServices}
-                selectSearchedSrv={selectSearchedSrv}
-                FuAddToList={FuAddToList}
-                editSrvData={editSrvData}
-                mode={mode}
-              />
-
-              <div className="prescList">
-                <AddToListItems
-                  data={addedSrvItems}
-                  handleEditService={handleEditService}
-                  ActiveInsuranceType={ActiveInsuranceType}
-                  ClinicID={ClinicID}
-                  selectedDiscount={selectedDiscount}
-                  setSelectedDiscount={setSelectedDiscount}
+            <div className="row receptionUpperSection">
+              <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
+                <PatientInfoCard
+                  data={patientInfo}
+                  getPatientInfo={getPatientInfo}
+                  ActivePatientID={ActivePatientID}
                 />
               </div>
+              <div className="col-xxl-9 col-xl-8 col-lg-7 col-12 ">
+                <ReceptionCard
+                  ClinicID={ClinicID}
+                  handleDepTabChange={handleDepTabChange}
+                  handleSearchService={handleSearchService}
+                  searchedServices={searchedServices}
+                  selectSearchedSrv={selectSearchedSrv}
+                  FuAddToList={FuAddToList}
+                  editSrvData={editSrvData}
+                  mode={mode}
+                />
+
+                <div className="prescList">
+                  <AddToListItems
+                    data={addedSrvItems}
+                    selectedDiscounts={selectedDiscounts}
+                    setSelectedDiscounts={setSelectedDiscounts}
+                    handleEditService={handleEditService}
+                    ActiveInsuranceType={ActiveInsuranceType}
+                    ClinicID={ClinicID}
+                  />
+                </div>
+              </div>
+
             </div>
             <div className="mt-3 prescInfoCard">
               <PrescInfo
