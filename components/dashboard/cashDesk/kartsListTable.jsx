@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
@@ -6,46 +7,25 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const DepartmentsListTable = ({
-  data,
-  openEditModal,
-  deleteDepartment,
-  openDepartmentServicesModal,
-}) => {
+const KartsListTable = ({ data, openEditModal, deleteKart }) => {
   const columns = [
     {
-      name: "نام",
+      name: "عنوان",
       selector: (row) => row.Name,
       sortable: true,
-      width: "270px",
+      width: "auto",
     },
     {
-      name: "نام تخصصی",
-      selector: (row) => row.EngName,
+      name: "بانک",
+      selector: (row) => row.Bank,
       sortable: true,
-      width: "270px",
+      width: "auto",
     },
     {
-      name: "آیکون",
-      selector: (row) => row.Icon,
-      cell: (row) =>
-        row.Icon ? (
-          <div className="articleCurrentImg">
-            <img style={{ width: "35px" }} src={row.Icon} alt="" />
-            <Tooltip target=".removeImgBtn">حذف آیکون</Tooltip>
-            <button
-              className="btn removeImgBtn tooltip-button"
-              type="button"
-              data-pr-position="top"
-              // onClick={}
-            >
-              <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
-            </button>
-          </div>
-        ) : (
-          ""
-        ),
-      width: "450px",
+      name: "شماره حساب",
+      selector: (row) => row.Number,
+      sortable: true,
+      width: "auto",
     },
     {
       name: "عملیات ها",
@@ -54,8 +34,8 @@ const DepartmentsListTable = ({
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
-            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center"
-            onClick={() => deleteDepartment(row._id)}
+            className="btn btn-sm btn-outline-danger removeBtn"
+            onClick={() => deleteKart(row._id)}
             data-pr-position="top"
           >
             <Tooltip target=".removeBtn">حذف</Tooltip>
@@ -64,31 +44,16 @@ const DepartmentsListTable = ({
               style={{ width: "16px", height: "16px" }}
             />
           </button>
-          <button
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn d-flex align-items-center"
-            data-pr-position="top"
+          <Link
+            href="#"
+            className="btn btn-sm btn-outline-secondary btn-border-left editBtn"
             onClick={() => openEditModal(row)}
+            data-pr-position="top"
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
             <FeatherIcon
               icon="edit-3"
               style={{ width: "16px", height: "16px" }}
-            />
-          </button>
-          <Link
-            href={{
-              pathname: "/services",
-              query: {
-                id: row._id,
-                name: row.Name,
-              },
-            }}
-            className="btn btn-sm btn-outline-primary font-12 d-flex align-items-center gap-2"
-          >
-            سرویس ها
-            <FeatherIcon
-              style={{ width: "15px", height: "15px" }}
-              icon="layers"
             />
           </Link>
         </div>
@@ -101,7 +66,6 @@ const DepartmentsListTable = ({
     columns,
     data,
   };
-
   return (
     <div className="card-body p-4">
       <div className="table-responsive">
@@ -112,12 +76,12 @@ const DepartmentsListTable = ({
             defaultSortAsc={false}
             pagination
             highlightOnHover
+            customStyles={tableCustomStyles}
             noDataComponent={
               <div style={{ padding: "24px", fontSize: "13px" }}>
                 موردی برای نمایش وجود ندارد.
               </div>
             }
-            customStyles={tableCustomStyles}
           />
         </DataTableExtensions>
       </div>
@@ -125,4 +89,4 @@ const DepartmentsListTable = ({
   );
 };
 
-export default DepartmentsListTable;
+export default KartsListTable;

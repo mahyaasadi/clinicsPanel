@@ -6,13 +6,16 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
   const [totalSalamatShare, setTotalSalamatShare] = useState(0);
   const [totalTaminShare, setTotalTaminShare] = useState(0);
   const [totalArteshShare, setTotalArteshShare] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
 
   useEffect(() => {
+    console.log({ data });
     let qty = 0;
     let price = 0;
     let ss = 0;
     let st = 0;
     let sa = 0;
+    let discount = 0;
 
     data.forEach((srvItem) => {
       const itemQty = parseInt(srvItem.Qty);
@@ -20,17 +23,22 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
       const itemSS = parseInt(srvItem.SS);
       const itemST = parseInt(srvItem.ST);
       const itemSA = parseInt(srvItem.SA);
+      const itemDiscount = srvItem.DiscountCost
+        ? parseInt(srvItem.DiscountCost)
+        : 0;
 
       const itemTotalPrice = itemQty * itemPrice;
       const itemTotalSS = itemQty * itemSS;
       const itemTotalST = itemQty * itemST;
       const itemTotalSA = itemQty * itemSA;
+      const itemTotalDiscount = itemQty * itemDiscount;
 
       qty += itemQty;
       price += itemTotalPrice;
       ss += itemTotalSS;
       st += itemTotalST;
       sa += itemTotalSA;
+      discount += itemDiscount;
     });
 
     setTotalQty(qty);
@@ -38,6 +46,7 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
     setTotalSalamatShare(ss);
     setTotalTaminShare(st);
     setTotalArteshShare(sa);
+    setTotalDiscount(discount);
   }, [data]);
 
   return (
@@ -92,9 +101,11 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
               </p>
             </div>
 
+            {/* {totalDiscount !== 0 && ( */}
             <div className="col">
-              <p className="">میزان تخفیف : </p>
+              <p className="">میزان تخفیف : {totalDiscount}</p>
             </div>
+            {/* )} */}
           </div>
         </div>
       </div>

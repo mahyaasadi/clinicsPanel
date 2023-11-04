@@ -4,38 +4,97 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
-// // Define a reducer function to manage the selected discounts state
-// function discountsReducer(state, action) {
-//   switch (action.type) {
-//     case 'setDiscount':
-//       return { ...state, [action.index]: action.value };
-//     default:
-//       return state;
-//   }
-// }
-
 const AddToListItems = ({
   data,
   ActiveInsuranceType,
   handleEditService,
   ClinicID,
-  selectedDiscounts,
-  setSelectedDiscounts
+  applyDiscount,
 }) => {
   // console.log({ data });
+  // const [discountsList, setDiscountsList] = useState([]);
+  const [selectedDiscounts, setSelectedDiscounts] = useState([]);
+  // const [discountCost, setDiscountCost] = useState(null);
+
+  // const handleSelectDiscount = (itemIndex, discountValue, srv) => {
+  //   setSelectedDiscounts((prevSelectedDiscounts) => {
+  //     const newSelectedDiscounts = [...prevSelectedDiscounts];
+  //     newSelectedDiscounts[itemIndex] = discountValue.Value;
+  //     return newSelectedDiscounts;
+  //   });
+
+  //   console.log({ srv });
+
+  //   if (discountValue.Percent) {
+  //     const totalCost = srv.Qty * srv.Price;
+  //     const orgCost =
+  //       srv.Qty *
+  //       `${
+  //         ActiveInsuranceType === "1"
+  //           ? srv.SS
+  //           : ActiveInsuranceType === "2"
+  //           ? srv.ST
+  //           : ActiveInsuranceType === "3"
+  //           ? srv.SA
+  //           : ""
+  //       }`;
+
+  //     const patientTotalCost = totalCost - orgCost;
+  //     const disCost = (patientTotalCost * discountValue.Value) / 100;
+
+  //     console.log({ disCost });
+  //     setDiscountCost(disCost);
+  //   }
+  //   applyDiscount(srv._id, discountValue);
+  // };
+
+  // // get discounts list
+  // const getDiscountsData = () => {
+  //   axiosClient
+  //     .get(`CenterDiscount/getAll/${ClinicID}`)
+  //     .then(function (response) {
+  //       console.log(response.data);
+  //       setDiscountsList(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // useEffect(() => getDiscountsData(), []);
+
   const [discountsList, setDiscountsList] = useState([]);
+  const [discountCosts, setDiscountCosts] = useState({}); // Store individual discount costs
 
-  // Initialize selectedDiscounts array with default values for each item
-  useEffect(() => {
-    setSelectedDiscounts(data.map(() => null));
-  }, [data]);
+  const handleSelectDiscount = (item, discountValue) => {
+    const { _id } = item;
+    const newDiscountCosts = { ...discountCosts };
+    const srv = data.find((item) => item._id === _id);
 
-  const handleSelectDiscount = (itemIndex, discountValue) => {
-    setSelectedDiscounts((prevSelectedDiscounts) => {
-      const newSelectedDiscounts = [...prevSelectedDiscounts];
-      newSelectedDiscounts[itemIndex] = discountValue;
-      return newSelectedDiscounts;
-    });
+    if (discountValue.Percent) {
+      const totalCost = srv.Qty * srv.Price;
+      const orgCost =
+        srv.Qty *
+        `${
+          ActiveInsuranceType === "1"
+            ? srv.SS
+            : ActiveInsuranceType === "2"
+            ? srv.ST
+            : ActiveInsuranceType === "3"
+            ? srv.SA
+            : ""
+        }`;
+
+      const patientTotalCost = totalCost - orgCost;
+      const disCost = (patientTotalCost * discountValue.Value) / 100;
+
+      newDiscountCosts[_id] = disCost;
+      applyDiscount(_id, discountValue, disCost);
+    } else {
+      newDiscountCosts[_id] = 0; // No discount
+    }
+
+    setDiscountCosts(newDiscountCosts);
   };
 
   // get discounts list
@@ -56,8 +115,8 @@ const AddToListItems = ({
   return (
     <>
       {data?.map((srv, index) => (
-        <div dir="rtl" key={index} className="card mb-2">
-          <div className="card-body font-13">
+        <div dir="rtl" key={srv._id} className="card mb-1">
+          <div className="card-body font-13 receptionInfoText">
             <div className="d-flex gap-1 align-items-center justify-between">
               <div className="d-flex gap-2">
                 <p className="mb-0">{srv.Code}</p>
@@ -91,12 +150,12 @@ const AddToListItems = ({
                   data-pr-position="top"
                 >
                   <Dropdown
-                    value={selectedDiscounts[index]}
-                    onChange={(e) => handleSelectDiscount(index, e.value.Value)}
+                    value={selectedDiscounts[srv._id]}
+                    onChange={(e) => handleSelectDiscount(srv, e.value)}
                     options={discountsList}
                     optionLabel="Name"
                   />
-                  {/* <Tooltip target={`.discountOptions.${index}`}>سایر موارد</Tooltip> */}
+                  <Tooltip target=".discountOptions">سایر موارد</Tooltip>
                 </div>
               </div>
             </div>
@@ -122,25 +181,58 @@ const AddToListItems = ({
                     سهم سازمان :{" "}
                     {(
                       srv.Qty *
-                      `${ActiveInsuranceType === "1"
-                        ? srv.SS
-                        : ActiveInsuranceType === "2"
+                      `${
+                        ActiveInsuranceType === "1"
+                          ? srv.SS
+                          : ActiveInsuranceType === "2"
                           ? srv.ST
                           : ActiveInsuranceType === "3"
-                            ? srv.SA
-                            : ""
+                          ? srv.SA
+                          : 0
                       }`
                     )?.toLocaleString()}{" "}
                     تومان
                   </div>
                 </div>
 
-                {selectedDiscounts[index] && (
+                <div className="vertical-line"></div>
+                <div className="d-flex">
+                  <div className="paddingR-5">
+                    سهم بیمار :{" "}
+                    {discountCosts[srv._id]
+                      ? srv.Qty * srv.Price -
+                        (srv.Qty *
+                          `${
+                            ActiveInsuranceType === "1"
+                              ? srv.SS
+                              : ActiveInsuranceType === "2"
+                              ? srv.ST
+                              : ActiveInsuranceType === "3"
+                              ? srv.SA
+                              : ""
+                          }` +
+                          discountCosts[srv._id])
+                      : srv.Qty * srv.Price -
+                        srv.Qty *
+                          `${
+                            ActiveInsuranceType === "1"
+                              ? srv.SS
+                              : ActiveInsuranceType === "2"
+                              ? srv.ST
+                              : ActiveInsuranceType === "3"
+                              ? srv.SA
+                              : ""
+                          }`}
+                  </div>
+                </div>
+
+                {discountCosts[srv._id] && (
                   <>
                     <div className="vertical-line"></div>
                     <div className="d-flex">
                       <div className="paddingR-5">
-                        میزان تخفیف : {selectedDiscounts[index] || ""}
+                        میزان تخفیف : {discountCosts[srv._id]?.toLocaleString()}{" "}
+                        تومان
                       </div>
                     </div>
                   </>
@@ -149,7 +241,6 @@ const AddToListItems = ({
             </div>
           </div>
         </div>
-
       ))}
     </>
   );

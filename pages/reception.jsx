@@ -27,6 +27,8 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let Services = [];
 let ClinicID,
+  ClinicUserID,
+  ActiveSrvID,
   ActivePatientID,
   ActiveSrvName,
   ActiveSrvEngName,
@@ -38,6 +40,7 @@ let ClinicID,
   ActiveInsuranceType = null;
 
 const Reception = ({ ClinicUser }) => {
+  ClinicUserID = ClinicUser._id;
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +48,6 @@ const Reception = ({ ClinicUser }) => {
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
-  const [selectedDiscounts, setSelectedDiscounts] = useState([]);
   const [mode, setMode] = useState("");
 
   //get patient info
@@ -103,7 +105,8 @@ const Reception = ({ ClinicUser }) => {
       : $(".unsuccessfullSearch").hide("");
   };
 
-  const selectSearchedSrv = (name, code, engName, price, ss, st, sa) => {
+  const selectSearchedSrv = (_id, name, code, engName, price, ss, st, sa) => {
+    ActiveSrvID = _id;
     ActiveSrvName = name;
     ActiveSrvEngName = engName;
     ActiveSrvCode = code;
@@ -125,6 +128,8 @@ const Reception = ({ ClinicUser }) => {
       return false;
     } else {
       let addData = {
+        UserID: ClinicUserID,
+        _id: ActiveSrvID,
         Name: ActiveSrvName,
         EngName: ActiveSrvEngName,
         Code: ActiveSrvCode,
@@ -137,7 +142,6 @@ const Reception = ({ ClinicUser }) => {
       };
 
       setAddedSrvItems([addData, ...addedSrvItems]);
-      setSelectedDiscounts([null, ...selectedDiscounts]);
 
       // reset
       $("#srvSearchInput").val("");
@@ -146,6 +150,28 @@ const Reception = ({ ClinicUser }) => {
       ActiveSrvCode = null;
     }
   };
+
+  const applyDiscount = (id, Discount, disCost) => {
+    console.log({ disCost });
+
+    const updatedData = addedSrvItems.map((item) => {
+      if (item._id === id) {
+        return {
+          ...item,
+          Discount: Discount.Value,
+          DiscountType: Discount.Percent ? "درصد" : "مبلغ",
+          DiscountCost: disCost,
+        };
+      }
+      return item;
+    });
+
+    setAddedSrvItems(updatedData);
+  };
+
+  useEffect(() => {
+    console.log({ addedSrvItems });
+  }, [addedSrvItems]);
 
   // edit service
   const handleEditService = (srvData) => {
@@ -162,7 +188,7 @@ const Reception = ({ ClinicUser }) => {
       <Head>
         <title>پذیرش</title>
       </Head>
-      <div className="page-wrapper">
+      <div className="page-wrapper reception-wrapper">
         <div className="content container-fluid">
           <div className="row">
             <div className="row receptionUpperSection">
@@ -188,15 +214,13 @@ const Reception = ({ ClinicUser }) => {
                 <div className="prescList">
                   <AddToListItems
                     data={addedSrvItems}
-                    selectedDiscounts={selectedDiscounts}
-                    setSelectedDiscounts={setSelectedDiscounts}
+                    ClinicID={ClinicID}
                     handleEditService={handleEditService}
                     ActiveInsuranceType={ActiveInsuranceType}
-                    ClinicID={ClinicID}
+                    applyDiscount={applyDiscount}
                   />
                 </div>
               </div>
-
             </div>
             <div className="mt-3 prescInfoCard">
               <PrescInfo

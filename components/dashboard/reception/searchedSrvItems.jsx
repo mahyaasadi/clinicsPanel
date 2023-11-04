@@ -7,6 +7,7 @@ const SearchedServiceItems = ({ data, selectSearchedSrv }) => {
           className="btn btn-outline-secondary border-radius btn-sm w-100 mb-1 right-text"
           onClick={() =>
             selectSearchedSrv(
+              x._id,
               x.Name,
               x.Code,
               x.EngName,

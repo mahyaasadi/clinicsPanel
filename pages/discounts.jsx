@@ -8,11 +8,11 @@ import Loading from "components/commonComponents/loading/loading";
 import discountPercentDataClass from "class/discountPercentDataClass";
 import DiscountModal from "components/dashboard/discounts/discountModal";
 import DiscountsListTable from "components/dashboard/discounts/discountListTable";
-import {
-  useGetAllQuery,
-  useAddMutation,
-  useEditMutation,
-} from "redux/slices/discountApiSlice";
+// import {
+//   useGetAllQuery,
+//   useAddMutation,
+//   useEditMutation,
+// } from "redux/slices/discountApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -45,12 +45,6 @@ const Discounts = ({ ClinicUser }) => {
   let SelectDiscountPercent = "";
   const FUSelectDiscountPercent = (Percent) =>
     (SelectDiscountPercent = Percent);
-
-  // // Fetching data
-  // const { data: discounts, error, isLoading } = useGetAllQuery(ClinicID);
-  // // Mutations
-  // const [addDiscount] = useAddMutation();
-  // const [editDiscount] = useEditMutation();
 
   // get discounts list
   const getDiscountsData = () => {
@@ -181,53 +175,6 @@ const Discounts = ({ ClinicUser }) => {
     }
   };
 
-  // const handleAdd = async (e) => {
-  //   e.preventDefault();
-
-  //   let formData = new FormData(e.target);
-  //   const formProps = Object.fromEntries(formData);
-
-  //   const newDiscount = {
-  //     CenterID: ClinicID,
-  //     Name: formProps.discountName,
-  //     Des: formProps.discountDescription,
-  //     Value: formProps.discountValue,
-  //     Percent: parseInt(SelectDiscountPercent),
-  //   };
-
-  //   try {
-  //     const response = await addDiscount(newDiscount).unwrap();
-  //     setShowModal(false);
-  //     // e.target.reset();
-  //   } catch (error) {
-  //     console.log(error);
-  //     ErrorAlert("خطا", "افزودن تخفیف با خطا مواجه گردید!");
-  //   }
-  // };
-
-  // const handleEdit = async (e) => {
-  //   e.preventDefault();
-
-  //   let formData = new FormData(e.target);
-  //   const formProps = Object.fromEntries(formData);
-
-  //   let updatedDiscount = {
-  //     CenterID: ClinicID,
-  //     Name: formProps.discountName,
-  //     Des: formProps.discountDescription,
-  //     Value: formProps.discountValue,
-  //     Percent: parseInt(SelectDiscountPercent),
-  //   };
-
-  //   try {
-  //     const response = await editDiscount(updatedDiscount).unwrap();
-  //     setShowModal(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //     ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
-  //   }
-  // };
-
   useEffect(() => getDiscountsData(), []);
 
   return (
@@ -293,3 +240,56 @@ const Discounts = ({ ClinicUser }) => {
 };
 
 export default Discounts;
+
+// // Fetching data
+// const { data: discounts, error, isLoading } = useGetAllQuery(ClinicID);
+// // Mutations
+// const [addDiscount] = useAddMutation();
+// const [editDiscount] = useEditMutation();
+
+// const handleAdd = async (e) => {
+//   e.preventDefault();
+
+//   let formData = new FormData(e.target);
+//   const formProps = Object.fromEntries(formData);
+
+//   const newDiscount = {
+//     CenterID: ClinicID,
+//     Name: formProps.discountName,
+//     Des: formProps.discountDescription,
+//     Value: formProps.discountValue,
+//     Percent: parseInt(SelectDiscountPercent),
+//   };
+
+//   try {
+//     const response = await addDiscount(newDiscount).unwrap();
+//     setShowModal(false);
+//     // e.target.reset();
+//   } catch (error) {
+//     console.log(error);
+//     ErrorAlert("خطا", "افزودن تخفیف با خطا مواجه گردید!");
+//   }
+// };
+
+// const handleEdit = async (e) => {
+//   e.preventDefault();
+
+//   let formData = new FormData(e.target);
+//   const formProps = Object.fromEntries(formData);
+
+//   let updatedDiscount = {
+//     CenterID: ClinicID,
+//     Name: formProps.discountName,
+//     Des: formProps.discountDescription,
+//     Value: formProps.discountValue,
+//     Percent: parseInt(SelectDiscountPercent),
+//   };
+
+//   try {
+//     const response = await editDiscount(updatedDiscount).unwrap();
+//     setShowModal(false);
+//   } catch (error) {
+//     console.log(error);
+//     ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
+//   }
+// };
