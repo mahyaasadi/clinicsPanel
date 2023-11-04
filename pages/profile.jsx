@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSession } from "lib/session";
+import { axiosClient } from "@/class/axiosConfig";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -16,8 +17,32 @@ export const getServerSideProps = async ({ req, res }) => {
     };
   }
 };
+
+let UserID = null;
 const Profile = ({ ClinicUser }) => {
+  UserID = ClinicUser._id;
   const [isLoading, setIsLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState([])
+
+  const getUserByID = () => {
+    let url = "ClinicUser/getUserById";
+    let data = {
+      UserID
+    }
+
+    axiosClient.post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setUserInfo(response.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  useEffect(() => {
+    getUserByID()
+  }, [])
 
   return (
     <>
@@ -44,11 +69,15 @@ const Profile = ({ ClinicUser }) => {
                     </div>
                     <div className="col-md-4 mb-3">
                       <h5>نام و نام خانوادگی</h5>
-                      <p>{ClinicUser.FullName}</p>
+                      <p>{userInfo.FullName}</p>
                     </div>
                     <div className="col-md-4 mb-3">
                       <h5>نام کاربری</h5>
-                      <p>{ClinicUser.User ? ClinicUser.User : ""}</p>
+                      <p>{userInfo.User}</p>
+                    </div>
+                    <div className="col-md-4 mb-3">
+                      <h5>نام مستعار</h5>
+                      <p>{userInfo.NickName}</p>
                     </div>
 
                     <div className="col-md-12">
@@ -56,7 +85,7 @@ const Profile = ({ ClinicUser }) => {
                     </div>
                     <div className="col-md-4">
                       <h5>شماره همراه</h5>
-                      <p>{ClinicUser.Tel ? ClinicUser.Tel : ""}</p>
+                      <p>{userInfo.Tel}</p>
                     </div>
                     <div className="col-md-4 mb-3">
                       <h5>کد ملی</h5>

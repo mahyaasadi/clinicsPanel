@@ -52,7 +52,7 @@ const ReceptionCard = ({
             <hr />
 
             <div className="w-100 pt-2">
-              <div className="input-group mb-3 inputServiceContainer">
+              <div className="input-group mb-1 inputServiceContainer">
                 <input type="hidden" name="srvCode" id="srvCode" />
                 <label className="lblAbs font-12">نام / کد خدمت</label>
                 <input
@@ -71,14 +71,14 @@ const ReceptionCard = ({
                 >
                   <i className="fe fe-search"></i>
                 </button>
+                <div className="col-12 SearchDiv input-group" id="searchDiv">
+                  <SearchedServiceItems
+                    data={searchedServices}
+                    selectSearchedSrv={selectSearchedSrv}
+                  />
+                </div>
               </div>
 
-              <div className="col-12 SearchDiv input-group" id="searchDiv">
-                <SearchedServiceItems
-                  data={searchedServices}
-                  selectSearchedSrv={selectSearchedSrv}
-                />
-              </div>
 
               <div className="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
@@ -105,7 +105,7 @@ const ReceptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
+                    // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">

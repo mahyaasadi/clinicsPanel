@@ -126,6 +126,8 @@ const Reception = ({ ClinicUser }) => {
     if (ActiveSrvName == null || ActiveSrvCode == null) {
       ErrorAlert("خطا", "خدمتی انتخاب نشده است");
       return false;
+    } else if (addedSrvItems.length > 0 && addedSrvItems.find((x) => x._id === ActiveSrvID)) {
+      ErrorAlert("خطا", "سرویس تکراری می باشد!")
     } else {
       let addData = {
         UserID: ClinicUserID,
@@ -191,7 +193,7 @@ const Reception = ({ ClinicUser }) => {
       <div className="page-wrapper reception-wrapper">
         <div className="content container-fluid">
           <div className="row">
-            <div className="row receptionUpperSection">
+            <div className="row receptionUpperSection justify-between paddingL-0">
               <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
                 <PatientInfoCard
                   data={patientInfo}
@@ -199,7 +201,7 @@ const Reception = ({ ClinicUser }) => {
                   ActivePatientID={ActivePatientID}
                 />
               </div>
-              <div className="col-xxl-9 col-xl-8 col-lg-7 col-12 ">
+              <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
                 <ReceptionCard
                   ClinicID={ClinicID}
                   handleDepTabChange={handleDepTabChange}
@@ -222,7 +224,7 @@ const Reception = ({ ClinicUser }) => {
                 </div>
               </div>
             </div>
-            <div className="mt-3 prescInfoCard">
+            <div className="mt-3 col-md-12">
               <PrescInfo
                 data={addedSrvItems}
                 ActiveInsuranceType={ActiveInsuranceType}

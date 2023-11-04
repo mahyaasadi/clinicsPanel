@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect } from "react";
 import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
@@ -11,58 +11,7 @@ const AddToListItems = ({
   ClinicID,
   applyDiscount,
 }) => {
-  // console.log({ data });
-  // const [discountsList, setDiscountsList] = useState([]);
   const [selectedDiscounts, setSelectedDiscounts] = useState([]);
-  // const [discountCost, setDiscountCost] = useState(null);
-
-  // const handleSelectDiscount = (itemIndex, discountValue, srv) => {
-  //   setSelectedDiscounts((prevSelectedDiscounts) => {
-  //     const newSelectedDiscounts = [...prevSelectedDiscounts];
-  //     newSelectedDiscounts[itemIndex] = discountValue.Value;
-  //     return newSelectedDiscounts;
-  //   });
-
-  //   console.log({ srv });
-
-  //   if (discountValue.Percent) {
-  //     const totalCost = srv.Qty * srv.Price;
-  //     const orgCost =
-  //       srv.Qty *
-  //       `${
-  //         ActiveInsuranceType === "1"
-  //           ? srv.SS
-  //           : ActiveInsuranceType === "2"
-  //           ? srv.ST
-  //           : ActiveInsuranceType === "3"
-  //           ? srv.SA
-  //           : ""
-  //       }`;
-
-  //     const patientTotalCost = totalCost - orgCost;
-  //     const disCost = (patientTotalCost * discountValue.Value) / 100;
-
-  //     console.log({ disCost });
-  //     setDiscountCost(disCost);
-  //   }
-  //   applyDiscount(srv._id, discountValue);
-  // };
-
-  // // get discounts list
-  // const getDiscountsData = () => {
-  //   axiosClient
-  //     .get(`CenterDiscount/getAll/${ClinicID}`)
-  //     .then(function (response) {
-  //       console.log(response.data);
-  //       setDiscountsList(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // useEffect(() => getDiscountsData(), []);
-
   const [discountsList, setDiscountsList] = useState([]);
   const [discountCosts, setDiscountCosts] = useState({}); // Store individual discount costs
 
@@ -75,14 +24,13 @@ const AddToListItems = ({
       const totalCost = srv.Qty * srv.Price;
       const orgCost =
         srv.Qty *
-        `${
-          ActiveInsuranceType === "1"
-            ? srv.SS
-            : ActiveInsuranceType === "2"
+        `${ActiveInsuranceType === "1"
+          ? srv.SS
+          : ActiveInsuranceType === "2"
             ? srv.ST
             : ActiveInsuranceType === "3"
-            ? srv.SA
-            : ""
+              ? srv.SA
+              : ""
         }`;
 
       const patientTotalCost = totalCost - orgCost;
@@ -91,7 +39,7 @@ const AddToListItems = ({
       newDiscountCosts[_id] = disCost;
       applyDiscount(_id, discountValue, disCost);
     } else {
-      newDiscountCosts[_id] = 0; // No discount
+      newDiscountCosts[_id] = 0;
     }
 
     setDiscountCosts(newDiscountCosts);
@@ -181,14 +129,13 @@ const AddToListItems = ({
                     سهم سازمان :{" "}
                     {(
                       srv.Qty *
-                      `${
-                        ActiveInsuranceType === "1"
-                          ? srv.SS
-                          : ActiveInsuranceType === "2"
+                      `${ActiveInsuranceType === "1"
+                        ? srv.SS
+                        : ActiveInsuranceType === "2"
                           ? srv.ST
                           : ActiveInsuranceType === "3"
-                          ? srv.SA
-                          : 0
+                            ? srv.SA
+                            : 0
                       }`
                     )?.toLocaleString()}{" "}
                     تومان
@@ -201,28 +148,26 @@ const AddToListItems = ({
                     سهم بیمار :{" "}
                     {discountCosts[srv._id]
                       ? srv.Qty * srv.Price -
-                        (srv.Qty *
-                          `${
-                            ActiveInsuranceType === "1"
-                              ? srv.SS
-                              : ActiveInsuranceType === "2"
-                              ? srv.ST
-                              : ActiveInsuranceType === "3"
+                      (srv.Qty *
+                        `${ActiveInsuranceType === "1"
+                          ? srv.SS
+                          : ActiveInsuranceType === "2"
+                            ? srv.ST
+                            : ActiveInsuranceType === "3"
                               ? srv.SA
                               : ""
-                          }` +
-                          discountCosts[srv._id])
+                        }` +
+                        discountCosts[srv._id])
                       : srv.Qty * srv.Price -
-                        srv.Qty *
-                          `${
-                            ActiveInsuranceType === "1"
-                              ? srv.SS
-                              : ActiveInsuranceType === "2"
-                              ? srv.ST
-                              : ActiveInsuranceType === "3"
-                              ? srv.SA
-                              : ""
-                          }`}
+                      srv.Qty *
+                      `${ActiveInsuranceType === "1"
+                        ? srv.SS
+                        : ActiveInsuranceType === "2"
+                          ? srv.ST
+                          : ActiveInsuranceType === "3"
+                            ? srv.SA
+                            : ""
+                      }`}
                   </div>
                 </div>
 
