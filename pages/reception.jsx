@@ -163,14 +163,12 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
-  const applyDiscount = (id, Discount, DiscountValue) => {
-    // console.log({ DiscountValue });
+  const applyDiscount = (id, Discount) => {
     const updatedData = addedSrvItems.map((item) => {
       if (item._id === id) {
         return {
           ...item,
           Discount: Discount,
-          DiscountValue: DiscountValue,
         };
       }
       return item;
@@ -178,10 +176,6 @@ const Reception = ({ ClinicUser }) => {
 
     setAddedSrvItems(updatedData);
   };
-
-  useEffect(() => {
-    console.log({ addedSrvItems });
-  }, [addedSrvItems]);
 
   // edit service
   const handleEditService = (srvData) => {
@@ -226,7 +220,6 @@ const Reception = ({ ClinicUser }) => {
                     data={addedSrvItems}
                     ClinicID={ClinicID}
                     handleEditService={handleEditService}
-                    ActiveInsuranceType={ActiveInsuranceType}
                     applyDiscount={applyDiscount}
                   />
                 </div>
@@ -235,7 +228,6 @@ const Reception = ({ ClinicUser }) => {
             <div className="mt-3 col-md-12">
               <PrescInfo
                 data={addedSrvItems}
-                ActiveInsuranceType={ActiveInsuranceType}
               />
             </div>
           </div>

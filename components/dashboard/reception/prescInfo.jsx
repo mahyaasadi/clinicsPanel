@@ -1,41 +1,51 @@
 import { useState, useEffect } from "react";
 
-const PrescInfo = ({ data, ActiveInsuranceType }) => {
+const calculateDiscount = (srvItem) => {
+  if (srvItem.Discount?.Percent) {
+    return (srvItem.Price * parseInt(srvItem.Discount?.Value) / 100);
+  } else if (srvItem.Discount?.Percent === false) {
+    return parseInt(srvItem.Discount?.Value);
+  }
+  return 0;
+};
+
+const PrescInfo = ({ data }) => {
   const [totalQty, setTotalQty] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalOrgCost, setTotalOrgCost] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
+  const [patientTotalCost, setPatientTotalCost] = useState(0)
 
   useEffect(() => {
-    // console.log({ data });
     let qty = 0;
     let price = 0;
     let oc = 0;
     let discount = 0;
+    let patientCost = 0
 
     data.forEach((srvItem) => {
-      console.log({ srvItem });
       const itemQty = parseInt(srvItem.Qty);
       const itemPrice = parseInt(srvItem.Price);
       const itemOC = parseInt(srvItem.OC);
-      const itemDiscount = srvItem.DiscountValue
-        ? parseInt(srvItem.DiscountValue)
-        : 0;
+      const itemDiscount = calculateDiscount(srvItem);
 
       const itemTotalPrice = itemQty * itemPrice;
       const itemTotalOC = itemQty * itemOC;
       const itemTotalDiscount = itemQty * itemDiscount;
+      const totalPatientCost = itemTotalPrice - itemTotalOC - itemDiscount
 
       qty += itemQty;
       price += itemTotalPrice;
       oc += itemTotalOC;
-      discount += itemDiscount;
+      patientCost += totalPatientCost
+      discount += itemTotalDiscount;
     });
 
     setTotalQty(qty);
     setTotalPrice(price);
     setTotalOrgCost(oc);
     setTotalDiscount(discount);
+    setPatientTotalCost(patientCost)
   }, [data]);
 
   return (
@@ -48,7 +58,7 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
             </div>
             <button
               className="btn btn-primary border-radius px-4 font-13"
-              //   onClick={}
+            //   onClick={}
             >
               ثبت پذیرش
             </button>
@@ -63,27 +73,15 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
             </div>
 
             <div className="col">
-              <p className="">سهم سازمان : {totalOrgCost}</p>
+              <p className="">سهم سازمان : {totalOrgCost.toLocaleString()}</p>
               <p className="">
-                سهم بیمار :{" "}
-                {/* {(
-                  totalPrice -
-                  `${
-                    ActiveInsuranceType === "1"
-                      ? totalSalamatShare
-                      : ActiveInsuranceType === "2"
-                      ? totalTaminShare
-                      : ActiveInsuranceType === "3"
-                      ? totalArteshShare
-                      : ""
-                  }`
-                )?.toLocaleString()}{" "} */}
+                سهم بیمار : {patientTotalCost.toLocaleString()}
               </p>
             </div>
 
             {/* {totalDiscount !== 0 && ( */}
             <div className="col">
-              <p className="">میزان تخفیف : {totalDiscount}</p>
+              <p className="">میزان تخفیف : {totalDiscount.toLocaleString()}</p>
             </div>
             {/* )} */}
           </div>

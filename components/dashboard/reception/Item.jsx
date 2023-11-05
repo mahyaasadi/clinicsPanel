@@ -2,17 +2,17 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
-const Item = ({ srv, discountsList, applyDiscount }) => {
+const Item = ({ srv, discountsList, applyDiscount, handleEditService }) => {
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
-  let Discount = 0;
+  let Discount = srv.Discount ? srv.Discount.Value : 0;
 
   if (srv.Discount) {
     if (srv.Discount.Percent) {
-      Discount = (RowTotalPrice * srv.Discount.Value) / 100;
+      Discount = srv.Qty * (RowTotalPrice * srv.Discount.Value) / 100;
     } else {
-      Discount = parseInt(srv.Discount.Value);
+      Discount = srv.Qty * parseInt(srv.Discount.Value);
     }
     PatientCost = RowTotalPrice - (srv.OC + Discount);
   }
@@ -54,7 +54,7 @@ const Item = ({ srv, discountsList, applyDiscount }) => {
                 data-pr-position="top"
               >
                 <Dropdown
-                  onChange={(e) => applyDiscount(srv._id, e.value, Discount)}
+                  onChange={(e) => applyDiscount(srv._id, e.value)}
                   options={discountsList}
                   optionLabel="Name"
                 />
@@ -71,26 +71,26 @@ const Item = ({ srv, discountsList, applyDiscount }) => {
 
               <div className="vertical-line"></div>
               <div className="d-flex paddingR-5">
-                قیمت واحد : {srv.Price}
+                قیمت واحد : {srv.Price.toLocaleString()}
                 <div className="vertical-line"></div>
-                <p className="paddingR-5">قیمت کل : {RowTotalPrice}</p>
+                <p className="paddingR-5">قیمت کل : {RowTotalPrice.toLocaleString()}</p>
               </div>
 
               <div className="vertical-line"></div>
               <div className="d-flex">
-                <div className="paddingR-5">سهم سازمان :{OrgTotalCost}</div>
+                <div className="paddingR-5">سهم سازمان :{OrgTotalCost.toLocaleString()}</div>
               </div>
 
               <div className="vertical-line"></div>
               <div className="d-flex">
-                <div className="paddingR-5">سهم بیمار :{PatientCost}</div>
+                <div className="paddingR-5">سهم بیمار :{PatientCost.toLocaleString()}</div>
               </div>
 
               {Discount !== 0 && (
                 <>
                   <div className="vertical-line"></div>
                   <div className="d-flex">
-                    <div className="paddingR-5">میزان تخفیف : {Discount}</div>
+                    <div className="paddingR-5">میزان تخفیف : {Discount.toLocaleString()}</div>
                   </div>
                 </>
               )}
