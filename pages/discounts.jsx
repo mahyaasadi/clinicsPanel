@@ -2,16 +2,17 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { QuestionAlert } from "class/AlertManage";
+import { QuestionAlert, ErrorAlert } from "class/AlertManage";
 import FeatherIcon from "feather-icons-react";
 import Loading from "components/commonComponents/loading/loading";
 import discountPercentDataClass from "class/discountPercentDataClass";
 import DiscountModal from "components/dashboard/discounts/discountModal";
 import DiscountsListTable from "components/dashboard/discounts/discountListTable";
 // import {
-//   useGetAllQuery,
-//   useAddMutation,
-//   useEditMutation,
+//   useGetAllDiscountsQuery,
+//   useAddDiscountMutation,
+//   useEditDiscountMutation,
+//   useDeleteDiscountMutation,
 // } from "redux/slices/discountApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -46,6 +47,18 @@ const Discounts = ({ ClinicUser }) => {
   const FUSelectDiscountPercent = (Percent) =>
     (SelectDiscountPercent = Percent);
 
+  // Fetching data
+  // const {
+  //   data: discountsList,
+  //   error,
+  //   isLoading,
+  // } = useGetAllDiscountsQuery(ClinicID);
+
+  // Mutations
+  // const [addNewDiscount] = useAddDiscountMutation();
+  // const [updateDiscount] = useEditDiscountMutation();
+  // const [removeDiscount] = useDeleteDiscountMutation();
+
   // get discounts list
   const getDiscountsData = () => {
     setIsLoading(true);
@@ -68,13 +81,12 @@ const Discounts = ({ ClinicUser }) => {
     setShowModal(true);
   };
 
-  const addDiscount = (e) => {
+  const addDiscount = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
+    setIsLoading(true);
     let url = "CenterDiscount/add";
     let data = {
       CenterID: ClinicID,
@@ -83,7 +95,6 @@ const Discounts = ({ ClinicUser }) => {
       Value: formProps.discountValue,
       Percent: parseInt(SelectDiscountPercent),
     };
-
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -96,6 +107,22 @@ const Discounts = ({ ClinicUser }) => {
         console.log(error);
         setIsLoading(false);
       });
+
+    // const newDiscount = {
+    //   CenterID: ClinicID,
+    //   Name: formProps.discountName,
+    //   Des: formProps.discountDescription,
+    //   Value: formProps.discountValue,
+    //   Percent: parseInt(SelectDiscountPercent),
+    // };
+
+    // try {
+    //   const response = await addNewDiscount(newDiscount).unwrap();
+    //   setShowModal(false);
+    // } catch (error) {
+    //   console.log(error);
+    //   ErrorAlert("خطا", "افزودن تخفیف با خطا مواجه گردید!");
+    // }
   };
 
   // Edit Discount
@@ -108,10 +135,8 @@ const Discounts = ({ ClinicUser }) => {
   const editDiscount = (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-
     let url = "CenterDiscount/update";
     let Data = {
       CenterID: ClinicID,
@@ -121,7 +146,6 @@ const Discounts = ({ ClinicUser }) => {
       Value: formProps.EditDiscountValue,
       Percent: parseInt(formProps.EditDiscountPercent),
     };
-
     axiosClient
       .put(url, Data)
       .then((response) => {
@@ -153,15 +177,14 @@ const Discounts = ({ ClinicUser }) => {
   // Delete Discount
   const deleteDiscount = async (id) => {
     let result = await QuestionAlert("حذف تخفیف!", "آیا از حذف اطمینان دارید؟");
+    setIsLoading(true);
 
     if (result) {
-      setIsLoading(true);
       let url = `CenterDiscount/delete/${id}`;
       let data = {
         CenterID: ClinicID,
         DiscountID: id,
       };
-
       await axiosClient
         .delete(url, { data })
         .then(function () {
@@ -173,6 +196,15 @@ const Discounts = ({ ClinicUser }) => {
           setIsLoading(false);
         });
     }
+
+    // if (result) {
+    //   try {
+    //     const response = await removeDiscount(data, id).unwrap();
+    //   } catch (error) {
+    //     console.log(error);
+    //     ErrorAlert("خطا", "حذف تخفیف با خطا مواجه گردید!");
+    //   }
+    // }
   };
 
   useEffect(() => getDiscountsData(), []);
@@ -240,56 +272,3 @@ const Discounts = ({ ClinicUser }) => {
 };
 
 export default Discounts;
-
-// // Fetching data
-// const { data: discounts, error, isLoading } = useGetAllQuery(ClinicID);
-// // Mutations
-// const [addDiscount] = useAddMutation();
-// const [editDiscount] = useEditMutation();
-
-// const handleAdd = async (e) => {
-//   e.preventDefault();
-
-//   let formData = new FormData(e.target);
-//   const formProps = Object.fromEntries(formData);
-
-//   const newDiscount = {
-//     CenterID: ClinicID,
-//     Name: formProps.discountName,
-//     Des: formProps.discountDescription,
-//     Value: formProps.discountValue,
-//     Percent: parseInt(SelectDiscountPercent),
-//   };
-
-//   try {
-//     const response = await addDiscount(newDiscount).unwrap();
-//     setShowModal(false);
-//     // e.target.reset();
-//   } catch (error) {
-//     console.log(error);
-//     ErrorAlert("خطا", "افزودن تخفیف با خطا مواجه گردید!");
-//   }
-// };
-
-// const handleEdit = async (e) => {
-//   e.preventDefault();
-
-//   let formData = new FormData(e.target);
-//   const formProps = Object.fromEntries(formData);
-
-//   let updatedDiscount = {
-//     CenterID: ClinicID,
-//     Name: formProps.discountName,
-//     Des: formProps.discountDescription,
-//     Value: formProps.discountValue,
-//     Percent: parseInt(SelectDiscountPercent),
-//   };
-
-//   try {
-//     const response = await editDiscount(updatedDiscount).unwrap();
-//     setShowModal(false);
-//   } catch (error) {
-//     console.log(error);
-//     ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
-//   }
-// };

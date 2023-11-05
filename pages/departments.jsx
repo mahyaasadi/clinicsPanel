@@ -8,11 +8,11 @@ import Loading from "components/commonComponents/loading/loading";
 import DepartmentsModal from "components/dashboard/departments/departmentsModal";
 import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
 import {
-  useGetAllQuery,
-  useAddMutation,
-  useEditMutation,
-  useDeleteMutation,
-} from "redux/slices/clinicDepartmentsApiSlice";
+  useGetAllClinicDepartmentsQuery,
+  useAddClinicDepartmentMutation,
+  useEditClinicDepartmentMutation,
+  useDeleteClinicDepartmentMutation,
+} from "redux/slices/clinicDepartmentApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -45,12 +45,12 @@ const Departments = ({ ClinicUser }) => {
     data: clinicDepartments,
     error,
     isLoading,
-  } = useGetAllQuery(ClinicID);
+  } = useGetAllClinicDepartmentsQuery(ClinicID);
 
   // Mutations
-  const [addClinicDepartment] = useAddMutation();
-  const [editClinicDepartment] = useEditMutation();
-  const [deleteClinicDepartment] = useDeleteMutation();
+  const [addClinicDepartment] = useAddClinicDepartmentMutation();
+  const [editClinicDepartment] = useEditClinicDepartmentMutation();
+  const [deleteClinicDepartment] = useDeleteClinicDepartmentMutation();
 
   // add department
   const openAddModal = () => {

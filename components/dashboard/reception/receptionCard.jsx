@@ -1,4 +1,4 @@
-import { useGetAllQuery } from "redux/slices/clinicDepartmentsApiSlice";
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import DepartmentsHeader from "./departmentsHeader";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
 
@@ -28,7 +28,7 @@ const ReceptionCard = ({
   }
 
   const { data: clinicDepartments, isLoading: depsFetchIsLoading } =
-    useGetAllQuery(ClinicID);
+    useGetAllClinicDepartmentsQuery(ClinicID);
 
   return (
     <>
@@ -79,7 +79,6 @@ const ReceptionCard = ({
                 </div>
               </div>
 
-
               <div className="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
               </div>
@@ -105,7 +104,7 @@ const ReceptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">

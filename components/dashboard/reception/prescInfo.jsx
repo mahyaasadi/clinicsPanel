@@ -3,49 +3,38 @@ import { useState, useEffect } from "react";
 const PrescInfo = ({ data, ActiveInsuranceType }) => {
   const [totalQty, setTotalQty] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalSalamatShare, setTotalSalamatShare] = useState(0);
-  const [totalTaminShare, setTotalTaminShare] = useState(0);
-  const [totalArteshShare, setTotalArteshShare] = useState(0);
+  const [totalOrgCost, setTotalOrgCost] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
 
   useEffect(() => {
-    console.log({ data });
+    // console.log({ data });
     let qty = 0;
     let price = 0;
-    let ss = 0;
-    let st = 0;
-    let sa = 0;
+    let oc = 0;
     let discount = 0;
 
     data.forEach((srvItem) => {
+      console.log({ srvItem });
       const itemQty = parseInt(srvItem.Qty);
       const itemPrice = parseInt(srvItem.Price);
-      const itemSS = parseInt(srvItem.SS);
-      const itemST = parseInt(srvItem.ST);
-      const itemSA = parseInt(srvItem.SA);
-      const itemDiscount = srvItem.DiscountCost
-        ? parseInt(srvItem.DiscountCost)
+      const itemOC = parseInt(srvItem.OC);
+      const itemDiscount = srvItem.DiscountValue
+        ? parseInt(srvItem.DiscountValue)
         : 0;
 
       const itemTotalPrice = itemQty * itemPrice;
-      const itemTotalSS = itemQty * itemSS;
-      const itemTotalST = itemQty * itemST;
-      const itemTotalSA = itemQty * itemSA;
+      const itemTotalOC = itemQty * itemOC;
       const itemTotalDiscount = itemQty * itemDiscount;
 
       qty += itemQty;
       price += itemTotalPrice;
-      ss += itemTotalSS;
-      st += itemTotalST;
-      sa += itemTotalSA;
+      oc += itemTotalOC;
       discount += itemDiscount;
     });
 
     setTotalQty(qty);
     setTotalPrice(price);
-    setTotalSalamatShare(ss);
-    setTotalTaminShare(st);
-    setTotalArteshShare(sa);
+    setTotalOrgCost(oc);
     setTotalDiscount(discount);
   }, [data]);
 
@@ -53,7 +42,7 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
     <>
       <div className="card mb-0">
         <div className="card-body">
-          <div className="d-flex gap-2 align-items-center justify-between">
+          <div className="d-flex gap-2 align-items-center justify-between ">
             <div className="">
               <p className="text-secondary fw-bold">اطلاعات پذیرش</p>
             </div>
@@ -74,19 +63,10 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
             </div>
 
             <div className="col">
-              <p className="">
-                سهم سازمان :{" "}
-                {ActiveInsuranceType === "1"
-                  ? totalSalamatShare?.toLocaleString()
-                  : ActiveInsuranceType === "2"
-                  ? totalTaminShare?.toLocaleString()
-                  : ActiveInsuranceType === "3"
-                  ? totalArteshShare?.toLocaleString()
-                  : ""}
-              </p>
+              <p className="">سهم سازمان : {totalOrgCost}</p>
               <p className="">
                 سهم بیمار :{" "}
-                {(
+                {/* {(
                   totalPrice -
                   `${
                     ActiveInsuranceType === "1"
@@ -97,7 +77,7 @@ const PrescInfo = ({ data, ActiveInsuranceType }) => {
                       ? totalArteshShare
                       : ""
                   }`
-                )?.toLocaleString()}{" "}
+                )?.toLocaleString()}{" "} */}
               </p>
             </div>
 

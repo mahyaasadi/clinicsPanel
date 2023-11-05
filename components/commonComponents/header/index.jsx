@@ -10,7 +10,6 @@ import { ErrorAlert } from "class/AlertManage.js";
 import { avatar01, headerLogo } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
-  console.log({ ClinicUser });
   let router = useRouter();
 
   const [task, settask] = useState(true);
@@ -32,6 +31,7 @@ const Header = ({ ClinicUser }) => {
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
+
     // document.getElementById("avatar").setAttribute("src", data.Avatar);
     // document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
     // document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);

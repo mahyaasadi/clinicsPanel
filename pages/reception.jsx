@@ -126,8 +126,11 @@ const Reception = ({ ClinicUser }) => {
     if (ActiveSrvName == null || ActiveSrvCode == null) {
       ErrorAlert("خطا", "خدمتی انتخاب نشده است");
       return false;
-    } else if (addedSrvItems.length > 0 && addedSrvItems.find((x) => x._id === ActiveSrvID)) {
-      ErrorAlert("خطا", "سرویس تکراری می باشد!")
+    } else if (
+      addedSrvItems.length > 0 &&
+      addedSrvItems.find((x) => x._id === ActiveSrvID)
+    ) {
+      ErrorAlert("خطا", "سرویس تکراری می باشد!");
     } else {
       let addData = {
         UserID: ClinicUserID,
@@ -136,12 +139,19 @@ const Reception = ({ ClinicUser }) => {
         EngName: ActiveSrvEngName,
         Code: ActiveSrvCode,
         Price: ActiveSrvPrice,
-        SS: ActiveSalamatShare,
-        ST: ActiveTaminShare,
-        SA: ActiveArteshShare,
         Qty: $("#QtyInput").val(),
         Des: $("#ResPrescDescription").val(),
       };
+
+      if (ActiveInsuranceType === "1") {
+        addData.OC = ActiveSalamatShare;
+      } else if (ActiveInsuranceType === "2") {
+        addData.OC = ActiveTaminShare;
+      } else if (ActiveInsuranceType === "3") {
+        addData.OC = ActiveArteshShare;
+      } else {
+        addData.OC = 0;
+      }
 
       setAddedSrvItems([addData, ...addedSrvItems]);
 
@@ -153,16 +163,14 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
-  const applyDiscount = (id, Discount, disCost) => {
-    console.log({ disCost });
-
+  const applyDiscount = (id, Discount, DiscountValue) => {
+    // console.log({ DiscountValue });
     const updatedData = addedSrvItems.map((item) => {
       if (item._id === id) {
         return {
           ...item,
-          Discount: Discount.Value,
-          DiscountType: Discount.Percent ? "درصد" : "مبلغ",
-          DiscountCost: disCost,
+          Discount: Discount,
+          DiscountValue: DiscountValue,
         };
       }
       return item;
