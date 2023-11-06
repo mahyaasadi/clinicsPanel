@@ -53,34 +53,39 @@ const DepartmentsModal = ({
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="lblAbs font-12">کد داخلی</label>
-            <input
-              type="text"
-              className="form-control floating inputPadding rounded"
-              name="internalCode"
-              defaultValue={mode == "edit" ? data.Code : ""}
-              key={data.Code}
-            />
+          <div className="row">
+            <div className="form-group col-md-6 col-12">
+              <label className="lblAbs font-12">کد داخلی</label>
+              <input
+                type="text"
+                className="form-control floating inputPadding rounded"
+                name="internalCode"
+                defaultValue={mode == "edit" ? data.Code : ""}
+                key={data.Code}
+              />
+            </div>
+
+            <div className="form-group col-md-6 col-12">
+              <label className="lblAbs font-12">هزینه خدمت</label>
+              <input
+                type="text"
+                dir="ltr"
+                className="form-control floating inputPadding rounded"
+                name="servicePrice"
+                defaultValue={mode == "edit" ? data.Price : ""}
+                key={data.Price}
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label className="lblAbs font-12">هزینه خدمت</label>
-            <input
-              type="text"
-              className="form-control floating inputPadding rounded"
-              name="servicePrice"
-              defaultValue={mode == "edit" ? data.Price : ""}
-              key={data.Price}
-            />
-          </div>
 
           <div className="row media-flex-col">
             <div className="col">
-              <div className="form-group ">
+              <div className="form-group">
                 <label className="lblAbs font-12">سهم تامین</label>
                 <input
-                  type="number"
+                  type="text"
+                  dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="taminShare"
                   key={data.ST}
@@ -90,10 +95,11 @@ const DepartmentsModal = ({
             </div>
 
             <div className="col">
-              <div className="form-group ">
+              <div className="form-group">
                 <label className="lblAbs font-12">سهم سلامت</label>
                 <input
-                  type="number"
+                  type="text"
+                  dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="salamatShare"
                   key={data.SS}
@@ -106,7 +112,8 @@ const DepartmentsModal = ({
               <div className="form-group ">
                 <label className="lblAbs font-12">سهم ارتش</label>
                 <input
-                  type="number"
+                  type="text"
+                  dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="arteshShare"
                   key={data.SA}
