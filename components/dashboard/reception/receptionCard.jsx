@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import DepartmentsHeader from "./departmentsHeader";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
@@ -79,7 +80,7 @@ const ReceptionCard = ({
                 </div>
               </div>
 
-              <div className="unsuccessfullSearch">
+              <div className="unsuccessfullSearch" id="unsuccessfulSearch">
                 <p>موردی یافت نشد!</p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { axiosClient } from "class/axiosConfig";
-import Item from "./Item";
+import AddItem from "./addItem";
 
 const AddToListItems = ({
   data,
@@ -8,9 +8,7 @@ const AddToListItems = ({
   ClinicID,
   applyDiscount,
 }) => {
-  // const [selectedDiscounts, setSelectedDiscounts] = useState([]);
   const [discountsList, setDiscountsList] = useState([]);
-  // const [discountCosts, setDiscountCosts] = useState({}); // Store individual discount costs
 
   // get discounts list
   const getDiscountsData = () => {
@@ -29,7 +27,7 @@ const AddToListItems = ({
   return (
     <>
       {data?.map((srv, index) => (
-        <Item
+        <AddItem
           key={index}
           srv={srv}
           discountsList={discountsList}

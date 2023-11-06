@@ -14,15 +14,16 @@ const SearchedServiceItems = ({ data, selectSearchedSrv }) => {
               x.Price,
               x.SS,
               x.ST,
-              x.SA
+              x.SA,
+              x.ModalityID
             )
           }
         >
           {x.Code}
           {" | "}
-          {x.Name}
-          {" | "}
           {x.EngName}
+          {" | "}
+          {x.Name}
         </button>
       ))}
     </>

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
-import { ErrorAlert } from "class/AlertManage";
+import { useRouter } from "next/router";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import PatientInfoCard from "components/dashboard/reception/patientInfoCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
@@ -29,19 +30,22 @@ let Services = [];
 let ClinicID,
   ClinicUserID,
   ActiveSrvID,
+  ActiveModalityID,
   ActivePatientID,
+  ActivePatientNID,
+  ActiveInsuranceType,
   ActiveSrvName,
   ActiveSrvEngName,
   ActiveSrvCode,
   ActiveSrvPrice,
   ActiveSalamatShare,
   ActiveTaminShare,
-  ActiveArteshShare,
-  ActiveInsuranceType = null;
+  ActiveArteshShare = null;
 
 const Reception = ({ ClinicUser }) => {
   ClinicUserID = ClinicUser._id;
   ClinicID = ClinicUser.ClinicID;
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [patientInfo, setPatientInfo] = useState([]);
@@ -57,7 +61,7 @@ const Reception = ({ ClinicUser }) => {
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    ActivePatientID = formProps.nationalCode;
+    ActivePatientNID = formProps.nationalCode;
 
     let url = "Patient/checkByNid";
     let data = {
@@ -69,7 +73,7 @@ const Reception = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         setIsLoading(false);
-        console.log(response.data.user);
+        ActivePatientID = response.data.user._id;
         ActiveInsuranceType = response.data.user.InsuranceType;
         setPatientInfo(response.data.user);
         $("#patientInfoCard").show("");
@@ -81,15 +85,26 @@ const Reception = ({ ClinicUser }) => {
   };
 
   // Search DepServices
-  const handleDepTabChange = (services) => {
+  const handleDepTabChange = (services, modalityId) => {
     Services = services;
-    $("#searchDiv").hide();
-    $("#srvSearchInput").val("");
-    $(".unsuccessfullSearch").hide("");
+    ActiveModalityID = modalityId;
+
+    // $("#searchDiv").hide();
+    // $("#srvSearchInput").val("");
+    // $(".unsuccessfulSearch").hide("");
+
+    const updatedServices = Services.map((service) => ({
+      ...service,
+      ModalityID: modalityId,
+    }));
+
+    return updatedServices;
   };
 
+  const updatedServicesArray = handleDepTabChange(Services, ActiveModalityID);
+
   const handleSearchService = (value) => {
-    const filteredServices = Services.filter(
+    const filteredServices = updatedServicesArray.filter(
       (service) =>
         service.Name.includes(value) ||
         service.EngName.toLowerCase().includes(value.toLowerCase()) ||
@@ -105,7 +120,17 @@ const Reception = ({ ClinicUser }) => {
       : $(".unsuccessfullSearch").hide("");
   };
 
-  const selectSearchedSrv = (_id, name, code, engName, price, ss, st, sa) => {
+  const selectSearchedSrv = (
+    _id,
+    name,
+    code,
+    engName,
+    price,
+    ss,
+    st,
+    sa,
+    modalityID
+  ) => {
     ActiveSrvID = _id;
     ActiveSrvName = name;
     ActiveSrvEngName = engName;
@@ -114,6 +139,7 @@ const Reception = ({ ClinicUser }) => {
     ActiveSalamatShare = ss;
     ActiveTaminShare = st;
     ActiveArteshShare = sa;
+    ActiveModalityID = modalityID;
 
     $("#srvSearchInput").val(name);
     $("#searchDiv").hide();
@@ -133,7 +159,7 @@ const Reception = ({ ClinicUser }) => {
       ErrorAlert("خطا", "سرویس تکراری می باشد!");
     } else {
       let addData = {
-        UserID: ClinicUserID,
+        // UserID: ClinicUserID,
         _id: ActiveSrvID,
         Name: ActiveSrvName,
         EngName: ActiveSrvEngName,
@@ -141,6 +167,7 @@ const Reception = ({ ClinicUser }) => {
         Price: ActiveSrvPrice,
         Qty: $("#QtyInput").val(),
         Des: $("#ResPrescDescription").val(),
+        ModalityID: ActiveModalityID,
       };
 
       if (ActiveInsuranceType === "1") {
@@ -153,7 +180,8 @@ const Reception = ({ ClinicUser }) => {
         addData.OC = 0;
       }
 
-      setAddedSrvItems([addData, ...addedSrvItems]);
+      console.log({ addData });
+      setAddedSrvItems([...addedSrvItems, addData]);
 
       // reset
       $("#srvSearchInput").val("");
@@ -161,6 +189,35 @@ const Reception = ({ ClinicUser }) => {
       ActiveSrvName = null;
       ActiveSrvCode = null;
     }
+  };
+
+  const submitReceptionPrescript = () => {
+    let url = "ClinicReception/addEdit";
+
+    let data = {
+      ClinicID,
+      UserID: ClinicUserID,
+      PatientID: ActivePatientID,
+      receptionItems: addedSrvItems,
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+        setTimeout(() => {
+          if (response.data.Register) {
+            router.push("/receptionRecords");
+          }
+        }, 300);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ثبت پذیرش با خطا مواجه گردید!");
+      });
   };
 
   const applyDiscount = (id, Discount) => {
@@ -200,7 +257,7 @@ const Reception = ({ ClinicUser }) => {
                 <PatientInfoCard
                   data={patientInfo}
                   getPatientInfo={getPatientInfo}
-                  ActivePatientID={ActivePatientID}
+                  ActivePatientNID={ActivePatientNID}
                 />
               </div>
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
@@ -228,6 +285,7 @@ const Reception = ({ ClinicUser }) => {
             <div className="mt-3 col-md-12">
               <PrescInfo
                 data={addedSrvItems}
+                submitReceptionPrescript={submitReceptionPrescript}
               />
             </div>
           </div>

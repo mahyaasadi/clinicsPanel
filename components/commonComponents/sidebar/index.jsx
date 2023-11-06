@@ -64,6 +64,16 @@ const Sidebar = () => {
                   </li>
 
                   <li
+                    className={
+                      router.pathname == "/receptionRecords" ? "active" : ""
+                    }
+                  >
+                    <Link href="/receptionRecords" className="font-12">
+                      سوابق پذیرش
+                    </Link>
+                  </li>
+
+                  <li
                     className={router.pathname == "/discounts" ? "active" : ""}
                   >
                     <Link href="/discounts" className="font-12">

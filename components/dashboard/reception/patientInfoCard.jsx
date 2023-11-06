@@ -2,7 +2,7 @@ import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
-const PatientInfoCard = ({ getPatientInfo, ActivePatientID, data }) => {
+const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
   const dateFormat = (str) => {
     if (str !== " " || str !== null) {
       let date =
@@ -25,7 +25,7 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientID, data }) => {
                 name="nationalCode"
                 required
                 className="form-control rounded-right GetPatientInput w-50"
-                defaultValue={ActivePatientID}
+                defaultValue={ActivePatientNID}
               />
               <button
                 className="btn btn-primary rounded-left w-10 font-12"

@@ -695,7 +695,7 @@ table.table td h2.table-avatar a>img {
 }
 
 .marginb-sm {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem !important;
 }
 
 .marginb-1 {
@@ -10038,6 +10038,12 @@ ul li .active {
   }
 }
 
+/* .receptionRecordCard:hover {
+  transform: scale(1.05) translateY(-0.75rem);
+  transition: ease-in-out all;
+  transition-duration: 0.5s;
+} */
+
 .p-dropdown {
   border: 1px solid lightgray;
   border-radius: 20px;
@@ -10059,6 +10065,7 @@ ul li .active {
 
 .p-dropdown-item {
   font-size: 12px !important;
+  font-family: iranyekan;
 }
 
 .p-dropdown-filter {

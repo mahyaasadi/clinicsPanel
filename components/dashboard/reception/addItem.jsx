@@ -2,19 +2,20 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
-const Item = ({ srv, discountsList, applyDiscount, handleEditService }) => {
+const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
+  let DiscountValue = 0;
   let Discount = srv.Discount ? srv.Discount.Value : 0;
 
   if (srv.Discount) {
     if (srv.Discount.Percent) {
-      Discount = srv.Qty * (RowTotalPrice * srv.Discount.Value) / 100;
+      DiscountValue = (PatientCost * parseInt(srv.Discount.Value)) / 100;
     } else {
-      Discount = srv.Qty * parseInt(srv.Discount.Value);
+      DiscountValue = srv.Qty * parseInt(srv.Discount.Value);
     }
-    PatientCost = RowTotalPrice - (srv.OC + Discount);
+    PatientCost = RowTotalPrice - (OrgTotalCost + DiscountValue);
   }
 
   return (
@@ -58,7 +59,7 @@ const Item = ({ srv, discountsList, applyDiscount, handleEditService }) => {
                   options={discountsList}
                   optionLabel="Name"
                 />
-                <Tooltip target=".discountOptions">سایر موارد</Tooltip>
+                <Tooltip target=".discountOptions">انتخاب تخفیف</Tooltip>
               </div>
             </div>
           </div>
@@ -73,24 +74,32 @@ const Item = ({ srv, discountsList, applyDiscount, handleEditService }) => {
               <div className="d-flex paddingR-5">
                 قیمت واحد : {srv.Price.toLocaleString()}
                 <div className="vertical-line"></div>
-                <p className="paddingR-5">قیمت کل : {RowTotalPrice.toLocaleString()}</p>
+                <p className="paddingR-5">
+                  قیمت کل : {RowTotalPrice.toLocaleString()}
+                </p>
               </div>
 
               <div className="vertical-line"></div>
               <div className="d-flex">
-                <div className="paddingR-5">سهم سازمان :{OrgTotalCost.toLocaleString()}</div>
+                <div className="paddingR-5">
+                  سهم سازمان :{OrgTotalCost.toLocaleString()}
+                </div>
               </div>
 
               <div className="vertical-line"></div>
               <div className="d-flex">
-                <div className="paddingR-5">سهم بیمار :{PatientCost.toLocaleString()}</div>
+                <div className="paddingR-5">
+                  سهم بیمار :{PatientCost.toLocaleString()}
+                </div>
               </div>
 
               {Discount !== 0 && (
                 <>
                   <div className="vertical-line"></div>
                   <div className="d-flex">
-                    <div className="paddingR-5">میزان تخفیف : {Discount.toLocaleString()}</div>
+                    <div className="paddingR-5">
+                      میزان تخفیف : {DiscountValue.toLocaleString()}
+                    </div>
                   </div>
                 </>
               )}
@@ -102,4 +111,4 @@ const Item = ({ srv, discountsList, applyDiscount, handleEditService }) => {
   );
 };
 
-export default Item;
+export default AddItem;
