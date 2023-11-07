@@ -3,6 +3,7 @@ import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
 const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
+  console.log({ srv });
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;

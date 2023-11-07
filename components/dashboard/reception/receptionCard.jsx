@@ -1,7 +1,8 @@
-import { useEffect } from "react";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import DepartmentsHeader from "./departmentsHeader";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
+import Loading from "components/commonComponents/loading/loading";
+import DepartmentsHeader from "./departmentsHeader";
+import { Skeleton } from 'primereact/skeleton';
 
 const ReceptionCard = ({
   ClinicID,
@@ -30,7 +31,7 @@ const ReceptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  const { data: clinicDepartments, isLoading: depsFetchIsLoading } =
+  const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
   const handleCancelEdit = () => {
@@ -46,18 +47,24 @@ const ReceptionCard = ({
         <div className="card-body">
           {/* departments header */}
           <div className="card-body">
-            <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
-              {clinicDepartments?.map((item, index) => {
-                return (
-                  <DepartmentsHeader
-                    key={index}
-                    department={item}
-                    activeClass={index == 0 ? "active" : ""}
-                    handleDepTabChange={handleDepTabChange}
-                  />
-                );
-              })}
-            </ul>
+            {isLoading ? (
+              <Skeleton className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+                {/*  */}
+              </Skeleton>
+            ) : (
+              <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+                {clinicDepartments?.map((item, index) => {
+                  return (
+                    <DepartmentsHeader
+                      key={index}
+                      department={item}
+                      activeClass={index == 0 ? "active" : ""}
+                      handleDepTabChange={handleDepTabChange}
+                    />
+                  );
+                })}
+              </ul>
+            )}
             <hr />
 
             <div className="w-100 pt-2">
@@ -135,37 +142,37 @@ const ReceptionCard = ({
                 />
               </div>
 
-              <div className="row">
-                {!editSrvMode ? (
-                  <div className="col-md-10">
+              {/* <div className="row"> */}
+              {!editSrvMode ? (
+                // <div className="col-md-10">
+                <button
+                  className="btn rounded w-100 addToListBtn font-12 media-w-100"
+                  onClick={FuAddToList}
+                >
+                  اضافه به لیست
+                </button>
+                // </div>
+              ) : (
+                <>
+                  <div className="row">
                     <button
-                      className="btn rounded w-100 addToListBtn font-12 media-w-100"
+                      className="btn rounded addToListBtn font-12 col-lg-12 col-5"
                       onClick={FuAddToList}
                     >
-                      اضافه به لیست
+                      ثبت تغییرات
                     </button>
+                    {/* </div> */}
+
+                    <button
+                      className="btn btn-outline-dark rounded font-12 col-lg-12 col-5"
+                      onClick={handleCancelEdit}
+                    >
+                      انصراف
+                    </button>
+
                   </div>
-                ) : (
-                  <>
-                    <div className="col-md-8 media-w-100">
-                      <button
-                        className="btn rounded w-100 addToListBtn font-12"
-                        onClick={FuAddToList}
-                      >
-                        ثبت تغییرات
-                      </button>
-                    </div>
-                    <div className="col-md-4 media-w-100">
-                      <button
-                        className="btn btn-outline-dark rounded w-100 font-12"
-                        onClick={handleCancelEdit}
-                      >
-                        انصراف
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+                </>
+              )}
             </div>
           </div>
         </div>

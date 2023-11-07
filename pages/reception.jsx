@@ -88,26 +88,23 @@ const Reception = ({ ClinicUser }) => {
   };
 
   // Search DepServices
+  let updatedServices = []
   const handleDepTabChange = (services, modalityId) => {
     Services = services;
     ActiveModalityID = modalityId;
 
-    // $("#searchDiv").hide();
-    // $("#srvSearchInput").val("");
-    // $(".unsuccessfulSearch").hide("");
+    $("#searchDiv").hide();
+    $("#srvSearchInput").val("");
+    $(".unsuccessfullSearch").hide("");
 
-    const updatedServices = Services.map((service) => ({
+    updatedServices = Services.map((service) => ({
       ...service,
       ModalityID: modalityId,
     }));
-
-    return updatedServices;
   };
 
-  const updatedServicesArray = handleDepTabChange(Services, ActiveModalityID);
-
   const handleSearchService = (value) => {
-    const filteredServices = updatedServicesArray.filter(
+    const filteredServices = updatedServices.filter(
       (service) =>
         service.Name.includes(value) ||
         service.EngName.toLowerCase().includes(value.toLowerCase()) ||
@@ -209,10 +206,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -310,6 +307,11 @@ const Reception = ({ ClinicUser }) => {
 
     updateSrvItem(id, updatedItem);
   };
+
+  // useEffect(() => {
+  //   const searchInput = $("#srvSearchInput").val()
+  //   if (searchInput.length === 0) $(".unsuccessfullSearch").hide()
+  // }, [])
 
   useEffect(() => {
     ReceptionObjectID = router.query.id;
