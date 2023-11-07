@@ -172,7 +172,9 @@ const Departments = ({ ClinicUser }) => {
                   <div className="card-header border-bottom-0">
                     <div className="row align-items-center">
                       <div className="col">
-                        <h5 className="card-title font-16">لیست بخش ها</h5>
+                        <p className="card-title text-secondary font-14">
+                          لیست بخش ها
+                        </p>
                       </div>
                     </div>
                   </div>

@@ -11,7 +11,9 @@ const ReceptionCard = ({
   selectSearchedSrv,
   FuAddToList,
   editSrvData,
-  mode,
+  editSrvMode,
+  setEditSrvData,
+  setEditSrvMode,
 }) => {
   let activeClass = null;
 
@@ -31,6 +33,13 @@ const ReceptionCard = ({
   const { data: clinicDepartments, isLoading: depsFetchIsLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
+  const handleCancelEdit = () => {
+    setEditSrvMode(false);
+    setEditSrvData([]);
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+  };
+
   return (
     <>
       <div className="card presCard">
@@ -49,7 +58,6 @@ const ReceptionCard = ({
                 );
               })}
             </ul>
-
             <hr />
 
             <div className="w-100 pt-2">
@@ -62,7 +70,7 @@ const ReceptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={(e) => handleSearchService(e.target.value)}
-                  defaultValue={(mode = "edit" ? editSrvData?.Name : "")}
+                  defaultValue={(editSrvMode = "edit" ? editSrvData?.Name : "")}
                   key={editSrvData.Name}
                 />
 
@@ -105,7 +113,6 @@ const ReceptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -119,7 +126,7 @@ const ReceptionCard = ({
                 </div>
               </div>
 
-              <div className="w-57 media-w-100">
+              <div className="col-5 media-w-100">
                 <label className="lblAbs font-12">توضیحات</label>
                 <input
                   type="text"
@@ -128,13 +135,36 @@ const ReceptionCard = ({
                 />
               </div>
 
-              <div className="col-md-2 media-w-100">
-                <button
-                  className="btn rounded w-100 addToListBtn font-12"
-                  onClick={FuAddToList}
-                >
-                  اضافه به لیست
-                </button>
+              <div className="row">
+                {!editSrvMode ? (
+                  <div className="col-md-10">
+                    <button
+                      className="btn rounded w-100 addToListBtn font-12 media-w-100"
+                      onClick={FuAddToList}
+                    >
+                      اضافه به لیست
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="col-md-8 media-w-100">
+                      <button
+                        className="btn rounded w-100 addToListBtn font-12"
+                        onClick={FuAddToList}
+                      >
+                        ثبت تغییرات
+                      </button>
+                    </div>
+                    <div className="col-md-4 media-w-100">
+                      <button
+                        className="btn btn-outline-dark rounded w-100 font-12"
+                        onClick={handleCancelEdit}
+                      >
+                        انصراف
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

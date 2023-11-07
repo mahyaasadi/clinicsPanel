@@ -98,15 +98,6 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
               </div>
               <p>نوع بیمه : {data.InsuranceTypeName}</p>
             </div>
-
-            {/* <div className="appointmentBtn">
-              <button
-                className="btn btn-primary w-100 font-13 rounded"
-                // onClick={getAppointment}
-              >
-                دریافت نوبت
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

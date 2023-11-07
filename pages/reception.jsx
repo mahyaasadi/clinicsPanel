@@ -40,7 +40,10 @@ let ClinicID,
   ActiveSrvPrice,
   ActiveSalamatShare,
   ActiveTaminShare,
-  ActiveArteshShare = null;
+  ActiveArteshShare,
+  ReceptionObjectID,
+  ReceptionID,
+  ActiveEditSrvID = null;
 
 const Reception = ({ ClinicUser }) => {
   ClinicUserID = ClinicUser._id;
@@ -52,7 +55,7 @@ const Reception = ({ ClinicUser }) => {
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
-  const [mode, setMode] = useState("");
+  const [editSrvMode, setEditSrvMode] = useState(false);
 
   //get patient info
   const getPatientInfo = (e) => {
@@ -149,51 +152,54 @@ const Reception = ({ ClinicUser }) => {
   const FuAddToList = async (e) => {
     e.preventDefault();
 
-    if (ActiveSrvName == null || ActiveSrvCode == null) {
-      ErrorAlert("خطا", "خدمتی انتخاب نشده است");
-      return false;
-    } else if (
-      addedSrvItems.length > 0 &&
-      addedSrvItems.find((x) => x._id === ActiveSrvID)
-    ) {
-      ErrorAlert("خطا", "سرویس تکراری می باشد!");
-    } else {
-      let addData = {
-        // UserID: ClinicUserID,
-        _id: ActiveSrvID,
-        Name: ActiveSrvName,
-        EngName: ActiveSrvEngName,
-        Code: ActiveSrvCode,
-        Price: ActiveSrvPrice,
-        Qty: $("#QtyInput").val(),
-        Des: $("#ResPrescDescription").val(),
-        ModalityID: ActiveModalityID,
-      };
-
-      if (ActiveInsuranceType === "1") {
-        addData.OC = ActiveSalamatShare;
-      } else if (ActiveInsuranceType === "2") {
-        addData.OC = ActiveTaminShare;
-      } else if (ActiveInsuranceType === "3") {
-        addData.OC = ActiveArteshShare;
-      } else {
-        addData.OC = 0;
+    if (!editSrvMode) {
+      if (ActiveSrvName == null || ActiveSrvCode == null) {
+        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
+        return false;
+      } else if (
+        addedSrvItems.length > 0 &&
+        addedSrvItems.find((x) => x._id === ActiveSrvID)
+      ) {
+        ErrorAlert("خطا", "سرویس تکراری می باشد!");
       }
-
-      console.log({ addData });
-      setAddedSrvItems([...addedSrvItems, addData]);
-
-      // reset
-      $("#srvSearchInput").val("");
-      $("#QtyInput").val("1");
-      ActiveSrvName = null;
-      ActiveSrvCode = null;
     }
+
+    let addData = {
+      _id: ActiveSrvID,
+      Name: ActiveSrvName,
+      EngName: ActiveSrvEngName,
+      Code: ActiveSrvCode,
+      Price: ActiveSrvPrice,
+      Qty: $("#QtyInput").val(),
+      Des: $("#ResPrescDescription").val(),
+      ModalityID: ActiveModalityID,
+    };
+
+    if (ActiveInsuranceType === "1") {
+      addData.OC = ActiveSalamatShare;
+    } else if (ActiveInsuranceType === "2") {
+      addData.OC = ActiveTaminShare;
+    } else if (ActiveInsuranceType === "3") {
+      addData.OC = ActiveArteshShare;
+    } else {
+      addData.OC = 0;
+    }
+
+    if (editSrvMode) updateItemCallback(addData, ActiveEditSrvID);
+
+    setAddedSrvItems([...addedSrvItems, addData]);
+
+    // reset
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+    ActiveSrvName = null;
+    ActiveSrvCode = null;
   };
 
   const submitReceptionPrescript = () => {
     let url = "ClinicReception/addEdit";
 
+    let dataToSubmit = {};
     let data = {
       ClinicID,
       UserID: ClinicUserID,
@@ -201,10 +207,18 @@ const Reception = ({ ClinicUser }) => {
       receptionItems: addedSrvItems,
     };
 
-    console.log({ data });
+    ReceptionObjectID
+      ? (dataToSubmit = {
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
+      : (dataToSubmit = data);
+
+    console.log({ dataToSubmit });
 
     axiosClient
-      .post(url, data)
+      .post(url, dataToSubmit)
       .then((response) => {
         console.log(response.data);
         SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
@@ -237,12 +251,72 @@ const Reception = ({ ClinicUser }) => {
   // edit service
   const handleEditService = (srvData) => {
     setEditSrvData(srvData);
-    setMode("edit");
+    setEditSrvMode(true);
+
     ActiveSrvName = srvData.Name;
     ActiveSrvCode = srvData.Code;
+    ActiveEditSrvID = srvData._id;
+    ActiveSrvPrice = srvData.Price;
+    ActiveSrvID = srvData._id;
+    ActiveSrvEngName = srvData.EngName;
     $("#QtyInput").val(srvData.Qty);
-    // ActiveEditSrvCode = srvData.SrvCode;
   };
+
+  const getOneReception = () => {
+    let url = `ClinicReception/getOne/${ReceptionObjectID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        console.log(response.data);
+        setPatientInfo(response.data.Patient);
+        setAddedSrvItems(response.data.Items);
+
+        ActivePatientID = response.data.Patient._id;
+        ActiveInsuranceType = response.data.Patient.InsuranceType;
+        ActivePatientNID = response.data.Patient.NationalID;
+        $("#patientInfoCard").show("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateSrvItem = (id, newArr) => {
+    let index = addedSrvItems.findIndex((x) => x._id === id);
+    let g = addedSrvItems[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else {
+      setTimeout(() => {
+        setAddedSrvItems([
+          ...addedSrvItems.slice(0, index),
+          g,
+          ...addedSrvItems.slice(index + 1),
+        ]);
+      }, 5);
+    }
+  };
+
+  const updateItemCallback = (updatedItem, id) => {
+    const updatedItems = addedSrvItems.filter((item) => item._id !== id);
+
+    // setAddedSrvItems([]);
+    // setTimeout(() => {
+    //   setAddedSrvItems([...updatedItems, updatedItem]);
+    // }, 80);
+
+    updateSrvItem(id, updatedItem);
+  };
+
+  useEffect(() => {
+    ReceptionObjectID = router.query.id;
+    ReceptionID = router.query.receptionID;
+
+    if (ReceptionObjectID) getOneReception();
+  }, [router.query.id]);
 
   return (
     <>
@@ -269,7 +343,9 @@ const Reception = ({ ClinicUser }) => {
                   selectSearchedSrv={selectSearchedSrv}
                   FuAddToList={FuAddToList}
                   editSrvData={editSrvData}
-                  mode={mode}
+                  editSrvMode={editSrvMode}
+                  setEditSrvData={setEditSrvData}
+                  setEditSrvMode={setEditSrvMode}
                 />
 
                 <div className="prescList">

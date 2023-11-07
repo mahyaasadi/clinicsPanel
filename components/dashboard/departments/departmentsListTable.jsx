@@ -17,13 +17,13 @@ const DepartmentsListTable = ({
       name: "نام",
       selector: (row) => row.Name,
       sortable: true,
-      width: "270px",
+      width: "300px",
     },
     {
       name: "نام تخصصی",
       selector: (row) => row.EngName,
       sortable: true,
-      width: "270px",
+      width: "300px",
     },
     {
       name: "آیکون",
@@ -45,7 +45,7 @@ const DepartmentsListTable = ({
         ) : (
           ""
         ),
-      width: "450px",
+      width: "550px",
     },
     {
       name: "عملیات ها",

@@ -72,7 +72,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div>
-
                   <ReceptionList data={receptionList} />
                 </div>
               </div>
@@ -83,4 +82,5 @@ const ReceptionRecords = ({ ClinicUser }) => {
     </>
   );
 };
+
 export default ReceptionRecords;
