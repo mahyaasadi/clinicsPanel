@@ -83,10 +83,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
     }
   };
 
-  useEffect(() => {
-    console.log({ receptionList });
-  }, [receptionList]);
-
   useEffect(() => getReceptionList(), []);
 
   return (

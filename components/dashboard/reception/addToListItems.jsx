@@ -7,6 +7,8 @@ const AddToListItems = ({
   handleEditService,
   ClinicID,
   applyDiscount,
+  deleteService,
+  removeDiscount
 }) => {
   const [discountsList, setDiscountsList] = useState([]);
 
@@ -33,6 +35,8 @@ const AddToListItems = ({
           discountsList={discountsList}
           applyDiscount={applyDiscount}
           handleEditService={handleEditService}
+          deleteService={deleteService}
+          removeDiscount={removeDiscount}
         />
       ))}
     </>

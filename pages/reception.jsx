@@ -58,7 +58,7 @@ const Reception = ({ ClinicUser }) => {
   const [editSrvData, setEditSrvData] = useState([]);
   const [editSrvMode, setEditSrvMode] = useState(false);
 
-  //get patient info
+  //----- Patients Info -----//
   const getPatientInfo = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -88,7 +88,7 @@ const Reception = ({ ClinicUser }) => {
       });
   };
 
-  // Search DepServices
+  //---- Departments Tab Change ----//
   let updatedServices = [];
   const handleDepTabChange = (services, modalityId) => {
     Services = services;
@@ -104,6 +104,7 @@ const Reception = ({ ClinicUser }) => {
     }));
   };
 
+  //----- Search Through Services -----//
   const handleSearchService = (value) => {
     const filteredServices = updatedServices.filter(
       (service) =>
@@ -146,7 +147,7 @@ const Reception = ({ ClinicUser }) => {
     $("#searchDiv").hide();
   };
 
-  // add item to list
+  //---- Add an Item to List ----//
   const FuAddToList = async (e) => {
     e.preventDefault();
 
@@ -176,7 +177,6 @@ const Reception = ({ ClinicUser }) => {
 
     if (editSrvMode) {
       updateItemCallback(addData, ActiveEditSrvID);
-      ActiveSrvCode = null;
     }
 
     if (!editSrvMode) {
@@ -191,13 +191,106 @@ const Reception = ({ ClinicUser }) => {
       }
     }
 
+    if (!editSrvMode) {
+      ActiveSrvName = null;
+      ActiveSrvCode = null;
+    }
     // reset
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
-    ActiveSrvName = null;
-    ActiveSrvCode = null;
   };
 
+  //----- Discount -----// 
+  const applyDiscount = (id, Discount) => {
+    const updatedData = addedSrvItems.map((item) => {
+      if (item._id === id) {
+        return {
+          ...item,
+          Discount: Discount,
+        };
+      }
+      return item;
+    });
+    setAddedSrvItems(updatedData);
+  };
+
+  const removeDiscount = (id) => {
+    const itemWithDiscount = addedSrvItems.find((x) => x._id === id);
+    itemWithDiscount.Discount = 0;
+    console.log({ itemWithDiscount });
+  }
+
+  //----- Edit Service -----//
+  const getOneReception = () => {
+    let url = `ClinicReception/getOne/${ReceptionObjectID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setPatientInfo(response.data.Patient);
+        setAddedSrvItems(response.data.Items);
+
+        ActivePatientID = response.data.Patient._id;
+        ActiveInsuranceType = response.data.Patient.InsuranceType;
+        ActivePatientNID = response.data.Patient.NationalID;
+        $("#patientInfoCard").show("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleEditService = (srvData) => {
+    setEditSrvData(srvData);
+    setEditSrvMode(true);
+
+    ActiveSrvName = srvData.Name;
+    ActiveSrvCode = srvData.Code;
+    ActiveEditSrvID = srvData._id;
+    ActiveSrvPrice = srvData.Price;
+    ActiveSrvID = srvData._id;
+    ActiveSrvEngName = srvData.EngName;
+    ActiveDiscountShare = srvData.Discount;
+    $("#QtyInput").val(srvData.Qty);
+
+    if (ActiveInsuranceType == "1") {
+      ActiveSalamatShare = srvData.OC;
+    } else if (ActiveInsuranceType == "2") {
+      ActiveTaminShare = srvData.OC;
+    } else {
+      ActiveArteshShare = srvData.OC;
+    }
+  };
+
+  const updateSrvItem = (id, newArr) => {
+    let index = addedSrvItems.findIndex((x) => x._id === id);
+    let g = addedSrvItems[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else {
+      setTimeout(() => {
+        setAddedSrvItems([
+          ...addedSrvItems.slice(0, index),
+          g,
+          ...addedSrvItems.slice(index + 1),
+        ]);
+      }, 5);
+    }
+  };
+
+  const updateItemCallback = (updatedItem, id) => {
+    setAddedSrvItems(addedSrvItems.filter((item) => item._id !== id))
+    updateSrvItem(id, updatedItem);
+  };
+
+  //----- Delete Service ------//
+  const deleteService = (id) => {
+    setAddedSrvItems(addedSrvItems.filter((a) => a._id !== id));
+  };
+
+  //------ Submit Reception ----//
   const submitReceptionPrescript = (
     totalQty,
     totalPrice,
@@ -226,10 +319,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -251,87 +344,6 @@ const Reception = ({ ClinicUser }) => {
       });
   };
 
-  const applyDiscount = (id, Discount) => {
-    const updatedData = addedSrvItems.map((item) => {
-      if (item._id === id) {
-        return {
-          ...item,
-          Discount: Discount,
-        };
-      }
-      return item;
-    });
-
-    setAddedSrvItems(updatedData);
-  };
-
-  // edit service
-  const handleEditService = (srvData) => {
-    setEditSrvData(srvData);
-    setEditSrvMode(true);
-
-    console.log({ srvData });
-    ActiveSrvName = srvData.Name;
-    ActiveSrvCode = srvData.Code;
-    ActiveEditSrvID = srvData._id;
-    ActiveSrvPrice = srvData.Price;
-    ActiveSrvID = srvData._id;
-    ActiveSrvEngName = srvData.EngName;
-    ActiveDiscountShare = srvData.Discount;
-    $("#QtyInput").val(srvData.Qty);
-
-    if (ActiveInsuranceType == "1") {
-      ActiveSalamatShare = srvData.OC;
-    } else if (ActiveInsuranceType == "2") {
-      ActiveTaminShare = srvData.OC;
-    } else {
-      ActiveArteshShare = srvData.OC;
-    }
-  };
-
-  const getOneReception = () => {
-    let url = `ClinicReception/getOne/${ReceptionObjectID}`;
-
-    axiosClient
-      .get(url)
-      .then((response) => {
-        setPatientInfo(response.data.Patient);
-        setAddedSrvItems(response.data.Items);
-
-        ActivePatientID = response.data.Patient._id;
-        ActiveInsuranceType = response.data.Patient.InsuranceType;
-        ActivePatientNID = response.data.Patient.NationalID;
-        $("#patientInfoCard").show("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const updateSrvItem = (id, newArr) => {
-    let index = addedSrvItems.findIndex((x) => x._id === id);
-    let g = addedSrvItems[index];
-    g = newArr;
-
-    if (index === -1) {
-      console.log("no match");
-    } else {
-      setTimeout(() => {
-        setAddedSrvItems([
-          ...addedSrvItems.slice(0, index),
-          g,
-          ...addedSrvItems.slice(index + 1),
-        ]);
-      }, 5);
-    }
-  };
-
-  const updateItemCallback = (updatedItem, id) => {
-    const updatedItems = addedSrvItems.filter((item) => item._id !== id);
-    updateSrvItem(id, updatedItem);
-    setEditSrvMode(false);
-  };
-
   useEffect(() => {
     ReceptionObjectID = router.query.id;
     ReceptionID = router.query.receptionID;
@@ -345,6 +357,7 @@ const Reception = ({ ClinicUser }) => {
         <title>پذیرش</title>
       </Head>
       <div className="page-wrapper reception-wrapper">
+        {/* {isLoading ? <Loading /> : ( */}
         <div className="content container-fluid">
           <div className="row">
             <div className="row receptionUpperSection justify-between paddingL-0">
@@ -375,6 +388,8 @@ const Reception = ({ ClinicUser }) => {
                     ClinicID={ClinicID}
                     handleEditService={handleEditService}
                     applyDiscount={applyDiscount}
+                    deleteService={deleteService}
+                    removeDiscount={removeDiscount}
                   />
                 </div>
               </div>
@@ -387,6 +402,7 @@ const Reception = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
+        {/* )} */}
       </div>
     </>
   );

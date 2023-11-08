@@ -2,7 +2,7 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
-const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
+const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteService, removeDiscount }) => {
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
@@ -43,7 +43,7 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
               <button
                 type="button"
                 className="btn btn-sm btn-outline-danger removeBtn height-27"
-                //   onClick={() => _DeleteService(srv.SrvCode, srv.prescId)}
+                onClick={() => deleteService(srv._id)}
                 data-pr-position="top"
               >
                 <Tooltip target=".removeBtn">حذف</Tooltip>
@@ -95,10 +95,17 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
 
               {Discount !== 0 && (
                 <>
-                  <div className="vertical-line"></div>
-                  <div className="d-flex">
-                    <div className="paddingR-5">
+                  <div>
+                    <div className="paddingR-5 discountContainer">
                       میزان تخفیف : {DiscountValue.toLocaleString()}
+                      <button
+                        className="btn removeDiscountBtn tooltip-button"
+                        type="button"
+                        data-pr-position="top"
+                        onClick={() => removeDiscount(srv._id)}
+                      >
+                        <FeatherIcon className="removeDiscountIcon" icon="x-circle" />
+                      </button>
                     </div>
                   </div>
                 </>

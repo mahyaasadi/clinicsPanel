@@ -4,7 +4,7 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
 const RecordItem = ({ srv, deleteReception }) => {
-  console.log({ srv });
+  // console.log({ srv });
   return (
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
