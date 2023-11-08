@@ -1,13 +1,15 @@
 import RecordItem from "./recordItem";
 
-const ReceptionList = ({ data }) => {
-  console.log({ data });
-
+const ReceptionList = ({ data, deleteReception }) => {
   return (
     <>
       <div className="row p-4">
         {data.map((item, index) => (
-          <RecordItem key={index} srv={item} />
+          <RecordItem
+            key={index}
+            srv={item}
+            deleteReception={deleteReception}
+          />
         ))}
       </div>
     </>

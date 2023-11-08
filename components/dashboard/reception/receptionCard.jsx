@@ -2,7 +2,7 @@ import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentAp
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
 import Loading from "components/commonComponents/loading/loading";
 import DepartmentsHeader from "./departmentsHeader";
-import { Skeleton } from 'primereact/skeleton';
+import { Skeleton } from "primereact/skeleton";
 
 const ReceptionCard = ({
   ClinicID,
@@ -82,7 +82,7 @@ const ReceptionCard = ({
                 />
 
                 <button
-                  className="btn btn-primary rounded-left w-10"
+                  className="btn btn-primary rounded-left w-10 d-flex align-items-center justify-center"
                   id="BtnServiceSearch"
                 >
                   <i className="fe fe-search"></i>
@@ -95,7 +95,7 @@ const ReceptionCard = ({
                 </div>
               </div>
 
-              <div className="unsuccessfullSearch" id="unsuccessfulSearch">
+              <div className="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
               </div>
             </div>
@@ -142,34 +142,28 @@ const ReceptionCard = ({
                 />
               </div>
 
-              {/* <div className="row"> */}
               {!editSrvMode ? (
-                // <div className="col-md-10">
                 <button
                   className="btn rounded w-100 addToListBtn font-12 media-w-100"
                   onClick={FuAddToList}
                 >
                   اضافه به لیست
                 </button>
-                // </div>
               ) : (
                 <>
-                  <div className="row">
+                  <div className="media-flex-column col-xl-4 col-12 d-flex gap-2">
                     <button
-                      className="btn rounded addToListBtn font-12 col-lg-12 col-5"
+                      className="btn rounded addToListBtn font-12 col-xl-6 col-12"
                       onClick={FuAddToList}
                     >
                       ثبت تغییرات
                     </button>
-                    {/* </div> */}
-
                     <button
-                      className="btn btn-outline-dark rounded font-12 col-lg-12 col-5"
+                      className="btn btn-outline-dark cancelBtn rounded font-12 col-xl-5 col-12"
                       onClick={handleCancelEdit}
                     >
                       انصراف
                     </button>
-
                   </div>
                 </>
               )}

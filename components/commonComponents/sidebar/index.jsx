@@ -6,11 +6,16 @@ import FeatherIcon from "feather-icons-react";
 
 const Sidebar = () => {
   const router = useRouter();
-
   const [submenuOpen, setSubmenuOpen] = useState(false);
 
   useEffect(() => {
-    const receptionSubRoutes = ["/reception", "/discounts", "/karts"];
+    const receptionSubRoutes = [
+      "/reception",
+      "/discounts",
+      "/receptionRecords",
+      "/karts",
+    ];
+
     if (receptionSubRoutes.includes(router.pathname)) {
       setSubmenuOpen(true);
     }
@@ -69,7 +74,7 @@ const Sidebar = () => {
                     }
                   >
                     <Link href="/receptionRecords" className="font-12">
-                      سوابق پذیرش
+                      لیست پذیرش ها
                     </Link>
                   </li>
 
@@ -97,4 +102,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

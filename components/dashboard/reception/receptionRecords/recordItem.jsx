@@ -3,7 +3,7 @@ import FeatherIcon from "feather-icons-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
-const RecordItem = ({ srv }) => {
+const RecordItem = ({ srv, deleteReception }) => {
   console.log({ srv });
   return (
     <>
@@ -24,8 +24,17 @@ const RecordItem = ({ srv }) => {
             </div>
           </div>
 
-          <div dir="rtl" className="card-body text-secondary">
-            <div className="d-flex gap-4 align-items-center">
+          <div dir="rtl" className="card-body pt-2 text-secondary">
+            <div className="font-11 d-flex gap-2">
+              <FeatherIcon icon="calendar" className="prescItembtns" />
+              <p className="">تاریخ ثبت : </p>
+              <div className="">{srv.Date}</div>
+              <div className="vertical-line"></div>
+              <div className="paddingR-2">{srv.Time}</div>
+            </div>
+            <hr className="m-0" />
+
+            <div className="d-flex gap-4 align-items-center mt-2">
               <img
                 src={"https://irannobat.ir/images/" + srv.Patient.Avatar}
                 alt="patientAvatar"
@@ -51,9 +60,9 @@ const RecordItem = ({ srv }) => {
               <div className="p-2">
                 <div
                   dir="rtl"
-                  className="text-secondary font-12 d-flex gap-2 align-items-center mb-3 "
+                  className="text-secondary font-12 d-flex gap-2 align-items-center mb-3"
                 >
-                  <div className="d-flex gap-2">
+                  <div className="d-flex gap-2 align-items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -68,11 +77,10 @@ const RecordItem = ({ srv }) => {
                         d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"
                       />
                     </svg>
-
                     <div className="">سرویس ها</div>
                   </div>
 
-                  <div className="">
+                  <div className="d-flex gap-1 align-items-center">
                     <Link
                       type="button"
                       className="editBtn"
@@ -85,6 +93,16 @@ const RecordItem = ({ srv }) => {
                       <Tooltip target=".editBtn">ویرایش</Tooltip>
                       <FeatherIcon icon="edit-3" className="prescItembtns" />
                     </Link>
+
+                    <button
+                      type="button"
+                      className="btn removePresc p-0"
+                      data-pr-position="top"
+                      onClick={() => deleteReception(srv._id)}
+                    >
+                      <Tooltip target=".removePresc">حذف</Tooltip>
+                      <FeatherIcon icon="trash" className="prescItembtns" />
+                    </button>
                   </div>
                 </div>
 

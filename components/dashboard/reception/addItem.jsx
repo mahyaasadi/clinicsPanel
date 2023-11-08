@@ -3,7 +3,6 @@ import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
 const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
-  console.log({ srv });
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
@@ -33,7 +32,7 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
             <div className="d-flex gap-2 justify-end">
               <button
                 type="button"
-                className="btn btn-sm btn-outline-secondary editBtn height-30"
+                className="btn btn-sm btn-outline-secondary editBtn height-27"
                 data-pr-position="top"
                 onClick={() => handleEditService(srv)}
               >
@@ -43,7 +42,7 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService }) => {
 
               <button
                 type="button"
-                className="btn btn-sm btn-outline-danger removeBtn height-30"
+                className="btn btn-sm btn-outline-danger removeBtn height-27"
                 //   onClick={() => _DeleteService(srv.SrvCode, srv.prescId)}
                 data-pr-position="top"
               >

@@ -42,7 +42,9 @@ const PrescInfo = ({ data, submitReceptionPrescript }) => {
             </div>
             <button
               className="btn btn-primary border-radius px-4 font-13"
-              onClick={submitReceptionPrescript}
+              onClick={() =>
+                submitReceptionPrescript(qty, price, oc, patientCost, discount)
+              }
             >
               ثبت پذیرش
             </button>
@@ -50,7 +52,7 @@ const PrescInfo = ({ data, submitReceptionPrescript }) => {
 
           <hr />
 
-          <div className="row text-secondary font-13 fw-bold">
+          <div className="row text-secondary font-13 fw-bold prescDetails">
             <div className="col ">
               <p className="">تعداد کل : {qty}</p>
               <p className="">جمع کل : {price?.toLocaleString()}</p>
