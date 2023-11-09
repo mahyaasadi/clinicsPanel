@@ -200,7 +200,7 @@ const Reception = ({ ClinicUser }) => {
     $("#QtyInput").val("1");
   };
 
-  //----- Discount -----// 
+  //----- Discount -----//
   const applyDiscount = (id, Discount) => {
     const updatedData = addedSrvItems.map((item) => {
       if (item._id === id) {
@@ -218,7 +218,7 @@ const Reception = ({ ClinicUser }) => {
     const itemWithDiscount = addedSrvItems.find((x) => x._id === id);
     itemWithDiscount.Discount = 0;
     console.log({ itemWithDiscount });
-  }
+  };
 
   //----- Edit Service -----//
   const getOneReception = () => {
@@ -281,7 +281,7 @@ const Reception = ({ ClinicUser }) => {
   };
 
   const updateItemCallback = (updatedItem, id) => {
-    setAddedSrvItems(addedSrvItems.filter((item) => item._id !== id))
+    setAddedSrvItems(addedSrvItems.filter((item) => item._id !== id));
     updateSrvItem(id, updatedItem);
   };
 
@@ -290,7 +290,7 @@ const Reception = ({ ClinicUser }) => {
     setAddedSrvItems(addedSrvItems.filter((a) => a._id !== id));
   };
 
-  //------ Submit Reception ----//
+  //------ Submit Reception ------//
   const submitReceptionPrescript = (
     totalQty,
     totalPrice,
@@ -319,10 +319,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
