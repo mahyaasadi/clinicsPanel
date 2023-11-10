@@ -3,8 +3,7 @@ import FeatherIcon from "feather-icons-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
-const RecordItem = ({ srv, deleteReception }) => {
-  console.log({ srv });
+const ReceptionItem = ({ srv, deleteReception }) => {
   return (
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
@@ -40,12 +39,12 @@ const RecordItem = ({ srv, deleteReception }) => {
               />
 
               <div className="font-11">
-                <div className="fw-bold">شناسه پذیرش : {srv.ReceptionID}</div>
-                <div className="d-flex gap-2">
+                <div className="fw-bold mb-2">شناسه پذیرش : {srv.ReceptionID}</div>
+                <div className="d-flex gap-2 mb-1">
                   <FeatherIcon icon="calendar" className="prescItembtns" />
                   <div className="">{srv.Date}</div>
-                  <div className="vertical-line"></div>
-                  <div className="paddingR-2">{srv.Time}</div>
+                  <div className="">,</div>
+                  <div className="">{srv.Time}</div>
                 </div>
                 <p className="mb-1 d-flex gap-2">
                   <FeatherIcon icon="user" className="prescItembtns" />
@@ -58,7 +57,7 @@ const RecordItem = ({ srv, deleteReception }) => {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6 m-0"
+                    class="w-9 m-0"
                   >
                     <path
                       stroke-linecap="round"
@@ -153,5 +152,4 @@ const RecordItem = ({ srv, deleteReception }) => {
   );
 };
 
-export default RecordItem;
-
+export default ReceptionItem;

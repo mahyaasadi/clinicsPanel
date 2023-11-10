@@ -1,4 +1,3 @@
-import React from "react";
 import FeatherIcon from "feather-icons-react";
 
 const Paginator = ({ nPages, currentPage, setCurrentPage }) => {

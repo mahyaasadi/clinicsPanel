@@ -5,7 +5,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
-import ReceptionList from "components/dashboard/reception/receptionRecords/receptionList";
+import ReceptionList from "@/components/dashboard/reception/receptionList/receptionList";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -31,15 +31,15 @@ const ReceptionRecords = ({ ClinicUser }) => {
   const [receptionList, setReceptionList] = useState([]);
 
   // Pagination
+  const itemsPerPage = 20
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
   const indexOfLastRecord = currentPage * itemsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - itemsPerPage;
+  const nPages = Math.ceil(receptionList.length / itemsPerPage);
   const currentItems = receptionList.slice(
     indexOfFirstRecord,
     indexOfLastRecord
   );
-  const nPages = Math.ceil(receptionList.length / itemsPerPage);
 
   const getReceptionList = () => {
     setIsLoading(true);

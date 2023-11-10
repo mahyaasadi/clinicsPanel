@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { getSession } from "lib/session";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
 import { convertBase64 } from "utils/convertBase64";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";

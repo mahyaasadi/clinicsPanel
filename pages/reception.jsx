@@ -5,7 +5,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { useRouter } from "next/router";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
-import PatientInfoCard from "components/dashboard/reception/patientInfoCard";
+import PatientInfoCard from "@/components/dashboard/reception/patientInfo/patientInfoCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
@@ -109,17 +109,21 @@ const Reception = ({ ClinicUser }) => {
     const filteredServices = updatedServices.filter(
       (service) =>
         service.Name.includes(value) ||
-        service.EngName.toLowerCase().includes(value.toLowerCase()) ||
+        service.EngName.toLowerCase().includes(value) ||
         service.Code.includes(value)
     );
 
     setSearchedServices(filteredServices);
-    let searchInput = $("#srvSearchInput").val();
-    searchInput.length === 0 ? $("#searchDiv").hide() : $("#searchDiv").show();
 
-    filteredServices.length === 0
-      ? $(".unsuccessfullSearch").show("")
-      : $(".unsuccessfullSearch").hide("");
+    if (value.length === 0) {
+      $("#searchDiv").hide();
+      $(".unsuccessfullSearch").hide("");
+    } else {
+      $("#searchDiv").show();
+      filteredServices.length === 0
+        ? $(".unsuccessfullSearch").show("")
+        : $(".unsuccessfullSearch").hide("");
+    }
   };
 
   const selectSearchedSrv = (
@@ -147,59 +151,6 @@ const Reception = ({ ClinicUser }) => {
     $("#searchDiv").hide();
   };
 
-  //---- Add an Item to List ----//
-  const FuAddToList = async (e) => {
-    e.preventDefault();
-
-    let addData = {
-      _id: ActiveSrvID,
-      Name: ActiveSrvName,
-      EngName: ActiveSrvEngName,
-      Code: ActiveSrvCode,
-      Price: ActiveSrvPrice,
-      Qty: $("#QtyInput").val(),
-      Des: $("#ResPrescDescription").val(),
-      ModalityID: ActiveModalityID,
-    };
-
-    if (ActiveInsuranceType === "1") {
-      addData.OC = ActiveSalamatShare;
-    } else if (ActiveInsuranceType === "2") {
-      addData.OC = ActiveTaminShare;
-    } else if (ActiveInsuranceType === "3") {
-      addData.OC = ActiveArteshShare;
-    } else {
-      addData.OC = 0;
-    }
-    addData.Discount = ActiveDiscountShare;
-
-    setAddedSrvItems([...addedSrvItems, addData]);
-
-    if (editSrvMode) {
-      updateItemCallback(addData, ActiveEditSrvID);
-    }
-
-    if (!editSrvMode) {
-      if (ActiveSrvName == null || ActiveSrvCode == null) {
-        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
-        return false;
-      } else if (
-        addedSrvItems.length > 0 &&
-        addedSrvItems.find((x) => x._id === ActiveSrvID)
-      ) {
-        ErrorAlert("خطا", "سرویس تکراری می باشد!");
-      }
-    }
-
-    if (!editSrvMode) {
-      ActiveSrvName = null;
-      ActiveSrvCode = null;
-    }
-    // reset
-    $("#srvSearchInput").val("");
-    $("#QtyInput").val("1");
-  };
-
   //----- Discount -----//
   const applyDiscount = (id, Discount) => {
     const updatedData = addedSrvItems.map((item) => {
@@ -217,7 +168,10 @@ const Reception = ({ ClinicUser }) => {
   const removeDiscount = (id) => {
     const itemWithDiscount = addedSrvItems.find((x) => x._id === id);
     itemWithDiscount.Discount = 0;
-    console.log({ itemWithDiscount });
+    setAddedSrvItems([])
+    setTimeout(() => {
+      setAddedSrvItems(addedSrvItems)
+    }, 100);
   };
 
   //----- Edit Service -----//
@@ -251,6 +205,8 @@ const Reception = ({ ClinicUser }) => {
     ActiveSrvID = srvData._id;
     ActiveSrvEngName = srvData.EngName;
     ActiveDiscountShare = srvData.Discount;
+
+    $("#srvSearchInput").val(srvData.Name)
     $("#QtyInput").val(srvData.Qty);
 
     if (ActiveInsuranceType == "1") {
@@ -290,6 +246,56 @@ const Reception = ({ ClinicUser }) => {
     setAddedSrvItems(addedSrvItems.filter((a) => a._id !== id));
   };
 
+  //---- Add an Item to List ----//
+  const FuAddToList = async (e) => {
+    e.preventDefault();
+
+    let addData = {
+      _id: ActiveSrvID,
+      Name: ActiveSrvName,
+      EngName: ActiveSrvEngName,
+      Code: ActiveSrvCode,
+      Price: ActiveSrvPrice,
+      Qty: $("#QtyInput").val(),
+      Des: $("#ResPrescDescription").val(),
+      ModalityID: ActiveModalityID,
+    };
+
+    if (ActiveInsuranceType === "1") {
+      addData.OC = ActiveSalamatShare;
+    } else if (ActiveInsuranceType === "2") {
+      addData.OC = ActiveTaminShare;
+    } else if (ActiveInsuranceType === "3") {
+      addData.OC = ActiveArteshShare;
+    } else {
+      addData.OC = 0;
+    }
+    addData.Discount = ActiveDiscountShare;
+
+    setAddedSrvItems([...addedSrvItems, addData]);
+
+    if (!editSrvMode) {
+      if (ActiveSrvName == null || ActiveSrvCode == null) {
+        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
+        return false;
+      } else if (
+        addedSrvItems.length > 0 &&
+        addedSrvItems.find((x) => x._id === ActiveSrvID)
+      ) {
+        ErrorAlert("خطا", "سرویس تکراری می باشد!");
+      }
+    } else {
+      updateItemCallback(addData, ActiveEditSrvID);
+      setEditSrvMode(false)
+      ActiveSrvCode = null;
+    }
+
+    // reset
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+    console.log("Edit mode set to false");
+  };
+
   //------ Submit Reception ------//
   const submitReceptionPrescript = (
     totalQty,
@@ -319,10 +325,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -330,7 +336,6 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, dataToSubmit)
       .then((response) => {
-        console.log(response.data);
         SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
         setTimeout(() => {
           if (response.data.Register) {
@@ -347,7 +352,6 @@ const Reception = ({ ClinicUser }) => {
   useEffect(() => {
     ReceptionObjectID = router.query.id;
     ReceptionID = router.query.receptionID;
-
     if (ReceptionObjectID) getOneReception();
   }, [router.query.id]);
 
@@ -357,7 +361,6 @@ const Reception = ({ ClinicUser }) => {
         <title>پذیرش</title>
       </Head>
       <div className="page-wrapper reception-wrapper">
-        {/* {isLoading ? <Loading /> : ( */}
         <div className="content container-fluid">
           <div className="row">
             <div className="row receptionUpperSection justify-between paddingL-0">
@@ -366,6 +369,7 @@ const Reception = ({ ClinicUser }) => {
                   data={patientInfo}
                   getPatientInfo={getPatientInfo}
                   ActivePatientNID={ActivePatientNID}
+                  ClinicID={ClinicID}
                 />
               </div>
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
@@ -377,8 +381,8 @@ const Reception = ({ ClinicUser }) => {
                   selectSearchedSrv={selectSearchedSrv}
                   FuAddToList={FuAddToList}
                   editSrvData={editSrvData}
-                  editSrvMode={editSrvMode}
                   setEditSrvData={setEditSrvData}
+                  editSrvMode={editSrvMode}
                   setEditSrvMode={setEditSrvMode}
                 />
 
@@ -402,7 +406,6 @@ const Reception = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
-        {/* )} */}
       </div>
     </>
   );

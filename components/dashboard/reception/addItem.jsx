@@ -7,7 +7,6 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
   let DiscountValue = 0;
-  let Discount = srv.Discount ? srv.Discount.Value : 0;
 
   if (srv.Discount) {
     if (srv.Discount.Percent) {
@@ -93,7 +92,7 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
                 </div>
               </div>
 
-              {Discount !== 0 && (
+              {DiscountValue === 0 ? "" : (
                 <>
                   <div>
                     <div className="paddingR-5 discountContainer">
@@ -105,6 +104,7 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
                         onClick={() => removeDiscount(srv._id)}
                       >
                         <FeatherIcon className="removeDiscountIcon" icon="x-circle" />
+                        <Tooltip target=".removeDiscountBtn">حذف تخفیف</Tooltip>
                       </button>
                     </div>
                   </div>

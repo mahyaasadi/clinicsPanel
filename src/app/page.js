@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert } from "class/AlertManage.js";
+import { useForm, Controller } from "react-hook-form";
 import Cookies from "js-cookie";
 import { setSession } from "lib/SessionMange";
 import { logo } from "components/commonComponents/imagepath";
@@ -114,9 +114,8 @@ export default function Page() {
                             />
                             <span
                               onClick={onEyeClick}
-                              className={`fa toggle-password" ${
-                                eye ? "fa-eye-slash" : "fa-eye"
-                              }`}
+                              className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                                }`}
                             />
                           </div>
                         )}

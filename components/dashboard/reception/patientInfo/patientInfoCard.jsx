@@ -1,8 +1,17 @@
+import { useState } from "react";
 import Link from "next/link";
-import FeatherIcon from "feather-icons-react";
+import { axiosClient } from "@/class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
+import FeatherIcon from "feather-icons-react";
+import EditPatientInfoModal from './editPatientInfo';
 
-const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
+const PatientInfoCard = ({ data, getPatientInfo, ActivePatientNID, ClinicID }) => {
+  console.log({ data });
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true)
+  const handleCloseModal = () => setShowModal(false)
+
   const dateFormat = (str) => {
     if (str !== " " || str !== null) {
       let date =
@@ -11,6 +20,28 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
     } else {
       return 0;
     }
+  };
+
+  const handleChangePatientInfo = (type, value) => {
+    console.log(`Changing ${type} to ${value}`);
+
+    let url = "reception/ChangeProfileData"
+    let data = {
+      CenterID: ClinicID,
+      NID: ActivePatientNID,
+      col: type,
+      val: value
+    }
+
+    console.log({ data });
+
+    axiosClient.post(url, data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   };
 
   return (
@@ -43,16 +74,14 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
                   <FeatherIcon icon="smartphone" />
                 </i>
                 <p id="PatientTel">{data.Tel}</p>
-                <Link
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editPhoneNumberModal"
-                  className="editPhone-icon"
+                <button
+                  onClick={handleShowModal}
+                  className="btn btn-sm editPhone-icon"
                   data-pr-position="top"
                 >
                   <Tooltip target=".editPhone-icon">تغییر شماره همراه</Tooltip>
                   <FeatherIcon icon="edit-2" className="themeColor" />
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -101,6 +130,13 @@ const PatientInfoCard = ({ getPatientInfo, ActivePatientNID, data }) => {
           </div>
         </div>
       </div>
+
+      <EditPatientInfoModal
+        data={data}
+        showModal={showModal}
+        handleClose={handleCloseModal}
+        handleChangePatientInfo={handleChangePatientInfo}
+      />
     </>
   );
 };

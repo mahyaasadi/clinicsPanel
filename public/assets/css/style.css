@@ -703,6 +703,10 @@ table.table td h2.table-avatar a > img {
   margin-right: 5px;
 }
 
+.w-9 {
+  width: 9%;
+}
+
 .marginb-sm {
   margin-bottom: 0.5rem !important;
 }
@@ -8954,6 +8958,7 @@ ul li .active {
 
 .nav-link:hover {
   background-color: #fcf6e6 !important;
+  color: #594b0d !important;
 }
 
 /* ------ datePicker ------- */

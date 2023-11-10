@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
 import Loading from "components/commonComponents/loading/loading";
@@ -12,8 +13,8 @@ const ReceptionCard = ({
   selectSearchedSrv,
   FuAddToList,
   editSrvData,
-  editSrvMode,
   setEditSrvData,
+  editSrvMode,
   setEditSrvMode,
 }) => {
   let activeClass = null;
@@ -77,7 +78,7 @@ const ReceptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={(e) => handleSearchService(e.target.value)}
-                  defaultValue={(editSrvMode = "edit" ? editSrvData?.Name : "")}
+                  defaultValue={(editSrvMode == true ? editSrvData?.Name : "")}
                   key={editSrvData.Name}
                 />
 
