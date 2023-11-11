@@ -1,16 +1,27 @@
 import { useState } from "react";
 import Link from "next/link";
-import { axiosClient } from "@/class/axiosConfig";
+import Image from "next/image";
+import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
-import EditPatientInfoModal from './editPatientInfo';
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
+import { gender } from "components/commonComponents/imagepath";
+import EditPatientInfoModal from "./editPatientInfo";
+import EditInsuranceTypeModal from "components/dashboard/reception/patientInfo/editInsuranceTypeModal";
 
-const PatientInfoCard = ({ data, getPatientInfo, ActivePatientNID, ClinicID }) => {
+const PatientInfoCard = ({
+  data,
+  getPatientInfo,
+  ActivePatientNID,
+  ClinicID,
+  setPatientInfo,
+}) => {
   console.log({ data });
-  const [showModal, setShowModal] = useState(false);
 
-  const handleShowModal = () => setShowModal(true)
-  const handleCloseModal = () => setShowModal(false)
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const dateFormat = (str) => {
     if (str !== " " || str !== null) {
@@ -24,24 +35,92 @@ const PatientInfoCard = ({ data, getPatientInfo, ActivePatientNID, ClinicID }) =
 
   const handleChangePatientInfo = (type, value) => {
     console.log(`Changing ${type} to ${value}`);
+    setIsLoading(true);
 
-    let url = "reception/ChangeProfileData"
-    let data = {
+    let url = "reception/ChangeProfileData";
+    let updatedInfo = {
       CenterID: ClinicID,
       NID: ActivePatientNID,
       col: type,
-      val: value
-    }
+      val: value,
+    };
 
-    console.log({ data });
+    console.log({ updatedInfo });
 
-    axiosClient.post(url, data)
+    axiosClient
+      .post(url, updatedInfo)
       .then((response) => {
         console.log(response.data);
+        if (type === "Age") {
+          data.Age = value;
+        } else if (type === "Name") {
+          data.Name = value;
+        } else if (type === "Gender") {
+          data.Gender = value;
+        } else if (type === "Tel") {
+          data.Tel = value;
+        } else if (type === "NationalID") {
+          data.NationalID = value;
+        }
+        handleCloseModal();
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const changeInsuranceType = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "Patient/ChangeInsurance";
+    let editData = {
+      CenterID: ClinicID,
+      IID: parseInt(formProps.insuranceTypeOptions),
+      NID: formProps.patientNID,
+    };
+
+    console.log({ editData });
+
+    axiosClient
+      .post(url, editData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.isCovered) {
+          // if (editData.IID === 1) {
+          //   patientsInfo.InsuranceName = "سلامت ایرانیان";
+          //   patientsInfo.Insurance = 1;
+          // } else if (editData.IID === 2) {
+          //   patientsInfo.InsuranceName = "تامین اجتماعی";
+          //   patientsInfo.Insurance = 2;
+          // } else if (editData.IID === 3) {
+          //   patientsInfo.InsuranceName = "ارتش";
+          //   patientsInfo.Insurance = 3;
+          // } else {
+          //   patientsInfo.InsuranceName = "آزاد";
+          //   patientsInfo.Insurance = 4;
+          // }
+
+          SuccessAlert("موفق", "!تغییر نوع بیمه با موفقیت انجام شد");
+        } else if (response.data.isCovered !== true) {
+          ErrorAlert(
+            "خطا",
+            "تغییر بیمه بیمار ، به دلیل عدم پوشش بیمه امکان پذیر نیست"
+          );
+        }
+        setIsLoading(false);
+        $("#changeInsuranceTypeModal").hide("");
       })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+        ErrorAlert("خطا", "تغییر نوع بیمه با خطا مواجه گردید!");
+      });
   };
 
   return (
@@ -74,37 +153,32 @@ const PatientInfoCard = ({ data, getPatientInfo, ActivePatientNID, ClinicID }) =
                   <FeatherIcon icon="smartphone" />
                 </i>
                 <p id="PatientTel">{data.Tel}</p>
-                <button
+                <Link
+                  href="#"
                   onClick={handleShowModal}
-                  className="btn btn-sm editPhone-icon"
+                  className="editPhone-icon"
                   data-pr-position="top"
                 >
-                  <Tooltip target=".editPhone-icon">تغییر شماره همراه</Tooltip>
+                  <Tooltip target=".editPhone-icon">
+                    ویرایش اطلاعات بیمار
+                  </Tooltip>
                   <FeatherIcon icon="edit-2" className="themeColor" />
-                </button>
+                </Link>
               </div>
             </div>
 
-            <div className="margin-right-1">
-              <p className="mt-3">{data.Name}</p>
-              <div className="d-flex gap-2 align-items-center">
-                <div className="">
-                  جنسیت : {data.Gender ? data.Gender : "-"}
-                </div>
-                <Link
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#changeInsuranceTypeModal"
-                  className="changeInsuranceBtn"
-                  data-pr-position="top"
-                >
-                  <Tooltip target=".changeInsuranceBtn">تغییر نوع بیمه</Tooltip>
-                  <i className="margin-right-2 themecolor">
-                    <FeatherIcon icon="refresh-cw" />
-                  </i>
-                </Link>
+            <div className="margin-right-1 font-12 mt-3">
+              <div className="d-flex gap-2">
+                <FeatherIcon icon="user" />
+                <p className="">{data.Name}</p>
+                {data.Age ? <p className="">- {data.Age} ساله</p> : ""}
               </div>
-              <p className="mt-3">سن بیمار : {data.Age}</p>
+
+              <div className="d-flex gap-1 align-items-center mt-1">
+                <Image src={gender} alt="genderIcon" width="20" />
+                {data.Gender ? data.Gender : "-"}
+              </div>
+
               <p className="mt-3">
                 تاریخ اعتبار تا {""}
                 {data.accountValidto && dateFormat(`${data.accountValidto}`)}
@@ -135,7 +209,14 @@ const PatientInfoCard = ({ data, getPatientInfo, ActivePatientNID, ClinicID }) =
         data={data}
         showModal={showModal}
         handleClose={handleCloseModal}
+        isLoading={isLoading}
         handleChangePatientInfo={handleChangePatientInfo}
+      />
+
+      <EditInsuranceTypeModal
+        ClinicID={ClinicID}
+        data={data}
+        changeInsuranceType={changeInsuranceType}
       />
     </>
   );

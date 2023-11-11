@@ -9,6 +9,7 @@ import PatientInfoCard from "@/components/dashboard/reception/patientInfo/patien
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
+import NewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -76,17 +77,49 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        if (response.data.error == "1") {
+          $("#newPatientModal").modal("show");
+        } else {
+          ActivePatientID = response.data.user._id;
+          ActiveInsuranceType = response.data.user.InsuranceType;
+          setPatientInfo(response.data.user);
+          $("#patientInfoCard").show("");
+        }
         setIsLoading(false);
-        ActivePatientID = response.data.user._id;
-        ActiveInsuranceType = response.data.user.InsuranceType;
-        setPatientInfo(response.data.user);
-        $("#patientInfoCard").show("");
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
       });
   };
+
+  const addNewPatient = (props) => {
+    let url = "Patient/addPatient";
+    let data = props;
+    data.CenterID = ClinicID;
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setPatientInfo(response.data);
+        $("#newPatientModal").modal("hide");
+        SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+        if (response.data.errors) {
+          ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+        }
+        // e.target.reset();
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+      });
+  };
+
+  let insuranceType = null;
+  const selectInsuranceType = (insurance) => (insuranceType = insurance);
 
   //---- Departments Tab Change ----//
   let updatedServices = [];
@@ -168,9 +201,9 @@ const Reception = ({ ClinicUser }) => {
   const removeDiscount = (id) => {
     const itemWithDiscount = addedSrvItems.find((x) => x._id === id);
     itemWithDiscount.Discount = 0;
-    setAddedSrvItems([])
+    setAddedSrvItems([]);
     setTimeout(() => {
-      setAddedSrvItems(addedSrvItems)
+      setAddedSrvItems(addedSrvItems);
     }, 100);
   };
 
@@ -206,7 +239,7 @@ const Reception = ({ ClinicUser }) => {
     ActiveSrvEngName = srvData.EngName;
     ActiveDiscountShare = srvData.Discount;
 
-    $("#srvSearchInput").val(srvData.Name)
+    $("#srvSearchInput").val(srvData.Name);
     $("#QtyInput").val(srvData.Qty);
 
     if (ActiveInsuranceType == "1") {
@@ -286,7 +319,7 @@ const Reception = ({ ClinicUser }) => {
       }
     } else {
       updateItemCallback(addData, ActiveEditSrvID);
-      setEditSrvMode(false)
+      setEditSrvMode(false);
       ActiveSrvCode = null;
     }
 
@@ -325,10 +358,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -367,6 +400,7 @@ const Reception = ({ ClinicUser }) => {
               <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
                 <PatientInfoCard
                   data={patientInfo}
+                  setPatientInfo={setPatientInfo}
                   getPatientInfo={getPatientInfo}
                   ActivePatientNID={ActivePatientNID}
                   ClinicID={ClinicID}
@@ -406,6 +440,12 @@ const Reception = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
+        <NewPatient
+          addNewPatient={addNewPatient}
+          selectInsuranceType={selectInsuranceType}
+          ClinicID={ClinicID}
+          ActivePatientNID={ActivePatientNID}
+        />
       </div>
     </>
   );

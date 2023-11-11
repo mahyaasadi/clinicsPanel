@@ -39,7 +39,9 @@ const ReceptionItem = ({ srv, deleteReception }) => {
               />
 
               <div className="font-11">
-                <div className="fw-bold mb-2">شناسه پذیرش : {srv.ReceptionID}</div>
+                <div className="fw-bold mb-2">
+                  شناسه پذیرش : {srv.ReceptionID}
+                </div>
                 <div className="d-flex gap-2 mb-1">
                   <FeatherIcon icon="calendar" className="prescItembtns" />
                   <div className="">{srv.Date}</div>
@@ -51,20 +53,22 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                   {srv.Patient.Name}
                 </p>
                 <div className="d-flex gap-2 align-items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-9 m-0"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
-                    />
-                  </svg>
+                  <div className="w-16 m-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-100 m-0"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                      />
+                    </svg>
+                  </div>
 
                   {srv.Patient.NationalID}
                 </div>
@@ -76,7 +80,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
               <div className="p-2">
                 <div
                   dir="rtl"
-                  className="text-secondary font-12 d-flex gap-2 align-items-center mb-3"
+                  className="text-secondary font-12 d-flex gap-2 align-items-center justify-between mb-3"
                 >
                   <div className="d-flex gap-2 align-items-center">
                     <svg
@@ -85,7 +89,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="w-6"
+                      className="w-16 marginR-1"
                     >
                       <path
                         strokeLinecap="round"
@@ -153,3 +157,4 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 };
 
 export default ReceptionItem;
+
