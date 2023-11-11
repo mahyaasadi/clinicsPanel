@@ -8,8 +8,8 @@ const ReceptionItem = ({ srv, deleteReception }) => {
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
         <div className="card h-100 marginb-sm">
-          <div className="card-header mb-2 bg-primary-light">
-            <div className="d-flex gap-4 align-items-center">
+          <div className="card-header mb-2 bg-primary-light d-flex justify-between">
+            <div className="d-flex gap-4 align-items-center col-10">
               <img
                 src={srv.Modality.Icon}
                 alt="modalityIcon"
@@ -20,6 +20,52 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                 }}
               />
               <div className="font-12">بخش : {srv.Modality.Name}</div>
+            </div>
+
+            <div dir="ltr" className="d-flex flex-col gap-1 justify-start col-2">
+              <Link
+                type="button"
+                className="historyBtn text-secondary"
+                // data-pr-position="top"
+                href="#"
+              >
+                <Tooltip target=".historyBtn">تاریخچه پذیرش</Tooltip>
+                <FeatherIcon icon="clock" className="prescItembtns" />
+              </Link>
+
+              <Link
+                type="button"
+                className="editBtn"
+                // data-pr-position="top"
+                href={{
+                  pathname: "/reception",
+                  query: { id: srv._id, receptionID: srv.ReceptionID },
+                }}
+              >
+                <Tooltip target=".editBtn">ویرایش</Tooltip>
+                <FeatherIcon icon="edit-3" className="prescItembtns" />
+              </Link>
+
+              <Link
+                href="#"
+                type="button"
+                className="removePresc"
+                // data-pr-position="top"
+                onClick={() => deleteReception(srv._id)}
+              >
+                <Tooltip target=".removePresc">حذف</Tooltip>
+                <FeatherIcon icon="trash" className="prescItembtns" />
+              </Link>
+
+              <Link
+                type="button"
+                className="detailsBtn"
+                // data-pr-position="top"
+                href="#"
+              >
+                <Tooltip target=".detailsBtn">جزيیات پذیرش</Tooltip>
+                <FeatherIcon icon="info" className="prescItembtns" />
+              </Link>
             </div>
           </div>
 
@@ -100,30 +146,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                     <div className="">سرویس ها</div>
                   </div>
 
-                  <div className="d-flex gap-1 align-items-center">
-                    <Link
-                      type="button"
-                      className="editBtn"
-                      data-pr-position="top"
-                      href={{
-                        pathname: "/reception",
-                        query: { id: srv._id, receptionID: srv.ReceptionID },
-                      }}
-                    >
-                      <Tooltip target=".editBtn">ویرایش</Tooltip>
-                      <FeatherIcon icon="edit-3" className="prescItembtns" />
-                    </Link>
 
-                    <button
-                      type="button"
-                      className="btn removePresc p-0"
-                      data-pr-position="top"
-                      onClick={() => deleteReception(srv._id)}
-                    >
-                      <Tooltip target=".removePresc">حذف</Tooltip>
-                      <FeatherIcon icon="trash" className="prescItembtns" />
-                    </button>
-                  </div>
                 </div>
 
                 <Accordion dir="rtl" multiple>

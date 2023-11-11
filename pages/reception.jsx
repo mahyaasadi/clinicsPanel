@@ -118,9 +118,6 @@ const Reception = ({ ClinicUser }) => {
       });
   };
 
-  let insuranceType = null;
-  const selectInsuranceType = (insurance) => (insuranceType = insurance);
-
   //---- Departments Tab Change ----//
   let updatedServices = [];
   const handleDepTabChange = (services, modalityId) => {
@@ -358,10 +355,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -442,7 +439,6 @@ const Reception = ({ ClinicUser }) => {
         </div>
         <NewPatient
           addNewPatient={addNewPatient}
-          selectInsuranceType={selectInsuranceType}
           ClinicID={ClinicID}
           ActivePatientNID={ActivePatientNID}
         />

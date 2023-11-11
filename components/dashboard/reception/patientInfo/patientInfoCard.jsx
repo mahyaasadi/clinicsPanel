@@ -5,7 +5,7 @@ import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import { gender } from "components/commonComponents/imagepath";
+import { gender, insurance } from "components/commonComponents/imagepath";
 import EditPatientInfoModal from "./editPatientInfo";
 import EditInsuranceTypeModal from "components/dashboard/reception/patientInfo/editInsuranceTypeModal";
 
@@ -62,6 +62,11 @@ const PatientInfoCard = ({
         } else if (type === "NationalID") {
           data.NationalID = value;
         }
+
+        setPatientInfo([])
+        setTimeout(() => {
+          setPatientInfo(data)
+        }, 100);
         handleCloseModal();
         setIsLoading(false);
       })
@@ -168,24 +173,23 @@ const PatientInfoCard = ({
             </div>
 
             <div className="margin-right-1 font-12 mt-3">
-              <div className="d-flex gap-2">
-                <FeatherIcon icon="user" />
-                <p className="">{data.Name}</p>
-                {data.Age ? <p className="">- {data.Age} ساله</p> : ""}
+              <div className="d-flex gap-2 mb-2">
+                <FeatherIcon icon="user" className="mb-0" />
+                {data.Name}
+                {data.Age ? <p className="m-0">- {data.Age} ساله</p> : ""}
               </div>
 
-              <div className="d-flex gap-1 align-items-center mt-1">
+              <div className="d-flex gap-1 align-items-center">
                 <Image src={gender} alt="genderIcon" width="20" />
                 {data.Gender ? data.Gender : "-"}
               </div>
 
-              <p className="mt-3">
-                تاریخ اعتبار تا {""}
-                {data.accountValidto && dateFormat(`${data.accountValidto}`)}
-              </p>
+              <div className="d-flex gap-2 mt-2">
+                <div className="d-flex gap-1 align-items-center">
+                  <Image src={insurance} alt="insuranceIcon" width="20" />
+                  {data.InsuranceName}
+                </div>
 
-              <div className="d-flex gap-2">
-                <p>بیمه : {data.InsuranceName}</p>
                 <Link
                   href="#"
                   data-bs-toggle="modal"
@@ -199,11 +203,18 @@ const PatientInfoCard = ({
                   </i>
                 </Link>
               </div>
-              <p>نوع بیمه : {data.InsuranceTypeName}</p>
+
+              {/* <p>نوع بیمه : {data.InsuranceTypeName}</p> */}
+
+              <p className="mt-2 margin-right-sm">
+                تاریخ اعتبار تا {""}
+                {data.accountValidto && dateFormat(`${data.accountValidto}`)}
+              </p>
+
             </div>
           </div>
         </div>
-      </div>
+      </div >
 
       <EditPatientInfoModal
         data={data}

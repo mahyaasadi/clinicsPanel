@@ -9,7 +9,6 @@ import selectfieldColourStyles from "class/selectfieldStyle";
 const NewPatient = ({
   ClinicID,
   addNewPatient,
-  selectInsuranceType,
   ActivePatientNID,
 }) => {
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
@@ -149,17 +148,13 @@ const NewPatient = ({
                     </label>
                     <Select
                       styles={selectfieldColourStyles}
-                      className="w-100 font-12 text-center prescForm mt-3"
                       options={insuranceOptionsList}
-                      required
-                      name="insuranceTypeOptions"
-                      placeholder="نوع بیمه مورد نظر را انتخاب نمایید"
-                      id="addInsuranceType"
-                      instanceId="addInsuranceType"
-                      onChangeValue={(value) =>
-                        selectInsuranceType(value?.value)
-                      }
                       onChange={handleOnChange}
+                      className="w-100 font-12 text-center prescForm mt-3"
+                      placeholder="نوع بیمه مورد نظر را انتخاب نمایید"
+                      name="insuranceTypeOptions"
+                      id="addInsuranceType"
+                      required
                     />
                   </div>
 
