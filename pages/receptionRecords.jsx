@@ -29,9 +29,10 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [receptionList, setReceptionList] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   // Pagination
-  const itemsPerPage = 20
+  const itemsPerPage = 20;
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastRecord = currentPage * itemsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - itemsPerPage;
@@ -83,6 +84,49 @@ const ReceptionRecords = ({ ClinicUser }) => {
     }
   };
 
+  // apply filter on receptionItems
+  let dateFrom,
+    dateTo = null;
+
+  const SetRangeDate = (f, t) => {
+    dateFrom = f;
+    dateTo = t;
+  };
+
+  const FUSelectDepartment = (departmentValue) =>
+    setSelectedDepartment(departmentValue);
+
+  const applyFilterOnRecItems = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "ClinicReception/Search";
+    let data = {
+      ClinicID,
+      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
+      ModalityID: selectedDepartment ? selectedDepartment._id : "",
+      NID: formProps.patientNID ? formProps.patientNID : "",
+      PatientName: formProps.patientName ? formProps.patientName : "",
+      DateFrom: dateFrom ? dateFrom : "",
+      DateTo: dateTo ? dateTo : "",
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        // receptionList.filter((x) => x._id === response.data )
+        setReceptionList(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => getReceptionList(), []);
 
   return (
@@ -98,10 +142,14 @@ const ReceptionRecords = ({ ClinicUser }) => {
             <div className="row">
               <div className="col-sm-12">
                 <div className="card">
-                  <div className="card-header border-bottom-0"></div>
                   <ReceptionList
                     data={currentItems}
                     deleteReception={deleteReception}
+                    applyFilterOnRecItems={applyFilterOnRecItems}
+                    SetRangeDate={SetRangeDate}
+                    ClinicID={ClinicID}
+                    selectedDepartment={selectedDepartment}
+                    FUSelectDepartment={FUSelectDepartment}
                   />
 
                   <Paginator

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import { getSession } from "lib/session";
 import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
@@ -140,6 +141,10 @@ const Departments = ({ ClinicUser }) => {
       }
     }
   };
+
+  useEffect(() => {
+    console.log({ clinicDepartments });
+  }, [clinicDepartments]);
 
   return (
     <>
