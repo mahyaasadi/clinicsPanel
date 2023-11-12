@@ -1,20 +1,22 @@
-import { useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import DatePicker from "components/commonComponents/datepicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
+import FeatherIcon from "feather-icons-react";
 
 const FilterReceptionItems = ({
   applyFilterOnRecItems,
+  handleResetFilterFields,
   SetRangeDate,
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
+  searchIsLoading
 }) => {
   // Fetching departments
   const {
     data: clinicDepartments,
-    error,
-    isLoading,
+    // error,
+    // isLoading,
   } = useGetAllClinicDepartmentsQuery(ClinicID);
 
   return (
@@ -32,6 +34,7 @@ const FilterReceptionItems = ({
                 type="text"
                 dir="ltr"
                 name="receptionID"
+                id="receptionID"
                 className="form-control rounded-sm font-11 articleSearchInput"
               />
             </div>
@@ -54,6 +57,7 @@ const FilterReceptionItems = ({
                 type="text"
                 dir="ltr"
                 name="patientNID"
+                id="patientNID"
                 className="form-control rounded-sm font-11 articleSearchInput"
               />
             </div>
@@ -63,6 +67,7 @@ const FilterReceptionItems = ({
               <input
                 type="text"
                 name="patientName"
+                id="patientName"
                 className="form-control rounded-sm font-11 articleSearchInput"
               />
             </div>
@@ -71,35 +76,31 @@ const FilterReceptionItems = ({
               <DatePicker SetRangeDate={SetRangeDate} />
             </div>
 
-            {/* <div className="search col-md-3 col-12">
-            <label className="lblAbs font-11">جستجوی مرکز</label>
-            <input
-              //   onKeyUp={handleSearchSubmit}
-              //   onChange={handleInputChange}
-              id="centerSearchInput"
-              autoComplete="off"
-              className="form-control rounded-sm font-11 articleSearchInput"
-              placeholder="نام مرکز / نام پزشک ..."
-              type="text"
-              />
-            </div> */}
+            <div className="col-md-1 col-12 gap-1 d-flex">
+              {!searchIsLoading ? (
+                <>
+                  <button
+                    // onClick={handleSearchClick}
+                    className="btn btn-primary w-50"
+                  >
+                    <i className="fe fe-search"></i>
+                  </button>
 
-            <div className="col-md-1 col-12">
-              {/* {!searchIsLoading ? ( */}
+                </>
+              ) : (
+                <button type="submit" className="btn btn-primary w-50" disabled>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
+                </button>
+              )}
               <button
-                // onClick={handleSearchClick}
-                className="btn btn-primary w-100"
+                onClick={handleResetFilterFields}
+                className="btn btn-primary w-50"
               >
-                <i className="fe fe-search"></i>
+                <FeatherIcon icon="trash" />
               </button>
-              {/* ) : ( */}
-              {/* <button type="submit" className="btn btn-primary w-100" disabled>
-                <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                ></span>
-            </button> */}
-              {/* )} */}
             </div>
           </div>
         </form>

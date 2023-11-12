@@ -28,6 +28,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [searchIsLoading, setSearchIsLoading] = useState(false)
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
@@ -98,6 +99,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const applyFilterOnRecItems = (e) => {
     e.preventDefault();
+    setSearchIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -119,13 +121,22 @@ const ReceptionRecords = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        // receptionList.filter((x) => x._id === response.data )
         setReceptionList(response.data);
+        setSearchIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setSearchIsLoading(false);
       });
   };
+
+  const handleResetFilterFields = () => {
+    // setSearchIsLoading(false)
+    setSelectedDepartment(null);
+    $("#receptionID").val("");
+    $("#patientNID").val("");
+    $("#patientName").val("");
+  }
 
   useEffect(() => getReceptionList(), []);
 
@@ -144,12 +155,14 @@ const ReceptionRecords = ({ ClinicUser }) => {
                 <div className="card">
                   <ReceptionList
                     data={currentItems}
+                    ClinicID={ClinicID}
                     deleteReception={deleteReception}
                     applyFilterOnRecItems={applyFilterOnRecItems}
+                    handleResetFilterFields={handleResetFilterFields}
                     SetRangeDate={SetRangeDate}
-                    ClinicID={ClinicID}
                     selectedDepartment={selectedDepartment}
                     FUSelectDepartment={FUSelectDepartment}
+                    searchIsLoading={searchIsLoading}
                   />
 
                   <Paginator

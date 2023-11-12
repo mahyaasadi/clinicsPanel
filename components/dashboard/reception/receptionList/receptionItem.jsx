@@ -1,8 +1,9 @@
-import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
-import { Accordion, AccordionTab } from "primereact/accordion";
+// import { Accordion, AccordionTab } from "primereact/accordion";
+import { SpeedDial } from "primereact/speeddial";
 
 const ReceptionItem = ({ srv, deleteReception }) => {
   const router = useRouter();
@@ -12,6 +13,46 @@ const ReceptionItem = ({ srv, deleteReception }) => {
       pathname: "/reception",
       query: { id: srv._id, receptionID: srv.ReceptionID },
     });
+  };
+
+  // const [speedDialVisible, setSpeedDialVisible] = useState(false);
+
+  // const handleSpeedDialToggle = () => {
+  //   setSpeedDialVisible(!speedDialVisible);
+  // };
+  // const tooltipOptions = {
+  //   position: 'top'
+  // };
+
+  const items = [
+    {
+      label: 'تاریخچه پذیرش',
+      icon: <FeatherIcon icon="clock" size="20" />,
+      command: () => handleHistoryButtonClick()
+    },
+    {
+      label: 'جزيیات پذیرش',
+      icon: <FeatherIcon icon="info" size="20" />,
+      command: () => handleInfoButtonClick()
+    },
+    // {
+    //   label: 'ویرایش',
+    //   icon: <FeatherIcon icon="edit-3" size="20" />,
+    //   command: () => handleEditBtnClick()
+    // },
+    {
+      label: 'حذف',
+      icon: <FeatherIcon icon="trash" size="20" />,
+      command: () => deleteReception(srv._id)
+    }
+  ];
+
+  const handleHistoryButtonClick = () => {
+    console.log("history");
+  };
+
+  const handleInfoButtonClick = () => {
+    console.log("Info");
   };
 
   return (
@@ -29,65 +70,87 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                   borderRadius: "10px",
                 }}
               />
+
               <div className="d-flex gap-1">
-                <div className="d-flex gap-1">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary historyBtn receptBtnPadding"
-                  >
-                    <FeatherIcon
-                      icon="clock"
-                      className="prescItembtns"
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                    <Tooltip target=".historyBtn">تاریخچه پذیرش</Tooltip>
-                  </button>
+                {/*
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary historyBtn receptBtnPadding"
+                >
+                  <FeatherIcon
+                    icon="clock"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".historyBtn">تاریخچه پذیرش</Tooltip>
+                </button>
 
-                  <button
-                    type="button"
-                    data-pr-position="top"
-                    className="btn btn-outline-secondary infoBtn receptBtnPadding"
-                  >
-                    <FeatherIcon
-                      icon="info"
-                      className="prescItembtns"
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                    <Tooltip target=".infoBtn">جزيیات پذیرش</Tooltip>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  data-pr-position="top"
+                  className="btn btn-outline-secondary infoBtn receptBtnPadding"
+                >
+                  <FeatherIcon
+                    icon="info"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".infoBtn">جزيیات پذیرش</Tooltip>
+                </button>
 
-                <div className="d-flex gap-1">
-                  <button
-                    type="button"
-                    data-pr-position="top"
-                    className="btn btn-outline-secondary editBtn receptBtnPadding"
-                    onClick={handleEditBtnClick}
-                  >
-                    <FeatherIcon
-                      icon="edit-3"
-                      className="prescItembtns"
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                    <Tooltip target=".editBtn">ویرایش</Tooltip>
-                  </button>
-                  <button
-                    type="button"
-                    data-pr-position="left"
-                    className="btn btn-outline-secondary removePresc receptBtnPadding"
-                    onClick={() => deleteReception(srv._id)}
-                  >
-                    <FeatherIcon
-                      icon="trash"
-                      className="prescItembtns"
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                    <Tooltip target=".removePresc">حذف</Tooltip>
-                  </button>
+                <button
+                  type="button"
+                  data-pr-position="top"
+                  className="btn btn-outline-secondary editBtn receptBtnPadding"
+                  onClick={handleEditBtnClick}
+                >
+                  <FeatherIcon
+                    icon="edit-3"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".editBtn">ویرایش</Tooltip>
+                </button>
+                <button
+                  type="button"
+                  data-pr-position="left"
+                  className="btn btn-outline-secondary removePresc receptBtnPadding"
+                  onClick={() => deleteReception(srv._id)}
+                >
+                  <FeatherIcon
+                    icon="trash"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".removePresc">حذف</Tooltip>
+                </button>
+              </div> */}
+
+                <button
+                  type="button"
+                  data-pr-position="top"
+                  className="btn btn-outline-secondary editBtn receptBtnPadding"
+                  onClick={handleEditBtnClick}
+                >
+                  <FeatherIcon
+                    icon="edit-3"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".editBtn">ویرایش</Tooltip>
+                </button>
+                <div>
+                  <SpeedDial model={items} direction="left" style={{ top: "15px", left: "50px" }} />
+                  {/* Add Tooltip for each button if needed */}
+                  {/* {items.map((item, index) => (
+                    <Tooltip key={index} target={`.speed-dial-item-${index}`} options={tooltipOptions} />
+
+                  ))} */}
                 </div>
               </div>
             </div>
           </div>
+
 
           <div dir="rtl" className="card-body pt-2 text-secondary">
             <div className="d-flex gap-4 align-items-center mt-2">

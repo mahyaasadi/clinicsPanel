@@ -5,21 +5,25 @@ const ReceptionList = ({
   data,
   deleteReception,
   applyFilterOnRecItems,
+  handleResetFilterFields,
   SetRangeDate,
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
+  searchIsLoading
 }) => {
   return (
     <>
       <div className="row p-4">
         <div className="">
           <FilterReceptionItems
-            applyFilterOnRecItems={applyFilterOnRecItems}
-            SetRangeDate={SetRangeDate}
             ClinicID={ClinicID}
+            SetRangeDate={SetRangeDate}
+            applyFilterOnRecItems={applyFilterOnRecItems}
+            handleResetFilterFields={handleResetFilterFields}
             selectedDepartment={selectedDepartment}
             FUSelectDepartment={FUSelectDepartment}
+            searchIsLoading={searchIsLoading}
           />
         </div>
         {data.map((item, index) => (

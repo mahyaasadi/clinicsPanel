@@ -13,6 +13,7 @@ const Sidebar = () => {
       "/reception",
       "/discounts",
       "/receptionRecords",
+      "/cashDesk",
       "/karts",
     ];
 
@@ -56,9 +57,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    submenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${submenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -86,6 +86,11 @@ const Sidebar = () => {
                     </Link>
                   </li>
 
+                  <li className={router.pathname == "/cashDesk" ? "active" : ""}>
+                    <Link href="/cashDesk" className="font-12">
+                      صندوق
+                    </Link>
+                  </li>
                   <li className={router.pathname == "/karts" ? "active" : ""}>
                     <Link href="/karts" className="font-12">
                       پایانه های بانک

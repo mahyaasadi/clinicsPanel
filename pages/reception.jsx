@@ -437,6 +437,7 @@ const Reception = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
+
         <NewPatient
           addNewPatient={addNewPatient}
           ClinicID={ClinicID}

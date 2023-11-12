@@ -37,6 +37,7 @@ const DatePicker = ({ SetRangeDate }) => {
           calenderModalClass="calenderModalContainer"
           placeholder="&nbsp;"
           inputName="date"
+          clearBtn
         />
 
         <i className="calendarIcon text-secondary">
