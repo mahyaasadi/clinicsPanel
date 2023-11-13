@@ -19,35 +19,50 @@ const CashDeskActions = ({
   setSelectedKart,
   applyCashDeskActions,
   data,
-  setActionModalData,
 }) => {
-  let calculatedTotalPC = 0;
-
   console.log({ data });
 
-  const [cashPayment, setCashPayment] = useState(
-    data?.CashDesk?.CashPayment || ""
-  );
+  let calculatedTotalPC = 0;
 
-  const [cartPayment, setCartPayment] = useState(
-    data?.CashDesk?.CartPayment || ""
-  );
-
+  const [paymentData, setPaymentData] = useState([]);
   const [debtPayment, setDebtPayment] = useState(0);
+  const [cashPayment, setCashPayment] = useState(
+    paymentData?.CashPayment || 0
+  );
+  const [cartPayment, setCartPayment] = useState(
+    paymentData?.CartPayment || 0
+  );
 
   const handleCalculateCost = (e) => {
     const { name, value } = e.target;
+    const floatValue = parseFloat(value) || 0;
 
     if (name === "cashPayment") {
+      const newCashPayment = calculatedTotalPC - floatValue - parseFloat(cartPayment) || 0;
       setCashPayment(value);
-      setDebtPayment(calculatedTotalPC - parseFloat(value) || 0);
-      console.log({ debtPayment });
+      setDebtPayment(newCashPayment < 0 ? Math.abs(newCashPayment) : 0);
     } else if (name === "cartPayment") {
+      const newCartPayment = calculatedTotalPC - parseFloat(cashPayment) - floatValue || 0;
       setCartPayment(value);
-      setDebtPayment(calculatedTotalPC - parseFloat(value) || 0);
-      console.log({ debtPayment });
+      setDebtPayment(newCartPayment < 0 ? Math.abs(newCartPayment) : 0);
+    } else if (name === "debt") {
+      const newDebtValue = parseFloat(value) || 0;
+      setDebtPayment(newDebtValue);
+      setCashPayment(calculatedTotalPC - newDebtValue - parseFloat(cartPayment) || 0);
+      setCartPayment(calculatedTotalPC - parseFloat(cashPayment) - newDebtValue || 0);
+      return;
     }
+
+    console.log({ cashPayment, cartPayment });
+    setDebtPayment(calculatedTotalPC - cashPayment - cartPayment || 0);
+    console.log({ debtPayment });
+
   };
+
+  useEffect(() => {
+    setPaymentData(data?.CashDesk)
+    console.log({ paymentData });
+  }, [data])
 
   return (
     <>
@@ -149,7 +164,7 @@ const CashDeskActions = ({
                   className="form-control floating inputPadding rounded text-secondary"
                   name="cashPayment"
                   onChange={handleCalculateCost}
-                  defaultValue={cashPayment}
+                  value={cashPayment.toLocaleString()}
                 />
               </div>
 
@@ -161,7 +176,8 @@ const CashDeskActions = ({
                   className="form-control floating inputPadding rounded text-secondary"
                   name="cartPayment"
                   onChange={handleCalculateCost}
-                  defaultValue={cartPayment}
+                  value={cartPayment.toLocaleString()}
+                // defaultValue={calculatedTotalPC}
                 />
               </div>
             </div>
@@ -175,7 +191,7 @@ const CashDeskActions = ({
                   className="form-control floating inputPadding rounded text-secondary"
                   name="debt"
                   onChange={handleCalculateCost}
-                  defaultValue={debtPayment}
+                  value={debtPayment.toLocaleString()}
                 />
               </div>
 
@@ -186,8 +202,8 @@ const CashDeskActions = ({
                   dir="ltr"
                   className="form-control floating inputPadding rounded text-secondary"
                   name="returnPayment"
-                  // onChange={handleCalculateCost}
-                  defaultValue={data?.CashDesk?.ReturnPayment}
+                // onChange={handleCalculateCost}
+                // value={data?.CashDesk?.ReturnPayment}
                 />
               </div>
             </div>
