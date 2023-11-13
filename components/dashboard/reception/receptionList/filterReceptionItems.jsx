@@ -2,6 +2,7 @@ import { Dropdown } from "primereact/dropdown";
 import DatePicker from "components/commonComponents/datepicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import FeatherIcon from "feather-icons-react";
+import { Tooltip } from "primereact/tooltip";
 
 const FilterReceptionItems = ({
   applyFilterOnRecItems,
@@ -10,25 +11,18 @@ const FilterReceptionItems = ({
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
-  searchIsLoading
+  searchIsLoading,
 }) => {
   // Fetching departments
-  const {
-    data: clinicDepartments,
-    // error,
-    // isLoading,
-  } = useGetAllClinicDepartmentsQuery(ClinicID);
+  const { data: clinicDepartments } = useGetAllClinicDepartmentsQuery(ClinicID);
 
   return (
     <>
       <label className="lblAbs fw-bold font-13">جستجوی لیست پذیرش ها</label>
       <div className="card">
         <form onSubmit={applyFilterOnRecItems}>
-          <div
-            id="centerSearchFrm"
-            className="card-body filterCentersContainer row align-items-center mt-3"
-          >
-            <div className="col-md-2 col-12">
+          <div className="card-body row align-items-center mt-3 searchContainerPadding prescript-header">
+            <div className="col-lg-2 col-12">
               <label className="lblAbs font-11">شناسه پذیرش</label>
               <input
                 type="text"
@@ -39,7 +33,7 @@ const FilterReceptionItems = ({
               />
             </div>
 
-            <div className="col-md-2 col-12 receptionListPage">
+            <div className="col-lg-2 col-12 receptionListPage">
               <label className="lblAbs font-11">بخش</label>
               <Dropdown
                 value={selectedDepartment}
@@ -51,7 +45,7 @@ const FilterReceptionItems = ({
               />
             </div>
 
-            <div className="col-md-2 col-12">
+            <div className="col-lg-2 col-12">
               <label className="lblAbs font-11">کد ملی بیمار</label>
               <input
                 type="text"
@@ -62,7 +56,7 @@ const FilterReceptionItems = ({
               />
             </div>
 
-            <div className="col-md-2 col-12">
+            <div className="col-lg-2 col-12">
               <label className="lblAbs font-11">نام بیمار</label>
               <input
                 type="text"
@@ -72,23 +66,26 @@ const FilterReceptionItems = ({
               />
             </div>
 
-            <div className="col-md-3 col-12">
+            <div className="col-lg-3 col-12">
               <DatePicker SetRangeDate={SetRangeDate} />
             </div>
 
-            <div className="col-md-1 col-12 gap-1 d-flex">
+            <div className="col-lg-1 col-12 gap-1 d-flex searchReceptionBtn justify-center">
               {!searchIsLoading ? (
                 <>
                   <button
                     // onClick={handleSearchClick}
-                    className="btn btn-primary w-50"
+                    className="btn btn-primary w-48 d-flex justify-center align-items-center"
                   >
                     <i className="fe fe-search"></i>
                   </button>
-
                 </>
               ) : (
-                <button type="submit" className="btn btn-primary w-50" disabled>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-48 d-flex align-items-center justify-center"
+                  disabled
+                >
                   <span
                     className="spinner-border spinner-border-sm"
                     role="status"
@@ -97,10 +94,12 @@ const FilterReceptionItems = ({
               )}
               <button
                 onClick={handleResetFilterFields}
-                className="btn btn-primary w-50"
+                data-pr-position="top"
+                className="btn btn-primary w-48 d-flex align-items-center justify-center refreshBtn"
               >
-                <FeatherIcon icon="trash" />
+                <i class="fa fa-refresh"></i>
               </button>
+              <Tooltip target=".refreshBtn">تنظیم مجدد</Tooltip>
             </div>
           </div>
         </form>

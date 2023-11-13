@@ -28,7 +28,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [searchIsLoading, setSearchIsLoading] = useState(false)
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
@@ -43,6 +43,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
     indexOfLastRecord
   );
 
+  // Get All Receptions
   const getReceptionList = () => {
     setIsLoading(true);
 
@@ -61,6 +62,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
       });
   };
 
+  // Remove Reception
   const deleteReception = async (id) => {
     let result = await QuestionAlert(
       "حذف!",
@@ -85,7 +87,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
     }
   };
 
-  // apply filter on receptionItems
+  // Apply Filter on ReceptionItems
   let dateFrom,
     dateTo = null;
 
@@ -120,7 +122,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setReceptionList(response.data);
         setSearchIsLoading(false);
       })
@@ -131,12 +132,12 @@ const ReceptionRecords = ({ ClinicUser }) => {
   };
 
   const handleResetFilterFields = () => {
-    // setSearchIsLoading(false)
+    setSearchIsLoading(false);
     setSelectedDepartment(null);
     $("#receptionID").val("");
     $("#patientNID").val("");
     $("#patientName").val("");
-  }
+  };
 
   useEffect(() => getReceptionList(), []);
 

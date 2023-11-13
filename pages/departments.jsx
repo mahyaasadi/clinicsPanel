@@ -142,10 +142,6 @@ const Departments = ({ ClinicUser }) => {
     }
   };
 
-  useEffect(() => {
-    console.log({ clinicDepartments });
-  }, [clinicDepartments]);
-
   return (
     <>
       <Head>
