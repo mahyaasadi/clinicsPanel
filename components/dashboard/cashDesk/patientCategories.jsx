@@ -9,10 +9,11 @@ const PatientCategories = ({
   setPatientsInfo,
   openActionModal,
   isLoading,
+  receptionList,
 }) => {
   resetServerContext();
 
-  // console.log({ patientsInfo });
+  // console.log({ patientsInfo, receptionList });
 
   const [categories, setCategories] = useState([
     { id: "6550ab29aaffd91260889560", name: "در انتظار" },

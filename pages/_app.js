@@ -11,15 +11,26 @@ import "public/assets/css/font-awesome.min.css";
 import "public/assets/css/style.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <PrimeReactProvider>
         <Provider store={store}>
-          <DashboardLayout ClinicUser={pageProps.ClinicUser}>
-            <Component {...pageProps} />
-          </DashboardLayout>
+          <QueryClientProvider client={queryClient}>
+            <DashboardLayout ClinicUser={pageProps.ClinicUser}>
+              <Component {...pageProps} />
+            </DashboardLayout>
+          </QueryClientProvider>
         </Provider>
       </PrimeReactProvider>
     </>

@@ -9615,7 +9615,7 @@ ul li .active {
 }
 
 @media (max-width: 992px) {
-  .prescript-header {
+  .receptionSearch-header {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9694,158 +9694,6 @@ ul li .active {
     overflow-y: auto !important;
     direction: ltr !important;
   }
-}
-
-/*    monthly schedule     */
-.calendarCard {
-  overflow-x: auto;
-  max-width: 100%;
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.calendar-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.rmdp-wrapper {
-  box-shadow: 0 0 0 !important;
-}
-
-.rmdp-day-picker {
-  padding-bottom: 3rem !important;
-}
-
-.rmdp-header {
-  width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
-  margin-top: 1rem !important;
-  font-size: 22px !important;
-}
-
-.rmdp-header-values {
-  color: darkslategray !important;
-  display: flex;
-  gap: 10px;
-}
-
-.rmdp-arrow-container {
-  align-items: center !important;
-}
-
-.rmdp-arrow-container:hover {
-  background-color: transparent !important;
-}
-
-.rmdp-arrow {
-  border: solid #594b0d !important;
-  border-width: 0 2px 2px 0 !important;
-}
-
-.rmdp-year-picker {
-  right: 25rem !important;
-  height: 42vh !important;
-  width: 15% !important;
-  direction: ltr !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  background-color: #fafdff !important;
-  z-index: 99;
-}
-
-.rmdp-year-picker::before {
-  display: none !important;
-}
-
-.rmdp-yaer-picker::after {
-  display: grid !important;
-}
-
-.rmdp-month-picker {
-  right: 25rem !important;
-  height: 44vh !important;
-  width: 15% !important;
-  direction: ltr !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  background-color: #fafdff !important;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 99;
-}
-
-.rmdp-ym {
-  display: grid !important;
-  border-radius: 10% !important;
-  height: auto !important;
-}
-
-.rmdp-week {
-  gap: 5px !important;
-  margin-bottom: 5px !important;
-}
-
-.rmdp-week-day {
-  width: 100% !important;
-  color: #594b0d !important;
-  height: 3rem !important;
-  border: 1px solid;
-  border-radius: 10px;
-  margin-top: 2rem;
-  margin-bottom: 1rem !important;
-  box-shadow: 4px 6px 5px #dfe7ed !important;
-}
-
-.rmdp-day span {
-  border-radius: 10% !important;
-}
-
-.rmdp-day {
-  padding: 4rem !important;
-  border: 1px solid #cfdee6;
-  border-radius: 10%;
-}
-
-.rmdp-today span {
-  background-color: #d1ae24 !important;
-}
-
-.scheduleFeatures {
-  visibility: hidden;
-  position: absolute;
-  top: 5px;
-  left: 8px;
-}
-
-.featureBtn {
-  color: white;
-  padding: 2px !important;
-}
-
-.featureBtn:hover {
-  color: #d1ae24 !important;
-  transform: scale(1.2);
-}
-
-.rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #594b0d !important;
-}
-
-.rmdp-day span:hover .scheduleFeatures {
-  visibility: visible;
-  transition: ease-in-out;
-  transition-duration: 1s;
-}
-
-.rmdp-day:not(.rmdp-disabled):not(.rmdp-day-hidden) span:hover {
-  background-color: #594b0d !important;
 }
 
 /*   draggable permissions   */
@@ -10271,4 +10119,15 @@ ul li .active {
 
 .patientCard {
   border-right: 3px solid #d1ae24;
+}
+
+/*----- prescription -----*/
+.prescript-header {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.w-73 {
+  width: 73%;
 }

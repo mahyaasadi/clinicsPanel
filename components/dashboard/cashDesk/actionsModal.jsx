@@ -19,50 +19,121 @@ const CashDeskActions = ({
   setSelectedKart,
   applyCashDeskActions,
   data,
+  paymentData,
 }) => {
-  console.log({ data });
+  // console.log({ data });
+  console.log({ paymentData });
 
+  // let CalCart = 0;
+  // let CalCash = 0;
+  // let CalDebt = 0;
+  // let CalReturn = 0;
   let calculatedTotalPC = 0;
 
-  const [paymentData, setPaymentData] = useState([]);
-  const [debtPayment, setDebtPayment] = useState(0);
-  const [cashPayment, setCashPayment] = useState(
-    paymentData?.CashPayment || 0
-  );
-  const [cartPayment, setCartPayment] = useState(
-    paymentData?.CartPayment || 0
-  );
+  // const [debtPayment, setDebtPayment] = useState(0);
+  // const [cashPayment, setCashPayment] = useState(paymentData?.CashPayment || 0);
+  // const [cartPayment, setCartPayment] = useState(paymentData?.CartPayment || 0);
+  // const [returnPayment, setReturnPayment] = useState(0);
 
   const handleCalculateCost = (e) => {
     const { name, value } = e.target;
-    const floatValue = parseFloat(value) || 0;
+    let result = 0;
+    let _CalCart = parseInt($("#cartPayment").val()) || 0;
+    let _CalCash = parseInt($("#cashPayment").val()) || 0;
 
-    if (name === "cashPayment") {
-      const newCashPayment = calculatedTotalPC - floatValue - parseFloat(cartPayment) || 0;
-      setCashPayment(value);
-      setDebtPayment(newCashPayment < 0 ? Math.abs(newCashPayment) : 0);
-    } else if (name === "cartPayment") {
-      const newCartPayment = calculatedTotalPC - parseFloat(cashPayment) - floatValue || 0;
-      setCartPayment(value);
-      setDebtPayment(newCartPayment < 0 ? Math.abs(newCartPayment) : 0);
-    } else if (name === "debt") {
-      const newDebtValue = parseFloat(value) || 0;
-      setDebtPayment(newDebtValue);
-      setCashPayment(calculatedTotalPC - newDebtValue - parseFloat(cartPayment) || 0);
-      setCartPayment(calculatedTotalPC - parseFloat(cashPayment) - newDebtValue || 0);
-      return;
+    if (name === "cartPayment" || name === "cashPayment") {
+      if (name === "cartPayment") _CalCart = value;
+      if (name === "cashPayment") _CalCash = value;
+      let payment = parseInt(_CalCart) + parseInt(_CalCash);
+      result = calculatedTotalPC - payment;
+      if (result < 0) {
+        $("#debt").val("0");
+        $("#returnPayment").val(result);
+      } else {
+        $("#debt").val(result);
+        $("#returnPayment").val(0);
+      }
+    } else {
+      let _CalDebt = 0;
+      let _CalReturn = 0;
+      console.log(_CalCash);
+      if (name === "debt") {
+        _CalDebt = value;
+        result = calculatedTotalPC - _CalDebt;
+        if (result < 0) result = 0;
+        $("#cartPayment").val(result);
+        $("#returnPayment").val(0);
+      }
+
+      if (name === "returnPayment") _CalReturn = value;
     }
-
-    console.log({ cashPayment, cartPayment });
-    setDebtPayment(calculatedTotalPC - cashPayment - cartPayment || 0);
-    console.log({ debtPayment });
-
   };
 
-  useEffect(() => {
-    setPaymentData(data?.CashDesk)
-    console.log({ paymentData });
-  }, [data])
+  // const handleCalculateCost = (e) => {
+  //   const { name, value } = e.target;
+  //   const floatValue = value || 0;
+
+  //   if (name === "cashPayment") {
+  //     const newCashPayment = calculatedTotalPC - floatValue - cartPayment || 0;
+  //     setCashPayment(floatValue);
+  //     // setDebtPayment(
+  //     //   newCashPayment < 0
+  //     //     ? Math.abs(newCashPayment)
+  //     //     : calculatedTotalPC - cashPayment
+  //     // );
+  //     setDebtPayment(
+  //       newCashPayment < 0
+  //         ? Math.abs(newCashPayment)
+  //         : calculatedTotalPC - floatValue
+  //     );
+  //   } else if (name === "cartPayment") {
+  //     const newCartPayment = calculatedTotalPC - cashPayment - floatValue || 0;
+  //     setCartPayment(floatValue);
+  //     // setDebtPayment(newCartPayment < 0 ? Math.abs(newCartPayment) : 0);
+  //     setDebtPayment(
+  //       newCartPayment < 0
+  //         ? Math.abs(newCartPayment)
+  //         : calculatedTotalPC - floatValue
+  //     );
+  //   } else if (name === "debt") {
+  //     const newDebtValue = floatValue || 0;
+  //     setDebtPayment(newDebtValue);
+  //     setCashPayment(calculatedTotalPC - newDebtValue - cartPayment || 0);
+  //     setCartPayment(calculatedTotalPC - cashPayment - newDebtValue || 0);
+  //     return;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const totalPayments = parseFloat(cashPayment) + parseFloat(cartPayment);
+  //   const remainingPayment = calculatedTotalPC - totalPayments;
+  //   const returnPaymentValue = remainingPayment < 0 ? remainingPayment : 0;
+
+  //   console.log({
+  //     calculatedTotalPC,
+  //     totalPayments,
+  //     remainingPayment,
+  //   });
+
+  //   setReturnPayment(returnPaymentValue);
+
+  //   if (returnPaymentValue) {
+  //     setDebtPayment(0);
+  //   } else {
+  //     setDebtPayment(
+  //       calculatedTotalPC - parseFloat(cashPayment) - parseFloat(cartPayment) ||
+  //         0
+  //     );
+  //   }
+
+  //   console.log({
+  //     cashPayment,
+  //     cartPayment,
+  //     calculatedTotalPC,
+  //     debtPayment,
+  //     returnPayment,
+  //   });
+  // }, [cashPayment, cartPayment, calculatedTotalPC, debtPayment, returnPayment]);
 
   return (
     <>
@@ -157,27 +228,35 @@ const CashDeskActions = ({
 
             <div className="row margint-3">
               <div className="form-group col-lg-6 col-12">
+                <label className="lblAbs font-12">مبلغ پرداخت با کارت</label>
+                <input
+                  type="text"
+                  dir="ltr"
+                  id="cartPayment"
+                  className="form-control floating inputPadding rounded text-secondary"
+                  name="cartPayment"
+                  onChange={handleCalculateCost}
+                  defaultValue={
+                    paymentData?.CartPayment
+                      ? paymentData.CartPayment.toLocaleString()
+                      : calculatedTotalPC
+                  }
+                />
+              </div>
+              <div className="form-group col-lg-6 col-12">
                 <label className="lblAbs font-12">مبلغ پرداخت نقدی</label>
                 <input
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded text-secondary"
+                  id="cashPayment"
                   name="cashPayment"
                   onChange={handleCalculateCost}
-                  value={cashPayment.toLocaleString()}
-                />
-              </div>
-
-              <div className="form-group col-lg-6 col-12">
-                <label className="lblAbs font-12">مبلغ پرداخت با کارت</label>
-                <input
-                  type="text"
-                  dir="ltr"
-                  className="form-control floating inputPadding rounded text-secondary"
-                  name="cartPayment"
-                  onChange={handleCalculateCost}
-                  value={cartPayment.toLocaleString()}
-                // defaultValue={calculatedTotalPC}
+                  defaultValue={
+                    paymentData?.CashPayment
+                      ? paymentData?.CashPayment.toLocaleString()
+                      : 0
+                  }
                 />
               </div>
             </div>
@@ -189,9 +268,12 @@ const CashDeskActions = ({
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded text-secondary"
+                  id="debt"
                   name="debt"
                   onChange={handleCalculateCost}
-                  value={debtPayment.toLocaleString()}
+                  defaultValue={
+                    paymentData?.Debt ? paymentData?.Debt.toLocaleString() : 0
+                  }
                 />
               </div>
 
@@ -201,9 +283,12 @@ const CashDeskActions = ({
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded text-secondary"
+                  id="returnPayment"
                   name="returnPayment"
-                // onChange={handleCalculateCost}
-                // value={data?.CashDesk?.ReturnPayment}
+                  onChange={handleCalculateCost}
+                  defaultValue={
+                    paymentData?.ReturnPayment ? paymentData?.ReturnPayment : 0
+                  }
                 />
               </div>
             </div>

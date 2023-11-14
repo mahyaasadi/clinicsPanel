@@ -30,11 +30,13 @@ const CashDesk = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [patientsInfo, setPatientsInfo] = useState([]);
+  const [receptionList, setReceptionList] = useState([]);
   const [kartData, setKartData] = useState([]);
   const [kartsOptionList, setKartsOptionsList] = useState([]);
   const [selectedKart, setSelectedKart] = useState(null);
   const [showActionsModal, setShowActionsModal] = useState(false);
   const [actionModalData, setActionModalData] = useState([]);
+  const [paymentData, setPaymentData] = useState([]);
 
   const handleCloseActionsModal = () => setShowActionsModal(false);
 
@@ -42,6 +44,7 @@ const CashDesk = ({ ClinicUser }) => {
     setShowActionsModal(true);
     ActiveReceptionID = receptionID;
     setActionModalData(data);
+    setPaymentData(data?.CashDesk);
   };
 
   const getReceptionList = () => {
@@ -52,13 +55,14 @@ const CashDesk = ({ ClinicUser }) => {
       .get(url)
       .then((response) => {
         // console.log(response.data);
+        setReceptionList(response.data);
 
         let patientItems = [];
         for (let i = 0; i < response.data.length; i++) {
           const item = response.data[i];
           let obj = {
             id: item._id,
-            category: "6550ab29aaffd91260889560",
+            category: item.CashDesk.Status,
             name: item.Patient.Name,
             avatar: item.Patient.Avatar,
             nationalID: item.Patient.NationalID,
@@ -128,6 +132,40 @@ const CashDesk = ({ ClinicUser }) => {
       .then((response) => {
         console.log(response.data);
         setShowActionsModal(false);
+        // setPaymentData(response.data);
+
+        // const updatedItem = receptionList.find(
+        //   (item) => item._id === response.data._id
+        // );
+
+        // console.log({ updatedItem });
+
+        // const updatedItem = receptionList.map((item) => {
+        //   if (item._id === response.data._id) {
+        //     return { ...item, {} };
+        //   }
+        //   return item;
+        // });
+
+        // setPaymentData(updatedItem);
+
+        // Find the index of the item in the array
+        const index = receptionList.findIndex(
+          (item) => item._id === response.data._id
+        );
+
+        if (index !== -1) {
+          // Create a new array with the updated item at the found index
+          let updatedPaymentData = paymentData[index];
+          updatedPaymentData = response.data;
+
+          console.log({ updatedPaymentData });
+
+          // Set the state with the new array
+          setPaymentData(updatedPaymentData);
+        }
+
+        console.log({ paymentData });
         e.target.reset();
         setIsLoading(false);
       })
@@ -157,6 +195,7 @@ const CashDesk = ({ ClinicUser }) => {
               setPatientsInfo={setPatientsInfo}
               openActionModal={openActionModal}
               isLoading={isLoading}
+              receptionList={receptionList}
             />
           </div>
         )}
@@ -170,6 +209,7 @@ const CashDesk = ({ ClinicUser }) => {
           setSelectedKart={setSelectedKart}
           applyCashDeskActions={applyCashDeskActions}
           setActionModalData={setActionModalData}
+          paymentData={paymentData}
         />
       </div>
     </>

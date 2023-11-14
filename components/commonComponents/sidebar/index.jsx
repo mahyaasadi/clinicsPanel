@@ -6,7 +6,8 @@ import FeatherIcon from "feather-icons-react";
 
 const Sidebar = () => {
   const router = useRouter();
-  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [receptionSubmenuOpen, setReceptionSubmenuOpen] = useState(false);
+  const [prescriptionSubmenuOpen, setPrescriptionSubMenuOpen] = useState(false);
 
   useEffect(() => {
     const receptionSubRoutes = [
@@ -18,7 +19,13 @@ const Sidebar = () => {
     ];
 
     if (receptionSubRoutes.includes(router.pathname)) {
-      setSubmenuOpen(true);
+      setReceptionSubmenuOpen(true);
+    }
+
+    const prescriptionSubRoutes = ["/prescription"];
+
+    if (prescriptionSubRoutes.includes(router.pathname)) {
+      setPrescriptionSubMenuOpen(true);
     }
   }, []);
 
@@ -48,7 +55,10 @@ const Sidebar = () => {
               </li>
 
               <li className="submenu">
-                <a href="#" onClick={() => setSubmenuOpen(!submenuOpen)}>
+                <a
+                  href="#"
+                  onClick={() => setReceptionSubmenuOpen(!receptionSubmenuOpen)}
+                >
                   <FeatherIcon
                     icon="calendar"
                     style={{ width: "15px", height: "15px" }}
@@ -57,8 +67,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${submenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    receptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -86,7 +97,9 @@ const Sidebar = () => {
                     </Link>
                   </li>
 
-                  <li className={router.pathname == "/cashDesk" ? "active" : ""}>
+                  <li
+                    className={router.pathname == "/cashDesk" ? "active" : ""}
+                  >
                     <Link href="/cashDesk" className="font-12">
                       صندوق
                     </Link>
@@ -94,6 +107,37 @@ const Sidebar = () => {
                   <li className={router.pathname == "/karts" ? "active" : ""}>
                     <Link href="/karts" className="font-12">
                       پایانه های بانک
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+
+              <li className="submenu">
+                <a
+                  href="#"
+                  onClick={() =>
+                    setPrescriptionSubMenuOpen(!prescriptionSubmenuOpen)
+                  }
+                >
+                  <FeatherIcon
+                    icon="file-text"
+                    style={{ width: "15px", height: "15px" }}
+                  />
+                  <span>نسخه نویسی</span>
+                  <span className="menu-arrow"></span>
+                </a>
+                <ul
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
+                >
+                  <li
+                    className={
+                      router.pathname == "/prescription" ? "active" : ""
+                    }
+                  >
+                    <Link href="/prescription" className="font-12">
+                      نسخه نویسی
                     </Link>
                   </li>
                 </ul>
