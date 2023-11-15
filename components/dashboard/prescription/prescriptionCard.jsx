@@ -1,17 +1,76 @@
 import { useState, useEffect } from "react";
-// import PrescriptionType from "components/dashboard/prescription/prescriptionType";
-// import PrescriptionServiceType from "components/dashboard/prescription/prescriptionServiceType";
-// import TaminSrvSearch from "components/dashboard/prescription/TaminSrvSearch";
+import PrescriptionTypeHeader from "./prescriptionTypeHeader";
+import ParaServicesDropdown from "./paraServicesDropdown";
+import TaminSearchedServices from "components/dashboard/prescription/taminSearchedservices";
 import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
 import { Dropdown } from "primereact/dropdown";
 
-const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
+const PrescriptionCard = ({
+  setIsLoading,
+  drugInstructionList,
+  drugAmountList,
+  SelectedInstruction,
+  setSelectedInstruction,
+  SelectedAmount,
+  setSelectedAmount,
+  FUSelectInstruction,
+  FUSelectDrugAmount,
+  taminHeaderList,
+  taminParaServicesList,
+  changePrescTypeTab,
+  selectParaSrvType,
+  activeSearch,
+  searchTaminSrv,
+  selectSearchedService,
+  taminSrvSearchList,
+  FuAddToListItem,
+}) => {
+  function QtyChange(ac) {
+    let qty = $("#QtyInput").val();
+    qty = parseInt(qty);
+    if (ac == "+") {
+      qty = qty + 1;
+    } else {
+      if (qty != 1) {
+        qty = qty - 1;
+      }
+    }
+    $("#QtyInput").val(qty);
+  }
+
+  const handleDrugAmountSelect = (e) => {
+    setSelectedAmount(e.value);
+    FUSelectDrugAmount(e.value);
+  };
+
+  const handleDrugInstructionSelect = (e) => {
+    setSelectedInstruction(e.value);
+    FUSelectInstruction(e.value);
+  };
+
+  // Search Recommendation
+  const handleSearchKeyUp = () => {
+    setIsLoading(true);
+    let inputCount = $("#srvSearchInput").val().length;
+
+    if (inputCount > 2) {
+      setTimeout(() => {
+        $("#BtnServiceSearch").click();
+      }, 100);
+      setIsLoading(false);
+    } else {
+      $("#srvSearchInput").val() == "";
+      $(".SearchDiv").hide();
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="card presCard">
         <div className="card-body">
           <div className="prescript-header">
-            <div className="prescript-title text-secondary">نسخه جدید</div>
+            <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
@@ -38,25 +97,17 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
 
           <div className="card-body">
             <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
-              {/* {lists.map((item, index) => {
-                return (
-                  <PrescriptionType
-                    key={index}
-                    name={item.name}
-                    img={item.img}
-                    active={item.Active}
-                    id={item.id}
-                    changePrescId={changePrescId}
-                  />
-                );
-              })} */}
+              {taminHeaderList.map((item, index) => (
+                <PrescriptionTypeHeader
+                  key={index}
+                  item={item}
+                  changePrescTypeTab={changePrescTypeTab}
+                />
+              ))}
             </ul>
             <hr />
 
-            <form
-              className="w-100 pt-2"
-              // onSubmit={SearchTaminSrv}
-            >
+            <form className="w-100 pt-2" onSubmit={searchTaminSrv}>
               <div className="input-group mb-3 inputServiceContainer">
                 <input
                   type="hidden"
@@ -67,47 +118,42 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
                 <input
-                  // onFocus={handleOnFocus}
-                  // onBlur={handleOnBlur}
-                  // onKeyUp={handleSearchKeyUp}
                   type="text"
                   autoComplete="off"
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
+                  // onFocus={handleOnFocus}
+                  // onBlur={handleOnBlur}
+                  onKeyUp={handleSearchKeyUp}
                   // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
-                  className="form-select disNone"
+                  className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                  // onChange={() =>
-                  //   ChangeActiveServiceTypeID($("#ServiceSearchSelect").val())
-                  // }
+                  onChange={() =>
+                    selectParaSrvType($("#ServiceSearchSelect").val())
+                  }
                 >
-                  {/* {ServiceList.map((item) => {
-                    return (
-                      <PrescriptionServiceType
-                        key={item.srvType}
-                        srvType={item.srvType}
-                        srvTypeDes={item.srvTypeDes}
-                        prescTypeId={item.prescTypeId}
-                        Active={item.Active}
-                      />
-                    );
-                  })} */}
+                  {taminParaServicesList.map((paraSrvItem, index) => (
+                    <ParaServicesDropdown
+                      key={index}
+                      paraSrvItem={paraSrvItem}
+                    />
+                  ))}
                 </select>
 
                 {/* search buttons */}
-                {/* <button
+                <button
                   className="btn btn-primary rounded-left w-10 disNone"
                   id="BtnActiveSearch"
-                  // onClick={ActiveSearch}
+                  onClick={activeSearch}
                   type="button"
                 >
                   <i className="fe fe-close"></i>
-                </button> */}
+                </button>
                 <button
                   className="btn btn-primary rounded-left w-10"
                   id="BtnServiceSearch"
@@ -119,17 +165,16 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
                   {/* )} */}
                 </button>
                 <div className="col-12 SearchDiv" id="searchDiv">
-                  {/* <TaminSrvSearch
-                    data={TaminSrvSearchList}
-                    favEprescItems={favEprescItems}
-                    SelectSrvSearch={SelectSrvSearch}
-                  /> */}
+                  <TaminSearchedServices
+                    data={taminSrvSearchList}
+                    selectSearchedService={selectSearchedService}
+                  />
                 </div>
               </div>
 
-              {/* <div className="unsuccessfullSearch">
+              <div className="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
-              </div> */}
+              </div>
             </form>
 
             <div className="d-flex align-items-center gap-1 media-flex-column flex-wrap row">
@@ -169,8 +214,8 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
               <div id="drugInstruction" className="col media-mt-1">
                 <label className="lblAbs font-12">زمان مصرف</label>
                 <Dropdown
-                  // value={SelectedInstruction}
-                  // onChange={handleDrugInstructionSelect}
+                  value={SelectedInstruction}
+                  onChange={handleDrugInstructionSelect}
                   options={drugInstructionList}
                   optionLabel="label"
                   placeholder="انتخاب کنید"
@@ -182,8 +227,8 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
               <div id="drugAmount" className="col media-mt-1">
                 <label className="lblAbs font-12">تعداد در وعده</label>
                 <Dropdown
-                  // value={SelectedAmount}
-                  // onChange={handleDrugAmountSelect}
+                  value={SelectedAmount}
+                  onChange={handleDrugAmountSelect}
                   options={drugAmountList}
                   optionLabel="label"
                   placeholder="انتخاب کنید"
@@ -193,7 +238,7 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
               </div>
             </div>
 
-            <div className="d-flex align-items-center media-flex-column media-gap margin-top-1 justify-between">
+            <div className="d-flex align-items-center media-flex-column media-gap mt-3 justify-between">
               <div className="w-73 media-w-100">
                 <label className="lblAbs font-12">توضیحات</label>
                 <input
@@ -207,7 +252,7 @@ const PrescriptionCard = ({ drugInstructionList, drugAmountList }) => {
                 {/* {!srvEditMode ? ( */}
                 <button
                   className="btn rounded w-100 addToListBtn font-12"
-                  // onClick={FuAddToListItem}
+                  onClick={FuAddToListItem}
                 >
                   اضافه به لیست
                 </button>

@@ -6,11 +6,7 @@ import { ErrorAlert } from "class/AlertManage";
 import { axiosClient } from "class/axiosConfig.js";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
-const NewPatient = ({
-  ClinicID,
-  addNewPatient,
-  ActivePatientNID,
-}) => {
+const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
   const [genderOptionsList, setGenderOptionsList] = useState([
     { label: "مرد", value: "0" },
@@ -84,7 +80,9 @@ const NewPatient = ({
         <div className="modal-dialog modal-dialog-centered modal-md">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="mb-0">اضافه کردن بیمار</h5>
+              <p className="mb-0 text-secondary font-14 fw-bold">
+                اضافه کردن بیمار
+              </p>
               <button
                 type="button"
                 className="close-btn"
@@ -108,7 +106,9 @@ const NewPatient = ({
                       id="Foreigners"
                       name="Foreigners"
                     />
-                    <label className="form-check-label">اتباع</label>
+                    <label className="form-check-label text-secondary">
+                      اتباع
+                    </label>
                   </div>
 
                   <div className="col-md-12 media-w-100 mt-3">
@@ -207,8 +207,11 @@ const NewPatient = ({
                 </div>
 
                 <div className="submit-section">
-                  <button type="submit" className="btn btn-primary btn-save">
-                    اضافه کردن بیمار
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-save rounded font-14"
+                  >
+                    ثبت
                   </button>
                 </div>
               </form>

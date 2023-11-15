@@ -2,17 +2,16 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import PatientInfoCard from "components/dashboard/reception/patientInfo/patientInfoCard";
+import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/prescriptionCard";
-// import {
-//   useQuery,
-//   useMutation,
-//   useQueryClient,
-//   QueryClient,
-//   QueryClientProvider,
-// } from "react-query";
+import AddToListItems from "components/dashboard/prescription/addToListItems";
+import {
+  TaminPrescType,
+  TaminParaServicesTypeList,
+} from "class/taminPrescriptionData";
 
 const getDrugInstructionsList = async () => {
   let url = "TaminEprsc/DrugInstruction";
@@ -49,19 +48,103 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
+// PrescTypeHeader
+let ActivePrescTypeID = 1;
+let ActivePrescName = "دارو";
+let ActivePrescImg,
+  ActiveSrvTypePrsc = null;
+let ActiveSrvTypeID = "01";
+
+// PatientInfo
 let ClinicID,
   ActivePatientNID,
   ActivePatientID,
-  ActiveInsuranceType = null;
+  ActiveInsuranceType,
+  ActiveInsuranceID = null;
 
+// Services
+let ActiveSrvCode,
+  ActiveSrvName,
+  ActiveParaCode = null;
+
+let addPrescriptionitems = [];
 const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   ClinicID = ClinicUser.ClinicID;
-  console.log({ drugAmountList, drugInstructionList });
 
   const [isLoading, setIsLoading] = useState(true);
+  const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
 
-  // Drug Instruction and Amount List
+  const [SelectedInstruction, setSelectedInstruction] = useState(null);
+  const [SelectedInstructionLbl, setSelectedInstructionLbl] = useState(null);
+  const [SelectedAmount, setSelectedAmount] = useState(null);
+  const [SelectedAmountLbl, setSelectedAmountLbl] = useState(null);
+
+  const [taminHeaderList, setTaminHeaderList] = useState(TaminPrescType);
+  const [taminParaServicesList, setTaminParaServicesList] = useState(
+    TaminParaServicesTypeList
+  );
+  const [taminSrvSearchList, setTaminSrvSearchList] = useState([]);
+
+  const [prescriptionItemsData, setPrescriptionItemsData] = useState([]);
+
+  //------ Patient Info ------//
+  const getPatientInfo = (e) => {
+    e.preventDefault();
+    setPatientStatIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+    ActivePatientNID = formProps.nationalCode;
+
+    let url = "Patient/checkByNid";
+    let data = {
+      ClinicID,
+      NID: formProps.nationalCode,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        if (response.data.error == "1") {
+          $("#newPatientModal").modal("show");
+        } else {
+          ActivePatientID = response.data.user._id;
+          ActiveInsuranceType = response.data.user.InsuranceType;
+          ActiveInsuranceID = response.data.user.Insurance;
+          setPatientInfo(response.data.user);
+          $("#patientInfoCard").show("");
+        }
+        setPatientStatIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setPatientStatIsLoading(false);
+      });
+  };
+
+  const addNewPatient = (props) => {
+    let url = "Patient/addPatient";
+    let data = props;
+    data.CenterID = ClinicID;
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setPatientInfo(response.data);
+        $("#newPatientModal").modal("hide");
+        SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+        if (response.data.errors) {
+          ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+      });
+  };
+
+  //---- Drug Instruction and Amount ----//
   let selectInstructionData = [];
   for (let i = 0; i < drugInstructionList.length; i++) {
     const item = drugInstructionList[i];
@@ -85,39 +168,233 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   drugAmountList = selectInstructionData;
   selectInstructionData = null;
 
-  //----- Patient Info -----//
-  const getPatientInfo = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-    ActivePatientNID = formProps.nationalCode;
-
-    let url = "Patient/checkByNid";
-    let data = {
-      ClinicID,
-      NID: formProps.nationalCode,
-    };
-
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        // if (response.data.error == "1") {
-        //   $("#newPatientModal").modal("show");
-        // } else {
-        ActivePatientID = response.data.user._id;
-        ActiveInsuranceType = response.data.user.InsuranceType;
-        setPatientInfo(response.data.user);
-        $("#patientInfoCard").show("");
-        // }
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+  const FUSelectInstruction = (instruction) => {
+    const findInsLbl = drugInstructionList.find((x) => x.value == instruction);
+    setSelectedInstructionLbl(findInsLbl ? findInsLbl.label : instruction);
+    setSelectedInstruction(instruction);
   };
+
+  const FUSelectDrugAmount = (amount) => {
+    const findAmntLbl = drugAmountList.find((x) => x.value == amount);
+    setSelectedAmountLbl(findAmntLbl ? findAmntLbl.label : amount);
+    setSelectedAmount(amount);
+  };
+
+  //---- PrescriptionType Header Tab Change ----//
+  const changePrescTypeTab = (srvTypeID, prescImg, prescName, prescId) => {
+    ActiveSrvTypeID = srvTypeID;
+    ActivePrescImg = prescImg;
+    ActivePrescName = prescName;
+    console.log({ prescId });
+    ActivePrescTypeID = prescId;
+  };
+
+  //---- ParaServices Dropdown ----//
+  const selectParaSrvType = (id) => (ActiveSrvTypeID = id);
+
+  //--- Search In Tamin Services ---//
+  const searchTaminSrv = (e) => {
+    e.preventDefault();
+
+    if (ActiveSrvCode == null) {
+      setIsLoading(true);
+
+      let formData = new FormData(e.target);
+      const formProps = Object.fromEntries(formData);
+
+      let data = {
+        Text: formProps.srvSearchInput,
+        srvType: ActiveSrvTypeID,
+      };
+
+      axiosClient
+        .post("TaminServices/SearchSrv", data)
+        .then((response) => {
+          setTaminSrvSearchList(response.data);
+
+          $(".SearchDiv").show();
+          $(".unsuccessfullSearch").hide();
+          if (response.data.length === 0) {
+            $(".unsuccessfullSearch").show();
+          } else {
+            $(".unsuccessfullSearch").hide();
+          }
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
+    }
+  };
+
+  const activeSearch = () => {
+    ActiveSrvCode = null;
+    $("#srvSearchInput").val("");
+    $("#BtnActiveSearch").hide();
+    $("#srvSearchInput").prop("readonly", false);
+    $("#BtnServiceSearch").show();
+    $("#srvSearchInput").focus();
+  };
+
+  const selectSearchedService = (
+    name,
+    code,
+    TaminCode,
+    type,
+    paraTarefCode
+  ) => {
+    ActiveSrvName = name;
+    ActiveSrvTypePrsc = type;
+    ActiveParaCode = paraTarefCode;
+
+    ActiveInsuranceID == "2"
+      ? (ActiveSrvCode = TaminCode)
+      : (ActiveSrvCode = code);
+
+    $("#srvSearchInput").val(name);
+    $("#BtnServiceSearch").hide();
+    $("#BtnActiveSearch").show();
+    $(".SearchDiv").hide();
+    $("#srvSearchInput").prop("readonly", true);
+  };
+
+  // create prescItem
+  const prescItemCreator = async (
+    prescId,
+    Instruction,
+    Amount,
+    SrvCode,
+    SrvName,
+    Qty,
+    PrscImg,
+    InstructionLbl,
+    AmountLbl,
+    PrscName,
+    SrvTypePrsc,
+    ParaCode
+  ) => {
+    console.log({ prescId });
+    if (prescId == 1 && Instruction == null) {
+      ErrorAlert("خطا", "در اقلام دارویی زمان مصرف باید انتخاب گردد");
+      return false;
+    } else if (prescId == 1 && Amount == null) {
+      ErrorAlert("خطا", "در اقلام دارویی  تعداد در وعده باید انتخاب گردد");
+      return false;
+    } else {
+      if (SrvCode == null || SrvName == null) {
+        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
+        return false;
+      } else {
+        let prescItems = {
+          SrvName: SrvName,
+          SrvCode: SrvCode,
+          Img: PrscImg,
+          Qty: $("#QtyInput").val(),
+          DrugInstruction: InstructionLbl,
+          TimesADay: AmountLbl,
+          PrescType: PrscName,
+          prescId,
+        };
+
+        let prescData = null;
+        if (prescId == 1) {
+          prescData = {
+            srvId: {
+              srvType: {
+                srvType: SrvTypePrsc,
+              },
+              srvCode: SrvCode,
+            },
+            srvQty: parseInt($("#QtyInput").val()),
+            timesAday: {
+              drugAmntId: Amount,
+            },
+            repeat: null,
+            drugInstruction: {
+              drugInstId: Instruction,
+            },
+            dose: "",
+          };
+        } else {
+          let parTarefGrp = null;
+          if (ParaCode === undefined) {
+            parTarefGrp = null;
+          } else {
+            parTarefGrp = {
+              parGrpCode: ParaCode,
+            };
+          }
+
+          prescData = {
+            srvId: {
+              srvType: {
+                srvType: SrvTypePrsc,
+              },
+              srvCode: SrvCode,
+              parTarefGrp: parTarefGrp,
+            },
+            srvQty: parseInt($("#QtyInput").val()),
+          };
+        }
+
+        if (
+          addPrescriptionitems.length > 0 &&
+          addPrescriptionitems.find(({ srvId }) => srvId.srvCode === SrvCode)
+        ) {
+          ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+          return false;
+        }
+
+        return { prescData, prescItems };
+      }
+    }
+  };
+
+  // Add TaminSrvItem to the List
+  const FuAddToListItem = async (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    let { prescData, prescItems } = await prescItemCreator(
+      ActivePrescTypeID,
+      SelectedInstruction,
+      SelectedAmount,
+      ActiveSrvCode,
+      ActiveSrvName,
+      $("#QtyInput").val(),
+      ActivePrescImg,
+      SelectedInstructionLbl,
+      SelectedAmountLbl,
+      ActivePrescName,
+      ActiveSrvTypePrsc,
+      ActiveParaCode
+    );
+
+    console.log({ ActivePrescTypeID });
+
+    if (prescData) {
+      // let onlyVisitPrescData = {
+      //   Name: ActiveSrvName,
+      //   Code: ActiveSrvCode,
+      // };
+
+      addPrescriptionitems.push(prescData);
+      // addPrescriptionSrvNameitems.push(onlyVisitPrescData);
+      setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
+
+      activeSearch();
+    }
+    console.log({ prescData });
+    $("#QtyInput").val("1");
+    setSelectedAmount(null);
+    setSelectedAmountLbl(null);
+    setSelectedInstruction(null);
+    setSelectedInstructionLbl(null);
+  };
+
+  console.log({ prescriptionItemsData });
 
   return (
     <>
@@ -134,16 +411,43 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
                 setPatientInfo={setPatientInfo}
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
+                patientStatIsLoading={patientStatIsLoading}
               />
             </div>
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
               <PrescriptionCard
+                setIsLoading={setIsLoading}
                 drugAmountList={drugAmountList}
                 drugInstructionList={drugInstructionList}
+                SelectedInstruction={SelectedInstruction}
+                setSelectedInstruction={setSelectedInstruction}
+                SelectedAmount={SelectedAmount}
+                setSelectedAmount={setSelectedAmount}
+                FUSelectInstruction={FUSelectInstruction}
+                FUSelectDrugAmount={FUSelectDrugAmount}
+                taminHeaderList={taminHeaderList}
+                taminParaServicesList={taminParaServicesList}
+                changePrescTypeTab={changePrescTypeTab}
+                selectParaSrvType={selectParaSrvType}
+                searchTaminSrv={searchTaminSrv}
+                activeSearch={activeSearch}
+                selectSearchedService={selectSearchedService}
+                taminSrvSearchList={taminSrvSearchList}
+                FuAddToListItem={FuAddToListItem}
               />
+
+              <div className="prescList">
+                <AddToListItems data={prescriptionItemsData} />
+              </div>
             </div>
           </div>
         </div>
+
+        <AddNewPatient
+          addNewPatient={addNewPatient}
+          ClinicID={ClinicID}
+          ActivePatientNID={ActivePatientNID}
+        />
       </div>
     </>
   );

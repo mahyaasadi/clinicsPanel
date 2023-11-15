@@ -53,6 +53,7 @@ const Reception = ({ ClinicUser }) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
@@ -62,7 +63,7 @@ const Reception = ({ ClinicUser }) => {
   //----- Patients Info -----//
   const getPatientInfo = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setPatientStatIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -85,11 +86,11 @@ const Reception = ({ ClinicUser }) => {
           setPatientInfo(response.data.user);
           $("#patientInfoCard").show("");
         }
-        setIsLoading(false);
+        setPatientStatIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        setIsLoading(false);
+        setPatientStatIsLoading(false);
       });
   };
 
@@ -355,10 +356,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -391,7 +392,7 @@ const Reception = ({ ClinicUser }) => {
         <title>پذیرش</title>
       </Head>
       <div className="page-wrapper reception-wrapper">
-        <div className="content container-fluid">
+        <div className="content container-fluid pb-0">
           <div className="row">
             <div className="row receptionUpperSection justify-between paddingL-0">
               <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
@@ -401,6 +402,7 @@ const Reception = ({ ClinicUser }) => {
                   getPatientInfo={getPatientInfo}
                   ActivePatientNID={ActivePatientNID}
                   ClinicID={ClinicID}
+                  patientStatIsLoading={patientStatIsLoading}
                 />
               </div>
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
@@ -429,7 +431,7 @@ const Reception = ({ ClinicUser }) => {
                 </div>
               </div>
             </div>
-            <div className="mt-3 col-md-12">
+            <div className="mt-3 col-md-12 prescInfoCard">
               <PrescInfo
                 data={addedSrvItems}
                 submitReceptionPrescript={submitReceptionPrescript}

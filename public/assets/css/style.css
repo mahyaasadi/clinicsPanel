@@ -9042,10 +9042,6 @@ ul li .active {
   height: 35vh;
 }
 
-.prescript-title {
-  font-size: 15px;
-}
-
 .prescript-body {
   padding: 30px;
   position: relative;
@@ -9484,10 +9480,8 @@ ul li .active {
   direction: initial;
 }
 
-.prescInfoCard {
-  bottom: 0;
-  position: fixed;
-  /* width: calc(100% - 260px); */
+.pb-0 {
+  padding-bottom: 0 !important;
 }
 
 .tabs-scroll {
@@ -9660,7 +9654,7 @@ ul li .active {
   }
 
   .media-w-100 {
-    width: 100%;
+    width: 100% !important;
   }
 
   .media-gap {

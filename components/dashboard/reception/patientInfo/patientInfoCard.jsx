@@ -15,8 +15,10 @@ const PatientInfoCard = ({
   ActivePatientNID,
   ClinicID,
   setPatientInfo,
+  patientStatIsLoading,
+  FuAddToListItem,
 }) => {
-  console.log({ data });
+  // console.log({ data });
 
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +47,7 @@ const PatientInfoCard = ({
       val: value,
     };
 
-    console.log({ updatedInfo });
+    // console.log({ updatedInfo });
 
     axiosClient
       .post(url, updatedInfo)
@@ -63,10 +65,8 @@ const PatientInfoCard = ({
           data.NationalID = value;
         }
 
-        setPatientInfo([])
-        setTimeout(() => {
-          setPatientInfo(data)
-        }, 100);
+        setPatientInfo([]);
+        setTimeout(() => setPatientInfo(data), 100);
         handleCloseModal();
         setIsLoading(false);
       })
@@ -90,7 +90,7 @@ const PatientInfoCard = ({
       NID: formProps.patientNID,
     };
 
-    console.log({ editData });
+    // console.log({ editData });
 
     axiosClient
       .post(url, editData)
@@ -142,12 +142,25 @@ const PatientInfoCard = ({
                 className="form-control rounded-right GetPatientInput w-50"
                 defaultValue={ActivePatientNID}
               />
-              <button
-                className="btn btn-primary rounded-left w-10 font-12"
-                id="frmPatientInfoBtnSubmit"
-              >
-                استعلام
-              </button>
+              {!patientStatIsLoading ? (
+                <button
+                  className="btn btn-primary rounded-left w-10 font-12"
+                  id="frmPatientInfoBtnSubmit"
+                >
+                  استعلام
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary w-10 rounded-left"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                </button>
+              )}
             </div>
           </form>
 
@@ -173,7 +186,7 @@ const PatientInfoCard = ({
             </div>
 
             <div className="margin-right-1 font-12 mt-3">
-              <div className="d-flex gap-2 mb-2">
+              <div className="d-flex gap-2 mb-3">
                 <FeatherIcon icon="user" className="mb-0" />
                 {data.Name}
                 {data.Age ? <p className="m-0">- {data.Age} ساله</p> : ""}
@@ -184,7 +197,7 @@ const PatientInfoCard = ({
                 {data.Gender ? data.Gender : "-"}
               </div>
 
-              <div className="d-flex gap-2 mt-2">
+              <div className="d-flex gap-2 mt-3">
                 <div className="d-flex gap-1 align-items-center">
                   <Image src={insurance} alt="insuranceIcon" width="20" />
                   {data.InsuranceName}
@@ -206,15 +219,14 @@ const PatientInfoCard = ({
 
               {/* <p>نوع بیمه : {data.InsuranceTypeName}</p> */}
 
-              <p className="mt-2 margin-right-sm">
+              <p className="mt-3 margin-right-sm">
                 تاریخ اعتبار تا {""}
                 {data.accountValidto && dateFormat(`${data.accountValidto}`)}
               </p>
-
             </div>
           </div>
         </div>
-      </div >
+      </div>
 
       <EditPatientInfoModal
         data={data}
