@@ -8,6 +8,7 @@ const Sidebar = () => {
   const router = useRouter();
   const [receptionSubmenuOpen, setReceptionSubmenuOpen] = useState(false);
   const [prescriptionSubmenuOpen, setPrescriptionSubMenuOpen] = useState(false);
+  const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState(false);
 
   useEffect(() => {
     const receptionSubRoutes = [
@@ -15,17 +16,19 @@ const Sidebar = () => {
       "/discounts",
       "/receptionRecords",
       "/cashDesk",
-      "/karts",
     ];
+
+    const prescriptionSubRoutes = ["/prescription"];
+    const settingsSubRoutes = ["/insuranceSettings", "/karts"];
 
     if (receptionSubRoutes.includes(router.pathname)) {
       setReceptionSubmenuOpen(true);
     }
-
-    const prescriptionSubRoutes = ["/prescription"];
-
     if (prescriptionSubRoutes.includes(router.pathname)) {
       setPrescriptionSubMenuOpen(true);
+    }
+    if (settingsSubRoutes.includes(router.pathname)) {
+      setSettingsSubMenuOpen(true);
     }
   }, []);
 
@@ -104,11 +107,6 @@ const Sidebar = () => {
                       صندوق
                     </Link>
                   </li>
-                  <li className={router.pathname == "/karts" ? "active" : ""}>
-                    <Link href="/karts" className="font-12">
-                      پایانه های بانک
-                    </Link>
-                  </li>
                 </ul>
               </li>
 
@@ -142,6 +140,40 @@ const Sidebar = () => {
                   </li>
                 </ul>
               </li>
+
+              <li className="submenu">
+                <a
+                  href="#"
+                  onClick={() => setSettingsSubMenuOpen(!settingsSubMenuOpen)}
+                >
+                  <FeatherIcon
+                    icon="settings"
+                    style={{ width: "15px", height: "15px" }}
+                  />
+                  <span>تنظیمات</span>
+                  <span className="menu-arrow"></span>
+                </a>
+                <ul
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
+                >
+                  <li
+                    className={
+                      router.pathname == "/insuranceSetting" ? "active" : ""
+                    }
+                  >
+                    <Link href="/insuranceSetting" className="font-12">
+                      بیمه ها
+                    </Link>
+                  </li>
+                  <li className={router.pathname == "/karts" ? "active" : ""}>
+                    <Link href="/karts" className="font-12">
+                      پایانه های بانک
+                    </Link>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -151,3 +183,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

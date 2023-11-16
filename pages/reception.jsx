@@ -91,6 +91,7 @@ const Reception = ({ ClinicUser }) => {
       .catch((error) => {
         console.log(error);
         setPatientStatIsLoading(false);
+        ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
       });
   };
 
@@ -111,7 +112,6 @@ const Reception = ({ ClinicUser }) => {
         if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
         }
-        // e.target.reset();
       })
       .catch((err) => {
         console.log(err);
@@ -179,7 +179,19 @@ const Reception = ({ ClinicUser }) => {
     ActiveModalityID = modalityID;
 
     $("#srvSearchInput").val(name);
+    // $("#BtnServiceSearch").hide();
+    // $("#BtnActiveSearch").show();
     $("#searchDiv").hide();
+    // $("#srvSearchInput").prop("readonly", true);
+  };
+
+  const activeSearch = () => {
+    // ActiveSrvCode = null;
+    // $("#srvSearchInput").val("");
+    // $("#BtnActiveSearch").hide();
+    // $("#srvSearchInput").prop("readonly", false);
+    // $("#BtnServiceSearch").show();
+    // $("#srvSearchInput").focus();
   };
 
   //----- Discount -----//
@@ -417,6 +429,7 @@ const Reception = ({ ClinicUser }) => {
                   setEditSrvData={setEditSrvData}
                   editSrvMode={editSrvMode}
                   setEditSrvMode={setEditSrvMode}
+                  activeSearch={activeSearch}
                 />
 
                 <div className="prescList">

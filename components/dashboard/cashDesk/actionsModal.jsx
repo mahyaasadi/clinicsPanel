@@ -21,7 +21,7 @@ const CashDeskActions = ({
   data,
   paymentData,
 }) => {
-  // console.log({ data });
+  console.log({ data });
   console.log({ paymentData });
 
   // let CalCart = 0;
@@ -148,7 +148,7 @@ const CashDeskActions = ({
 
         <Modal.Body>
           <form onSubmit={applyCashDeskActions}>
-            <div className="row">
+            {/* <div className="row">
               <div className="cashDeskPatientInfo text-center rounded text-secondary col-lg-4 font-13">
                 نام بیمار : {data?.Patient?.Name}
               </div>
@@ -313,7 +313,7 @@ const CashDeskActions = ({
               >
                 ثبت
               </button>
-            </div>
+            </div> */}
           </form>
         </Modal.Body>
       </Modal>

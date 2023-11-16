@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert, WarningAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import PatientInfoCard from "components/dashboard/reception/patientInfo/patientInfoCard";
 import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
@@ -68,10 +68,12 @@ let ActiveSrvCode,
   ActiveParaCode = null;
 
 let addPrescriptionitems = [];
+let visitPrescriptionData = [];
 const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
 
@@ -85,7 +87,6 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
     TaminParaServicesTypeList
   );
   const [taminSrvSearchList, setTaminSrvSearchList] = useState([]);
-
   const [prescriptionItemsData, setPrescriptionItemsData] = useState([]);
 
   //------ Patient Info ------//
@@ -120,6 +121,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
       .catch((error) => {
         console.log(error);
         setPatientStatIsLoading(false);
+        ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
       });
   };
 
@@ -185,7 +187,6 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
     ActiveSrvTypeID = srvTypeID;
     ActivePrescImg = prescImg;
     ActivePrescName = prescName;
-    console.log({ prescId });
     ActivePrescTypeID = prescId;
   };
 
@@ -197,7 +198,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
     e.preventDefault();
 
     if (ActiveSrvCode == null) {
-      setIsLoading(true);
+      setSearchIsLoading(true);
 
       let formData = new FormData(e.target);
       const formProps = Object.fromEntries(formData);
@@ -211,19 +212,20 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
         .post("TaminServices/SearchSrv", data)
         .then((response) => {
           setTaminSrvSearchList(response.data);
+          setSearchIsLoading(false);
 
           $(".SearchDiv").show();
           $(".unsuccessfullSearch").hide();
+
           if (response.data.length === 0) {
             $(".unsuccessfullSearch").show();
           } else {
             $(".unsuccessfullSearch").hide();
           }
-          setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setIsLoading(false);
+          setSearchIsLoading(false);
         });
     }
   };
@@ -274,7 +276,6 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
     SrvTypePrsc,
     ParaCode
   ) => {
-    console.log({ prescId });
     if (prescId == 1 && Instruction == null) {
       ErrorAlert("خطا", "در اقلام دارویی زمان مصرف باید انتخاب گردد");
       return false;
@@ -372,21 +373,22 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
       ActiveParaCode
     );
 
-    console.log({ ActivePrescTypeID });
-
     if (prescData) {
-      // let onlyVisitPrescData = {
-      //   Name: ActiveSrvName,
-      //   Code: ActiveSrvCode,
-      // };
+      let visitPrescData = {
+        Name: ActiveSrvName,
+        Code: ActiveSrvCode,
+      };
 
       addPrescriptionitems.push(prescData);
-      // addPrescriptionSrvNameitems.push(onlyVisitPrescData);
+      visitPrescriptionData.push(visitPrescData);
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
 
       activeSearch();
     }
+
     console.log({ prescData });
+
+    // Reset
     $("#QtyInput").val("1");
     setSelectedAmount(null);
     setSelectedAmountLbl(null);
@@ -394,7 +396,104 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
     setSelectedInstructionLbl(null);
   };
 
-  console.log({ prescriptionItemsData });
+  // Registeration
+  const registerEpresc = async (visit) => {
+    if (visit === 1) {
+      let url = "TaminEprsc/PrescriptionAdd";
+      let data = {
+        CenterID: ClinicID,
+        NID: ActivePatientID,
+        PMN: $("#PatientTel").html(),
+        PTI: 3,
+        Comment: $("#eprscItemDescription").val(),
+        note: [],
+        SrvNames: [],
+        prescTypeName: "ویزیت",
+      };
+
+      console.log({ data });
+
+      // axiosClient
+      //   .post(url, data)
+      //   .then((response) => {
+      //     console.log(response.data);
+
+      //     if (response.data.res.trackingCode !== null) {
+      //       SuccessAlert(
+      //         "ویزیت با موفقیت ثبت شد!",
+      //         "کد رهگیری شما : " + `${response.data.res.trackingCode}`
+      //       );
+      //     } else if (response.data.res.error_Msg == "نسخه تکراری است") {
+      //       WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
+      //     } else if (ActivePatientID === undefined) {
+      //       WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     ErrorAlert("خطا", "ثبت ویزیت با خطا مواجه گردید!");
+      //   });
+    } else {
+      let url = "TaminEprsc/PrescriptionAdd";
+
+      let data = {
+        CenterID: ClinicID,
+        NID: ActivePatientID,
+        PMN: $("#PatientTel").html(),
+        PTI: ActivePrescTypeID,
+        Comment: $("#eprscItemDescription").val(),
+        note: addPrescriptionitems,
+        SrvNames: visitPrescriptionData,
+        prescTypeName: ActivePrescName,
+      };
+
+      console.log({ data });
+
+      // axiosClient
+      //   .post(url, data)
+      //   .then(async (response) => {
+      //     console.log(response.data);
+      //     if (response.data.res.trackingCode !== null) {
+      //       SuccessAlert(
+      //         "نسخه نهایی با موفقیت ثبت شد!",
+      //         "کد رهگیری شما : " + `${response.data.res.trackingCode}`
+      //       );
+      //     } else if (response.data.res.error_Code !== null) {
+      //       ErrorAlert("خطا!", response.data.res.error_Msg);
+      //     } else if (response.data.res == null) {
+      //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+
+      // let url = prescriptionHeadID
+      //   ? "TaminEprsc/PrescriptionEdit"
+      //   : "TaminEprsc/PrescriptionAdd";
+
+      // let dataToSend = { ...data, otpCode: code };
+
+      // if (prescriptionHeadID) {
+      //   dataToSend = {
+      //     ...dataToSend,
+      //     PrID: PrID,
+      //     headerID: prescriptionHeadID,
+      //   };
+      // }
+
+      // try {
+      //   const response = await axiosClient.post(url, data);
+      //   console.log(response.data);
+      // } catch (err) {
+      //   console.error(err);
+      // }
+    }
+  };
+
+  useEffect(() => {
+    console.log({ prescriptionItemsData });
+  }, [prescriptionItemsData]);
 
   return (
     <>
@@ -414,9 +513,10 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
                 patientStatIsLoading={patientStatIsLoading}
               />
             </div>
-            <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
+            <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
                 setIsLoading={setIsLoading}
+                searchIsLoading={searchIsLoading}
                 drugAmountList={drugAmountList}
                 drugInstructionList={drugInstructionList}
                 SelectedInstruction={SelectedInstruction}
@@ -434,6 +534,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
                 selectSearchedService={selectSearchedService}
                 taminSrvSearchList={taminSrvSearchList}
                 FuAddToListItem={FuAddToListItem}
+                registerEpresc={registerEpresc}
               />
 
               <div className="prescList">

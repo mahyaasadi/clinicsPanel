@@ -4,7 +4,7 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
 const AddToListItems = ({ data }) => {
-  console.log({ data });
+  // console.log({ data });
   return (
     <>
       <div dir="rtl">

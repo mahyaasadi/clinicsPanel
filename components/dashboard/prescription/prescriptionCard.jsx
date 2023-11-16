@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import ParaServicesDropdown from "./paraServicesDropdown";
 import TaminSearchedServices from "components/dashboard/prescription/taminSearchedservices";
-import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
-import { Dropdown } from "primereact/dropdown";
 
 const PrescriptionCard = ({
   setIsLoading,
+  searchIsLoading,
   drugInstructionList,
   drugAmountList,
   SelectedInstruction,
@@ -17,13 +17,14 @@ const PrescriptionCard = ({
   FUSelectDrugAmount,
   taminHeaderList,
   taminParaServicesList,
+  taminSrvSearchList,
   changePrescTypeTab,
   selectParaSrvType,
+  selectSearchedService,
   activeSearch,
   searchTaminSrv,
-  selectSearchedService,
-  taminSrvSearchList,
   FuAddToListItem,
+  registerEpresc,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -81,14 +82,14 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-                // onClick={() => registerEpresc(1)}
+                onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-                // onClick={openPinModal}
+                onClick={() => registerEpresc(0)}
               >
                 ثبت نسخه نهایی
               </button>
@@ -154,16 +155,27 @@ const PrescriptionCard = ({
                 >
                   <i className="fe fe-close"></i>
                 </button>
-                <button
-                  className="btn btn-primary rounded-left w-10"
-                  id="BtnServiceSearch"
-                >
-                  {/* {isLoading ? (
-                    <ExtraSmallLoader />
-                  ) : ( */}
-                  <i className="fe fe-search"></i>
-                  {/* )} */}
-                </button>
+
+                {!searchIsLoading ? (
+                  <button
+                    className="btn btn-primary rounded-left w-10"
+                    id="BtnServiceSearch"
+                  >
+                    <i className="fe fe-search"></i>
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-primary rounded-left"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                    ></span>
+                  </button>
+                )}
+
                 <div className="col-12 SearchDiv" id="searchDiv">
                   <TaminSearchedServices
                     data={taminSrvSearchList}
@@ -172,7 +184,7 @@ const PrescriptionCard = ({
                 </div>
               </div>
 
-              <div className="unsuccessfullSearch">
+              <div className="unsuccessfullSearch" id="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
               </div>
             </form>

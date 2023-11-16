@@ -2,6 +2,13 @@ import { useEffect } from "react";
 import Image from "next/image";
 
 const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
+  const handleSearchDivs = () => {
+    $("#unsuccessfullSearch").hide();
+    $("#searchDiv").hide();
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+  };
+
   const selectPrescType = () => {
     $(".prescService").hide();
     let prescTypeId = $(".prescTypeId" + item.id);
@@ -15,6 +22,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         $("#drugAmount").show();
 
         changePrescTypeTab("01", item.img, item.name, 1);
+        handleSearchDivs();
         break;
       case 2:
         $("#ServiceSearchSelect").show();
@@ -23,6 +31,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab("02", item.img, item.name, 2);
+        handleSearchDivs();
         break;
       case 3:
         $("#ServiceSearchSelect").val("16");
@@ -31,6 +40,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab("16", item.img, item.name, 3);
+        handleSearchDivs();
         break;
       case 5:
         $("#ServiceSearchSelect").val("17");
@@ -39,14 +49,18 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab("17", item.img, item.name, 5);
+        handleSearchDivs();
         break;
       default:
         break;
     }
   };
 
-  if (item.Active === "active")
-    changePrescTypeTab("01", item.img, item.name, 1);
+  useEffect(() => {
+    if (item.Active === "active" && item.id === 1) {
+      changePrescTypeTab("01", item.img, item.name, 1);
+    }
+  }, []);
 
   return (
     <>

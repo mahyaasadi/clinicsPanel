@@ -16,6 +16,7 @@ const ReceptionCard = ({
   setEditSrvData,
   editSrvMode,
   setEditSrvMode,
+  activeSearch,
 }) => {
   let activeClass = null;
 
@@ -78,16 +79,27 @@ const ReceptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={(e) => handleSearchService(e.target.value)}
-                  defaultValue={(editSrvMode == true ? editSrvData?.Name : "")}
+                  defaultValue={editSrvMode == true ? editSrvData?.Name : ""}
                   key={editSrvData.Name}
                 />
 
+                {/* search buttons */}
+                {/* <button
+                  className="btn btn-primary rounded-left w-10 d-none"
+                  id="BtnActiveSearch"
+                  onClick={activeSearch}
+                  type="button"
+                >
+                  <i className="fe fe-close"></i>
+                </button> */}
+
                 <button
-                  className="btn btn-primary rounded-left w-10 d-flex align-items-center justify-center"
+                  className="btn btn-primary rounded-left w-10"
                   id="BtnServiceSearch"
                 >
                   <i className="fe fe-search"></i>
                 </button>
+
                 <div className="col-12 SearchDiv input-group" id="searchDiv">
                   <SearchedServiceItems
                     data={searchedServices}
