@@ -4,7 +4,6 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import { useRouter } from "next/router";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import Loading from "components/commonComponents/loading/loading";
 import PatientInfoCard from "@/components/dashboard/reception/patientInfo/patientInfoCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
@@ -52,7 +51,6 @@ const Reception = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
@@ -100,12 +98,9 @@ const Reception = ({ ClinicUser }) => {
     let data = props;
     data.CenterID = ClinicID;
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setPatientInfo(response.data);
         $("#newPatientModal").modal("hide");
         SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
@@ -368,13 +363,13 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
-    console.log({ dataToSubmit });
+    // console.log({ dataToSubmit });
 
     axiosClient
       .post(url, dataToSubmit)

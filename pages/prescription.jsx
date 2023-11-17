@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert, WarningAlert } from "class/AlertManage";
-import Loading from "components/commonComponents/loading/loading";
+// import Loading from "components/commonComponents/loading/loading";
 import PatientInfoCard from "components/dashboard/reception/patientInfo/patientInfoCard";
 import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/prescriptionCard";
@@ -82,10 +82,6 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   const [SelectedAmount, setSelectedAmount] = useState(null);
   const [SelectedAmountLbl, setSelectedAmountLbl] = useState(null);
 
-  const [taminHeaderList, setTaminHeaderList] = useState(TaminPrescType);
-  const [taminParaServicesList, setTaminParaServicesList] = useState(
-    TaminParaServicesTypeList
-  );
   const [taminSrvSearchList, setTaminSrvSearchList] = useState([]);
   const [prescriptionItemsData, setPrescriptionItemsData] = useState([]);
 
@@ -386,7 +382,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
       activeSearch();
     }
 
-    console.log({ prescData });
+    // console.log({ prescData });
 
     // Reset
     $("#QtyInput").val("1");
@@ -525,8 +521,8 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
                 setSelectedAmount={setSelectedAmount}
                 FUSelectInstruction={FUSelectInstruction}
                 FUSelectDrugAmount={FUSelectDrugAmount}
-                taminHeaderList={taminHeaderList}
-                taminParaServicesList={taminParaServicesList}
+                taminHeaderList={TaminPrescType}
+                taminParaServicesList={TaminParaServicesTypeList}
                 changePrescTypeTab={changePrescTypeTab}
                 selectParaSrvType={selectParaSrvType}
                 searchTaminSrv={searchTaminSrv}

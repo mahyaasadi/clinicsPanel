@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import { resetServerContext } from "react-beautiful-dnd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Loading from "components/commonComponents/loading/loading";
@@ -9,11 +8,10 @@ const PatientCategories = ({
   setPatientsInfo,
   openActionModal,
   isLoading,
-  receptionList,
 }) => {
   resetServerContext();
 
-  // console.log({ patientsInfo, receptionList });
+  console.log({ patientsInfo });
 
   const [categories, setCategories] = useState([
     { id: "6550ab29aaffd91260889560", name: "در انتظار" },
@@ -51,9 +49,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-                ...item,
-                category: result.destination.droppableId,
-              }
+              ...item,
+              category: result.destination.droppableId,
+            }
             : item
         )
       );
@@ -132,7 +130,7 @@ const PatientCategories = ({
                                                       className="font-12 d-flex justify-start"
                                                     >
                                                       سهم بیمار :{" "}
-                                                      {item.calculated?.TotalPC?.toLocaleString()}
+                                                      {item.item.Calculated?.TotalPC?.toLocaleString()}
                                                     </p>
                                                   </div>
 

@@ -3,9 +3,17 @@ import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
+import ReceptionItemInfoModal from "./receptionItemInfo";
+import ReceptionItemHistoryModal from "./receptionItemHistory";
 
 const ReceptionItem = ({ srv, deleteReception }) => {
   const router = useRouter();
+
+  // ReceptionItem Info and History
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
+  const handleCloseInfoModal = () => setShowInfoModal(false);
+  const handleCloseHistoryModal = () => setShowHistoryModal(false)
 
   const handleEditBtnClick = () => {
     router.push({
@@ -22,12 +30,12 @@ const ReceptionItem = ({ srv, deleteReception }) => {
     {
       label: "تاریخچه پذیرش",
       icon: <FeatherIcon icon="clock" size="20" />,
-      command: () => handleHistoryButtonClick(),
+      command: () => setShowHistoryModal(true),
     },
     {
       label: "جزيیات پذیرش",
       icon: <FeatherIcon icon="info" size="20" />,
-      command: () => handleInfoButtonClick(),
+      command: () => setShowInfoModal(true),
     },
     {
       label: "حذف",
@@ -35,14 +43,6 @@ const ReceptionItem = ({ srv, deleteReception }) => {
       command: () => deleteReception(srv._id),
     },
   ];
-
-  const handleHistoryButtonClick = () => {
-    console.log("history");
-  };
-
-  const handleInfoButtonClick = () => {
-    console.log("Info");
-  };
 
   return (
     <>
@@ -116,16 +116,19 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                 <div className="d-flex gap-2 fw-bold align-items-center col-10 flex-wrap">
                   <div className="font-12">{srv.Modality.Name}</div>
                 </div>
+
                 <div className="d-flex gap-2 mt-2 flex-wrap">
                   <FeatherIcon icon="calendar" className="prescItembtns" />
                   <div className="">{srv.Date}</div>
                   <div className="">,</div>
                   <div className="">{srv.Time}</div>
                 </div>
+
                 <p className="mb-1 d-flex gap-2 flex-wrap">
                   <FeatherIcon icon="user" className="prescItembtns" />
                   {srv.Patient.Name}
                 </p>
+
                 <div className="d-flex gap-2 mb-1 align-items-center">
                   <div className="w-16 m-0 d-flex">
                     <svg
@@ -167,16 +170,18 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 
               {srv.Items?.map((item, index) => (
                 <span className="" key={index}>
-                  {item.Name} {" | "}
+                  {item.Name}
                 </span>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <ReceptionItemInfoModal srv={srv} show={showInfoModal} onHide={handleCloseInfoModal} />
+      <ReceptionItemHistoryModal srv={srv} show={showHistoryModal} onHide={handleCloseHistoryModal} />
     </>
   );
 };
 
 export default ReceptionItem;
-

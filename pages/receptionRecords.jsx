@@ -76,7 +76,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
       await axiosClient
         .delete(url)
         .then((response) => {
-          console.log(response.data);
           setReceptionList(receptionList.filter((a) => a._id !== id));
           setIsLoading(false);
         })
@@ -116,8 +115,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
       DateFrom: dateFrom ? dateFrom : "",
       DateTo: dateTo ? dateTo : "",
     };
-
-    console.log({ data });
 
     axiosClient
       .post(url, data)

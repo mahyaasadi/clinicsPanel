@@ -211,6 +211,9 @@ const Discounts = ({ ClinicUser }) => {
 
   return (
     <>
+      <Head>
+        <title>تخفیفات</title>
+      </Head>
       <div className="page-wrapper">
         {isLoading ? (
           <Loading />

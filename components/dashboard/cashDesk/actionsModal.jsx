@@ -56,7 +56,7 @@ const CashDeskActions = ({
     } else {
       let _CalDebt = 0;
       let _CalReturn = 0;
-      console.log(_CalCash);
+      // console.log(_CalCash);
       if (name === "debt") {
         _CalDebt = value;
         result = calculatedTotalPC - _CalDebt;
@@ -76,11 +76,6 @@ const CashDeskActions = ({
   //   if (name === "cashPayment") {
   //     const newCashPayment = calculatedTotalPC - floatValue - cartPayment || 0;
   //     setCashPayment(floatValue);
-  //     // setDebtPayment(
-  //     //   newCashPayment < 0
-  //     //     ? Math.abs(newCashPayment)
-  //     //     : calculatedTotalPC - cashPayment
-  //     // );
   //     setDebtPayment(
   //       newCashPayment < 0
   //         ? Math.abs(newCashPayment)
@@ -89,7 +84,6 @@ const CashDeskActions = ({
   //   } else if (name === "cartPayment") {
   //     const newCartPayment = calculatedTotalPC - cashPayment - floatValue || 0;
   //     setCartPayment(floatValue);
-  //     // setDebtPayment(newCartPayment < 0 ? Math.abs(newCartPayment) : 0);
   //     setDebtPayment(
   //       newCartPayment < 0
   //         ? Math.abs(newCartPayment)
@@ -108,13 +102,6 @@ const CashDeskActions = ({
   //   const totalPayments = parseFloat(cashPayment) + parseFloat(cartPayment);
   //   const remainingPayment = calculatedTotalPC - totalPayments;
   //   const returnPaymentValue = remainingPayment < 0 ? remainingPayment : 0;
-
-  //   console.log({
-  //     calculatedTotalPC,
-  //     totalPayments,
-  //     remainingPayment,
-  //   });
-
   //   setReturnPayment(returnPaymentValue);
 
   //   if (returnPaymentValue) {
@@ -126,13 +113,6 @@ const CashDeskActions = ({
   //     );
   //   }
 
-  //   console.log({
-  //     cashPayment,
-  //     cartPayment,
-  //     calculatedTotalPC,
-  //     debtPayment,
-  //     returnPayment,
-  //   });
   // }, [cashPayment, cartPayment, calculatedTotalPC, debtPayment, returnPayment]);
 
   return (
@@ -148,7 +128,7 @@ const CashDeskActions = ({
 
         <Modal.Body>
           <form onSubmit={applyCashDeskActions}>
-            {/* <div className="row">
+            <div className="row">
               <div className="cashDeskPatientInfo text-center rounded text-secondary col-lg-4 font-13">
                 نام بیمار : {data?.Patient?.Name}
               </div>
@@ -194,32 +174,29 @@ const CashDeskActions = ({
                         <td>{item.Name}</td>
                         <td>{item.Qty}</td>
                         <td>{RowTotalCost.toLocaleString()}</td>
-                        <td>{RowPatientCost}</td>
+                        <td>{RowPatientCost.toLocaleString()}</td>
                         <td>{RowOrgCost.toLocaleString()}</td>
-                        <td>{RowTotalDiscount}</td>
+                        <td>{RowTotalDiscount.toLocaleString()}</td>
                       </tr>
                     );
                   })}
 
-                  {data?.Calculated?.map(
-                    (x) => (
-                      (calculatedTotalPC = x.TotalPC),
-                      (
-                        <>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{x.TotalQty?.toLocaleString()}</td>
-                            <td>{x.TotalPrice?.toLocaleString()}</td>
-                            <td>{x.TotalPC?.toLocaleString()}</td>
-                            <td>{x.TotalOC?.toLocaleString()}</td>
-                            <td>{x.TotalDiscount?.toLocaleString()}</td>
-                          </tr>
-                        </>
-                      )
-                    )
-                  )}
+                  {data?.Calculated ? (
+                    calculatedTotalPC = data?.Calculated?.TotalPC,
+                    <>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{data?.Calculated?.TotalQty?.toLocaleString()}</td>
+                        <td>{data?.Calculated?.TotalPrice?.toLocaleString()}</td>
+                        <td>{data?.Calculated?.TotalPC?.toLocaleString()}</td>
+                        <td>{data?.Calculated?.TotalOC?.toLocaleString()}</td>
+                        <td>{data?.Calculated?.TotalDiscount?.toLocaleString()}</td>
+                      </tr>
+                    </>
+                  ) : ""
+                  }
                 </tbody>
               </table>
             </div>
@@ -313,7 +290,7 @@ const CashDeskActions = ({
               >
                 ثبت
               </button>
-            </div> */}
+            </div>
           </form>
         </Modal.Body>
       </Modal>

@@ -70,9 +70,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    receptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -125,9 +124,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -154,16 +152,15 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
-                      router.pathname == "/insuranceSetting" ? "active" : ""
+                      router.pathname == "/insuranceSettings" ? "active" : ""
                     }
                   >
-                    <Link href="/insuranceSetting" className="font-12">
+                    <Link href="/insuranceSettings" className="font-12">
                       بیمه ها
                     </Link>
                   </li>

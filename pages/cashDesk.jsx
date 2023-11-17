@@ -31,7 +31,6 @@ const CashDesk = ({ ClinicUser }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [patientsInfo, setPatientsInfo] = useState([]);
   const [receptionList, setReceptionList] = useState([]);
-  const [kartData, setKartData] = useState([]);
   const [kartsOptionList, setKartsOptionsList] = useState([]);
   const [selectedKart, setSelectedKart] = useState(null);
   const [showActionsModal, setShowActionsModal] = useState(false);
@@ -81,7 +80,7 @@ const CashDesk = ({ ClinicUser }) => {
       });
   };
 
-  // // get all kartsData
+  // get all karts
   const getKartsData = () => {
     setIsLoading(true);
     let url = `CashDeskKart/getAll/${ClinicID}`;
@@ -89,7 +88,6 @@ const CashDesk = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        setKartData(response.data);
         let kartOptions = [];
         for (let i = 0; i < response.data.length; i++) {
           const item = response.data[i];
@@ -125,7 +123,7 @@ const CashDesk = ({ ClinicUser }) => {
       ReturnPayment: formProps.returnPayment,
     };
 
-    console.log({ data });
+    // console.log({ data });
 
     axiosClient
       .post(url, data)
@@ -137,8 +135,6 @@ const CashDesk = ({ ClinicUser }) => {
         // const updatedItem = receptionList.find(
         //   (item) => item._id === response.data._id
         // );
-
-        // console.log({ updatedItem });
 
         // const updatedItem = receptionList.map((item) => {
         //   if (item._id === response.data._id) {
@@ -155,17 +151,13 @@ const CashDesk = ({ ClinicUser }) => {
         );
 
         if (index !== -1) {
-          // Create a new array with the updated item at the found index
           let updatedPaymentData = paymentData[index];
           updatedPaymentData = response.data;
-
           console.log({ updatedPaymentData });
 
-          // Set the state with the new array
           setPaymentData(updatedPaymentData);
         }
 
-        console.log({ paymentData });
         e.target.reset();
         setIsLoading(false);
       })
@@ -195,7 +187,6 @@ const CashDesk = ({ ClinicUser }) => {
               setPatientsInfo={setPatientsInfo}
               openActionModal={openActionModal}
               isLoading={isLoading}
-              receptionList={receptionList}
             />
           </div>
         )}

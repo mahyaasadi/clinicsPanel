@@ -26,6 +26,7 @@ const ReceptionList = ({
             searchIsLoading={searchIsLoading}
           />
         </div>
+
         {data.map((item, index) => (
           <ReceptionItem
             key={index}
