@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
-import Loading from "components/commonComponents/loading/loading";
 import DepartmentsHeader from "./departmentsHeader";
 import { Skeleton } from "primereact/skeleton";
 
@@ -16,7 +14,7 @@ const ReceptionCard = ({
   setEditSrvData,
   editSrvMode,
   setEditSrvMode,
-  activeSearch,
+  // activeSearch,
 }) => {
   let activeClass = null;
 

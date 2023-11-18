@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 const DepartmentsHeader = ({ department, activeClass, handleDepTabChange }) => {
   const handleAdditionalActions = () => {
-    // Additional code for DOM manipulations
     $("#searchDiv").hide();
     $("#srvSearchInput").val("");
     $("#unsuccessfulSearch").hide();
@@ -13,6 +12,7 @@ const DepartmentsHeader = ({ department, activeClass, handleDepTabChange }) => {
       handleDepTabChange(department.Services, department._id);
     }
   }, []);
+
   return (
     <>
       <li className="nav-item">

@@ -6,7 +6,6 @@ import selectfieldColourStyles from "class/selectfieldStyle";
 
 const EditInsuranceTypeModal = ({
   changeInsuranceType,
-  selectInsuranceType,
   data,
   isLoading,
   ClinicID,
@@ -74,12 +73,9 @@ const EditInsuranceTypeModal = ({
                     className="text-center font-12"
                     styles={selectfieldColourStyles}
                     options={insuranceOptionsList}
-                    required
                     name="insuranceTypeOptions"
                     placeholder="نوع بیمه مورد نظر را انتخاب نمایید"
-                    id="long-value-select"
-                    instanceId="long-value-select"
-                    // onChangeValue={(value) => selectInsuranceType(value?.value)}
+                    required
                   />
                 </div>
 
@@ -113,4 +109,5 @@ const EditInsuranceTypeModal = ({
     </>
   );
 };
+
 export default EditInsuranceTypeModal;

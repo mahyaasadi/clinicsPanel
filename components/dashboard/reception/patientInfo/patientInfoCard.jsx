@@ -47,8 +47,6 @@ const PatientInfoCard = ({
       val: value,
     };
 
-    // console.log({ updatedInfo });
-
     axiosClient
       .post(url, updatedInfo)
       .then((response) => {
@@ -89,8 +87,6 @@ const PatientInfoCard = ({
       IID: parseInt(formProps.insuranceTypeOptions),
       NID: formProps.patientNID,
     };
-
-    // console.log({ editData });
 
     axiosClient
       .post(url, editData)
@@ -216,8 +212,6 @@ const PatientInfoCard = ({
                   </i>
                 </Link>
               </div>
-
-              {/* <p>نوع بیمه : {data.InsuranceTypeName}</p> */}
 
               <p className="mt-3 margin-right-sm">
                 تاریخ اعتبار تا {""}

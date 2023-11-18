@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { Dropdown } from "primereact/dropdown";
 import ApplyCashDeskModal from "./applyCashDeskModal";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
@@ -81,7 +80,7 @@ const CashDeskActions = ({
       <Modal show={show} onHide={onHide} centered size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            <div className="row p-2 text-secondary font-15 fw-bold">
+            <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
               {/* <div className="cashDeskPatientInfo text-center rounded text-secondary col-lg-6 font-13"> */}
               نام بیمار : {data?.Patient?.Name} {" | "}
               {/* </div> */}
@@ -178,7 +177,7 @@ const CashDeskActions = ({
             </table>
           </div>
 
-          <div className="row p-2">
+          <div className="row p-2 media-gap-sm">
             <div className="col-lg-3 col-12">
               <label className="lblAbs font-12">مبلغ پرداخت با کارت</label>
               <div
@@ -186,8 +185,8 @@ const CashDeskActions = ({
                 className="form-control floating rounded text-secondary"
               >
                 {paymentData?.CartPayment
-                  ? paymentData.CartPayment.toLocaleString()
-                  : calculatedTotalPC}
+                  ? parseInt(paymentData.CartPayment).toLocaleString()
+                  : parseInt(calculatedTotalPC).toLocaleString()}
               </div>
             </div>
             <div className="col-lg-3 col-12">
@@ -197,7 +196,7 @@ const CashDeskActions = ({
                 className="form-control floating rounded text-secondary"
               >
                 {paymentData?.CashPayment
-                  ? paymentData?.CashPayment.toLocaleString()
+                  ? parseInt(paymentData?.CashPayment).toLocaleString()
                   : 0}
               </div>
             </div>
@@ -208,7 +207,7 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.Debt ? paymentData?.Debt.toLocaleString() : 0}
+                {paymentData?.Debt ? parseInt(paymentData?.Debt).toLocaleString() : 0}
               </div>
             </div>
 
@@ -218,7 +217,7 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.ReturnPayment ? paymentData?.ReturnPayment : 0}
+                {paymentData?.ReturnPayment ? parseInt(paymentData?.ReturnPayment).toLocaleString() : 0}
               </div>
             </div>
           </div>
@@ -240,54 +239,3 @@ const CashDeskActions = ({
 };
 
 export default CashDeskActions;
-
-// const [debtPayment, setDebtPayment] = useState(0);
-// const [cashPayment, setCashPayment] = useState(paymentData?.CashPayment || 0);
-// const [cartPayment, setCartPayment] = useState(paymentData?.CartPayment || 0);
-// const [returnPayment, setReturnPayment] = useState(0);
-
-// const handleCalculateCost = (e) => {
-//   const { name, value } = e.target;
-//   const floatValue = value || 0;
-
-//   if (name === "cashPayment") {
-//     const newCashPayment = calculatedTotalPC - floatValue - cartPayment || 0;
-//     setCashPayment(floatValue);
-//     setDebtPayment(
-//       newCashPayment < 0
-//         ? Math.abs(newCashPayment)
-//         : calculatedTotalPC - floatValue
-//     );
-//   } else if (name === "cartPayment") {
-//     const newCartPayment = calculatedTotalPC - cashPayment - floatValue || 0;
-//     setCartPayment(floatValue);
-//     setDebtPayment(
-//       newCartPayment < 0
-//         ? Math.abs(newCartPayment)
-//         : calculatedTotalPC - floatValue
-//     );
-//   } else if (name === "debt") {
-//     const newDebtValue = floatValue || 0;
-//     setDebtPayment(newDebtValue);
-//     setCashPayment(calculatedTotalPC - newDebtValue - cartPayment || 0);
-//     setCartPayment(calculatedTotalPC - cashPayment - newDebtValue || 0);
-//     return;
-//   }
-// };
-
-// useEffect(() => {
-//   const totalPayments = parseFloat(cashPayment) + parseFloat(cartPayment);
-//   const remainingPayment = calculatedTotalPC - totalPayments;
-//   const returnPaymentValue = remainingPayment < 0 ? remainingPayment : 0;
-//   setReturnPayment(returnPaymentValue);
-
-//   if (returnPaymentValue) {
-//     setDebtPayment(0);
-//   } else {
-//     setDebtPayment(
-//       calculatedTotalPC - parseFloat(cashPayment) - parseFloat(cartPayment) ||
-//         0
-//     );
-//   }
-
-// }, [cashPayment, cartPayment, calculatedTotalPC, debtPayment, returnPayment]);

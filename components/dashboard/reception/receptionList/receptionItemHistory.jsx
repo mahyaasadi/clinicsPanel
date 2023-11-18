@@ -3,12 +3,14 @@ import { Modal } from "react-bootstrap"
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
 
     const renderEditHistory = (historyArray) => {
+        console.log({ historyArray });
+        // console.log(historyArray?.EditHistory?.EditDate);
         return (
             <div>
                 <ul>
                     {historyArray?.map((historyItem, index) => (
                         <li key={index}>
-                            {historyItem.Time}
+                            {historyItem?.EditHistory?.EditDate}
 
                             {/* Check if there is a nested EditHistory array */}
                             {historyItem.EditHistory && historyItem.EditHistory.length !== 0 && (

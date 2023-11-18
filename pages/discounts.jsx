@@ -83,10 +83,11 @@ const Discounts = ({ ClinicUser }) => {
 
   const addDiscount = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    setIsLoading(true);
     let url = "CenterDiscount/add";
     let data = {
       CenterID: ClinicID,
@@ -95,6 +96,7 @@ const Discounts = ({ ClinicUser }) => {
       Value: formProps.discountValue,
       Percent: parseInt(SelectDiscountPercent),
     };
+
     axiosClient
       .post(url, data)
       .then((response) => {

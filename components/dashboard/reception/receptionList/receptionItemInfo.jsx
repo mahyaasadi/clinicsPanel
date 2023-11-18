@@ -50,10 +50,10 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                             <div className="d-flex gap-2 align-items-center prescDetails">
                               <p className="mb-0">{item.Qty} عدد,</p>
                               <p className="mb-0">
-                                مبلغ : {item.Price.toLocaleString()} تومان,
+                                مبلغ : {parseInt(item.Price).toLocaleString()} تومان,
                               </p>
                               <p className="mb-0">
-                                سهم سازمان : {item.OC.toLocaleString()} تومان,
+                                سهم سازمان : {parseInt(item.OC).toLocaleString()} تومان,
                               </p>
 
                               <p className="mb-0">

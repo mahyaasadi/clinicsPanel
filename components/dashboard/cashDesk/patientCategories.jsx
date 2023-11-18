@@ -1,7 +1,8 @@
 import { useState } from "react";
+import FeatherIcon from "feather-icons-react";
+import Loading from "components/commonComponents/loading/loading";
 import { resetServerContext } from "react-beautiful-dnd";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Loading from "components/commonComponents/loading/loading";
 
 const PatientCategories = ({
   patientsInfo,
@@ -49,9 +50,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-                ...item,
-                category: result.destination.droppableId,
-              }
+              ...item,
+              category: result.destination.droppableId,
+            }
             : item
         )
       );
@@ -81,7 +82,7 @@ const PatientCategories = ({
                             id="dropzone"
                             dir="rtl"
                           >
-                            <p className="mb-1 text-secondary font-14 fw-bold text-center">
+                            <p className="mb-1 mt-3 text-secondary font-14 fw-bold text-center">
                               {category.name}
                             </p>
                             <hr className="mb-4" />
@@ -117,26 +118,40 @@ const PatientCategories = ({
                                                 className="d-flex align-items-center flex-col"
                                                 key={index}
                                               >
-                                                <div className="p-1 d-flex gap-4">
-                                                  <div>
-                                                    {/* <div className="d-flex"> */}
-                                                    <p className="mb-2">
-                                                      {item.item.Time},{" "}
-                                                      {item.item.Date}
-                                                    </p>
+                                                <div className="p-2 d-flex gap-4 align-items-center font-12">
+                                                  <div dir="rtl">
+                                                    <div className="d-flex align-items-center gap-1">
+                                                      <FeatherIcon icon="calendar" className="prescItembtns" />
+                                                      {item.item.Date},{" "}{item.item.Time}
+                                                    </div>
 
-                                                    {/* </div> */}
-
-                                                    <p className="text-align-end mb-2 font-13">
+                                                    <div className="d-flex align-items-center gap-1">
+                                                      <FeatherIcon icon="user" className="prescItembtns" />
                                                       {item.name}
-                                                    </p>
+                                                    </div>
 
-                                                    <p className="text-align-end font-12 mb-2">
-                                                      کد ملی : {item.nationalID}
-                                                    </p>
+                                                    <div className="d-flex align-items-center gap-2">
+                                                      <div className="w-16 m-0 d-flex">
+                                                        <svg
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          fill="none"
+                                                          viewBox="0 0 24 24"
+                                                          strokeWidth="1.5"
+                                                          stroke="currentColor"
+                                                          className="w-100 m-0"
+                                                        >
+                                                          <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                                                          />
+                                                        </svg>
+                                                      </div>
+                                                      {item.nationalID}
+                                                    </div>
                                                     <p
                                                       dir="rtl"
-                                                      className="font-12 d-flex justify-start"
+                                                      className="d-flex justify-start"
                                                     >
                                                       سهم بیمار :{" "}
                                                       {item.item.Calculated?.TotalPC?.toLocaleString()}
@@ -163,7 +178,7 @@ const PatientCategories = ({
                                                           borderRadius: "10px",
                                                         }}
                                                       />
-                                                      <p className="fw-bold font-12">
+                                                      <p className="fw-bold">
                                                         {item.item.ReceptionID}
                                                       </p>
                                                     </div>

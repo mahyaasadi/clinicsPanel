@@ -6,6 +6,7 @@ import { ErrorAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import CashDeskActions from "components/dashboard/cashDesk/actionsModal";
 import PatientsCategories from "components/dashboard/cashDesk/patientCategories";
+import FilterReceptionItems from "components/dashboard/reception/receptionList/filterReceptionItems";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -170,6 +171,13 @@ const CashDesk = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
+            {/* SetRangeDate={SetRangeDate}
+            applyFilterOnRecItems={applyFilterOnRecItems}
+            handleResetFilterFields={handleResetFilterFields}
+            selectedDepartment={selectedDepartment}
+            FUSelectDepartment={FUSelectDepartment}
+            searchIsLoading={searchIsLoading}
+            <FilterReceptionItems ClinicID={ClinicID} /> */}
             <PatientsCategories
               patientsInfo={patientsInfo}
               setPatientsInfo={setPatientsInfo}

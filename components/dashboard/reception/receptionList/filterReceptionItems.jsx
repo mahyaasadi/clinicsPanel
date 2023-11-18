@@ -1,7 +1,6 @@
 import { Dropdown } from "primereact/dropdown";
 import DatePicker from "components/commonComponents/datepicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
 const FilterReceptionItems = ({
@@ -74,7 +73,6 @@ const FilterReceptionItems = ({
               {!searchIsLoading ? (
                 <>
                   <button
-                    // onClick={handleSearchClick}
                     className="btn btn-primary w-48 d-flex justify-center align-items-center"
                   >
                     <i className="fe fe-search"></i>
@@ -97,7 +95,7 @@ const FilterReceptionItems = ({
                 data-pr-position="top"
                 className="btn btn-primary w-48 d-flex align-items-center justify-center refreshBtn"
               >
-                <i class="fa fa-refresh"></i>
+                <i className="fa fa-refresh"></i>
               </button>
               <Tooltip target=".refreshBtn">تنظیم مجدد</Tooltip>
             </div>

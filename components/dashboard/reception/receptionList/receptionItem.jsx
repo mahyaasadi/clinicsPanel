@@ -9,7 +9,7 @@ import ReceptionItemHistoryModal from "./receptionItemHistory";
 const ReceptionItem = ({ srv, deleteReception }) => {
   const router = useRouter();
 
-  // ReceptionItem Info and History
+  // ReceptionItem Info and History Modals
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const handleCloseInfoModal = () => setShowInfoModal(false);
@@ -20,10 +20,6 @@ const ReceptionItem = ({ srv, deleteReception }) => {
       pathname: "/reception",
       query: { id: srv._id, receptionID: srv.ReceptionID },
     });
-  };
-
-  const tooltipOptions = {
-    position: "top",
   };
 
   const items = [
@@ -74,13 +70,14 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                   />
                   <Tooltip target=".editBtn">ویرایش</Tooltip>
                 </button>
+
                 <div>
                   <SpeedDial
                     model={items}
                     direction="left"
                     style={{ top: "15px", left: "50px" }}
                   />
-                  {items.map((item, index) => (
+                  {/* {items.map((item, index) => (
                     <Tooltip
                       key={index}
                       target={`.speed-dial-item-${index}`}
@@ -88,7 +85,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                     >
                       {item.label}
                     </Tooltip>
-                  ))}
+                  ))} */}
                 </div>
               </div>
             </div>
@@ -193,4 +190,3 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 };
 
 export default ReceptionItem;
-
