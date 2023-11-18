@@ -19,7 +19,7 @@ const FilterReceptionItems = ({
   return (
     <>
       <label className="lblAbs fw-bold font-13">جستجوی لیست پذیرش ها</label>
-      <div className="card">
+      <div className="card shadow">
         <form onSubmit={applyFilterOnRecItems}>
           <div className="card-body row align-items-center mt-3 searchContainerPadding receptionSearch-header">
             <div className="col-lg-2 col-12">

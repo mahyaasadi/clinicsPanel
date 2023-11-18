@@ -11,9 +11,9 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 
   // ReceptionItem Info and History
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const [showHistoryModal, setShowHistoryModal] = useState(false)
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const handleCloseInfoModal = () => setShowInfoModal(false);
-  const handleCloseHistoryModal = () => setShowHistoryModal(false)
+  const handleCloseHistoryModal = () => setShowHistoryModal(false);
 
   const handleEditBtnClick = () => {
     router.push({
@@ -47,7 +47,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
   return (
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
-        <div className="card h-100 patientCard">
+        <div className="card h-100 patientCard shadow">
           <div className="card-header align-items-center">
             <div className="d-flex justify-between">
               <img
@@ -170,7 +170,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 
               {srv.Items?.map((item, index) => (
                 <span className="" key={index}>
-                  {item.Name}
+                  {item.Name} {" | "}
                 </span>
               ))}
             </div>
@@ -178,10 +178,19 @@ const ReceptionItem = ({ srv, deleteReception }) => {
         </div>
       </div>
 
-      <ReceptionItemInfoModal srv={srv} show={showInfoModal} onHide={handleCloseInfoModal} />
-      <ReceptionItemHistoryModal srv={srv} show={showHistoryModal} onHide={handleCloseHistoryModal} />
+      <ReceptionItemInfoModal
+        srv={srv}
+        show={showInfoModal}
+        onHide={handleCloseInfoModal}
+      />
+      <ReceptionItemHistoryModal
+        srv={srv}
+        show={showHistoryModal}
+        onHide={handleCloseHistoryModal}
+      />
     </>
   );
 };
 
 export default ReceptionItem;
+

@@ -10,7 +10,7 @@ const ReceptionList = ({
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
-  searchIsLoading
+  searchIsLoading,
 }) => {
   return (
     <>

@@ -24,9 +24,11 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
+  ClinicUserID,
   ActiveReceptionID = null;
 const CashDesk = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  ClinicUserID = ClinicUser._id;
 
   const [isLoading, setIsLoading] = useState(true);
   const [patientsInfo, setPatientsInfo] = useState([]);
@@ -37,6 +39,7 @@ const CashDesk = ({ ClinicUser }) => {
   const [actionModalData, setActionModalData] = useState([]);
   const [paymentData, setPaymentData] = useState([]);
 
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const handleCloseActionsModal = () => setShowActionsModal(false);
 
   const openActionModal = (receptionID, data) => {
@@ -116,47 +119,32 @@ const CashDesk = ({ ClinicUser }) => {
     let url = "ClinicReception/CashDeskAction";
     let data = {
       ReceptionID: ActiveReceptionID,
-      CashPayment: formProps.cashPayment,
-      CartPayment: formProps.cartPayment,
-      Cart: selectedKart,
-      Debt: formProps.debt,
-      ReturnPayment: formProps.returnPayment,
+      UserID: ClinicUserID,
+      Price: formProps.price,
+      Return: formProps.returnPaymentSwitch ? true : false,
+      CartID: selectedKart,
     };
-
-    // console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        setShowActionsModal(false);
-        // setPaymentData(response.data);
+        setShowPaymentModal(false);
+        setPaymentData(response.data.CashDesk);
+        getReceptionList();
 
-        // const updatedItem = receptionList.find(
-        //   (item) => item._id === response.data._id
-        // );
+        //     // Find the index of the item in the array
+        //     const index = receptionList.findIndex(
+        //       (item) => item._id === response.data._id
+        //     );
 
-        // const updatedItem = receptionList.map((item) => {
-        //   if (item._id === response.data._id) {
-        //     return { ...item, {} };
-        //   }
-        //   return item;
-        // });
+        //     if (index !== -1) {
+        //       let updatedPaymentData = paymentData[index];
+        //       updatedPaymentData = response.data;
+        //       console.log({ updatedPaymentData });
 
-        // setPaymentData(updatedItem);
-
-        // Find the index of the item in the array
-        const index = receptionList.findIndex(
-          (item) => item._id === response.data._id
-        );
-
-        if (index !== -1) {
-          let updatedPaymentData = paymentData[index];
-          updatedPaymentData = response.data;
-          console.log({ updatedPaymentData });
-
-          setPaymentData(updatedPaymentData);
-        }
+        //       setPaymentData(updatedPaymentData);
+        // }
 
         e.target.reset();
         setIsLoading(false);
@@ -201,6 +189,9 @@ const CashDesk = ({ ClinicUser }) => {
           applyCashDeskActions={applyCashDeskActions}
           setActionModalData={setActionModalData}
           paymentData={paymentData}
+          isLoading={isLoading}
+          showPaymentModal={showPaymentModal}
+          setShowPaymentModal={setShowPaymentModal}
         />
       </div>
     </>

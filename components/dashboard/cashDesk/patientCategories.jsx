@@ -49,9 +49,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-              ...item,
-              category: result.destination.droppableId,
-            }
+                ...item,
+                category: result.destination.droppableId,
+              }
             : item
         )
       );
@@ -117,11 +117,20 @@ const PatientCategories = ({
                                                 className="d-flex align-items-center flex-col"
                                                 key={index}
                                               >
-                                                <div className="p-1 d-flex gap-3">
-                                                  <div className="">
+                                                <div className="p-1 d-flex gap-4">
+                                                  <div>
+                                                    {/* <div className="d-flex"> */}
+                                                    <p className="mb-2">
+                                                      {item.item.Time},{" "}
+                                                      {item.item.Date}
+                                                    </p>
+
+                                                    {/* </div> */}
+
                                                     <p className="text-align-end mb-2 font-13">
                                                       {item.name}
                                                     </p>
+
                                                     <p className="text-align-end font-12 mb-2">
                                                       کد ملی : {item.nationalID}
                                                     </p>
@@ -135,24 +144,29 @@ const PatientCategories = ({
                                                   </div>
 
                                                   <div className="patientAvatar">
-                                                    <img
-                                                      src={
-                                                        "https://irannobat.ir/images/" +
-                                                        item.avatar
-                                                      }
-                                                      alt="patientAvatar"
-                                                      onError={({
-                                                        currentTarget,
-                                                      }) => {
-                                                        currentTarget.src =
-                                                          "assets/img/NotFoundAvatar.jpeg";
-                                                      }}
-                                                      style={{
-                                                        width: "30px",
-                                                        height: "30px",
-                                                        borderRadius: "10px",
-                                                      }}
-                                                    />
+                                                    <div className="d-flex flex-col gap-2">
+                                                      <img
+                                                        src={
+                                                          "https://irannobat.ir/images/" +
+                                                          item.avatar
+                                                        }
+                                                        alt="patientAvatar"
+                                                        onError={({
+                                                          currentTarget,
+                                                        }) => {
+                                                          currentTarget.src =
+                                                            "assets/img/NotFoundAvatar.jpeg";
+                                                        }}
+                                                        style={{
+                                                          width: "30px",
+                                                          height: "30px",
+                                                          borderRadius: "10px",
+                                                        }}
+                                                      />
+                                                      <p className="fw-bold font-12">
+                                                        {item.item.ReceptionID}
+                                                      </p>
+                                                    </div>
                                                   </div>
                                                 </div>
                                               </div>

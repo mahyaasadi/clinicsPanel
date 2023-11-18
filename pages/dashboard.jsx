@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
+import { axiosClient } from "class/axiosConfig";
 import { getSession } from "lib/session";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -17,7 +19,32 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
+let ClinicID = null;
 const Dashboard = ({ ClinicUser }) => {
+  ClinicID = ClinicUser.ClinicID;
+
+  const [statsIsLoading, setStatsIsLoading] = useState(true);
+
+  const getStats = () => {
+    setStatsIsLoading(true);
+    let url = "ClinicDashboard/TodayStatistics";
+
+    axiosClient
+      .post(url, { ClinicID })
+      .then((response) => {
+        console.log(response.data);
+        // setStats(response.data);
+        setStatsIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setStatsIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getStats();
+  }, []);
   return (
     <>
       <Head>
@@ -41,3 +68,4 @@ const Dashboard = ({ ClinicUser }) => {
 };
 
 export default Dashboard;
+

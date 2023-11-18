@@ -150,7 +150,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card">
+                <div className="card ">
                   <ReceptionList
                     data={currentItems}
                     ClinicID={ClinicID}
@@ -163,11 +163,13 @@ const ReceptionRecords = ({ ClinicUser }) => {
                     searchIsLoading={searchIsLoading}
                   />
 
-                  <Paginator
-                    nPages={nPages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                  />
+                  {currentItems.length > 0 && (
+                    <Paginator
+                      nPages={nPages}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                    />
+                  )}
                 </div>
               </div>
             </div>
