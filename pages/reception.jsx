@@ -51,6 +51,7 @@ const Reception = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false)
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
@@ -316,23 +317,48 @@ const Reception = ({ ClinicUser }) => {
     }
     addData.Discount = ActiveDiscountShare;
 
-    setAddedSrvItems([...addedSrvItems, addData]);
+    // setAddedSrvItems([...addedSrvItems, addData]);
 
-    if (!editSrvMode) {
-      if (ActiveSrvName == null || ActiveSrvCode == null) {
-        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
-        return false;
-      } else if (
-        addedSrvItems.length > 0 &&
-        addedSrvItems.find((x) => x._id === ActiveSrvID)
-      ) {
-        ErrorAlert("خطا", "سرویس تکراری می باشد!");
+    // if (!editSrvMode) {
+    //   if (ActiveSrvName == null || ActiveSrvCode == null) {
+    //     ErrorAlert("خطا", "خدمتی انتخاب نشده است");
+    //     return false;
+    //   } else if (
+    //     addedSrvItems.length > 0 &&
+    //     addedSrvItems.find((x) => x._id === ActiveSrvID)
+    //   ) {
+    //     ErrorAlert("خطا", "سرویس تکراری می باشد!");
+    //     return false;
+    //   }
+    // } else {
+    //   updateItemCallback(addData, ActiveEditSrvID);
+    //   setEditSrvMode(false);
+    //   ActiveSrvCode = null;
+    // }
+
+    // // reset
+    // $("#srvSearchInput").val("");
+    // $("#QtyInput").val("1");
+    // $("#BtnActiveSearch").hide();
+    // $("#BtnServiceSearch").show();
+    // $("#srvSearchInput").prop("readonly", false);
+
+    setAddedSrvItems((prevItems) => {
+      if (!editSrvMode) {
+        if (ActiveSrvName == null || ActiveSrvCode == null) {
+          ErrorAlert("خطا", "خدمتی انتخاب نشده است");
+          return prevItems; // Return the previous state
+        } else if (prevItems.length > 0 && prevItems.find((x) => x._id === ActiveSrvID)) {
+          ErrorAlert("خطا", "سرویس تکراری می باشد!");
+          return prevItems; // Return the previous state
+        }
+      } else {
+        updateItemCallback(addData, ActiveEditSrvID);
+        setEditSrvMode(false);
+        ActiveSrvCode = null;
       }
-    } else {
-      updateItemCallback(addData, ActiveEditSrvID);
-      setEditSrvMode(false);
-      ActiveSrvCode = null;
-    }
+      return [...prevItems, addData]; // Return the updated state
+    });
 
     // reset
     $("#srvSearchInput").val("");
@@ -350,6 +376,7 @@ const Reception = ({ ClinicUser }) => {
     totalPC,
     totalDiscount
   ) => {
+    setIsLoading(true)
     let url = "ClinicReception/addEdit";
 
     let dataToSubmit = {};
@@ -371,10 +398,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -388,9 +415,11 @@ const Reception = ({ ClinicUser }) => {
             router.push("/receptionRecords");
           }
         }, 300);
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false)
         ErrorAlert("خطا", "ثبت پذیرش با خطا مواجه گردید!");
       });
   };
@@ -455,6 +484,7 @@ const Reception = ({ ClinicUser }) => {
               <PrescInfo
                 data={addedSrvItems}
                 submitReceptionPrescript={submitReceptionPrescript}
+                isLoading={isLoading}
               />
             </div>
           </div>

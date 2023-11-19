@@ -73,80 +73,81 @@ export default function Page() {
               />
             </div>
           </div>
-          <div className="col-md-6 login-wrap-bg">
-            <div className="login-page">
-              <div className="login-wrapper">
-                <div className="loginbox">
-                  <h3 className="loginTitle stretch">ایران نوبت</h3>
-                  <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
 
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-group form-focus">
-                      <Controller
-                        control={control}
-                        name="UserName"
-                        render={({ field: { value, onChange } }) => (
+          <div className="col-lg-6 col-12 login-wrap-bg">
+            {/* <div className="login-page"> */}
+            <div className="login-wrapper">
+              <div className="loginbox">
+                <h3 className="loginTitle stretch">ایران نوبت</h3>
+                <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
+
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group form-focus">
+                    <Controller
+                      control={control}
+                      name="UserName"
+                      render={({ field: { value, onChange } }) => (
+                        <input
+                          className="form-control floating"
+                          type="text"
+                          id="UserName"
+                          name="UserName"
+                          autoComplete="false"
+                          placeholder="نام کاربری"
+                          required
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="form-group form-focus">
+                    <Controller
+                      control={control}
+                      name="password"
+                      render={({ field: { value, onChange } }) => (
+                        <div className="pass-group">
                           <input
                             className="form-control floating"
-                            type="text"
-                            id="UserName"
-                            name="UserName"
+                            type={eye ? "password" : "text"}
                             autoComplete="false"
-                            placeholder="نام کاربری"
+                            placeholder="رمز عبور"
+                            id="Password"
                             required
                           />
-                        )}
-                      />
-                    </div>
-                    <div className="form-group form-focus">
-                      <Controller
-                        control={control}
-                        name="password"
-                        render={({ field: { value, onChange } }) => (
-                          <div className="pass-group">
-                            <input
-                              className="form-control floating"
-                              type={eye ? "password" : "text"}
-                              autoComplete="false"
-                              placeholder="رمز عبور"
-                              id="Password"
-                              required
-                            />
-                            <span
-                              onClick={onEyeClick}
-                              className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                                }`}
-                            />
-                          </div>
-                        )}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <div className="row">
-                        <div className="col-6">
-                          <label className="custom_check mr-2 mb-0 d-inline-flex">
-                            مرا به خاطر داشته باش
-                            <input type="checkbox" name="radio" />
-                            <span className="checkmark" />
-                          </label>
+                          <span
+                            onClick={onEyeClick}
+                            className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                              }`}
+                          />
                         </div>
+                      )}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-6">
+                        <label className="custom_check mr-2 mb-0 d-inline-flex font-12">
+                          مرا به خاطر داشته باش
+                          <input type="checkbox" name="radio" />
+                          <span className="checkmark" />
+                        </label>
                       </div>
                     </div>
-                    <div className="d-grid">
-                      <button
-                        className="btn btn-primary loginBtn"
-                        type="submit"
-                      >
-                        ورود
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                  </div>
+                  <div className="d-grid">
+                    <button
+                      className="btn btn-primary loginBtn"
+                      type="submit"
+                    >
+                      ورود
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
+        // </div>
       )}
     </>
   );

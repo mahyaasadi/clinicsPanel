@@ -149,7 +149,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
               </div>
             </div>
 
-            <div className="col-12 font-12 d-flex gap-2 mt-4">
+            <div className="col-12 font-12 d-flex flex-wrap gap-2 mt-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

@@ -7,7 +7,7 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
   return 0;
 };
 
-const PrescInfo = ({ data, submitReceptionPrescript }) => {
+const PrescInfo = ({ data, submitReceptionPrescript, isLoading }) => {
   let qty = 0;
   let price = 0;
   let oc = 0;
@@ -40,14 +40,29 @@ const PrescInfo = ({ data, submitReceptionPrescript }) => {
             <div className="">
               <p className="text-secondary fw-bold">اطلاعات پذیرش</p>
             </div>
-            <button
-              className="btn btn-primary border-radius px-4 font-13"
-              onClick={() =>
-                submitReceptionPrescript(qty, price, oc, patientCost, discount)
-              }
-            >
-              ثبت پذیرش
-            </button>
+
+            {!isLoading ? (
+              <button
+                className="btn btn-primary border-radius px-4 font-13"
+                onClick={() =>
+                  submitReceptionPrescript(qty, price, oc, patientCost, discount)
+                }
+              >
+                ثبت پذیرش
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn btn-primary rounded font-13"
+                disabled
+              >
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                ></span>
+                در حال ثبت
+              </button>
+            )}
           </div>
 
           <hr />
