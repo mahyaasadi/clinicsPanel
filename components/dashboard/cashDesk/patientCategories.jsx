@@ -12,7 +12,7 @@ const PatientCategories = ({
 }) => {
   resetServerContext();
 
-  console.log({ patientsInfo });
+  // console.log({ patientsInfo });
 
   const [categories, setCategories] = useState([
     { id: "6550ab29aaffd91260889560", name: "در انتظار" },
@@ -50,9 +50,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-              ...item,
-              category: result.destination.droppableId,
-            }
+                ...item,
+                category: result.destination.droppableId,
+              }
             : item
         )
       );
@@ -121,12 +121,19 @@ const PatientCategories = ({
                                                 <div className="p-2 d-flex gap-4 align-items-center font-12">
                                                   <div dir="rtl">
                                                     <div className="d-flex align-items-center gap-1">
-                                                      <FeatherIcon icon="calendar" className="prescItembtns" />
-                                                      {item.item.Date},{" "}{item.item.Time}
+                                                      <FeatherIcon
+                                                        icon="calendar"
+                                                        className="prescItembtns"
+                                                      />
+                                                      {item.item.Date},{" "}
+                                                      {item.item.Time}
                                                     </div>
 
                                                     <div className="d-flex align-items-center gap-1">
-                                                      <FeatherIcon icon="user" className="prescItembtns" />
+                                                      <FeatherIcon
+                                                        icon="user"
+                                                        className="prescItembtns"
+                                                      />
                                                       {item.name}
                                                     </div>
 

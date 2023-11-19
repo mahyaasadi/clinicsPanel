@@ -60,16 +60,16 @@ const Dashboard = ({ ClinicUser }) => {
       setStatsPlaceholder("ماه جاری : " + jdate.format("MMMM YYY"));
     }
 
-    axiosClient.post(url, { ClinicID })
+    axiosClient
+      .post(url, { ClinicID })
       .then((response) => {
-        console.log(response.data);
         setStats(response.data);
         setStatsIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setStatsIsLoading(false)
-      })
+        setStatsIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -90,7 +90,9 @@ const Dashboard = ({ ClinicUser }) => {
               <div className="overview-container">
                 <div className="dashboard-header">
                   <div className="col overview-title">
-                    <p className="card-title text-secondary font-16">بررسی اجمالی</p>
+                    <p className="card-title text-secondary font-16">
+                      بررسی اجمالی
+                    </p>
                   </div>
 
                   <div className="dashboard-selector font-13">

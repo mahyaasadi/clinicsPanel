@@ -14,7 +14,7 @@ const ReceptionCard = ({
   setEditSrvData,
   editSrvMode,
   setEditSrvMode,
-  // activeSearch,
+  activeSearch,
 }) => {
   let activeClass = null;
 
@@ -82,14 +82,14 @@ const ReceptionCard = ({
                 />
 
                 {/* search buttons */}
-                {/* <button
-                  className="btn btn-primary rounded-left w-10 d-none"
+                <button
+                  className="btn btn-primary rounded-left w-10"
                   id="BtnActiveSearch"
                   onClick={activeSearch}
                   type="button"
                 >
                   <i className="fe fe-close"></i>
-                </button> */}
+                </button>
 
                 <button
                   className="btn btn-primary rounded-left w-10"

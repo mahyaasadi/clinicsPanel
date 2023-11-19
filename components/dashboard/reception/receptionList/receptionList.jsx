@@ -15,7 +15,7 @@ const ReceptionList = ({
   return (
     <>
       <div className="row p-4">
-        <div className="">
+        <div>
           <FilterReceptionItems
             ClinicID={ClinicID}
             SetRangeDate={SetRangeDate}

@@ -52,6 +52,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
         setReceptionList(response.data);
         setIsLoading(false);
       })

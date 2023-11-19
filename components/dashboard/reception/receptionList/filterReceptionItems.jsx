@@ -18,7 +18,7 @@ const FilterReceptionItems = ({
   return (
     <>
       <label className="lblAbs fw-bold font-13">جستجوی لیست پذیرش ها</label>
-      <div className="card shadow">
+      <div className="card">
         <form onSubmit={applyFilterOnRecItems}>
           <div className="card-body row align-items-center mt-3 searchContainerPadding receptionSearch-header">
             <div className="col-lg-2 col-12">
@@ -72,9 +72,7 @@ const FilterReceptionItems = ({
             <div className="col-lg-1 col-12 gap-1 d-flex searchReceptionBtn justify-center">
               {!searchIsLoading ? (
                 <>
-                  <button
-                    className="btn btn-primary w-48 d-flex justify-center align-items-center"
-                  >
+                  <button className="btn btn-primary w-48 d-flex justify-center align-items-center">
                     <i className="fe fe-search"></i>
                   </button>
                 </>

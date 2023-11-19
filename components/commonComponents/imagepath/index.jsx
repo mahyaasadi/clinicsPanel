@@ -58,3 +58,6 @@ export { default as flag05 } from "public/assets/img/flags/flag-05.png";
 export { default as loading } from "public/assets/img/inoLoading.gif";
 export { default as gender } from "public/assets/img/gender-30.png";
 export { default as insurance } from "public/assets/img/insurance-30.png";
+export { default as returnPayment } from "public/assets/img/return-40.png";
+export { default as returnedCash } from "public/assets/img/cash-40.png";
+

@@ -43,6 +43,10 @@ const CashDesk = ({ ClinicUser }) => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const handleCloseActionsModal = () => setShowActionsModal(false);
 
+  // searchBox
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+
   const openActionModal = (receptionID, data) => {
     setShowActionsModal(true);
     ActiveReceptionID = receptionID;
@@ -59,22 +63,7 @@ const CashDesk = ({ ClinicUser }) => {
       .then((response) => {
         // console.log(response.data);
         setReceptionList(response.data);
-
-        let patientItems = [];
-        for (let i = 0; i < response.data.length; i++) {
-          const item = response.data[i];
-          let obj = {
-            id: item._id,
-            category: item.CashDesk.Status,
-            name: item.Patient.Name,
-            avatar: item.Patient.Avatar,
-            nationalID: item.Patient.NationalID,
-            calculated: item.Calculated[0],
-            item,
-          };
-          patientItems.push(obj);
-        }
-        setPatientsInfo(patientItems);
+        if (response.data) getReceptionPatients(response.data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -82,6 +71,25 @@ const CashDesk = ({ ClinicUser }) => {
         ErrorAlert("خطا", "خطا در دریافت اطلاعات");
         setIsLoading(false);
       });
+  };
+
+  const getReceptionPatients = (newReceptionList) => {
+    let patientItems = [];
+    for (let i = 0; i < newReceptionList.length; i++) {
+      const item = newReceptionList[i];
+      let obj = {
+        id: item._id,
+        category: item.CashDesk.Status,
+        name: item.Patient.Name,
+        avatar: item.Patient.Avatar,
+        nationalID: item.Patient.NationalID,
+        calculated: item.Calculated[0],
+        item,
+      };
+      patientItems.push(obj);
+    }
+    setPatientsInfo(patientItems);
+    return patientsInfo;
   };
 
   // get all karts
@@ -129,25 +137,11 @@ const CashDesk = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-        setShowPaymentModal(false);
         setPaymentData(response.data.CashDesk);
         getReceptionList();
 
-        //     // Find the index of the item in the array
-        //     const index = receptionList.findIndex(
-        //       (item) => item._id === response.data._id
-        //     );
-
-        //     if (index !== -1) {
-        //       let updatedPaymentData = paymentData[index];
-        //       updatedPaymentData = response.data;
-        //       console.log({ updatedPaymentData });
-
-        //       setPaymentData(updatedPaymentData);
-        // }
-
         e.target.reset();
+        setShowPaymentModal(false);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -156,8 +150,61 @@ const CashDesk = ({ ClinicUser }) => {
       });
   };
 
+  // Apply Filter on ReceptionItems
+  let dateFrom,
+    dateTo = null;
+
+  const SetRangeDate = (f, t) => {
+    dateFrom = f;
+    dateTo = t;
+  };
+
+  const FUSelectDepartment = (departmentValue) =>
+    setSelectedDepartment(departmentValue);
+
+  const applyFilterOnRecItems = (e) => {
+    e.preventDefault();
+    setSearchIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "ClinicReception/Search";
+    let data = {
+      ClinicID,
+      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
+      ModalityID: selectedDepartment ? selectedDepartment._id : "",
+      NID: formProps.patientNID ? formProps.patientNID : "",
+      PatientName: formProps.patientName ? formProps.patientName : "",
+      DateFrom: dateFrom ? dateFrom : "",
+      DateTo: dateTo ? dateTo : "",
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        getReceptionPatients(response.data);
+        setSearchIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSearchIsLoading(false);
+      });
+  };
+
+  const handleResetFilterFields = () => {
+    setSearchIsLoading(false);
+    setSelectedDepartment(null);
+    $("#receptionID").val("");
+    $("#patientNID").val("");
+    $("#patientName").val("");
+  };
+
   useEffect(() => {
     getReceptionList();
+    if (receptionList) {
+      getReceptionPatients(receptionList);
+    }
     getKartsData();
   }, []);
 
@@ -171,13 +218,16 @@ const CashDesk = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            {/* SetRangeDate={SetRangeDate}
-            applyFilterOnRecItems={applyFilterOnRecItems}
-            handleResetFilterFields={handleResetFilterFields}
-            selectedDepartment={selectedDepartment}
-            FUSelectDepartment={FUSelectDepartment}
-            searchIsLoading={searchIsLoading}
-            <FilterReceptionItems ClinicID={ClinicID} /> */}
+            <FilterReceptionItems
+              ClinicID={ClinicID}
+              SetRangeDate={SetRangeDate}
+              searchIsLoading={searchIsLoading}
+              applyFilterOnRecItems={applyFilterOnRecItems}
+              selectedDepartment={selectedDepartment}
+              FUSelectDepartment={FUSelectDepartment}
+              handleResetFilterFields={handleResetFilterFields}
+            />
+
             <PatientsCategories
               patientsInfo={patientsInfo}
               setPatientsInfo={setPatientsInfo}

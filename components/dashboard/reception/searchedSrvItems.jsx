@@ -14,8 +14,8 @@ const SearchedServiceItems = ({ data, selectSearchedSrv }) => {
               x.Price,
               x.SS,
               x.ST,
-              x.SA,
-              x.ModalityID
+              x.SA
+              // x.ModalityID
             )
           }
         >

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import ParaServicesDropdown from "./paraServicesDropdown";
-import TaminSearchedServices from "components/dashboard/prescription/taminSearchedservices";
+import TaminSearchedServices from "components/dashboard/prescription/taminSearchedServices";
 
 const PrescriptionCard = ({
   setIsLoading,

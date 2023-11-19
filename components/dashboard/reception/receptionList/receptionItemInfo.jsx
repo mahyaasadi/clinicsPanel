@@ -25,7 +25,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
           <div className="card">
             <div className="card-body text-secondary">
               <div className="">
-                <p className="fw-bold">سرویس ها : </p>
+                <p className="fw-bold">سرویس ها</p>
 
                 <Accordion multiple>
                   {srv?.Items.map((item, index) => {
@@ -50,10 +50,12 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                             <div className="d-flex gap-2 align-items-center prescDetails">
                               <p className="mb-0">{item.Qty} عدد,</p>
                               <p className="mb-0">
-                                مبلغ : {parseInt(item.Price).toLocaleString()} تومان,
+                                مبلغ : {parseInt(item.Price).toLocaleString()}{" "}
+                                تومان,
                               </p>
                               <p className="mb-0">
-                                سهم سازمان : {parseInt(item.OC).toLocaleString()} تومان,
+                                سهم سازمان :{" "}
+                                {parseInt(item.OC).toLocaleString()} تومان,
                               </p>
 
                               <p className="mb-0">
@@ -189,4 +191,3 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
 };
 
 export default ReceptionItemInfoModal;
-

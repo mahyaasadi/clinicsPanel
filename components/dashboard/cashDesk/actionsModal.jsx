@@ -1,6 +1,9 @@
 import { useState } from "react";
+import Image from "next/image";
 import { Modal } from "react-bootstrap";
+import FeatherIcon from "feather-icons-react";
 import ApplyCashDeskModal from "./applyCashDeskModal";
+import { returnedCash } from "components/commonComponents/imagepath";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
   if (srvItem.Discount?.Percent) {
@@ -81,12 +84,8 @@ const CashDeskActions = ({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
-              {/* <div className="cashDeskPatientInfo text-center rounded text-secondary col-lg-6 font-13"> */}
               نام بیمار : {data?.Patient?.Name} {" | "}
-              {/* </div> */}
-              {/* <div className="cashDeskPatientInfo text-center rounded text-secondary col-lg-6 font-13"> */}
               تاریخ نسخه : {data?.Date}
-              {/* </div> */}
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -95,16 +94,23 @@ const CashDeskActions = ({
           <div className="row p-2 gap-2">
             <button
               type="submit"
-              className="btn btn-primary rounded btn-save font-13 col-lg-3"
+              className="btn btn-primary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
               onClick={handlePaymentBtn}
             >
+              <FeatherIcon icon="credit-card" />
               دریافت وجه از بیمار
             </button>
             <button
               type="submit"
-              className="btn btn-outline-secondary rounded btn-save font-13 col-lg-3"
+              className="btn btn-secondary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
               onClick={handleReturnPaymentBtn}
             >
+              <Image
+                src={returnedCash}
+                alt="returnedCash"
+                width="20"
+                height="20"
+              />
               پرداخت وجه به بیمار
             </button>
           </div>
@@ -207,7 +213,9 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.Debt ? parseInt(paymentData?.Debt).toLocaleString() : 0}
+                {paymentData?.Debt
+                  ? parseInt(paymentData?.Debt).toLocaleString()
+                  : 0}
               </div>
             </div>
 
@@ -217,7 +225,9 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.ReturnPayment ? parseInt(paymentData?.ReturnPayment).toLocaleString() : 0}
+                {paymentData?.ReturnPayment
+                  ? parseInt(paymentData?.ReturnPayment).toLocaleString()
+                  : 0}
               </div>
             </div>
           </div>

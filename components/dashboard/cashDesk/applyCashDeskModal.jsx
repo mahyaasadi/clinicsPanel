@@ -11,7 +11,6 @@ const ApplyCashDeskModal = ({
   isLoading,
   returnMode,
 }) => {
-  //   console.log({ returnMode });
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">

@@ -118,26 +118,33 @@ const Reception = ({ ClinicUser }) => {
   let updatedServices = [];
   const handleDepTabChange = (services, modalityId) => {
     Services = services;
+    console.log(services, modalityId);
     ActiveModalityID = modalityId;
 
     $("#searchDiv").hide();
     $("#srvSearchInput").val("");
+    $("#srvSearchInput").focus();
     $(".unsuccessfullSearch").hide("");
+    $("#BtnActiveSearch").hide();
+    $("#BtnServiceSearch").show();
+    $("#srvSearchInput").prop("readonly", false);
 
-    updatedServices = Services.map((service) => ({
-      ...service,
-      ModalityID: modalityId,
-    }));
+    // updatedServices = Services.map((service) => ({
+    //   ...service,
+    //   ModalityID: modalityId,
+    // }));
   };
 
   //----- Search Through Services -----//
   const handleSearchService = (value) => {
-    const filteredServices = updatedServices.filter(
+    const filteredServices = Services.filter(
       (service) =>
         service.Name.includes(value) ||
         service.EngName.toLowerCase().includes(value) ||
         service.Code.includes(value)
     );
+
+    console.log({ filteredServices });
 
     setSearchedServices(filteredServices);
 
@@ -146,7 +153,7 @@ const Reception = ({ ClinicUser }) => {
       $(".unsuccessfullSearch").hide("");
     } else {
       $("#searchDiv").show();
-      filteredServices.length === 0
+      filteredServices?.length === 0
         ? $(".unsuccessfullSearch").show("")
         : $(".unsuccessfullSearch").hide("");
     }
@@ -160,8 +167,8 @@ const Reception = ({ ClinicUser }) => {
     price,
     ss,
     st,
-    sa,
-    modalityID
+    sa
+    // modalityID
   ) => {
     ActiveSrvID = _id;
     ActiveSrvName = name;
@@ -171,22 +178,21 @@ const Reception = ({ ClinicUser }) => {
     ActiveSalamatShare = ss;
     ActiveTaminShare = st;
     ActiveArteshShare = sa;
-    ActiveModalityID = modalityID;
 
     $("#srvSearchInput").val(name);
-    // $("#BtnServiceSearch").hide();
-    // $("#BtnActiveSearch").show();
+    $("#BtnServiceSearch").hide();
+    $("#BtnActiveSearch").show();
     $("#searchDiv").hide();
-    // $("#srvSearchInput").prop("readonly", true);
+    $("#srvSearchInput").prop("readonly", true);
   };
 
   const activeSearch = () => {
     // ActiveSrvCode = null;
-    // $("#srvSearchInput").val("");
-    // $("#BtnActiveSearch").hide();
-    // $("#srvSearchInput").prop("readonly", false);
-    // $("#BtnServiceSearch").show();
-    // $("#srvSearchInput").focus();
+    $("#srvSearchInput").val("");
+    $("#BtnActiveSearch").hide();
+    $("#srvSearchInput").prop("readonly", false);
+    $("#BtnServiceSearch").show();
+    $("#srvSearchInput").focus();
   };
 
   //----- Discount -----//
@@ -331,7 +337,9 @@ const Reception = ({ ClinicUser }) => {
     // reset
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
-    console.log("Edit mode set to false");
+    $("#BtnActiveSearch").hide();
+    $("#BtnServiceSearch").show();
+    $("#srvSearchInput").prop("readonly", false);
   };
 
   //------ Submit Reception ------//
@@ -363,13 +371,13 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
-    // console.log({ dataToSubmit });
+    console.log({ dataToSubmit });
 
     axiosClient
       .post(url, dataToSubmit)
@@ -386,6 +394,10 @@ const Reception = ({ ClinicUser }) => {
         ErrorAlert("خطا", "ثبت پذیرش با خطا مواجه گردید!");
       });
   };
+
+  useEffect(() => {
+    $("#BtnActiveSearch").hide();
+  }, []);
 
   useEffect(() => {
     ReceptionObjectID = router.query.id;
