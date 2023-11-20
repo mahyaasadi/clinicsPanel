@@ -5,8 +5,8 @@ import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
 import { QuestionAlert, ErrorAlert } from "class/AlertManage.js";
 import Loading from "components/commonComponents/loading/loading";
-import KartsListTable from "@/components/dashboard/settings/kartsListTable";
-import KartModal from "@/components/dashboard/settings/kartModal";
+import KartsListTable from "@/components/dashboard/settings/karts/kartsListTable";
+import KartModal from "@/components/dashboard/settings/karts/kartModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);

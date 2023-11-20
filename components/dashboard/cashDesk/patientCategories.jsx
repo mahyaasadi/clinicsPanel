@@ -161,7 +161,8 @@ const PatientCategories = ({
                                                       className="d-flex justify-start"
                                                     >
                                                       سهم بیمار :{" "}
-                                                      {item.item.Calculated?.TotalPC?.toLocaleString()}
+                                                      {item.item.Calculated?.TotalPC?.toLocaleString()}{" "}
+                                                      ریال
                                                     </p>
                                                   </div>
 
@@ -185,7 +186,7 @@ const PatientCategories = ({
                                                           borderRadius: "10px",
                                                         }}
                                                       />
-                                                      <p className="fw-bold">
+                                                      <p className="fw-bold font-13">
                                                         {item.item.ReceptionID}
                                                       </p>
                                                     </div>

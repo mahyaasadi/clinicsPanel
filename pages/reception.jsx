@@ -51,7 +51,7 @@ const Reception = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
@@ -119,7 +119,6 @@ const Reception = ({ ClinicUser }) => {
   let updatedServices = [];
   const handleDepTabChange = (services, modalityId) => {
     Services = services;
-    console.log(services, modalityId);
     ActiveModalityID = modalityId;
 
     $("#searchDiv").hide();
@@ -348,7 +347,10 @@ const Reception = ({ ClinicUser }) => {
         if (ActiveSrvName == null || ActiveSrvCode == null) {
           ErrorAlert("خطا", "خدمتی انتخاب نشده است");
           return prevItems; // Return the previous state
-        } else if (prevItems.length > 0 && prevItems.find((x) => x._id === ActiveSrvID)) {
+        } else if (
+          prevItems.length > 0 &&
+          prevItems.find((x) => x._id === ActiveSrvID)
+        ) {
           ErrorAlert("خطا", "سرویس تکراری می باشد!");
           return prevItems; // Return the previous state
         }
@@ -376,7 +378,7 @@ const Reception = ({ ClinicUser }) => {
     totalPC,
     totalDiscount
   ) => {
-    setIsLoading(true)
+    setIsLoading(true);
     let url = "ClinicReception/addEdit";
 
     let dataToSubmit = {};
@@ -398,30 +400,38 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
 
-    axiosClient
-      .post(url, dataToSubmit)
-      .then((response) => {
-        SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
-        setTimeout(() => {
-          if (response.data.Register) {
-            router.push("/receptionRecords");
-          }
-        }, 300);
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false)
-        ErrorAlert("خطا", "ثبت پذیرش با خطا مواجه گردید!");
-      });
+    if (!ActivePatientID) {
+      ErrorAlert("خطا", "اطلاعات بیمار را وارد نمایید!");
+      setIsLoading(false);
+    } else if (addedSrvItems.length === 0) {
+      ErrorAlert("خطا", "خدمتی به لیست اضافه نشده است!");
+      setIsLoading(false);
+    } else {
+      axiosClient
+        .post(url, dataToSubmit)
+        .then((response) => {
+          SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+          setTimeout(() => {
+            if (response.data.Register) {
+              router.push("/receptionRecords");
+            }
+          }, 300);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+          ErrorAlert("خطا", "ثبت پذیرش با خطا مواجه گردید!");
+        });
+    }
   };
 
   useEffect(() => {

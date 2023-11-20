@@ -5,8 +5,8 @@ import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
-import InsuranceModal from "components/dashboard/settings/insuranceModal";
-import InsuranceListTable from "components/dashboard/settings/insuranceListTable";
+import InsuranceModal from "components/dashboard/settings/insurances/insuranceModal";
+import InsuranceListTable from "components/dashboard/settings/insurances/insuranceListTable";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -292,3 +292,4 @@ const InsuranceSettings = ({ ClinicUser }) => {
 };
 
 export default InsuranceSettings;
+

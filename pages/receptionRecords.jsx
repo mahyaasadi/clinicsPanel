@@ -5,7 +5,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
-import ReceptionList from "@/components/dashboard/reception/receptionList/receptionList";
+import ReceptionList from "components/dashboard/reception/receptionList/receptionList";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);

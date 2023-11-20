@@ -20,13 +20,13 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
       width: "400px",
     },
     {
-      name: "درصد تخفیف",
+      name: "درصد/مبلغ تخفیف",
       selector: (row) => row.Value,
       sortable: true,
       width: "200px",
     },
     {
-      name: "روش محاسبه ",
+      name: "روش محاسبه",
       selector: (row) => row.Percent,
       sortable: true,
       cell: (row) => (

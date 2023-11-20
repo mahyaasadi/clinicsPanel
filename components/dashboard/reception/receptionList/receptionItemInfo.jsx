@@ -50,18 +50,21 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                             <div className="d-flex flex-wrap media-flex-col gap-2 align-items-center prescDetails">
                               <p className="mb-0">{item.Qty} عدد,</p>
                               <p className="mb-0">
-                                قیمت واحد : {parseInt(item.Price).toLocaleString()}{" "}
-                                تومان,
+                                قیمت واحد :{" "}
+                                {parseInt(item.Price).toLocaleString()} ریال,
                               </p>
 
                               <p className="mb-0">
-                                قیمت کل : {(item.Qty * parseInt(item.Price)).toLocaleString()}{" "}
-                                تومان,
+                                قیمت کل :{" "}
+                                {(
+                                  item.Qty * parseInt(item.Price)
+                                ).toLocaleString()}{" "}
+                                ریال,
                               </p>
 
                               <p className="mb-0">
                                 سهم سازمان :{" "}
-                                {parseInt(item.OC).toLocaleString()} تومان,
+                                {parseInt(item.OC).toLocaleString()} ریال,
                               </p>
 
                               <p className="mb-0">
@@ -70,7 +73,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                                   item,
                                   RowPatientCost
                                 ).toLocaleString()}{" "}
-                                تومان
+                                ریال
                               </p>
                             </div>
                           </div>
@@ -118,7 +121,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                   </svg>
                   <p>
                     پرداختی کل : {srv?.Calculated?.TotalPrice?.toLocaleString()}{" "}
-                    تومان
+                    ریال
                   </p>
                 </div>
 
@@ -139,7 +142,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                   </svg>
                   <p>
                     سهم سازمان : {srv?.Calculated?.TotalOC?.toLocaleString()}{" "}
-                    تومان
+                    ریال
                   </p>
                 </div>
 
@@ -160,7 +163,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                   </svg>
                   <p>
                     سهم بیمار : {srv?.Calculated?.TotalPC?.toLocaleString()}{" "}
-                    تومان
+                    ریال
                   </p>
                 </div>
 
@@ -184,7 +187,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                     {srv?.Calculated?.TotalDiscount
                       ? srv?.Calculated?.TotalDiscount.toLocaleString()
                       : 0}{" "}
-                    تومان
+                    ریال
                   </p>
                 </div>
               </div>
@@ -197,3 +200,4 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
 };
 
 export default ReceptionItemInfoModal;
+

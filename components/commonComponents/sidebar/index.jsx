@@ -19,7 +19,11 @@ const Sidebar = () => {
     ];
 
     const prescriptionSubRoutes = ["/prescription"];
-    const settingsSubRoutes = ["/insuranceSettings", "/karts"];
+    const settingsSubRoutes = [
+      "/insuranceSettings",
+      "/karts",
+      "reciptSettings",
+    ];
 
     if (receptionSubRoutes.includes(router.pathname)) {
       setReceptionSubmenuOpen(true);
@@ -70,8 +74,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    receptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -124,8 +129,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -152,8 +158,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -169,6 +176,15 @@ const Sidebar = () => {
                       پایانه های بانک
                     </Link>
                   </li>
+                  <li
+                    className={
+                      router.pathname == "/reciptSettings" ? "active" : ""
+                    }
+                  >
+                    <Link href="/reciptSettings" className="font-12">
+                      تنظیمات چاپ قبض
+                    </Link>
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -180,3 +196,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

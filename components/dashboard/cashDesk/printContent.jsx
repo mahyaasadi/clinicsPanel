@@ -1,97 +1,15 @@
-import { useState, useRef } from "react";
 import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
-import ApplyCashDeskModal from "./applyCashDeskModal";
-import { returnedCash } from "components/commonComponents/imagepath";
-import PrintContent from "./printContent";
 
-const calculateDiscount = (srvItem, totalPatientCost) => {
-  if (srvItem.Discount?.Percent) {
-    return (totalPatientCost * parseInt(srvItem.Discount?.Value)) / 100;
-  } else if (srvItem.Discount?.Percent === false) {
-    return srvItem.Qty * parseInt(srvItem.Discount?.Value);
-  }
-  return 0;
-};
-
-const CashDeskActions = ({
-  show,
-  onHide,
-  kartsOptionList,
-  selectedKart,
-  setSelectedKart,
-  applyCashDeskActions,
+const PrintContent = ({
   data,
   paymentData,
-  isLoading,
-  showPaymentModal,
-  setShowPaymentModal,
+  calculatedTotalPC,
+  calculateDiscount,
+  show,
+  onHide,
 }) => {
-  const [returnMode, setReturnMode] = useState(false);
-  const [showPrintModal, setShowPrintModal] = useState(false);
-  const handleClosePrintModal = () => setShowPrintModal(false);
-
-  const printRef = useRef();
-
-  const handlePrint = () => {
-    const content = printRef.current;
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(content.outerHTML);
-    // printWindow.document.close();
-    // printWindow.focus();
-    printWindow.print();
-    // printWindow.close();
-    // window.print();
-  };
-
-  const handleCloseModal = () => setShowPaymentModal(false);
-
-  const handlePaymentBtn = () => {
-    setReturnMode(false);
-    setShowPaymentModal(true);
-  };
-
-  const handleReturnPaymentBtn = () => {
-    setReturnMode(true);
-    setShowPaymentModal(true);
-  };
-
-  let calculatedTotalPC = 0;
-
-  const handleCalculateCost = (e) => {
-    const { name, value } = e.target;
-    let result = 0;
-    let _CalCart = parseInt($("#cartPayment").val()) || 0;
-    let _CalCash = parseInt($("#cashPayment").val()) || 0;
-
-    if (name === "cartPayment" || name === "cashPayment") {
-      if (name === "cartPayment") _CalCart = value;
-      if (name === "cashPayment") _CalCash = value;
-      let payment = parseInt(_CalCart) + parseInt(_CalCash);
-      result = calculatedTotalPC - payment;
-      if (result < 0) {
-        $("#debt").val("0");
-        $("#returnPayment").val(result);
-      } else {
-        $("#debt").val(result);
-        $("#returnPayment").val(0);
-      }
-    } else {
-      let _CalDebt = 0;
-      let _CalReturn = 0;
-      if (name === "debt") {
-        _CalDebt = value;
-        result = calculatedTotalPC - _CalDebt;
-        if (result < 0) result = 0;
-        $("#cartPayment").val(result);
-        $("#returnPayment").val(0);
-      }
-
-      if (name === "returnPayment") _CalReturn = value;
-    }
-  };
-
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="xl">
@@ -105,37 +23,6 @@ const CashDeskActions = ({
         </Modal.Header>
 
         <Modal.Body>
-          <div className="row p-2 gap-2">
-            <button
-              type="submit"
-              className="btn btn-primary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
-              onClick={handlePaymentBtn}
-            >
-              <FeatherIcon icon="credit-card" />
-              دریافت وجه از بیمار
-            </button>
-            <button
-              type="submit"
-              className="btn btn-secondary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
-              onClick={handleReturnPaymentBtn}
-            >
-              <Image
-                src={returnedCash}
-                alt="returnedCash"
-                width="20"
-                height="20"
-              />
-              پرداخت وجه به بیمار
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-primary rounded col-lg-3 font-13 d-flex align-items-center gap-2 justify-center"
-              onClick={() => setShowPrintModal(true)}
-            >
-              Print
-            </button>
-          </div>
-
           <div className="table-responsive actionTable">
             <table className="table mt-4 font-13 text-secondary">
               <thead>
@@ -254,32 +141,8 @@ const CashDeskActions = ({
           </div>
         </Modal.Body>
       </Modal>
-
-      <div style={{ display: "none" }}>
-        <div ref={printRef}>
-          <PrintContent
-            show={showPrintModal}
-            onHide={handleClosePrintModal}
-            data={data}
-            paymentData={paymentData}
-            calculatedTotalPC={calculatedTotalPC}
-            calculateDiscount={calculateDiscount}
-          />
-        </div>
-      </div>
-
-      <ApplyCashDeskModal
-        show={showPaymentModal}
-        onHide={handleCloseModal}
-        kartsOptionList={kartsOptionList}
-        selectedKart={selectedKart}
-        setSelectedKart={setSelectedKart}
-        applyCashDeskActions={applyCashDeskActions}
-        isLoading={isLoading}
-        returnMode={returnMode}
-      />
     </>
   );
 };
 
-export default CashDeskActions;
+export default PrintContent;
