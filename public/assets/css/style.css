@@ -469,6 +469,10 @@ p:last-child {
   justify-content: flex-end;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .margint-5 {
   margin-top: 5rem;
 }
@@ -4918,7 +4922,7 @@ span.fa.toggle-password-newPass\".fa-eye-slash {
 span.fa.toggle-password-confPass\".fa-eye {
   position: absolute;
   left: 40px;
-  top: 15.25rem;
+  top: 14.75rem;
   transform: translateY(-50%);
   color: #757575;
   cursor: pointer;
@@ -4927,7 +4931,7 @@ span.fa.toggle-password-confPass\".fa-eye {
 span.fa.toggle-password-confPass\".fa-eye-slash {
   position: absolute;
   left: 40px;
-  top: 15.25rem;
+  top: 14.75rem;
   transform: translateY(-50%);
   color: #757575;
   cursor: pointer;
@@ -9002,6 +9006,10 @@ ul li .active {
   font-size: 11px !important;
 }
 
+.font-10 {
+  font-size: 10px !important;
+}
+
 .font-12 {
   font-size: 12px !important;
 }
@@ -10133,13 +10141,7 @@ ul li .active {
   width: 73%;
 }
 
-.actionTable {
-  border: 1px solid #dedede;
-  border-radius: 5px;
-  margin-top: 15px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
+
 
 /*  */
 .select-theme {
@@ -10198,4 +10200,73 @@ ul li .active {
   transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity 0.2s;
+}
+
+.reciptHeader {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.reciptPrintHeader {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.reciptLogoContainer {
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.actionTable {
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  margin-top: 15px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+
+.answerContainer {
+  border: 1px solid gray;
+  color: darkslategray;
+  font-weight: 800;
+  min-height: 5rem;
+  text-align: center;
+  font-size: 11px;
+}
+
+.reciptDesContainer {
+  border: 1px solid gray;
+  font-size: 10px;
+}
+
+@media print {
+
+  .content-header,
+  .page-wrapper,
+  .sidebar,
+  .cashDeskActionModal,
+  .printBtn {
+    display: none !important;
+  }
+
+  .printSection .modal-content {
+    display: flex;
+    justify-content: center;
+    overflow: none !important;
+  }
+
+  .printSection {
+    display: flex;
+    justify-content: center;
+    overflow: none !important;
+  }
+
+  .printContent {
+    page-break-after: always;
+  }
+
+  .lastPrintContent {
+    page-break-after: auto;
+  }
 }

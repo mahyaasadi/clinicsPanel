@@ -250,6 +250,7 @@ const CashDesk = ({ ClinicUser }) => {
           isLoading={isLoading}
           showPaymentModal={showPaymentModal}
           setShowPaymentModal={setShowPaymentModal}
+          ClinicID={ClinicID}
         />
       </div>
     </>

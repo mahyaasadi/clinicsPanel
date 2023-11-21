@@ -144,8 +144,6 @@ const Reception = ({ ClinicUser }) => {
         service.Code.includes(value)
     );
 
-    console.log({ filteredServices });
-
     setSearchedServices(filteredServices);
 
     if (value.length === 0) {

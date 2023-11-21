@@ -16,6 +16,7 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 };
 
 const CashDeskActions = ({
+  ClinicID,
   show,
   onHide,
   kartsOptionList,
@@ -94,7 +95,13 @@ const CashDeskActions = ({
 
   return (
     <>
-      <Modal show={show} onHide={onHide} centered size="xl">
+      <Modal
+        show={show}
+        onHide={onHide}
+        centered
+        size="xl"
+        className="cashDeskActionModal"
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
@@ -132,7 +139,8 @@ const CashDeskActions = ({
               className="btn btn-outline-primary rounded col-lg-3 font-13 d-flex align-items-center gap-2 justify-center"
               onClick={() => setShowPrintModal(true)}
             >
-              Print
+              <FeatherIcon icon="printer" />
+              پرینت
             </button>
           </div>
 
@@ -211,9 +219,7 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.CartPayment
-                  ? parseInt(paymentData.CartPayment).toLocaleString()
-                  : parseInt(calculatedTotalPC).toLocaleString()}
+                {paymentData?.CartPayment?.toLocaleString()}
               </div>
             </div>
             <div className="col-lg-3 col-12">
@@ -264,6 +270,7 @@ const CashDeskActions = ({
             paymentData={paymentData}
             calculatedTotalPC={calculatedTotalPC}
             calculateDiscount={calculateDiscount}
+            ClinicID={ClinicID}
           />
         </div>
       </div>

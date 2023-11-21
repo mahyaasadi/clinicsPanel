@@ -1,20 +1,21 @@
 import { Modal } from "react-bootstrap";
 
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
+  // console.log({ srv });
   const renderEditHistory = (historyArray) => {
-    // console.log({ historyArray });
-    // console.log(historyArray?.EditHistory?.EditDate);
+    console.log({ historyArray });
+    // console.log(srv.EditHistory);
     return (
       <div>
         <ul>
-          {historyArray?.map((historyItem, index) => (
+          {historyArray?.EditHistory.map((historyItem, index) => (
+            // console.log({ historyItem }),
             <li key={index}>
-              {historyItem?.EditHistory?.EditDate}
+              {historyItem?.EditDate}
+              {historyItem.EditTime}
 
               {/* Check if there is a nested EditHistory array */}
-              {historyItem.EditHistory &&
-                historyItem.EditHistory.length !== 0 &&
-                renderEditHistory(historyItem.EditHistory)}
+              {historyItem && renderEditHistory(historyItem)}
             </li>
           ))}
         </ul>
@@ -31,10 +32,11 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>{renderEditHistory(srv.EditHistory || [])}</Modal.Body>
+        <Modal.Body>{renderEditHistory(srv || [])}</Modal.Body>
       </Modal>
     </>
   );
 };
 
 export default ReceptionItemHistoryModal;
+

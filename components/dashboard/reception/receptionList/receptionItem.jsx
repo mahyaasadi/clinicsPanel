@@ -144,7 +144,7 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                     </svg>
                   </div>
 
-                  <p className="d-flex flex-wrap">{srv.Patient.NationalID}</p>
+                  {srv.Patient.NationalID}
                 </div>
               </div>
             </div>
@@ -190,3 +190,4 @@ const ReceptionItem = ({ srv, deleteReception }) => {
 };
 
 export default ReceptionItem;
+
