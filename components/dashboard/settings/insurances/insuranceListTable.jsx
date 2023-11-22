@@ -6,7 +6,6 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import { Tooltip } from "primereact/tooltip";
 
 const DepartmentsListTable = ({ data, deleteInsurance, openEditModal }) => {
-  console.log({ data });
   const columns = [
     {
       name: "شناسه بیمه",
@@ -15,14 +14,14 @@ const DepartmentsListTable = ({ data, deleteInsurance, openEditModal }) => {
       width: "auto",
     },
     {
-      name: "username",
-      selector: (row) => row.IUName,
+      name: "عنوان",
+      selector: (row) => row.IName,
       sortable: true,
       width: "auto",
     },
     {
-      name: "عنوان",
-      selector: (row) => row.IName,
+      name: "نام کاربری",
+      selector: (row) => row.IUName,
       sortable: true,
       width: "auto",
     },

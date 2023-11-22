@@ -11,7 +11,7 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 };
 
 const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
-  // console.log({ srv });
+  console.log({ srv });
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">
@@ -49,7 +49,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                         }
                       >
                         <div className="row">
-                          <div className="d-flex col-12 gap-3 font-12 align-items-center">
+                          <div className="d-flex col-12 gap-3 font-12 align-items-center mb-2">
                             <div className="d-flex flex-wrap media-flex-col gap-2 align-items-center prescDetails">
                               <p className="mb-0">{item.Qty} عدد,</p>
                               <p className="mb-0">
@@ -80,6 +80,17 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
                               </p>
                             </div>
                           </div>
+
+                          {item.Des ? (
+                            <>
+                              <hr />
+                              <div className="font-12">
+                                توضیحات : {item.Des}
+                              </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </AccordionTab>
                     );

@@ -10221,8 +10221,8 @@ ul li .active {
 .actionTable {
   border: 1px solid #dedede;
   border-radius: 8px;
+  padding: 0.5rem 2rem;
   margin-top: 15px;
-  padding: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -10230,7 +10230,6 @@ ul li .active {
   border: 1px solid gray;
   color: darkslategray;
   font-weight: 800;
-  min-height: 5rem;
   text-align: center;
   font-size: 11px;
 }
@@ -10240,33 +10239,65 @@ ul li .active {
   font-size: 10px;
 }
 
+.dottedBorder {
+  border-bottom: 1px dotted lightgray;
+  margin-top: 1rem;
+  padding: 0
+}
+
 @media print {
+
+  html,
+  body {
+    height: 100vh;
+    /* Use 100% here to support printing more than a single page*/
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
 
   .content-header,
   .page-wrapper,
   .sidebar,
   .cashDeskActionModal,
+  .modalHeader,
   .printBtn {
     display: none !important;
   }
 
   .printSection .modal-content {
-    display: flex;
-    justify-content: center;
-    overflow: none !important;
+    /* display: flex;
+    justify-content: center; */
+    /* overflow: none !important; */
   }
 
   .printSection {
-    display: flex;
+    /* display: flex;
+    justify-content: center; */
+    /* overflow: none !important; */
+  }
+
+  .print-header {
+    /* display: flex;
+    gap: 1rem;
     justify-content: center;
-    overflow: none !important;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: red; */
   }
 
   .printContent {
     page-break-after: always;
+    /* overflow: hidden; */
   }
 
-  .lastPrintContent {
-    page-break-after: auto;
+  .page-break {
+    page-break-after: always;
+  }
+
+  @page {
+    /* size: A4; */
+    /* height: fit-content; */
+    /* overflow: hidden; */
   }
 }

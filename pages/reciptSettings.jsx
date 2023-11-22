@@ -104,6 +104,8 @@ const ReciptSettings = ({ ClinicUser }) => {
       QRCode: hasQrCode.QRCode,
     };
 
+    console.log({ data });
+
     axiosClient
       .put(url, data)
       .then((response) => {
@@ -117,6 +119,18 @@ const ReciptSettings = ({ ClinicUser }) => {
         ErrorAlert("خطا", "ذخیره اطلاعات با خطا مواجه گردید!");
         setIsLoading(false);
       });
+  };
+
+  const [description, setDescription] = useState("");
+  const [ansText, setAnsText] = useState("");
+
+  const handleDesKeyDown = (e) => {
+    if (e.key === "Enter")
+      setDescription((prevDescription) => prevDescription + "\n");
+  };
+
+  const handleAnsKeyDown = (e) => {
+    if (e.key === "Enter") setAnsText((prevAnsText) => prevAnsText + "\n");
   };
 
   useEffect(() => getReciptSettings(), []);
@@ -139,6 +153,12 @@ const ReciptSettings = ({ ClinicUser }) => {
               onChangeQRCode={onChangeQRCode}
               onSubmit={submitReciptSettings}
               isLoading={isLoading}
+              description={description}
+              setDescription={setDescription}
+              ansText={ansText}
+              setAnsText={setAnsText}
+              handleDesKeyDown={handleDesKeyDown}
+              handleAnsKeyDown={handleAnsKeyDown}
             />
           </div>
         )}

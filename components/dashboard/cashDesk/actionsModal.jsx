@@ -31,21 +31,8 @@ const CashDeskActions = ({
 }) => {
   const [returnMode, setReturnMode] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
+
   const handleClosePrintModal = () => setShowPrintModal(false);
-
-  const printRef = useRef();
-
-  const handlePrint = () => {
-    const content = printRef.current;
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(content.outerHTML);
-    // printWindow.document.close();
-    // printWindow.focus();
-    printWindow.print();
-    // printWindow.close();
-    // window.print();
-  };
-
   const handleCloseModal = () => setShowPaymentModal(false);
 
   const handlePaymentBtn = () => {
@@ -140,7 +127,7 @@ const CashDeskActions = ({
               onClick={() => setShowPrintModal(true)}
             >
               <FeatherIcon icon="printer" />
-              پرینت
+              چاپ قبض
             </button>
           </div>
 
@@ -219,7 +206,9 @@ const CashDeskActions = ({
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
               >
-                {paymentData?.CartPayment?.toLocaleString()}
+                {paymentData?.CartPayment
+                  ? parseInt(paymentData.CartPayment).toLocaleString()
+                  : 0}
               </div>
             </div>
             <div className="col-lg-3 col-12">
@@ -261,19 +250,15 @@ const CashDeskActions = ({
         </Modal.Body>
       </Modal>
 
-      <div style={{ display: "none" }}>
-        <div ref={printRef}>
-          <PrintContent
-            show={showPrintModal}
-            onHide={handleClosePrintModal}
-            data={data}
-            paymentData={paymentData}
-            calculatedTotalPC={calculatedTotalPC}
-            calculateDiscount={calculateDiscount}
-            ClinicID={ClinicID}
-          />
-        </div>
-      </div>
+      <PrintContent
+        show={showPrintModal}
+        onHide={handleClosePrintModal}
+        data={data}
+        paymentData={paymentData}
+        calculatedTotalPC={calculatedTotalPC}
+        calculateDiscount={calculateDiscount}
+        ClinicID={ClinicID}
+      />
 
       <ApplyCashDeskModal
         show={showPaymentModal}

@@ -8,6 +8,12 @@ const ReciptSettingsForm = ({
   onChangeQRCode,
   onSubmit,
   isLoading,
+  description,
+  setDescription,
+  ansText,
+  setAnsText,
+  handleDesKeyDown,
+  handleAnsKeyDown,
 }) => {
   return (
     <>
@@ -45,25 +51,32 @@ const ReciptSettingsForm = ({
                   </div>
 
                   <div className="form-group">
-                    <label className="lblAbs font-12">متن بدنه </label>
-                    <textarea
-                      type="text"
-                      className="form-control floating inputPadding rounded"
-                      rows="5"
-                      name="Description"
-                      defaultValue={data.Description}
-                      key={data.Description}
-                    ></textarea>
-                  </div>
-
-                  <div className="form-group">
                     <label className="lblAbs font-12">متن پاسخ</label>
                     <textarea
                       type="text"
                       className="form-control floating inputPadding rounded"
                       name="AnsText"
-                      defaultValue={data.AnsText}
+                      rows="5"
+                      // defaultValue={data.AnsText}
+                      value={ansText ? ansText : data.AnsText}
                       key={data.AnsText}
+                      onKeyDown={handleAnsKeyDown}
+                      onChange={(e) => setAnsText(e.target.value)}
+                    ></textarea>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="lblAbs font-12">توضیحات</label>
+                    <textarea
+                      type="text"
+                      className="form-control floating inputPadding rounded"
+                      name="Description"
+                      rows="5"
+                      // defaultValue={data.Description}
+                      key={data.Description}
+                      value={description ? description : data.Description}
+                      onKeyDown={handleDesKeyDown}
+                      onChange={(e) => setDescription(e.target.value)}
                     ></textarea>
                   </div>
 

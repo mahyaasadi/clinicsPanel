@@ -78,7 +78,6 @@ const DepartmentsModal = ({
             </div>
           </div>
 
-
           <div className="row media-flex-col">
             <div className="col">
               <div className="form-group">
@@ -89,7 +88,7 @@ const DepartmentsModal = ({
                   className="form-control floating inputPadding rounded"
                   name="taminShare"
                   key={data.ST}
-                  defaultValue={mode == "edit" ? data.ST : ""}
+                  defaultValue={mode == "edit" ? data.ST : 0}
                 />
               </div>
             </div>
@@ -103,7 +102,7 @@ const DepartmentsModal = ({
                   className="form-control floating inputPadding rounded"
                   name="salamatShare"
                   key={data.SS}
-                  defaultValue={mode == "edit" ? data.SS : ""}
+                  defaultValue={mode == "edit" ? data.SS : 0}
                 />
               </div>
             </div>
@@ -117,7 +116,7 @@ const DepartmentsModal = ({
                   className="form-control floating inputPadding rounded"
                   name="arteshShare"
                   key={data.SA}
-                  defaultValue={mode == "edit" ? data.SA : ""}
+                  defaultValue={mode == "edit" ? data.SA : 0}
                 />
               </div>
             </div>
