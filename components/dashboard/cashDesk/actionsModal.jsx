@@ -4,7 +4,7 @@ import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import ApplyCashDeskModal from "./applyCashDeskModal";
 import { returnedCash } from "components/commonComponents/imagepath";
-import PrintContent from "./printContent";
+import PrintContent from "components/dashboard/cashDesk/recipt/printContent";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
   if (srvItem.Discount?.Percent) {

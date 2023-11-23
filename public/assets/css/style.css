@@ -261,6 +261,20 @@ a {
   text-decoration: none !important;
 }
 
+.text-end {
+  text-align: end !important;
+}
+
+.text-start {
+  text-align: start !important;
+}
+
+.border-b-1 {
+  border-bottom: 1px solid gray;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
 a:hover,
 a:active,
 a:focus {
@@ -10215,14 +10229,14 @@ ul li .active {
 .reciptLogoContainer {
   border: 1px solid lightgray;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .actionTable {
   border: 1px solid #dedede;
   border-radius: 8px;
   padding: 0.5rem 2rem;
-  margin-top: 15px;
+  margin-top: 12px;
   margin-bottom: 1rem;
 }
 
@@ -10243,6 +10257,10 @@ ul li .active {
   border-bottom: 1px dotted lightgray;
   margin-top: 1rem;
   padding: 0
+}
+
+.otherReciptInfo {
+  min-height: 8rem;
 }
 
 @media print {
