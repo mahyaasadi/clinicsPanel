@@ -57,9 +57,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
   };
 
   useEffect(() => {
-    if (item.Active === "active" && item.id === 1) {
-      changePrescTypeTab("01", item.img, item.name, 1);
-    }
+    if (item.Active === "active" && item.id === 1) changePrescTypeTab("01", item.img, item.name, 1)
   }, []);
 
   return (

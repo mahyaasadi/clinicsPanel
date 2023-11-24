@@ -1,16 +1,9 @@
 import { useEffect } from "react";
 
 const DepartmentsHeader = ({ department, activeClass, handleDepTabChange }) => {
-  const handleAdditionalActions = () => {
-    $("#searchDiv").hide();
-    $("#srvSearchInput").val("");
-    $("#unsuccessfulSearch").hide();
-  };
 
   useEffect(() => {
-    if (activeClass) {
-      handleDepTabChange(department.Services, department._id);
-    }
+    if (activeClass) handleDepTabChange(department.Services, department._id);
   }, []);
 
   return (
@@ -23,7 +16,6 @@ const DepartmentsHeader = ({ department, activeClass, handleDepTabChange }) => {
           data-bs-toggle="tab"
           onClick={() => {
             handleDepTabChange(department.Services, department._id);
-            handleAdditionalActions();
           }}
         >
           {department.Name}

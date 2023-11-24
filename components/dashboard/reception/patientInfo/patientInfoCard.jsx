@@ -16,10 +16,7 @@ const PatientInfoCard = ({
   ClinicID,
   setPatientInfo,
   patientStatIsLoading,
-  FuAddToListItem,
 }) => {
-  // console.log({ data });
-
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handleShowModal = () => setShowModal(true);

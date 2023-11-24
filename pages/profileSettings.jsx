@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import { getSession } from "lib/session";
-import { setSession } from "@/lib/SessionMange";
-import { axiosClient } from "class/axiosConfig";
-import { SuccessAlert, ErrorAlert } from "class/AlertManage";
 import AvatarSettings from "components/userProfile/avatarSettings";
 import PasswordSettings from "components/userProfile/passwordSettings";
 import GenralUserInfoSettings from "components/userProfile/generalUserInfoSettings";

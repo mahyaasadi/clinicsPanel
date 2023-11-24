@@ -1,33 +1,18 @@
 const ArchiveRecipt = ({
   data,
   clinicData,
-  calculateDiscount,
   paymentData,
 }) => {
-  console.log({ data, paymentData, clinicData });
-
-  let RowTotalCost;
-  let RowOrgCost;
-  let RowPatientCost;
-  let RowTotalDiscount;
+  console.log({ data });
 
   const insuranceType =
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
-
-  data?.Items?.map((item, index) => {
-    RowTotalCost = item.Price * item.Qty;
-    // RowOrgCost = item.Qty * item.OC;
-    // RowPatientCost = RowTotalCost - RowOrgCost;
-    // RowTotalDiscount = calculateDiscount(item, RowPatientCost);
-
-    // if (RowTotalDiscount) RowPatientCost -= RowTotalDiscount;
-  });
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   return (
     <>
@@ -38,7 +23,6 @@ const ArchiveRecipt = ({
         </div>
 
         <div className="border-b-1"></div>
-
         <div className="row justify-between font-11">
           <div className="col-6 text-start">
             <p className="font-11 fw-bold mb-1">
@@ -51,15 +35,13 @@ const ArchiveRecipt = ({
             <p className="mb-1">پذیرش : {data?.Date}</p>
             <p className="font-11 fw-bold">{data?.Modality?.Name}</p>
             <p>نام : {data?.Patient?.Name}</p>
-            {/* <p>پزشک : </p> */}
           </div>
         </div>
 
         <div className="border-b-1"></div>
-
         <div className="font-11 fw-bold d-flex flex-wrap gap-2 justify-end">
           <div dir="rtl">
-            خدمات :
+            خدمات : {" "}
             {data?.Items?.map((item, index) => (
               <span key={index}>
                 {item.Name} {" | "}
@@ -69,7 +51,6 @@ const ArchiveRecipt = ({
         </div>
 
         <div className="border-b-1"></div>
-
         <div className="row justify-between font-11">
           <div className="col-7">
             <p className="mb-1">
@@ -86,7 +67,6 @@ const ArchiveRecipt = ({
             </p>
 
             <div className="border-b-1 w-50"></div>
-
             <p className="mb-1">
               مبلغ تخفیف : {data?.Calculated?.TotalDiscount?.toLocaleString()}{" "}
               ریال
@@ -106,7 +86,6 @@ const ArchiveRecipt = ({
         </div>
 
         <div className="border-b-1"></div>
-
         <div className="text-end">
           <p className="font-11">{clinicData.Address} : آدرس </p>
           <p className="font-11"> : شماره مرکز </p>

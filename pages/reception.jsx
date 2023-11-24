@@ -77,6 +77,7 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
         } else {
@@ -116,7 +117,6 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //---- Departments Tab Change ----//
-  let updatedServices = [];
   const handleDepTabChange = (services, modalityId) => {
     Services = services;
     ActiveModalityID = modalityId;
@@ -128,11 +128,6 @@ const Reception = ({ ClinicUser }) => {
     $("#BtnActiveSearch").hide();
     $("#BtnServiceSearch").show();
     $("#srvSearchInput").prop("readonly", false);
-
-    // updatedServices = Services.map((service) => ({
-    //   ...service,
-    //   ModalityID: modalityId,
-    // }));
   };
 
   //----- Search Through Services -----//
@@ -314,32 +309,6 @@ const Reception = ({ ClinicUser }) => {
     }
     addData.Discount = ActiveDiscountShare;
 
-    // setAddedSrvItems([...addedSrvItems, addData]);
-
-    // if (!editSrvMode) {
-    //   if (ActiveSrvName == null || ActiveSrvCode == null) {
-    //     ErrorAlert("خطا", "خدمتی انتخاب نشده است");
-    //     return false;
-    //   } else if (
-    //     addedSrvItems.length > 0 &&
-    //     addedSrvItems.find((x) => x._id === ActiveSrvID)
-    //   ) {
-    //     ErrorAlert("خطا", "سرویس تکراری می باشد!");
-    //     return false;
-    //   }
-    // } else {
-    //   updateItemCallback(addData, ActiveEditSrvID);
-    //   setEditSrvMode(false);
-    //   ActiveSrvCode = null;
-    // }
-
-    // // reset
-    // $("#srvSearchInput").val("");
-    // $("#QtyInput").val("1");
-    // $("#BtnActiveSearch").hide();
-    // $("#BtnServiceSearch").show();
-    // $("#srvSearchInput").prop("readonly", false);
-
     setAddedSrvItems((prevItems) => {
       if (!editSrvMode) {
         if (ActiveSrvName == null || ActiveSrvCode == null) {
@@ -350,18 +319,25 @@ const Reception = ({ ClinicUser }) => {
           prevItems.find((x) => x._id === ActiveSrvID)
         ) {
           ErrorAlert("خطا", "سرویس تکراری می باشد!");
-          return prevItems; // Return the previous state
+          return prevItems;
         }
       } else {
+        // Check if the ModalityID is different when in edit mode
+        // if (addData.ModalityID !== editSrvData.ModalityID) {
+        //   ErrorAlert("خطا", " افزودن سرویس از مدالیت متفاوت وجود ندارد!");
+        //   return prevItems;
+        // }
+
         updateItemCallback(addData, ActiveEditSrvID);
         setEditSrvMode(false);
         ActiveSrvCode = null;
       }
-      return [...prevItems, addData]; // Return the updated state
+      return [...prevItems, addData];
     });
 
     // reset
     $("#srvSearchInput").val("");
+    $("#ResPrescDescription").val("")
     $("#QtyInput").val("1");
     $("#BtnActiveSearch").hide();
     $("#BtnServiceSearch").show();
@@ -398,10 +374,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -433,7 +409,7 @@ const Reception = ({ ClinicUser }) => {
   };
 
   useEffect(() => {
-    $("#BtnActiveSearch").hide();
+    $("#BtnActiveSearch").hide()
   }, []);
 
   useEffect(() => {
@@ -488,6 +464,7 @@ const Reception = ({ ClinicUser }) => {
                 </div>
               </div>
             </div>
+
             <div className="mt-3 col-md-12 prescInfoCard">
               <PrescInfo
                 data={addedSrvItems}

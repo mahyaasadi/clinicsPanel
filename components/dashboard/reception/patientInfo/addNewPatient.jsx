@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { getSession } from "lib/session";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert } from "class/AlertManage";
 import { axiosClient } from "class/axiosConfig.js";
@@ -172,6 +171,7 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
                         required
                       />
                     </div>
+
                     <div className="col-md-12 media-w-100 mt-3">
                       <label className="lblAbs margin-top-25 font-12">
                         جنسیت {""}
@@ -191,6 +191,7 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
                         required
                       />
                     </div>
+
                     <div className="col-md-12 media-w-100 mt-3">
                       <label className="lblAbs margin-top-25 font-12">
                         تاریخ تولد <span className="text-danger">*</span>

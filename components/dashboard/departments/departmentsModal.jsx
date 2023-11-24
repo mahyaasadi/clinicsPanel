@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
 const DepartmentsModal = ({
-  mode = "add", // Default is 'add'
+  mode = "add",
   onSubmit,
   data = {},
   isLoading,

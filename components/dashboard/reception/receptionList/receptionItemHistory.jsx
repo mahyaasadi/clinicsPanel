@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
   // console.log({ srv });
   const renderEditHistory = (historyArray) => {
-    console.log({ historyArray });
+    // console.log({ historyArray });
     // console.log(srv.EditHistory);
     return (
       <div>

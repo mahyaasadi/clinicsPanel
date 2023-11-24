@@ -12,8 +12,6 @@ const PatientCategories = ({
 }) => {
   resetServerContext();
 
-  // console.log({ patientsInfo });
-
   const [categories, setCategories] = useState([
     { id: "6550ab29aaffd91260889560", name: "در انتظار" },
     { id: "6550add52e94fa6da0b485bc", name: "پرداخت کامل" },
@@ -50,9 +48,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-                ...item,
-                category: result.destination.droppableId,
-              }
+              ...item,
+              category: result.destination.droppableId,
+            }
             : item
         )
       );

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -47,38 +47,38 @@ const CashDeskActions = ({
 
   let calculatedTotalPC = 0;
 
-  const handleCalculateCost = (e) => {
-    const { name, value } = e.target;
-    let result = 0;
-    let _CalCart = parseInt($("#cartPayment").val()) || 0;
-    let _CalCash = parseInt($("#cashPayment").val()) || 0;
+  // const handleCalculateCost = (e) => {
+  //   const { name, value } = e.target;
+  //   let result = 0;
+  //   let _CalCart = parseInt($("#cartPayment").val()) || 0;
+  //   let _CalCash = parseInt($("#cashPayment").val()) || 0;
 
-    if (name === "cartPayment" || name === "cashPayment") {
-      if (name === "cartPayment") _CalCart = value;
-      if (name === "cashPayment") _CalCash = value;
-      let payment = parseInt(_CalCart) + parseInt(_CalCash);
-      result = calculatedTotalPC - payment;
-      if (result < 0) {
-        $("#debt").val("0");
-        $("#returnPayment").val(result);
-      } else {
-        $("#debt").val(result);
-        $("#returnPayment").val(0);
-      }
-    } else {
-      let _CalDebt = 0;
-      let _CalReturn = 0;
-      if (name === "debt") {
-        _CalDebt = value;
-        result = calculatedTotalPC - _CalDebt;
-        if (result < 0) result = 0;
-        $("#cartPayment").val(result);
-        $("#returnPayment").val(0);
-      }
+  //   if (name === "cartPayment" || name === "cashPayment") {
+  //     if (name === "cartPayment") _CalCart = value;
+  //     if (name === "cashPayment") _CalCash = value;
+  //     let payment = parseInt(_CalCart) + parseInt(_CalCash);
+  //     result = calculatedTotalPC - payment;
+  //     if (result < 0) {
+  //       $("#debt").val("0");
+  //       $("#returnPayment").val(result);
+  //     } else {
+  //       $("#debt").val(result);
+  //       $("#returnPayment").val(0);
+  //     }
+  //   } else {
+  //     let _CalDebt = 0;
+  //     let _CalReturn = 0;
+  //     if (name === "debt") {
+  //       _CalDebt = value;
+  //       result = calculatedTotalPC - _CalDebt;
+  //       if (result < 0) result = 0;
+  //       $("#cartPayment").val(result);
+  //       $("#returnPayment").val(0);
+  //     }
 
-      if (name === "returnPayment") _CalReturn = value;
-    }
-  };
+  //     if (name === "returnPayment") _CalReturn = value;
+  //   }
+  // };
 
   return (
     <>

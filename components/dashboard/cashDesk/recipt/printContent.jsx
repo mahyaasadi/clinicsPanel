@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
-// import { toJpeg, toPng } from "html-to-image";
 import FeatherIcon from "feather-icons-react";
 import MainRecipt from "components/dashboard/cashDesk/recipt/mainRecipt";
 import ArchiveRecipt from "components/dashboard/cashDesk/recipt/archiveRecipt";
@@ -17,7 +15,6 @@ const PrintContent = ({
   show,
   onHide,
 }) => {
-  const [fullscreen, setFullscreen] = useState(true);
   const [clinicData, setClinicData] = useState([]);
 
   const AnsLines = clinicData?.PrintSetting?.AnsText?.split("\n");
@@ -32,7 +29,6 @@ const PrintContent = ({
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setClinicData(response.data);
       })
       .catch((err) => console.log(err));
@@ -49,7 +45,7 @@ const PrintContent = ({
         onHide={onHide}
         centered
         className="printSection"
-        fullscreen={fullscreen}
+        fullscreen={true}
       >
         <Modal.Header closeButton className="modalHeader">
           <div className="col-lg-4">
