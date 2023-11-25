@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { axiosClient } from "class/axiosConfig";
@@ -17,6 +18,8 @@ const PatientInfoCard = ({
   setPatientInfo,
   patientStatIsLoading,
 }) => {
+  const router = useRouter();
+
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handleShowModal = () => setShowModal(true);
@@ -137,7 +140,7 @@ const PatientInfoCard = ({
               />
               {!patientStatIsLoading ? (
                 <button
-                  className="btn btn-primary rounded-left w-10 font-12"
+                  className={`${router.pathname === "/salamatPrescription" ? "btn-secondary" : "btn-primary"} btn w-10 rounded-left font-12`}
                   id="frmPatientInfoBtnSubmit"
                 >
                   استعلام
@@ -145,7 +148,7 @@ const PatientInfoCard = ({
               ) : (
                 <button
                   type="submit"
-                  className="btn btn-primary w-10 rounded-left"
+                  className={`${router.pathname === "/salamatPrescription" ? "btn-secondary" : "btn-primary"} btn  rounded-left`}
                   disabled
                 >
                   <span
