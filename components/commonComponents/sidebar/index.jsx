@@ -18,7 +18,10 @@ const Sidebar = () => {
       "/cashDesk",
     ];
 
-    const prescriptionSubRoutes = ["/prescription"];
+    const prescriptionSubRoutes = [
+      "/taminPrescription",
+      "/salamatPrescription",
+    ];
     const settingsSubRoutes = [
       "/insuranceSettings",
       "/karts",
@@ -135,11 +138,21 @@ const Sidebar = () => {
                 >
                   <li
                     className={
-                      router.pathname == "/prescription" ? "active" : ""
+                      router.pathname == "/taminPrescription" ? "active" : ""
                     }
                   >
-                    <Link href="/prescription" className="font-12">
-                      نسخه نویسی
+                    <Link href="/taminPrescription" className="font-12">
+                      تامین اجتماعی
+                    </Link>
+                  </li>
+
+                  <li
+                    className={
+                      router.pathname == "/salamatPrescription" ? "active" : ""
+                    }
+                  >
+                    <Link href="/salamatPrescription" className="font-12">
+                      خدمات درمانی
                     </Link>
                   </li>
                 </ul>

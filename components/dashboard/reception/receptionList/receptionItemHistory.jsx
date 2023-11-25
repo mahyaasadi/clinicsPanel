@@ -4,15 +4,14 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
   // console.log({ srv });
   const renderEditHistory = (historyArray) => {
     // console.log({ historyArray });
-    // console.log(srv.EditHistory);
     return (
       <div>
         <ul>
-          {historyArray?.EditHistory.map((historyItem, index) => (
+          {historyArray?.EditHistory?.map((historyItem, index) => (
             // console.log({ historyItem }),
             <li key={index}>
               {historyItem?.EditDate}
-              {historyItem.EditTime}
+              {historyItem?.EditTime}
 
               {/* Check if there is a nested EditHistory array */}
               {historyItem && renderEditHistory(historyItem)}

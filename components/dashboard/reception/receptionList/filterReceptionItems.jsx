@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import DatePicker from "components/commonComponents/datepicker";
+import RangeDatePicker from "components/commonComponents/datepicker/rangeDatepicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import { Tooltip } from "primereact/tooltip";
 
@@ -66,7 +66,7 @@ const FilterReceptionItems = ({
             </div>
 
             <div className="col-lg-3 col-12">
-              <DatePicker SetRangeDate={SetRangeDate} />
+              <RangeDatePicker SetRangeDate={SetRangeDate} />
             </div>
 
             <div className="col-lg-1 col-12 gap-1 d-flex searchReceptionBtn justify-center">

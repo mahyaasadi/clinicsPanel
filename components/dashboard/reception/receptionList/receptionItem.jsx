@@ -5,8 +5,18 @@ import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
+import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
-const ReceptionItem = ({ srv, deleteReception }) => {
+const ReceptionItem = ({
+  srv,
+  deleteReception,
+  addAppointment,
+  openAppointmnetModal,
+  show,
+  onHide,
+  setStartDate,
+  setEndDate,
+}) => {
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -69,6 +79,20 @@ const ReceptionItem = ({ srv, deleteReception }) => {
                     style={{ width: "20px", height: "20px" }}
                   />
                   <Tooltip target=".editBtn">ویرایش</Tooltip>
+                </button>
+
+                <button
+                  type="button"
+                  data-pr-position="top"
+                  className="btn btn-outline-secondary editBtn receptBtnPadding appointment"
+                  onClick={() => openAppointmnetModal(srv.Patient)}
+                >
+                  <FeatherIcon
+                    icon="calendar"
+                    className="prescItembtns"
+                    style={{ width: "20px", height: "20px" }}
+                  />
+                  <Tooltip target=".appointment">نوبت دهی</Tooltip>
                 </button>
 
                 <div>
@@ -184,6 +208,13 @@ const ReceptionItem = ({ srv, deleteReception }) => {
         srv={srv}
         show={showHistoryModal}
         onHide={handleCloseHistoryModal}
+      />
+      <ApplyAppointmentModal
+        show={show}
+        onHide={onHide}
+        addAppointment={addAppointment}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
       />
     </>
   );

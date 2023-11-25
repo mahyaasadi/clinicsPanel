@@ -5,8 +5,8 @@ import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import PatientInfoCard from "components/dashboard/reception/patientInfo/patientInfoCard";
 import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
-import PrescriptionCard from "components/dashboard/prescription/prescriptionCard";
-import AddToListItems from "components/dashboard/prescription/addToListItems";
+import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
+import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
 import {
   TaminPrescType,
   TaminParaServicesTypeList,
@@ -68,12 +68,18 @@ let ActiveSrvCode,
 
 let addPrescriptionitems = [];
 let visitPrescriptionData = [];
-const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
+const TaminPrescription = ({
+  ClinicUser,
+  drugAmountList,
+  drugInstructionList,
+}) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+  const [prescCategory, setPrescCategory] = useState("tamin");
+
   const [patientInfo, setPatientInfo] = useState([]);
 
   const [SelectedInstruction, setSelectedInstruction] = useState(null);
@@ -493,7 +499,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   return (
     <>
       <Head>
-        <title>نسخه نویسی</title>
+        <title>نسخه نویسی تامین اجتماعی</title>
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid">
@@ -506,6 +512,7 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
                 patientStatIsLoading={patientStatIsLoading}
+                prescCategory={prescCategory}
               />
             </div>
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
@@ -549,4 +556,4 @@ const Prescription = ({ ClinicUser, drugAmountList, drugInstructionList }) => {
   );
 };
 
-export default Prescription;
+export default TaminPrescription;

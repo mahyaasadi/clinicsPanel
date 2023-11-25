@@ -1,29 +1,29 @@
 import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
-import ParaServicesDropdown from "./paraServicesDropdown";
-import TaminSearchedServices from "components/dashboard/prescription/taminSearchedServices";
+// import ParaServicesDropdown from "./paraServicesDropdown";
+// import TaminSearchedServices from "components/dashboard/prescription/tamin/taminSearchedServices";
 
 const PrescriptionCard = ({
   setIsLoading,
-  searchIsLoading,
-  drugInstructionList,
-  drugAmountList,
-  SelectedInstruction,
-  setSelectedInstruction,
-  SelectedAmount,
-  setSelectedAmount,
-  FUSelectInstruction,
-  FUSelectDrugAmount,
-  taminHeaderList,
-  taminParaServicesList,
-  taminSrvSearchList,
+  //   searchIsLoading,
+  //   drugInstructionList,
+  //   drugAmountList,
+  //   SelectedInstruction,
+  //   setSelectedInstruction,
+  //   SelectedAmount,
+  //   setSelectedAmount,
+  //   FUSelectInstruction,
+  //   FUSelectDrugAmount,
+  SalamatHeaderList,
+  //   taminParaServicesList,
+  //   taminSrvSearchList,
   changePrescTypeTab,
-  selectParaSrvType,
-  selectSearchedService,
-  activeSearch,
-  searchTaminSrv,
-  FuAddToListItem,
-  registerEpresc,
+  //   selectParaSrvType,
+  //   selectSearchedService,
+  //   activeSearch,
+  //   searchTaminSrv,
+  //   FuAddToListItem,
+  //   registerEpresc,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -38,32 +38,32 @@ const PrescriptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  const handleDrugAmountSelect = (e) => {
-    setSelectedAmount(e.value);
-    FUSelectDrugAmount(e.value);
-  };
+  //   const handleDrugAmountSelect = (e) => {
+  //     setSelectedAmount(e.value);
+  //     FUSelectDrugAmount(e.value);
+  //   };
 
-  const handleDrugInstructionSelect = (e) => {
-    setSelectedInstruction(e.value);
-    FUSelectInstruction(e.value);
-  };
+  //   const handleDrugInstructionSelect = (e) => {
+  //     setSelectedInstruction(e.value);
+  //     FUSelectInstruction(e.value);
+  //   };
 
-  // Search Recommendation
-  const handleSearchKeyUp = () => {
-    setIsLoading(true);
-    let inputCount = $("#srvSearchInput").val().length;
+  //   // Search Recommendation
+  //   const handleSearchKeyUp = () => {
+  //     setIsLoading(true);
+  //     let inputCount = $("#srvSearchInput").val().length;
 
-    if (inputCount > 2) {
-      setTimeout(() => {
-        $("#BtnServiceSearch").click();
-      }, 100);
-      setIsLoading(false);
-    } else {
-      $("#srvSearchInput").val() == "";
-      $(".SearchDiv").hide();
-      setIsLoading(false);
-    }
-  };
+  //     if (inputCount > 2) {
+  //       setTimeout(() => {
+  //         $("#BtnServiceSearch").click();
+  //       }, 100);
+  //       setIsLoading(false);
+  //     } else {
+  //       $("#srvSearchInput").val() == "";
+  //       $(".SearchDiv").hide();
+  //       setIsLoading(false);
+  //     }
+  //   };
 
   return (
     <>
@@ -74,21 +74,21 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-              // onClick={openFavModal}
+                // onClick={openFavModal}
               >
                 نسخه های پرمصرف
               </button>
 
               <button
                 className="btn border-radius visitBtn font-13"
-                onClick={() => registerEpresc(1)}
+                // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-                onClick={() => registerEpresc(0)}
+                // onClick={() => registerEpresc(0)}
               >
                 ثبت نسخه نهایی
               </button>
@@ -97,7 +97,7 @@ const PrescriptionCard = ({
 
           <div className="card-body">
             <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
-              {taminHeaderList.map((item, index) => (
+              {SalamatHeaderList.map((item, index) => (
                 <PrescriptionTypeHeader
                   key={index}
                   item={item}
@@ -107,13 +107,16 @@ const PrescriptionCard = ({
             </ul>
             <hr />
 
-            <form className="w-100 pt-2" onSubmit={searchTaminSrv}>
+            <form
+              className="w-100 pt-2"
+              // onSubmit={searchTaminSrv}
+            >
               <div className="input-group mb-3 inputServiceContainer">
                 <input
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -125,45 +128,45 @@ const PrescriptionCard = ({
                   className="form-control rounded-right w-50 padding-right-2"
                   // onFocus={handleOnFocus}
                   // onBlur={handleOnBlur}
-                  onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  //   onKeyUp={handleSearchKeyUp}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                  onChange={() =>
-                    selectParaSrvType($("#ServiceSearchSelect").val())
-                  }
+                  //   onChange={() =>
+                  //     selectParaSrvType($("#ServiceSearchSelect").val())
+                  //   }
                 >
-                  {taminParaServicesList.map((paraSrvItem, index) => (
+                  {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
                       key={index}
                       paraSrvItem={paraSrvItem}
                     />
-                  ))}
+                  ))} */}
                 </select>
 
                 {/* search buttons */}
                 <button
                   className="btn btn-primary rounded-left w-10 disNone"
                   id="BtnActiveSearch"
-                  onClick={activeSearch}
+                  //   onClick={activeSearch}
                   type="button"
                 >
                   <i className="fe fe-close"></i>
                 </button>
 
-                {!searchIsLoading ? (
-                  <button
-                    className="btn btn-primary rounded-left w-10"
-                    id="BtnServiceSearch"
-                  >
-                    <i className="fe fe-search"></i>
-                  </button>
-                ) : (
-                  <button
+                {/* {!searchIsLoading ? ( */}
+                <button
+                  className="btn btn-primary rounded-left w-10"
+                  id="BtnServiceSearch"
+                >
+                  <i className="fe fe-search"></i>
+                </button>
+                {/* // ) : ( */}
+                {/* <button
                     type="submit"
                     className="btn btn-primary rounded-left"
                     disabled
@@ -172,20 +175,20 @@ const PrescriptionCard = ({
                       className="spinner-border spinner-border-sm me-2"
                       role="status"
                     ></span>
-                  </button>
-                )}
+                  </button> */}
+                {/* )} */}
 
-                <div className="col-12 SearchDiv" id="searchDiv">
+                {/* <div className="col-12 SearchDiv" id="searchDiv">
                   <TaminSearchedServices
                     data={taminSrvSearchList}
                     selectSearchedService={selectSearchedService}
                   />
-                </div>
+                </div> */}
               </div>
 
-              <div className="unsuccessfullSearch" id="unsuccessfullSearch">
+              {/* <div className="unsuccessfullSearch" id="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
-              </div>
+              </div> */}
             </form>
 
             <div className="d-flex align-items-center gap-1 media-flex-column flex-wrap row">
@@ -208,7 +211,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -224,7 +227,7 @@ const PrescriptionCard = ({
 
               <div id="drugInstruction" className="col media-mt-1">
                 <label className="lblAbs font-12">زمان مصرف</label>
-                <Dropdown
+                {/* <Dropdown
                   value={SelectedInstruction}
                   onChange={handleDrugInstructionSelect}
                   options={drugInstructionList}
@@ -232,12 +235,12 @@ const PrescriptionCard = ({
                   placeholder="انتخاب کنید"
                   filter
                   showClear
-                />
+                /> */}
               </div>
 
               <div id="drugAmount" className="col media-mt-1">
                 <label className="lblAbs font-12">تعداد در وعده</label>
-                <Dropdown
+                {/* <Dropdown
                   value={SelectedAmount}
                   onChange={handleDrugAmountSelect}
                   options={drugAmountList}
@@ -245,7 +248,7 @@ const PrescriptionCard = ({
                   placeholder="انتخاب کنید"
                   filter
                   showClear
-                />
+                /> */}
               </div>
             </div>
 
@@ -263,7 +266,7 @@ const PrescriptionCard = ({
                 {/* {!srvEditMode ? ( */}
                 <button
                   className="btn rounded w-100 addToListBtn font-12"
-                  onClick={FuAddToListItem}
+                  //   onClick={FuAddToListItem}
                 >
                   اضافه به لیست
                 </button>

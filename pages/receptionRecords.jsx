@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
@@ -23,7 +24,9 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
-let ClinicID = null;
+const jdate = new JDate();
+let ClinicID,
+  ActivePatientID = null;
 const ReceptionRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
@@ -137,6 +140,51 @@ const ReceptionRecords = ({ ClinicUser }) => {
     $("#patientName").val("");
   };
 
+  // Appointments
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
+
+  let startDate,
+    endDate = null;
+
+  const setStartDate = (value) => (startDate = value);
+  const setEndDate = (value) => (endDate = value);
+
+  const openAppointmnetModal = (patientData) => {
+    console.log(patientData);
+    ActivePatientID = patientData._id;
+    setShowAppointmentModal(true);
+  };
+
+  const addAppointment = (e) => {
+    e.preventDefault();
+    // setIsLoading(true);
+
+    let url = "Appointment/addClinic";
+    let data = {
+      ClinicID,
+      PatientID: ActivePatientID,
+      Date: jdate.format("YYYY/MM/DD"),
+      ST: startDate,
+      ET: endDate,
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getClinicAppointmentsByDate = () => {
+    let url = "Appointment/getByDateClinic";
+  };
+
   useEffect(() => getReceptionList(), []);
 
   return (
@@ -159,9 +207,15 @@ const ReceptionRecords = ({ ClinicUser }) => {
                     applyFilterOnRecItems={applyFilterOnRecItems}
                     handleResetFilterFields={handleResetFilterFields}
                     SetRangeDate={SetRangeDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
                     selectedDepartment={selectedDepartment}
                     FUSelectDepartment={FUSelectDepartment}
                     searchIsLoading={searchIsLoading}
+                    openAppointmnetModal={openAppointmnetModal}
+                    addAppointment={addAppointment}
+                    show={showAppointmentModal}
+                    onHide={handleCloseAppointmentModal}
                   />
 
                   {currentItems.length > 0 && (

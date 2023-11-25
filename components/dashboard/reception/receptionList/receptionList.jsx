@@ -7,10 +7,16 @@ const ReceptionList = ({
   applyFilterOnRecItems,
   handleResetFilterFields,
   SetRangeDate,
+  setStartDate,
+  setEndDate,
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
   searchIsLoading,
+  addAppointment,
+  show,
+  onHide,
+  openAppointmnetModal,
 }) => {
   return (
     <>
@@ -32,6 +38,12 @@ const ReceptionList = ({
             key={index}
             srv={item}
             deleteReception={deleteReception}
+            addAppointment={addAppointment}
+            show={show}
+            onHide={onHide}
+            openAppointmnetModal={openAppointmnetModal}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
         ))}
       </div>

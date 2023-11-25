@@ -3,7 +3,7 @@ import FeatherIcon from "feather-icons-react";
 import DtPicker, { convertToFa } from "react-calendar-datetime-picker";
 import "react-calendar-datetime-picker/dist/index.css";
 
-const DatePicker = ({ SetRangeDate }) => {
+const RangeDatePicker = ({ SetRangeDate }) => {
   const setLocalDate = (value) => {
     let dateFrom =
       value?.from?.year.toString() +
@@ -52,4 +52,4 @@ const DatePicker = ({ SetRangeDate }) => {
   );
 };
 
-export default DatePicker;
+export default RangeDatePicker;

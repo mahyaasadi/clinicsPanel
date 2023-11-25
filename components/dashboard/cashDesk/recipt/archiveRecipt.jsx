@@ -1,18 +1,12 @@
-const ArchiveRecipt = ({
-  data,
-  clinicData,
-  paymentData,
-}) => {
-  console.log({ data });
-
+const ArchiveRecipt = ({ data, clinicData, paymentData }) => {
   const insuranceType =
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-        ? "تامین اجتماعی"
-        : data?.Patient?.Insurance === "3"
-          ? "نیروهای مسلح"
-          : "آزاد";
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
 
   return (
     <>
@@ -41,7 +35,7 @@ const ArchiveRecipt = ({
         <div className="border-b-1"></div>
         <div className="font-11 fw-bold d-flex flex-wrap gap-2 justify-end">
           <div dir="rtl">
-            خدمات : {" "}
+            خدمات :{" "}
             {data?.Items?.map((item, index) => (
               <span key={index}>
                 {item.Name} {" | "}

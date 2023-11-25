@@ -1,6 +1,15 @@
 const ServicesRecipt = ({ clinicData, data, paymentData }) => {
   console.log({ data, clinicData });
 
+  const insuranceType =
+    data?.Patient?.Insurance === "1"
+      ? "سلامت ایرانیان"
+      : data?.Patient?.Insurance === "2"
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
+
   return (
     <>
       <div className="reciptPrintHeader reciptLogoContainer font-11 p-3">
@@ -15,7 +24,7 @@ const ServicesRecipt = ({ clinicData, data, paymentData }) => {
           <div className="col-6 text-start">
             <p className="font-11 fw-bold">{data?.Modality?.Name}</p>
             <p>سن : {data.Patient.Age}</p>
-            {/* <p >نوع بیمه : {insuranceType}</p> */}
+            <p>نوع بیمه : {insuranceType}</p>
           </div>
 
           <div className="col-6 text-end mb-2">
@@ -28,7 +37,7 @@ const ServicesRecipt = ({ clinicData, data, paymentData }) => {
 
         <div className="font-11 fw-bold d-flex flex-wrap gap-2 justify-end">
           <div dir="rtl">
-            خدمات : {" "}
+            خدمات :{" "}
             {data?.Items?.map((item, index) => (
               <span key={index}>
                 {item.Name} {" | "}
