@@ -1,971 +1,972 @@
 :root {
-    --numDays: 5;
-    --numHours: 96;
-    --timeHeight: 50px;
-    --calBgColor: #fff1f8;
-    --eventBorderColor: #f2d3d8;
-    --eventColor1: #ffd6d1;
-    --eventColor2: #fafaa3;
-    --eventColor3: #e2f8ff;
-    --eventColor4: #d1ffe6;
-    /*  */
-    --main-color: #1a535c;
-    --secondary-color: #4ecdc4;
-    --white-color: #f7fff7;
-    --main-accent-color: #ff6b6b;
-    --secondary-accent-color: #ffe66d;
-    --dark-color: #2D232E;
+  --numDays: 5;
+  --numHours: 96;
+  --timeHeight: 50px;
+  --calBgColor: #fff1f8;
+  --eventBorderColor: #f2d3d8;
+  --eventColor1: #ffd6d1;
+  --eventColor2: #fafaa3;
+  --eventColor3: #e2f8ff;
+  --eventColor4: #d1ffe6;
 }
 
 .calendar {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: auto 1fr;
-    margin: 2rem;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  margin: 2rem;
 }
 
 .action-btn {
-    float: left;
-    width: 50px;
-    font-size: 15px;
+  float: left;
+  width: 50px;
+  font-size: 15px;
 }
 
 .action-btn .fe {
-    /* border: 1px solid gray; */
-    padding: 5px;
-    margin-right: 2px;
-    border-radius: 4px;
-    cursor: pointer;
+  /* border: 1px solid gray; */
+  padding: 5px;
+  margin-right: 2px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .action-btn .fe:hover {
-    background-color: black;
-    color: white
+  background-color: black;
+  color: white;
 }
 
 .time-marker {
-    direction: ltr !important;
+  direction: ltr !important;
 }
 
 .timeline {
-    padding-left: 10px;
-    display: grid;
-    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  padding-left: 10px;
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
 }
 
 .days {
-    display: grid;
-    grid-column: 2;
-    gap: 5px;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    /* border-bottom: 1px solid black; */
+  display: grid;
+  grid-column: 2;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* border-bottom: 1px solid black; */
 }
 
 .events {
-    display: grid;
-    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-    border-radius: 5px;
-    /* background: var(--calBgColor); */
-    background-color: whitesmoke;
-
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  border-radius: 5px;
+  /* background: var(--calBgColor); */
+  background-color: whitesmoke;
 }
 
 .start-0-00 {
-    grid-row-start: 1;
+  grid-row-start: 1;
 }
 
 .start-0-15 {
-    grid-row-start: 2;
+  grid-row-start: 2;
 }
 
 .start-0-30 {
-    grid-row-start: 3;
+  grid-row-start: 3;
 }
 
 .start-0-45 {
-    grid-row-start: 4;
+  grid-row-start: 4;
 }
 
 .start-1-00 {
-    grid-row-start: 5;
+  grid-row-start: 5;
 }
 
 .start-1-15 {
-    grid-row-start: 6;
+  grid-row-start: 6;
 }
 
 .start-1-30 {
-    grid-row-start: 7;
+  grid-row-start: 7;
 }
 
 .start-1-45 {
-    grid-row-start: 8;
+  grid-row-start: 8;
 }
 
 .start-2-00 {
-    grid-row-start: 9;
+  grid-row-start: 9;
 }
 
 .start-2-15 {
-    grid-row-start: 10;
+  grid-row-start: 10;
 }
 
 .start-2-30 {
-    grid-row-start: 11;
+  grid-row-start: 11;
 }
 
 .start-2-45 {
-    grid-row-start: 12;
+  grid-row-start: 12;
 }
 
 .start-3-00 {
-    grid-row-start: 13;
+  grid-row-start: 13;
 }
 
 .start-3-15 {
-    grid-row-start: 14;
+  grid-row-start: 14;
 }
 
 .start-3-30 {
-    grid-row-start: 15;
+  grid-row-start: 15;
 }
 
 .start-3-45 {
-    grid-row-start: 16;
+  grid-row-start: 16;
 }
 
 .start-4-00 {
-    grid-row-start: 17;
+  grid-row-start: 17;
 }
 
 .start-4-15 {
-    grid-row-start: 18;
+  grid-row-start: 18;
 }
 
 .start-4-30 {
-    grid-row-start: 19;
+  grid-row-start: 19;
 }
 
 .start-4-45 {
-    grid-row-start: 20;
+  grid-row-start: 20;
 }
 
 .start-5-00 {
-    grid-row-start: 21;
+  grid-row-start: 21;
 }
 
 .start-5-15 {
-    grid-row-start: 22;
+  grid-row-start: 22;
 }
 
 .start-5-30 {
-    grid-row-start: 23;
+  grid-row-start: 23;
 }
 
 .start-5-45 {
-    grid-row-start: 24;
+  grid-row-start: 24;
 }
 
 .start-6-00 {
-    grid-row-start: 25;
+  grid-row-start: 25;
 }
 
 .start-6-15 {
-    grid-row-start: 26;
+  grid-row-start: 26;
 }
 
 .start-6-30 {
-    grid-row-start: 27;
+  grid-row-start: 27;
 }
 
 .start-6-45 {
-    grid-row-start: 28;
+  grid-row-start: 28;
 }
 
 .start-7-00 {
-    grid-row-start: 29;
+  grid-row-start: 29;
 }
 
 .start-7-15 {
-    grid-row-start: 30;
+  grid-row-start: 30;
 }
 
 .start-7-30 {
-    grid-row-start: 31;
+  grid-row-start: 31;
 }
 
 .start-7-45 {
-    grid-row-start: 32;
+  grid-row-start: 32;
 }
 
 .start-8-00 {
-    grid-row-start: 33;
+  grid-row-start: 33;
 }
 
 .start-8-15 {
-    grid-row-start: 34;
+  grid-row-start: 34;
 }
 
 .start-8-30 {
-    grid-row-start: 35;
+  grid-row-start: 35;
 }
 
 .start-8-45 {
-    grid-row-start: 36;
+  grid-row-start: 36;
 }
 
 .start-9-00 {
-    grid-row-start: 37;
+  grid-row-start: 37;
 }
 
 .start-9-15 {
-    grid-row-start: 38;
+  grid-row-start: 38;
 }
 
 .start-9-30 {
-    grid-row-start: 39;
+  grid-row-start: 39;
 }
 
 .start-9-45 {
-    grid-row-start: 40;
+  grid-row-start: 40;
 }
 
 .start-10-00 {
-    grid-row-start: 41;
+  grid-row-start: 41;
 }
 
 .start-10-15 {
-    grid-row-start: 42;
+  grid-row-start: 42;
 }
 
 .start-10-30 {
-    grid-row-start: 43;
+  grid-row-start: 43;
 }
 
 .start-10-45 {
-    grid-row-start: 44;
+  grid-row-start: 44;
 }
 
 .start-11-00 {
-    grid-row-start: 45;
+  grid-row-start: 45;
 }
 
 .start-11-15 {
-    grid-row-start: 46;
+  grid-row-start: 46;
 }
 
 .start-11-30 {
-    grid-row-start: 47;
+  grid-row-start: 47;
 }
 
 .start-11-45 {
-    grid-row-start: 48;
+  grid-row-start: 48;
 }
 
 .start-12-00 {
-    grid-row-start: 49;
+  grid-row-start: 49;
 }
 
 .start-12-15 {
-    grid-row-start: 50;
+  grid-row-start: 50;
 }
 
 .start-12-30 {
-    grid-row-start: 51;
+  grid-row-start: 51;
 }
 
 .start-12-45 {
-    grid-row-start: 52;
+  grid-row-start: 52;
 }
 
 .start-13-00 {
-    grid-row-start: 53;
+  grid-row-start: 53;
 }
 
 .start-13-15 {
-    grid-row-start: 54;
+  grid-row-start: 54;
 }
 
 .start-13-30 {
-    grid-row-start: 55;
+  grid-row-start: 55;
 }
 
 .start-13-45 {
-    grid-row-start: 56;
+  grid-row-start: 56;
 }
 
 .start-14-00 {
-    grid-row-start: 57;
+  grid-row-start: 57;
 }
 
 .start-14-15 {
-    grid-row-start: 58;
+  grid-row-start: 58;
 }
 
 .start-14-30 {
-    grid-row-start: 59;
+  grid-row-start: 59;
 }
 
 .start-14-45 {
-    grid-row-start: 60;
+  grid-row-start: 60;
 }
 
 .start-15-00 {
-    grid-row-start: 61;
+  grid-row-start: 61;
 }
 
 .start-15-15 {
-    grid-row-start: 62;
+  grid-row-start: 62;
 }
 
 .start-15-30 {
-    grid-row-start: 63;
+  grid-row-start: 63;
 }
 
 .start-15-45 {
-    grid-row-start: 64;
+  grid-row-start: 64;
 }
 
 .start-16-00 {
-    grid-row-start: 65;
+  grid-row-start: 65;
 }
 
 .start-16-15 {
-    grid-row-start: 66;
+  grid-row-start: 66;
 }
 
 .start-16-30 {
-    grid-row-start: 67;
+  grid-row-start: 67;
 }
 
 .start-16-45 {
-    grid-row-start: 68;
+  grid-row-start: 68;
 }
 
 .start-17-00 {
-    grid-row-start: 69;
+  grid-row-start: 69;
 }
 
 .start-17-15 {
-    grid-row-start: 70;
+  grid-row-start: 70;
 }
 
 .start-17-30 {
-    grid-row-start: 71;
+  grid-row-start: 71;
 }
 
 .start-17-45 {
-    grid-row-start: 72;
+  grid-row-start: 72;
 }
 
 .start-18-00 {
-    grid-row-start: 73;
+  grid-row-start: 73;
 }
 
 .start-18-15 {
-    grid-row-start: 74;
+  grid-row-start: 74;
 }
 
 .start-18-30 {
-    grid-row-start: 75;
+  grid-row-start: 75;
 }
 
 .start-18-45 {
-    grid-row-start: 76;
+  grid-row-start: 76;
 }
 
 .start-19-00 {
-    grid-row-start: 77;
+  grid-row-start: 77;
 }
 
 .start-19-15 {
-    grid-row-start: 78;
+  grid-row-start: 78;
 }
 
 .start-19-30 {
-    grid-row-start: 79;
+  grid-row-start: 79;
 }
 
 .start-19-45 {
-    grid-row-start: 80;
+  grid-row-start: 80;
 }
 
 .start-20-00 {
-    grid-row-start: 81;
+  grid-row-start: 81;
 }
 
 .start-20-15 {
-    grid-row-start: 82;
+  grid-row-start: 82;
 }
 
 .start-20-30 {
-    grid-row-start: 83;
+  grid-row-start: 83;
 }
 
 .start-20-45 {
-    grid-row-start: 84;
+  grid-row-start: 84;
 }
 
 .start-21-00 {
-    grid-row-start: 85;
+  grid-row-start: 85;
 }
 
 .start-21-15 {
-    grid-row-start: 86;
+  grid-row-start: 86;
 }
 
 .start-21-30 {
-    grid-row-start: 87;
+  grid-row-start: 87;
 }
 
 .start-21-45 {
-    grid-row-start: 88;
+  grid-row-start: 88;
 }
 
 .start-22-00 {
-    grid-row-start: 89;
+  grid-row-start: 89;
 }
 
 .start-22-15 {
-    grid-row-start: 90;
+  grid-row-start: 90;
 }
 
 .start-22-30 {
-    grid-row-start: 91;
+  grid-row-start: 91;
 }
 
 .start-22-45 {
-    grid-row-start: 92;
+  grid-row-start: 92;
 }
 
 .start-23-00 {
-    grid-row-start: 93;
+  grid-row-start: 93;
 }
 
 .start-23-15 {
-    grid-row-start: 94;
+  grid-row-start: 94;
 }
 
 .start-23-30 {
-    grid-row-start: 95;
+  grid-row-start: 95;
 }
 
 .start-23-45 {
-    grid-row-start: 96;
+  grid-row-start: 96;
 }
 
 .end-0-00 {
-    grid-row-end: 1;
+  grid-row-end: 1;
 }
 
 .end-0-15 {
-    grid-row-end: 2;
+  grid-row-end: 2;
 }
 
 .end-0-30 {
-    grid-row-end: 3;
+  grid-row-end: 3;
 }
 
 .end-0-45 {
-    grid-row-end: 4;
+  grid-row-end: 4;
 }
 
 .end-1-00 {
-    grid-row-end: 5;
+  grid-row-end: 5;
 }
 
 .end-1-15 {
-    grid-row-end: 6;
+  grid-row-end: 6;
 }
 
 .end-1-30 {
-    grid-row-end: 7;
+  grid-row-end: 7;
 }
 
 .end-1-45 {
-    grid-row-end: 8;
+  grid-row-end: 8;
 }
 
 .end-2-00 {
-    grid-row-end: 9;
+  grid-row-end: 9;
 }
 
 .end-2-15 {
-    grid-row-end: 10;
+  grid-row-end: 10;
 }
 
 .end-2-30 {
-    grid-row-end: 11;
+  grid-row-end: 11;
 }
 
 .end-2-45 {
-    grid-row-end: 12;
+  grid-row-end: 12;
 }
 
 .end-3-00 {
-    grid-row-end: 13;
+  grid-row-end: 13;
 }
 
 .end-3-15 {
-    grid-row-end: 14;
+  grid-row-end: 14;
 }
 
 .end-3-30 {
-    grid-row-end: 15;
+  grid-row-end: 15;
 }
 
 .end-3-45 {
-    grid-row-end: 16;
+  grid-row-end: 16;
 }
 
 .end-4-00 {
-    grid-row-end: 17;
+  grid-row-end: 17;
 }
 
 .end-4-15 {
-    grid-row-end: 18;
+  grid-row-end: 18;
 }
 
 .end-4-30 {
-    grid-row-end: 19;
+  grid-row-end: 19;
 }
 
 .end-4-45 {
-    grid-row-end: 20;
+  grid-row-end: 20;
 }
 
 .end-5-00 {
-    grid-row-end: 21;
+  grid-row-end: 21;
 }
 
 .end-5-15 {
-    grid-row-end: 22;
+  grid-row-end: 22;
 }
 
 .end-5-30 {
-    grid-row-end: 23;
+  grid-row-end: 23;
 }
 
 .end-5-45 {
-    grid-row-end: 24;
+  grid-row-end: 24;
 }
 
 .end-6-00 {
-    grid-row-end: 25;
+  grid-row-end: 25;
 }
 
 .end-6-15 {
-    grid-row-end: 26;
+  grid-row-end: 26;
 }
 
 .end-6-30 {
-    grid-row-end: 27;
+  grid-row-end: 27;
 }
 
 .end-6-45 {
-    grid-row-end: 28;
+  grid-row-end: 28;
 }
 
 .end-7-00 {
-    grid-row-end: 29;
+  grid-row-end: 29;
 }
 
 .end-7-15 {
-    grid-row-end: 30;
+  grid-row-end: 30;
 }
 
 .end-7-30 {
-    grid-row-end: 31;
+  grid-row-end: 31;
 }
 
 .end-7-45 {
-    grid-row-end: 32;
+  grid-row-end: 32;
 }
 
 .end-8-00 {
-    grid-row-end: 33;
+  grid-row-end: 33;
 }
 
 .end-8-15 {
-    grid-row-end: 34;
+  grid-row-end: 34;
 }
 
 .end-8-30 {
-    grid-row-end: 35;
+  grid-row-end: 35;
 }
 
 .end-8-45 {
-    grid-row-end: 36;
+  grid-row-end: 36;
 }
 
 .end-9-00 {
-    grid-row-end: 37;
+  grid-row-end: 37;
 }
 
 .end-9-15 {
-    grid-row-end: 38;
+  grid-row-end: 38;
 }
 
 .end-9-30 {
-    grid-row-end: 39;
+  grid-row-end: 39;
 }
 
 .end-9-45 {
-    grid-row-end: 40;
+  grid-row-end: 40;
 }
 
 .end-10-00 {
-    grid-row-end: 41;
+  grid-row-end: 41;
 }
 
 .end-10-15 {
-    grid-row-end: 42;
+  grid-row-end: 42;
 }
 
 .end-10-30 {
-    grid-row-end: 43;
+  grid-row-end: 43;
 }
 
 .end-10-45 {
-    grid-row-end: 44;
+  grid-row-end: 44;
 }
 
 .end-11-00 {
-    grid-row-end: 45;
+  grid-row-end: 45;
 }
 
 .end-11-15 {
-    grid-row-end: 46;
+  grid-row-end: 46;
 }
 
 .end-11-30 {
-    grid-row-end: 47;
+  grid-row-end: 47;
 }
 
 .end-11-45 {
-    grid-row-end: 48;
+  grid-row-end: 48;
 }
 
 .end-12-00 {
-    grid-row-end: 49;
+  grid-row-end: 49;
 }
 
 .end-12-15 {
-    grid-row-end: 50;
+  grid-row-end: 50;
 }
 
 .end-12-30 {
-    grid-row-end: 51;
+  grid-row-end: 51;
 }
 
 .end-12-45 {
-    grid-row-end: 52;
+  grid-row-end: 52;
 }
 
 .end-13-00 {
-    grid-row-end: 53;
+  grid-row-end: 53;
 }
 
 .end-13-15 {
-    grid-row-end: 54;
+  grid-row-end: 54;
 }
 
 .end-13-30 {
-    grid-row-end: 55;
+  grid-row-end: 55;
 }
 
 .end-13-45 {
-    grid-row-end: 56;
+  grid-row-end: 56;
 }
 
 .end-14-00 {
-    grid-row-end: 57;
+  grid-row-end: 57;
 }
 
 .end-14-15 {
-    grid-row-end: 58;
+  grid-row-end: 58;
 }
 
 .end-14-30 {
-    grid-row-end: 59;
+  grid-row-end: 59;
 }
 
 .end-14-45 {
-    grid-row-end: 60;
+  grid-row-end: 60;
 }
 
 .end-15-00 {
-    grid-row-end: 61;
+  grid-row-end: 61;
 }
 
 .end-15-15 {
-    grid-row-end: 62;
+  grid-row-end: 62;
 }
 
 .end-15-30 {
-    grid-row-end: 63;
+  grid-row-end: 63;
 }
 
 .end-15-45 {
-    grid-row-end: 64;
+  grid-row-end: 64;
 }
 
 .end-16-00 {
-    grid-row-end: 65;
+  grid-row-end: 65;
 }
 
 .end-16-15 {
-    grid-row-end: 66;
+  grid-row-end: 66;
 }
 
 .end-16-30 {
-    grid-row-end: 67;
+  grid-row-end: 67;
 }
 
 .end-16-45 {
-    grid-row-end: 68;
+  grid-row-end: 68;
 }
 
 .end-17-00 {
-    grid-row-end: 69;
+  grid-row-end: 69;
 }
 
 .end-17-15 {
-    grid-row-end: 70;
+  grid-row-end: 70;
 }
 
 .end-17-30 {
-    grid-row-end: 71;
+  grid-row-end: 71;
 }
 
 .end-17-45 {
-    grid-row-end: 72;
+  grid-row-end: 72;
 }
 
 .end-18-00 {
-    grid-row-end: 73;
+  grid-row-end: 73;
 }
 
 .end-18-15 {
-    grid-row-end: 74;
+  grid-row-end: 74;
 }
 
 .end-18-30 {
-    grid-row-end: 75;
+  grid-row-end: 75;
 }
 
 .end-18-45 {
-    grid-row-end: 76;
+  grid-row-end: 76;
 }
 
 .end-19-00 {
-    grid-row-end: 77;
+  grid-row-end: 77;
 }
 
 .end-19-15 {
-    grid-row-end: 78;
+  grid-row-end: 78;
 }
 
 .end-19-30 {
-    grid-row-end: 79;
+  grid-row-end: 79;
 }
 
 .end-19-45 {
-    grid-row-end: 80;
+  grid-row-end: 80;
 }
 
 .end-20-00 {
-    grid-row-end: 81;
+  grid-row-end: 81;
 }
 
 .end-20-15 {
-    grid-row-end: 82;
+  grid-row-end: 82;
 }
 
 .end-20-30 {
-    grid-row-end: 83;
+  grid-row-end: 83;
 }
 
 .end-20-45 {
-    grid-row-end: 84;
+  grid-row-end: 84;
 }
 
 .end-21-00 {
-    grid-row-end: 85;
+  grid-row-end: 85;
 }
 
 .end-21-15 {
-    grid-row-end: 86;
+  grid-row-end: 86;
 }
 
 .end-21-30 {
-    grid-row-end: 87;
+  grid-row-end: 87;
 }
 
 .end-21-45 {
-    grid-row-end: 88;
+  grid-row-end: 88;
 }
 
 .end-22-00 {
-    grid-row-end: 89;
+  grid-row-end: 89;
 }
 
 .end-22-15 {
-    grid-row-end: 90;
+  grid-row-end: 90;
 }
 
 .end-22-30 {
-    grid-row-end: 91;
+  grid-row-end: 91;
 }
 
 .end-22-45 {
-    grid-row-end: 92;
+  grid-row-end: 92;
 }
 
 .end-23-00 {
-    grid-row-end: 93;
+  grid-row-end: 93;
 }
 
 .end-23-15 {
-    grid-row-end: 94;
+  grid-row-end: 94;
 }
 
 .end-23-30 {
-    grid-row-end: 95;
+  grid-row-end: 95;
 }
 
 .end-23-45 {
-    grid-row-end: 96;
+  grid-row-end: 96;
 }
 
-
 .title {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 .event {
-    /* border: 1px solid var(--eventBorderColor); */
-    border-radius: 5px;
-    padding: 0.5rem;
-    margin: 0 0.5rem;
-    background: white;
-    overflow: auto;
-    margin-top: 5px;
+  /* border: 1px solid var(--eventBorderColor); */
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  background: white;
+  overflow: auto;
+  margin-top: 5px;
 }
 
 .space,
 .date {
-    height: 60px
+  height: 60px;
 }
 
-
 .corp-fi {
-    background: var(--eventColor1);
+  background: var(--eventColor1);
 }
 
 .ent-law {
-    background: var(--eventColor2);
+  background: var(--eventColor2);
 }
 
 .writing {
-    background: var(--eventColor3);
+  background: var(--eventColor3);
 }
 
 .securities {
-    background: var(--eventColor4);
+  background: var(--eventColor4);
 }
 
 .date {
-    display: flex;
-    gap: 1em;
-    text-align: center;
-    padding-right: 20px;
+  display: flex;
+  gap: 1em;
+  text-align: center;
+  padding-right: 20px;
 }
 
 .date-num {
-    font-size: 1.5rem;
-    font-weight: 600;
-    display: inline;
-    /* margin-bottom: 10px; */
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: inline;
+  /* margin-bottom: 10px; */
 }
 
 .date-day {
-    display: inline;
-    font-size: 1.5rem;
-    font-weight: 100;
-    /* margin-bottom: 10px; */
-
+  display: inline;
+  font-size: 1.5rem;
+  font-weight: 100;
+  /* margin-bottom: 10px; */
 }
 
-/* timepicker */
-.container-fluid {
-    height: 100vh;
+.react-datepicker {
+  width: 150px !important;
 }
 
-.time {
-    position: relative;
+.react-datepicker__time-box {
+  width: 150px !important;
 }
 
-.time .selected {
-    direction: ltr;
-    text-align: center;
-    font-size: 1.5rem;
-    color: var(--secondary-color);
+.react-datepicker__time-container {
+  width: 150px !important;
 }
 
-.time .time-btn {
-    transition: all ease-out 0.3s;
-    cursor: pointer;
+.react-datepicker-wrapper {
+  display: inline-block;
+  width: 100%;
 }
 
-.time .time-btn:hover {
-    color: var(--secondary-accent-color);
-    text-shadow: 2px 2px 5px #000000;
+/* Style the input field */
+.react-datepicker__input-container input {
+  width: 100%; /* Adjust the width as needed */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 18px;
+  font-size: 14px;
 }
 
-.time .time-btn.active {
-    color: var(--white-color);
-    text-shadow: 2px 2px 5px #000000;
+/* Style the DatePicker popup */
+.react-datepicker-popper {
+  z-index: 1; /* Ensure the DatePicker is above other elements */
 }
 
-#time-picker {
-    position: absolute;
-    background: var(--main-color);
-    color: var(--white-color);
-    border-radius: 5px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0;
-    transition: all ease-out 0.3s;
-    top: 75%;
-    pointer-events: none;
-    min-width: 310px;
+/* Style the header of the DatePicker */
+.react-datepicker__header {
+  background-color: #594b0d;
+  color: #fff !important;
+  border-bottom: none;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: white;
+  font-size: 13px !important;
+  font-weight: 500 !important;
 }
 
-#time-picker.active {
-    opacity: 1;
-    top: 100%;
-    pointer-events: all;
+/* Style the navigation buttons in the header */
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background-color: #594b0d;
 }
 
-#time-picker.active .item {
-    cursor: pointer;
-    transition: all ease-out 0.3s;
-    transition-duration: 0.3s;
-    opacity: 0.5;
-    display: block;
-    transform-origin: center;
+/* Style the weekdays row */
+.react-datepicker__day-names {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f0f0f0;
 }
 
-#time-picker.active .item:hover {
-    text-shadow: 2px 2px 5px black;
-    opacity: 1;
-    transform: scale(1.2, 1.2);
+/* Style each day in the calendar */
+.react-datepicker__day {
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+
+  /* Hover effect */
+  &:hover {
+    background-color: #e0e0e0;
+  }
+
+  /* Selected day styles */
+  &--selected {
+    background-color: #594b0d;
+    color: #fff;
+  }
 }
 
-#time-picker.active .item.active {
-    opacity: 1;
-    color: var(--secondary-accent-color);
+.react-datepicker__time-list-item--selected {
+  background-color: #594b0d !important;
 }

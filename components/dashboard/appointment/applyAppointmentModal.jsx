@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import { faIR } from 'date-fns/locale';
+import "public/assets/css/appointment.css"
+
+registerLocale('faIR', faIR); // Register the Farsi locale
 
 const ApplyAppointmentModal = ({
   show,
@@ -17,9 +25,24 @@ const ApplyAppointmentModal = ({
   //   MOption.push(<option>{i}</option>);
   // }
 
+  const [selectedStartTime, setSelectedStartTime] = useState(null);
+  const [selectedEndTime, setSelectedEndTime] = useState(null);
+
+  const handleStartTimeChange = (time) => {
+    setSelectedStartTime(time);
+    const pureSTimeValue = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    console.log({ pureSTimeValue });
+  };
+
+  const handleEndTimeChange = (time) => {
+    setSelectedEndTime(time);
+    const pureETimeValue = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    console.log({ pureETimeValue });
+  };
+
   return (
     <>
-      <Modal show={show} onHide={onHide} centered className="custom-modal">
+      <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <p className="mb-0 text-secondary font-14 fw-bold">ثبت نوبت</p>
@@ -31,7 +54,9 @@ const ApplyAppointmentModal = ({
             <div className="form-group">
               <SingleDatePicker setDate={setAppointmentDate} label="تاریخ" />
             </div>
-            {/* <select name="" class="form-control" id="">
+            <div className="row">
+
+              {/* <select name="" class="form-control" id="">
               {HOption}
             </select>
             :
@@ -39,104 +64,41 @@ const ApplyAppointmentModal = ({
               {MOption}
             </select> */}
 
-            {/* timepicker */}
-            <input id="TimePicker" type="hidden" />
-            <input id="TimePicker2" type="hidden" />
-
-            <div class="container-fluid">
-              <div class="time mt-1">
+              <div className="col-6">
+                {/* <label htmlFor="timeInput">Select Time:</label>
+              <input
+                type="time"
+                id="timeInput"
+                name="timeInput"
+                value={selectedTime}
+                onChange={handleTimeChange}
+                step="900" // 900 seconds = 15 minutes
+              /> */}
                 <label className="lblAbs font-12">ساعت شروع</label>
-                <div class="selected form-control rounded">
-                  <span class="time-btn" id="hours">
-                    12
-                  </span>
-                  :
-                  <span class="time-btn" id="minutes">
-                    00
-                  </span>
-                </div>
-                <div id="time-picker" class="p-4" className="hourSelector">
-                  <div class="row pb-2">
-                    <div class="col-2">
-                      <span class="item">00</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">01</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">02</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">03</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">04</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">05</span>
-                    </div>
-                  </div>
-                  <div class="row pb-2">
-                    <div class="col-2">
-                      <span class="item">06</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">07</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">08</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">09</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">10</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">11</span>
-                    </div>
-                  </div>
-                  <div class="row pb-2">
-                    <div class="col-2">
-                      <span class="item active">12</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">13</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">14</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">15</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">16</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">17</span>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-2">
-                      <span class="item">18</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">19</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">20</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">21</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">22</span>
-                    </div>
-                    <div class="col-2">
-                      <span class="item">23</span>
-                    </div>
-                  </div>
-                </div>
+                <DatePicker
+                  selected={selectedStartTime}
+                  onChange={handleStartTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  dateFormat="h:mm aa"
+                  timeCaption="انتخاب کنید"
+                  locale="faIR"
+                />
+              </div>
+
+              <div className="col-6">
+                <label className="lblAbs font-12">ساعت پایان</label>
+                <DatePicker
+                  selected={selectedEndTime}
+                  onChange={handleEndTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  dateFormat="h:mm aa"
+                  timeCaption="انتخاب کنید"
+                  locale="faIR"
+                />
               </div>
             </div>
 
