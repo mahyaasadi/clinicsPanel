@@ -144,11 +144,8 @@ const ReceptionRecords = ({ ClinicUser }) => {
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
 
-  let startDate,
-    endDate = null;
-
-  const setStartDate = (value) => (startDate = value);
-  const setEndDate = (value) => (endDate = value);
+  let appointmentDate = null;
+  const setAppointmentDate = (value) => (appointmentDate = value);
 
   const openAppointmnetModal = (patientData) => {
     console.log(patientData);
@@ -164,25 +161,22 @@ const ReceptionRecords = ({ ClinicUser }) => {
     let data = {
       ClinicID,
       PatientID: ActivePatientID,
-      Date: jdate.format("YYYY/MM/DD"),
-      ST: startDate,
-      ET: endDate,
+      Date: appointmentDate,
+      // ST: startDate,
+      // ET: endDate,
     };
 
     console.log({ data });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getClinicAppointmentsByDate = () => {
-    let url = "Appointment/getByDateClinic";
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setShowAppointmentModal(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   useEffect(() => getReceptionList(), []);
@@ -207,8 +201,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
                     applyFilterOnRecItems={applyFilterOnRecItems}
                     handleResetFilterFields={handleResetFilterFields}
                     SetRangeDate={SetRangeDate}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
+                    setAppointmentDate={setAppointmentDate}
                     selectedDepartment={selectedDepartment}
                     FUSelectDepartment={FUSelectDepartment}
                     searchIsLoading={searchIsLoading}

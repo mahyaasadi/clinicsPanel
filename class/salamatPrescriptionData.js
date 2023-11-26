@@ -5,12 +5,12 @@ const SalamatPrescType = [
     img: "/assets/img/TaminPrescTypeID1.png",
     Active: "active",
   },
-  {
-    name: "دارو ترکیبی",
-    id: 10,
-    img: "/assets/img/TaminPrescTypeID10.png",
-    Active: "",
-  },
+  // {
+  //   name: "دارو ترکیبی",
+  //   id: 10,
+  //   img: "/assets/img/TaminPrescTypeID10.png",
+  //   Active: "",
+  // },
   {
     name: "آزمایش",
     id: 2,
@@ -30,21 +30,27 @@ const SalamatPrescType = [
     Active: "",
   },
   {
-    name: "خدمات پزشکی",
+    name: "خدمات پزشکان",
     id: 5,
     img: "/assets/img/TaminPrescTypeID5.png",
     Active: "",
   },
   {
-    name: "ارجاع",
+    name: "خدمات ارجاع",
     id: 6,
     img: "/assets/img/TaminPrescTypeID6.png",
     Active: "",
   },
   {
-    name: "دندانپزشکی",
+    name: "خدمات دندانپزشکی",
     id: 7,
     img: "/assets/img/TaminPrescTypeID7.png",
+    Active: "",
+  },
+  {
+    name: "تجهیزات",
+    id: 8,
+    img: "/assets/img/TaminPrescTypeID10.png",
     Active: "",
   },
 ];

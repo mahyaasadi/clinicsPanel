@@ -245,6 +245,7 @@ const Reception = ({ ClinicUser }) => {
 
     $("#srvSearchInput").val(srvData.Name);
     $("#QtyInput").val(srvData.Qty);
+    $("#ResPrescDescription").val(srvData.Des);
 
     if (ActiveInsuranceType == "1") {
       ActiveSalamatShare = srvData.OC;
@@ -337,7 +338,7 @@ const Reception = ({ ClinicUser }) => {
 
     // reset
     $("#srvSearchInput").val("");
-    $("#ResPrescDescription").val("")
+    $("#ResPrescDescription").val("");
     $("#QtyInput").val("1");
     $("#BtnActiveSearch").hide();
     $("#BtnServiceSearch").show();
@@ -374,10 +375,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -409,7 +410,7 @@ const Reception = ({ ClinicUser }) => {
   };
 
   useEffect(() => {
-    $("#BtnActiveSearch").hide()
+    $("#BtnActiveSearch").hide();
   }, []);
 
   useEffect(() => {

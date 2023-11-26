@@ -269,6 +269,7 @@ const CashDeskActions = ({
         applyCashDeskActions={applyCashDeskActions}
         isLoading={isLoading}
         returnMode={returnMode}
+        calculatedTotalPC={calculatedTotalPC}
       />
     </>
   );

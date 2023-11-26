@@ -7,8 +7,7 @@ const ReceptionList = ({
   applyFilterOnRecItems,
   handleResetFilterFields,
   SetRangeDate,
-  setStartDate,
-  setEndDate,
+  setAppointmentDate,
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
@@ -42,8 +41,7 @@ const ReceptionList = ({
             show={show}
             onHide={onHide}
             openAppointmnetModal={openAppointmnetModal}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
+            setAppointmentDate={setAppointmentDate}
           />
         ))}
       </div>

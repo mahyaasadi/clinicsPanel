@@ -140,7 +140,11 @@ const PatientInfoCard = ({
               />
               {!patientStatIsLoading ? (
                 <button
-                  className={`${router.pathname === "/salamatPrescription" ? "btn-secondary" : "btn-primary"} btn w-10 rounded-left font-12`}
+                  className={`${
+                    router.pathname === "/salamatPrescription"
+                      ? "btn-secondary"
+                      : "btn-primary"
+                  } btn w-10 rounded-left font-12`}
                   id="frmPatientInfoBtnSubmit"
                 >
                   استعلام
@@ -148,7 +152,11 @@ const PatientInfoCard = ({
               ) : (
                 <button
                   type="submit"
-                  className={`${router.pathname === "/salamatPrescription" ? "btn-secondary" : "btn-primary"} btn  rounded-left`}
+                  className={`${
+                    router.pathname === "/salamatPrescription"
+                      ? "btn-secondary"
+                      : "btn-primary"
+                  } btn rounded-left`}
                   disabled
                 >
                   <span
@@ -196,7 +204,9 @@ const PatientInfoCard = ({
               <div className="d-flex gap-2 mt-3">
                 <div className="d-flex gap-1 align-items-center">
                   <Image src={insurance} alt="insuranceIcon" width="20" />
-                  {data.InsuranceName}
+                  {data.InsuranceName
+                    ? data.InsuranceName
+                    : "نوع بیمه مشخص نمی باشد"}
                 </div>
 
                 <Link

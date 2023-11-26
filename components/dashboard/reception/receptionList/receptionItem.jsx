@@ -14,9 +14,9 @@ const ReceptionItem = ({
   openAppointmnetModal,
   show,
   onHide,
-  setStartDate,
-  setEndDate,
+  setAppointmentDate,
 }) => {
+  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -191,7 +191,9 @@ const ReceptionItem = ({
 
               {srv.Items?.map((item, index) => (
                 <span className="" key={index}>
-                  {item.Name} {" | "}
+                  {item.Name}
+                  {item.Des ? " (" + item.Des + ")" : ""}
+                  {" | "}
                 </span>
               ))}
             </div>
@@ -213,8 +215,7 @@ const ReceptionItem = ({
         show={show}
         onHide={onHide}
         addAppointment={addAppointment}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
+        setAppointmentDate={setAppointmentDate}
       />
     </>
   );

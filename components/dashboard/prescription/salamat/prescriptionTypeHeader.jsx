@@ -16,7 +16,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
 
     switch (item.id) {
       case 1:
-        $("#ServiceSearchSelect").val("01");
+        $("#ServiceSearchSelect").val("1");
         $("#ServiceSearchSelect").hide();
         $("#drugInstruction").show();
         $("#drugAmount").show();
@@ -24,15 +24,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         changePrescTypeTab(1, item.img, item.name, 1);
         // handleSearchDivs();
         break;
-      case 10:
-        $("#ServiceSearchSelect").val("10");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").show();
-        $("#drugAmount").show();
 
-        changePrescTypeTab(10, item.img, item.name, 10);
-        // handleSearchDivs();
-        break;
       case 2:
         $("#ServiceSearchSelect").val("2");
         $("#ServiceSearchSelect").hide();
@@ -43,7 +35,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         // handleSearchDivs();
         break;
       case 4:
-        $("#ServiceSearchSelect").val("04");
+        $("#ServiceSearchSelect").val("4");
         $("#ServiceSearchSelect").hide();
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
@@ -52,7 +44,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         // handleSearchDivs();
         break;
       case 5:
-        $("#ServiceSearchSelect").val("05");
+        $("#ServiceSearchSelect").val("5");
         $("#ServiceSearchSelect").hide();
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
@@ -61,7 +53,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         // handleSearchDivs();
         break;
       case 6:
-        $("#ServiceSearchSelect").val("06");
+        $("#ServiceSearchSelect").val("6");
         $("#ServiceSearchSelect").hide();
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
@@ -70,12 +62,21 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         // handleSearchDivs();
         break;
       case 7:
-        $("#ServiceSearchSelect").val("07");
+        $("#ServiceSearchSelect").val("7");
         $("#ServiceSearchSelect").hide();
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
         changePrescTypeTab(7, item.img, item.name, 7);
+        // handleSearchDivs();
+        break;
+      case 8:
+        $("#ServiceSearchSelect").val("8");
+        $("#ServiceSearchSelect").hide();
+        $("#drugInstruction").hide();
+        $("#drugAmount").hide();
+
+        changePrescTypeTab(8, item.img, item.name, 8);
         // handleSearchDivs();
         break;
       default:
@@ -97,7 +98,12 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
           onClick={selectPrescType}
-          style={{ width: "fit-content", display: "flex", alignItems: "center" }}
+          style={{
+            width: "fit-content",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
         >
           <Image src={item.img} alt="prescTypeIcon" height="20" width="20" />{" "}
           &nbsp;

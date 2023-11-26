@@ -2,7 +2,14 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
 
-const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteService, removeDiscount }) => {
+const AddItem = ({
+  srv,
+  discountsList,
+  applyDiscount,
+  handleEditService,
+  deleteService,
+  removeDiscount,
+}) => {
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
@@ -16,6 +23,8 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
     }
     PatientCost = RowTotalPrice - (OrgTotalCost + DiscountValue);
   }
+
+  console.log({ srv });
 
   return (
     <>
@@ -92,7 +101,9 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
                 </div>
               </div>
 
-              {DiscountValue === 0 ? "" : (
+              {DiscountValue === 0 ? (
+                ""
+              ) : (
                 <>
                   <div>
                     <div className="paddingR-5 discountContainer">
@@ -103,7 +114,10 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
                         data-pr-position="top"
                         onClick={() => removeDiscount(srv._id)}
                       >
-                        <FeatherIcon className="removeDiscountIcon" icon="x-circle" />
+                        <FeatherIcon
+                          className="removeDiscountIcon"
+                          icon="x-circle"
+                        />
                         <Tooltip target=".removeDiscountBtn">حذف تخفیف</Tooltip>
                       </button>
                     </div>
@@ -112,6 +126,15 @@ const AddItem = ({ srv, discountsList, applyDiscount, handleEditService, deleteS
               )}
             </div>
           </div>
+
+          {srv.Des ? (
+            <>
+              <hr />
+              <div className="text-secondary font-11">توضیحات : {srv.Des}</div>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

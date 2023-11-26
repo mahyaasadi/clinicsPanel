@@ -10,6 +10,7 @@ const ApplyCashDeskModal = ({
   applyCashDeskActions,
   isLoading,
   returnMode,
+  calculatedTotalPC,
 }) => {
   return (
     <>
@@ -36,6 +37,7 @@ const ApplyCashDeskModal = ({
                   dir="ltr"
                   name="price"
                   className="form-control floating inputPadding rounded text-secondary"
+                  defaultValue={!returnMode ? calculatedTotalPC : 0}
                 />
               </div>
             </div>

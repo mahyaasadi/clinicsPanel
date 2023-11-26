@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import RangeDatePicker from "components/commonComponents/datepicker/rangeDatepicker";
+import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import { Tooltip } from "primereact/tooltip";
 

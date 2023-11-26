@@ -1,22 +1,31 @@
 import { Modal } from "react-bootstrap";
 
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
-  // console.log({ srv });
   const renderEditHistory = (historyArray) => {
     // console.log({ historyArray });
     return (
       <div>
         <ul>
-          {historyArray?.EditHistory?.map((historyItem, index) => (
-            // console.log({ historyItem }),
-            <li key={index}>
-              {historyItem?.EditDate}
-              {historyItem?.EditTime}
-
-              {/* Check if there is a nested EditHistory array */}
-              {historyItem && renderEditHistory(historyItem)}
-            </li>
-          ))}
+          {historyArray?.EditHistory?.map(
+            (historyItem, index) => (
+              console.log({ historyItem }),
+              (
+                <li key={index}>
+                  <div className="card">
+                    <div className="card-body">
+                      {historyItem.EditHistory.length != 0
+                        ? historyItem?.EditHistory?.Items?.Name
+                        : historyItem.Items.Name}
+                      {historyItem?.EditDate} {""}
+                      {historyItem?.EditTime}{" "}
+                    </div>
+                  </div>
+                  {/* Check if there is a nested EditHistory array */}
+                  {historyItem && renderEditHistory(historyItem)}
+                </li>
+              )
+            )
+          )}
         </ul>
       </div>
     );
