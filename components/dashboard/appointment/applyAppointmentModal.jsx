@@ -1,48 +1,51 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { faIR } from "date-fns/locale";
+import DatePicker from "react-datepicker";
+import { Dropdown } from "primereact/dropdown";
+import { registerLocale } from "react-datepicker";
+import selectfieldColourStyles from "class/selectfieldStyle";
+import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
-import { faIR } from 'date-fns/locale';
-import "public/assets/css/appointment.css"
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
+import "public/assets/css/appointment.css";
+import "react-datepicker/dist/react-datepicker.css";
 
-registerLocale('faIR', faIR); // Register the Farsi locale
+registerLocale("fa", faIR);
 
 const ApplyAppointmentModal = ({
+  ClinicID,
   show,
   onHide,
   addAppointment,
   setAppointmentDate,
+  selectedStartTime,
+  selectedEndTime,
+  handleStartTimeChange,
+  handleEndTimeChange,
+  selectedDepartment,
+  FUSelectDepartment,
 }) => {
-  // let HOption = [];
-  // for (let i = 0; i < 24; i++) {
-  //   HOption.push(<option>{i}</option>);
-  // }
+  const { data: clinicDepartments, isLoading } =
+    useGetAllClinicDepartmentsQuery(ClinicID);
 
-  // let MOption = [];
-  // for (let i = 0; i < 60; i = i + 15) {
-  //   MOption.push(<option>{i}</option>);
-  // }
+  let modalityOptions = [];
+  for (let i = 0; i < clinicDepartments?.length; i++) {
+    const item = clinicDepartments[i];
+    let obj = {
+      value: item._id,
+      label: item.Name,
+    };
+    modalityOptions.push(obj);
+  }
 
-  const [selectedStartTime, setSelectedStartTime] = useState(null);
-  const [selectedEndTime, setSelectedEndTime] = useState(null);
-
-  const handleStartTimeChange = (time) => {
-    setSelectedStartTime(time);
-    const pureSTimeValue = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-    console.log({ pureSTimeValue });
-  };
-
-  const handleEndTimeChange = (time) => {
-    setSelectedEndTime(time);
-    const pureETimeValue = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-    console.log({ pureETimeValue });
-  };
+  const defaultDepValue = selectedDepartment
+    ? { value: selectedDepartment._id, label: selectedDepartment.Name }
+    : "";
 
   return (
     <>
-      <Modal show={show} onHide={onHide} centered>
+      <Modal show={show} onHide={onHide} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
             <p className="mb-0 text-secondary font-14 fw-bold">ثبت نوبت</p>
@@ -51,20 +54,31 @@ const ApplyAppointmentModal = ({
 
         <Modal.Body>
           <form onSubmit={addAppointment}>
+            <div className="">
+              <label className="lblDrugIns font-12">
+                انتخاب بخش <span className="text-danger">*</span>
+              </label>
+
+              <SelectField
+                styles={selectfieldColourStyles}
+                options={modalityOptions}
+                label={true}
+                className="text-center"
+                placeholder={"انتخاب کنید"}
+                required
+                // name="EditDiscountPercent"
+                defaultValue={defaultDepValue}
+                onChangeValue={(value) => FUSelectDepartment(value?.value)}
+                // key={data.Percent}
+                isClearable
+              />
+            </div>
+
             <div className="form-group">
               <SingleDatePicker setDate={setAppointmentDate} label="تاریخ" />
             </div>
-            <div className="row">
-
-              {/* <select name="" class="form-control" id="">
-              {HOption}
-            </select>
-            :
-            <select name="" class="form-control" id="">
-              {MOption}
-            </select> */}
-
-              <div className="col-6">
+            <div className="row media-md-gap">
+              <div className="col-md-6 col-12">
                 {/* <label htmlFor="timeInput">Select Time:</label>
               <input
                 type="time"
@@ -81,13 +95,13 @@ const ApplyAppointmentModal = ({
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
-                  dateFormat="h:mm aa"
+                  dateFormat="HH:mm"
                   timeCaption="انتخاب کنید"
-                  locale="faIR"
+                  locale="fa"
                 />
               </div>
 
-              <div className="col-6">
+              <div className="col-md-6 col-12">
                 <label className="lblAbs font-12">ساعت پایان</label>
                 <DatePicker
                   selected={selectedEndTime}
@@ -95,11 +109,25 @@ const ApplyAppointmentModal = ({
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
-                  dateFormat="h:mm aa"
+                  dateFormat="HH:mm"
                   timeCaption="انتخاب کنید"
-                  locale="faIR"
+                  locale="fa"
                 />
               </div>
+
+              {/* <div className="mt-3">
+                <label className="lblAbs font-12">انتخاب بخش</label>
+                <Dropdown
+                  value={selectedDepartment}
+                  options={clinicDepartments}
+                  // value={{ id: 1, name: "Option 1" }}
+                  onChange={(e) => FUSelectDepartment(e.value)}
+                  optionLabel="Name"
+                  placeholder="انتخاب کنید"
+                  // filter
+                  showClear
+                />
+              </div> */}
             </div>
 
             <div className="submit-section">

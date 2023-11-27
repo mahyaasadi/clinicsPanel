@@ -7,16 +7,7 @@ import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
-const ReceptionItem = ({
-  srv,
-  deleteReception,
-  addAppointment,
-  openAppointmnetModal,
-  show,
-  onHide,
-  setAppointmentDate,
-}) => {
-  console.log({ srv });
+const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -85,7 +76,13 @@ const ReceptionItem = ({
                   type="button"
                   data-pr-position="top"
                   className="btn btn-outline-secondary editBtn receptBtnPadding appointment"
-                  onClick={() => openAppointmnetModal(srv.Patient)}
+                  onClick={() =>
+                    openAppointmnetModal(
+                      srv.Patient,
+                      srv.Modality?._id,
+                      srv.Modality?.Name
+                    )
+                  }
                 >
                   <FeatherIcon
                     icon="calendar"
@@ -210,12 +207,6 @@ const ReceptionItem = ({
         srv={srv}
         show={showHistoryModal}
         onHide={handleCloseHistoryModal}
-      />
-      <ApplyAppointmentModal
-        show={show}
-        onHide={onHide}
-        addAppointment={addAppointment}
-        setAppointmentDate={setAppointmentDate}
       />
     </>
   );

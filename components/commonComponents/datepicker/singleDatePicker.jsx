@@ -1,9 +1,23 @@
 import { useState } from "react";
+import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
-import DtPicker, { convertToFa } from "react-calendar-datetime-picker";
 import "react-calendar-datetime-picker/dist/index.css";
+import DtPicker, { convertToFa } from "react-calendar-datetime-picker";
+
+const jdate = new JDate();
+const currentYear = jdate.getFullYear();
+const currentMonth = jdate.getMonth();
+const currentDay = jdate.getDate();
+
+let initialDate = null;
 
 const SingleDatePicker = ({ setDate, label }) => {
+  initialDate = {
+    year: currentYear,
+    month: currentMonth,
+    day: currentDay,
+  };
+
   const handleDateChange = (e) => {
     if (e?.month.toString().length === 1) {
       e.month = "0" + e.month.toString();
@@ -31,7 +45,8 @@ const SingleDatePicker = ({ setDate, label }) => {
           daysClass="fullDay"
           inputName="date"
           name="selectedDate"
-          //   initValue={initialDate}
+          initValue={initialDate}
+          minDate={initialDate}
         />
 
         <i className="calendarIcon text-secondary">

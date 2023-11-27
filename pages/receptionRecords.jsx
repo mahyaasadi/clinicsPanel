@@ -7,6 +7,7 @@ import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
 import ReceptionList from "components/dashboard/reception/receptionList/receptionList";
+import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -24,9 +25,13 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
-const jdate = new JDate();
 let ClinicID,
-  ActivePatientID = null;
+  ActivePatientID,
+  ActiveModalityID,
+  ActiveModalityName = null;
+
+const jdate = new JDate();
+
 const ReceptionRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
@@ -34,6 +39,15 @@ const ReceptionRecords = ({ ClinicUser }) => {
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+
+  // appointment modal
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
+
+  const [selectedStartTime, setSelectedStartTime] = useState(null);
+  const [selectedEndTime, setSelectedEndTime] = useState(null);
+  const [pureStartTime, setPureStartTime] = useState(null);
+  const [pureEndTime, setPureEndTime] = useState(null);
 
   // Pagination
   const itemsPerPage = 20;
@@ -141,45 +155,71 @@ const ReceptionRecords = ({ ClinicUser }) => {
   };
 
   // Appointments
-  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
-
-  let appointmentDate = null;
-  const setAppointmentDate = (value) => (appointmentDate = value);
-
-  const openAppointmnetModal = (patientData) => {
-    console.log(patientData);
+  const [defaultDepValue, setDefaultDepValue] = useState();
+  const openAppointmnetModal = (patientData, modalityID, modalityName) => {
     ActivePatientID = patientData._id;
+    ActiveModalityID = modalityID;
+    ActiveModalityName = modalityName;
+    setDefaultDepValue({
+      Name: ActiveModalityName,
+      _id: ActiveModalityID,
+    });
+    console.log({ ActiveModalityID, ActiveModalityName });
+
     setShowAppointmentModal(true);
+  };
+
+  const [appointmentDate, setAppointmentDate] = useState(null);
+
+  const handleStartTimeChange = (time) => {
+    setSelectedStartTime(time);
+    const pureSTimeValue = time?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    setPureStartTime(pureSTimeValue);
+  };
+
+  const handleEndTimeChange = (time) => {
+    setSelectedEndTime(time);
+    const pureETimeValue = time?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    setPureEndTime(pureETimeValue);
   };
 
   const addAppointment = (e) => {
     e.preventDefault();
-    // setIsLoading(true);
 
     let url = "Appointment/addClinic";
     let data = {
       ClinicID,
       PatientID: ActivePatientID,
+      ModalityID: selectedDepartment ? selectedDepartment : ActiveModalityID,
       Date: appointmentDate,
-      // ST: startDate,
-      // ET: endDate,
+      ST: pureStartTime,
+      ET: pureEndTime,
     };
 
     console.log({ data });
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setShowAppointmentModal(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setShowAppointmentModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  useEffect(() => getReceptionList(), []);
+  useEffect(() => {
+    getReceptionList();
+  }, []);
 
   return (
     <>
@@ -201,14 +241,10 @@ const ReceptionRecords = ({ ClinicUser }) => {
                     applyFilterOnRecItems={applyFilterOnRecItems}
                     handleResetFilterFields={handleResetFilterFields}
                     SetRangeDate={SetRangeDate}
-                    setAppointmentDate={setAppointmentDate}
                     selectedDepartment={selectedDepartment}
                     FUSelectDepartment={FUSelectDepartment}
                     searchIsLoading={searchIsLoading}
                     openAppointmnetModal={openAppointmnetModal}
-                    addAppointment={addAppointment}
-                    show={showAppointmentModal}
-                    onHide={handleCloseAppointmentModal}
                   />
 
                   {currentItems.length > 0 && (
@@ -223,6 +259,20 @@ const ReceptionRecords = ({ ClinicUser }) => {
             </div>
           </div>
         )}
+
+        <ApplyAppointmentModal
+          ClinicID={ClinicID}
+          show={showAppointmentModal}
+          onHide={handleCloseAppointmentModal}
+          addAppointment={addAppointment}
+          setAppointmentDate={setAppointmentDate}
+          selectedStartTime={selectedStartTime}
+          selectedEndTime={selectedEndTime}
+          handleStartTimeChange={handleStartTimeChange}
+          handleEndTimeChange={handleEndTimeChange}
+          selectedDepartment={defaultDepValue}
+          FUSelectDepartment={FUSelectDepartment}
+        />
       </div>
     </>
   );

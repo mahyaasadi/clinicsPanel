@@ -4,9 +4,9 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import Day from "components/dashboard/appointment/day";
+import DayList from "components/dashboard/appointment/dayList";
 import "/public/assets/css/appointment.css";
-
+let ClinicID = null;
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
 
@@ -24,16 +24,20 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 const Appointment = ({ ClinicUser }) => {
+  ClinicID = ClinicUser.ClinicID;
+  const [appointmentEvent, setAppointmentEvent] = useState([]);
+
   const addDayToDate = (day, week) => {
     let h = day * 24;
     return new Date(new Date().getTime() + h * 60 * 60 * 1000);
   };
 
-  let today = new JDate.toJalali(addDayToDate(0));
-  let plus1 = new JDate.toJalali(addDayToDate(1));
-  let plus2 = new JDate.toJalali(addDayToDate(2));
-  let plus3 = new JDate.toJalali(addDayToDate(3));
-  let plus4 = new JDate.toJalali(addDayToDate(4));
+  let today = new JDate(addDayToDate(0)).format("YYYY/MM/DD");
+  let plus1 = new JDate(addDayToDate(1)).format("YYYY/MM/DD");
+  let plus2 = new JDate(addDayToDate(2)).format("YYYY/MM/DD");
+  let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
+  let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
+  let Dates = [today, plus1, plus2, plus3, plus4];
   let Hours = [];
 
   for (let i = 0; i < 24; i++) {
@@ -45,6 +49,30 @@ const Appointment = ({ ClinicUser }) => {
       );
     }
   }
+
+  const getClinicAppointments = () => {
+    let url = "Appointment/getByDateClinic";
+    let data = {
+      ClinicID,
+      // DateFrom: "",
+      // DateTo: "",
+      DateFrom: "1402/09/06",
+      DateTo: "1402/09/10",
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setAppointmentEvent(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getClinicAppointments();
+  }, []);
+
   return (
     <>
       <Head>
@@ -78,11 +106,7 @@ const Appointment = ({ ClinicUser }) => {
                     {Hours}
                   </div>
                   <div class="days">
-                    <Day date={today} />
-                    <Day date={plus1} />
-                    <Day date={plus2} />
-                    <Day date={plus3} />
-                    <Day date={plus4} />
+                    <DayList data={appointmentEvent} Dates={Dates} />
                   </div>
                 </div>
               </div>
