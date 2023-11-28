@@ -8989,6 +8989,19 @@ ul li .active {
   word-wrap: break-word;
 }
 
+#appointmentPatientInfoCard {
+  height: 4vh;
+  display: none;
+}
+
+#additionalAppointmentInfo {
+  display: none;
+}
+
+#newAppointmentDate {
+  display: none;
+}
+
 .patientInfo-container {
   position: relative;
   top: 8em;

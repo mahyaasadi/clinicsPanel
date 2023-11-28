@@ -25,6 +25,7 @@ const ApplyAppointmentModal = ({
   handleEndTimeChange,
   selectedDepartment,
   FUSelectDepartment,
+  appointmentIsLoading,
 }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -65,12 +66,10 @@ const ApplyAppointmentModal = ({
                 label={true}
                 className="text-center"
                 placeholder={"انتخاب کنید"}
-                required
-                // name="EditDiscountPercent"
                 defaultValue={defaultDepValue}
                 onChangeValue={(value) => FUSelectDepartment(value?.value)}
-                // key={data.Percent}
                 isClearable
+                required
               />
             </div>
 
@@ -114,29 +113,29 @@ const ApplyAppointmentModal = ({
                   locale="fa"
                 />
               </div>
-
-              {/* <div className="mt-3">
-                <label className="lblAbs font-12">انتخاب بخش</label>
-                <Dropdown
-                  value={selectedDepartment}
-                  options={clinicDepartments}
-                  // value={{ id: 1, name: "Option 1" }}
-                  onChange={(e) => FUSelectDepartment(e.value)}
-                  optionLabel="Name"
-                  placeholder="انتخاب کنید"
-                  // filter
-                  showClear
-                />
-              </div> */}
             </div>
 
             <div className="submit-section">
-              <button
-                type="submit"
-                className="btn btn-primary rounded btn-save font-13"
-              >
-                ثبت
-              </button>
+              {!appointmentIsLoading ? (
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded btn-save font-13"
+                >
+                  ثبت
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded font-13"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                  در حال ثبت
+                </button>
+              )}
             </div>
           </form>
         </Modal.Body>

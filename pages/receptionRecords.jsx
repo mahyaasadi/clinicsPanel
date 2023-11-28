@@ -37,6 +37,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
+  const [appointmentIsLoading, setAppointmentIsloading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
@@ -214,6 +215,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
       })
       .catch((err) => {
         console.log(err);
+        ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
       });
   };
 
@@ -272,6 +274,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
           handleEndTimeChange={handleEndTimeChange}
           selectedDepartment={defaultDepValue}
           FUSelectDepartment={FUSelectDepartment}
+          appointmentIsLoading={appointmentIsLoading}
         />
       </div>
     </>

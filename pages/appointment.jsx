@@ -4,9 +4,13 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import DayList from "components/dashboard/appointment/dayList";
+import { ErrorAlert } from "class/AlertManage";
+// import { resetServerContext } from "react-beautiful-dnd";
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "/public/assets/css/appointment.css";
-let ClinicID = null;
+import DayList from "components/dashboard/appointment/dayList";
+import AddNewAppointmentModal from "components/dashboard/appointment/newAppointmentModal";
+
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
 
@@ -23,9 +27,33 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
+let ClinicID,
+  ActivePatientNID,
+  ActivePatientID,
+  ActiveAppointmentDate = null;
 const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  // resetServerContext();
+
+  const [appointmentIsLoading, setAppointmentIsloading] = useState(false);
   const [appointmentEvent, setAppointmentEvent] = useState([]);
+
+  // new appointmentModal
+  const [showAddNewAppointmentModal, setShowAddNewAppointmentModal] =
+    useState(false);
+  const [defaultDepValue, setDefaultDepValue] = useState();
+  const [selectedStartTime, setSelectedStartTime] = useState(null);
+  const [selectedEndTime, setSelectedEndTime] = useState(null);
+  const [pureStartTime, setPureStartTime] = useState(null);
+  const [pureEndTime, setPureEndTime] = useState(null);
+  const [appointmentDate, setAppointmentDate] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+
+  // patientInfo
+  const [patientInfo, setPatientInfo] = useState([]);
+  const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+
+  const closeNewAppointmentModal = () => setShowAddNewAppointmentModal(false);
 
   const addDayToDate = (day, week) => {
     let h = day * 24;
@@ -50,28 +78,205 @@ const Appointment = ({ ClinicUser }) => {
     }
   }
 
+  const [disabledHours, setDisabledHours] = useState([]);
+  const [submittedAppointments, setSubmittedAppointments] = useState([]);
+  const hoursOptions = [];
+
+  for (let i = 0; i <= 23; i++) {
+    for (let j = 0; j < 60; j = j + 15) {
+      const hours = i < 10 ? "0" + i : i;
+      const minutes = j < 10 ? "0" + j : j;
+      hoursOptions.push({
+        label: `${hours}:${minutes}`,
+        value: `${hours}:${minutes}`,
+      });
+    }
+  }
+
+  const ActiveAppointmentDate = Object.keys(submittedAppointments);
+  console.log(ActiveAppointmentDate[0]);
+
+  for (let i = 0; i <= 23; i++) {
+    for (let j = 0; j < 60; j = j + 15) {
+      const hours = i < 10 ? "0" + i : i;
+      const minutes = j < 10 ? "0" + j : j;
+
+      console.log(`${hours}:${minutes}`);
+
+      // Check if the current time is occupied in the API response
+      const isDisabled = submittedAppointments[ActiveAppointmentDate]?.find(
+        (appointment) =>
+          // appointment.ET === `${hours}:${minutes}` &&
+          // appointment.ST === `${hours}:${minutes}`
+
+          console.log(appointment.ST)
+      );
+
+      console.log({ isDisabled });
+
+      //   hoursOptions.push({
+      //     label: `${hours}:${minutes}`,
+      //     value: `${hours}:${minutes}`,
+      //     isDisabled,
+      //   });
+    }
+  }
+
   const getClinicAppointments = () => {
     let url = "Appointment/getByDateClinic";
     let data = {
       ClinicID,
-      // DateFrom: "",
-      // DateTo: "",
       DateFrom: "1402/09/06",
       DateTo: "1402/09/10",
+      // PatientID:
     };
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setAppointmentEvent(response.data);
       })
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    getClinicAppointments();
-  }, []);
+  // const onDragEndFunc = (result) => {
+  //   const { source, destination } = result;
+
+  //   if (!destination) {
+  //     return;
+  //   }
+
+  //   const reorderedDates = Array.from(Dates);
+  //   const [removed] = reorderedDates.splice(source.index, 1);
+  //   reorderedDates.splice(destination.index, 0, removed);
+  // };
+
+  useEffect(() => getClinicAppointments(), []);
+
+  // Add New Appointment
+  const openNewAppointmentModal = () => setShowAddNewAppointmentModal(true);
+
+  const FUSelectDepartment = (departmentValue) =>
+    setSelectedDepartment(departmentValue);
+
+  const handleStartTimeChange = (time) => {
+    setSelectedStartTime(time);
+    const pureSTimeValue = time?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    setPureStartTime(pureSTimeValue);
+  };
+
+  const handleEndTimeChange = (time) => {
+    setSelectedEndTime(time);
+    const pureETimeValue = time?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    setPureEndTime(pureETimeValue);
+  };
+
+  const getPatientInfo = () => {
+    setPatientStatIsLoading(true);
+
+    ActivePatientNID = $("#appointmentNationalCode").val();
+
+    let url = "Patient/checkByNid";
+    let data = {
+      ClinicID,
+      NID: $("#appointmentNationalCode").val(),
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+
+        ActivePatientID = response.data.user._id;
+        setPatientInfo(response.data.user);
+        setPatientStatIsLoading(false);
+        $("#appointmentPatientInfoCard").show("");
+        $("#newAppointmentDate").show("");
+      })
+      .catch((error) => {
+        console.log(error);
+        setPatientStatIsLoading(false);
+        ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
+      });
+  };
+
+  const getSubmittedAppointments = () => {
+    let url = "Appointment/getByDateClinic";
+    let data = {
+      ClinicID,
+      DateFrom: appointmentDate,
+      DateTo: appointmentDate,
+      // PatientID: ActivePatientID,
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        $("#additionalAppointmentInfo").show("");
+        setSubmittedAppointments(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addAppointment = (e) => {
+    e.preventDefault();
+    setAppointmentIsloading(true);
+
+    let url = "Appointment/addClinic";
+    let data = {
+      ClinicID,
+      PatientID: ActivePatientID,
+      ModalityID: selectedDepartment ? selectedDepartment : "",
+      Date: appointmentDate,
+      ST: pureStartTime,
+      ET: pureEndTime,
+    };
+
+    console.log({ data });
+
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setShowAddNewAppointmentModal(false);
+    //     setAppointmentIsloading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setAppointmentIsloading(false);
+    //     ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
+    //   });
+  };
+
+  // useEffect(() => {
+  //   const disabledHoursArray = [];
+  //   for (const key in submittedAppointments) {
+  //     const appointment = submittedAppointments[key];
+  //     console.log({ appointment });
+  //     const startTime = appointment[0].ST?.split(":");
+  //     const endTime = appointment[0].ET?.split(":");
+
+  //     console.log({ startTime });
+  //     for (let i = startTime[0]; i <= endTime[0]; i++) {
+  //       disabledHoursArray.push(i < 10 ? "0" + i : i);
+  //     }
+  //   }
+  //   setDisabledHours(disabledHoursArray);
+  // }, [submittedAppointments]);
 
   return (
     <>
@@ -90,12 +295,12 @@ const Appointment = ({ ClinicUser }) => {
                       لیست پذیرش
                     </div>
                     <div className="col-5">
-                      <Link
-                        href="/reception"
+                      <button
+                        onClick={openNewAppointmentModal}
                         className="btn btn-primary font-14 float-end"
                       >
-                        پذیرش جدید
-                      </Link>
+                        نوبت جدید
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -105,14 +310,38 @@ const Appointment = ({ ClinicUser }) => {
                     <div class="spacer"></div>
                     {Hours}
                   </div>
+                  {/* <DragDropContext */}
+                  {/* // onDragEnd={yourDragEndFunction} */}
+                  {/* // > */}
                   <div class="days">
                     <DayList data={appointmentEvent} Dates={Dates} />
                   </div>
+                  {/* </DragDropContext> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <AddNewAppointmentModal
+          ClinicID={ClinicID}
+          show={showAddNewAppointmentModal}
+          onHide={closeNewAppointmentModal}
+          addAppointment={addAppointment}
+          setAppointmentDate={setAppointmentDate}
+          selectedStartTime={selectedStartTime}
+          selectedEndTime={selectedEndTime}
+          handleStartTimeChange={handleStartTimeChange}
+          handleEndTimeChange={handleEndTimeChange}
+          selectedDepartment={defaultDepValue}
+          FUSelectDepartment={FUSelectDepartment}
+          appointmentIsLoading={appointmentIsLoading}
+          getPatientInfo={getPatientInfo}
+          patientStatIsLoading={patientStatIsLoading}
+          data={patientInfo}
+          getSubmittedAppointments={getSubmittedAppointments}
+          hoursOptions={hoursOptions}
+        />
       </div>
     </>
   );
