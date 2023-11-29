@@ -3,7 +3,7 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
-import { ErrorAlert, QuestionAlert } from "class/AlertManage";
+import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
 import ReceptionList from "components/dashboard/reception/receptionList/receptionList";
@@ -37,7 +37,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-  const [appointmentIsLoading, setAppointmentIsloading] = useState(false);
+  const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
@@ -70,7 +70,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setReceptionList(response.data);
         setIsLoading(false);
       })
@@ -165,8 +165,6 @@ const ReceptionRecords = ({ ClinicUser }) => {
       Name: ActiveModalityName,
       _id: ActiveModalityID,
     });
-    console.log({ ActiveModalityID, ActiveModalityName });
-
     setShowAppointmentModal(true);
   };
 
@@ -194,6 +192,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const addAppointment = (e) => {
     e.preventDefault();
+    setAppointmentIsLoading(true);
 
     let url = "Appointment/addClinic";
     let data = {
@@ -210,12 +209,15 @@ const ReceptionRecords = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setShowAppointmentModal(false);
+        SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+        setAppointmentIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
+        setAppointmentIsLoading(false);
       });
   };
 

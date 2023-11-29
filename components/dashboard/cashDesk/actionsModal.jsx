@@ -28,6 +28,8 @@ const CashDeskActions = ({
   isLoading,
   showPaymentModal,
   setShowPaymentModal,
+  price,
+  setPrice,
 }) => {
   const [returnMode, setReturnMode] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
@@ -201,7 +203,10 @@ const CashDeskActions = ({
 
           <div className="row p-2 media-gap-sm">
             <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ پرداخت با کارت</label>
+              <label className="lblAbs font-12">
+                {" "}
+                مبلغ پرداخت با کارت (ریال)
+              </label>
               <div
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
@@ -212,7 +217,7 @@ const CashDeskActions = ({
               </div>
             </div>
             <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ پرداخت نقدی</label>
+              <label className="lblAbs font-12">مبلغ پرداخت نقدی (ریال)</label>
               <div
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
@@ -224,7 +229,7 @@ const CashDeskActions = ({
             </div>
 
             <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ بدهی</label>
+              <label className="lblAbs font-12">مبلغ بدهی (ریال)</label>
               <div
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
@@ -236,7 +241,7 @@ const CashDeskActions = ({
             </div>
 
             <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ عودت</label>
+              <label className="lblAbs font-12">مبلغ عودت (ریال)</label>
               <div
                 dir="ltr"
                 className="form-control floating rounded text-secondary"
@@ -270,6 +275,8 @@ const CashDeskActions = ({
         isLoading={isLoading}
         returnMode={returnMode}
         calculatedTotalPC={calculatedTotalPC}
+        price={price}
+        setPrice={setPrice}
       />
     </>
   );

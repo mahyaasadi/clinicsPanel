@@ -10,58 +10,6 @@
   --eventColor4: #d1ffe6;
 }
 
-.calendar {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: auto 1fr;
-  margin: 2rem;
-}
-
-.action-btn {
-  float: left;
-  width: 50px;
-  font-size: 15px;
-}
-
-.action-btn .fe {
-  /* border: 1px solid gray; */
-  padding: 5px;
-  margin-right: 2px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.action-btn .fe:hover {
-  background-color: black;
-  color: white;
-}
-
-.time-marker {
-  direction: ltr !important;
-}
-
-.timeline {
-  padding-left: 10px;
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-}
-
-.days {
-  display: grid;
-  grid-column: 2;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  /* border-bottom: 1px solid black; */
-}
-
-.events {
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-  border-radius: 5px;
-  /* background: var(--calBgColor); */
-  background-color: whitesmoke;
-}
-
 .start-00-00 {
   grid-row-start: 1;
 }
@@ -835,19 +783,73 @@
   margin-bottom: 0.25rem;
 }
 
-.event {
-  /* border: 1px solid var(--eventBorderColor); */
+/*  */
+.calendar {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  margin: 2rem;
+  padding-top: 2rem;
+  width: 80vw;
+}
+
+.action-btn {
+  float: left;
+  width: 50px;
+  font-size: 15px;
+}
+
+.action-btn .fe {
+  padding: 5px;
+  margin-right: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.action-btn .fe:hover {
+  background-color: black;
+  color: white;
+}
+
+.time-marker {
+  direction: ltr !important;
+}
+
+.timeline {
+  padding-left: 10px;
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+}
+
+.days {
+  display: grid;
+  grid-column: 2;
+  gap: 5px;
+  grid-template-columns: auto auto auto auto auto;
+  border-bottom: 1px solid black;
+}
+
+.events {
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  border-radius: 5px;
+  background-color: whitesmoke;
+  height: 100%;
+  min-width: 250px;
+}
+
+/* .event {
   border-radius: 5px;
   padding: 0.5rem;
   margin: 0 0.5rem;
   background: white;
   overflow: auto;
   margin-top: 5px;
-}
+} */
 
 .space,
 .date {
-  height: 60px;
+  height: 50px;
 }
 
 .corp-fi {
@@ -866,25 +868,41 @@
   background: var(--eventColor4);
 }
 
-.date {
-  display: flex;
-  gap: 1em;
-  text-align: center;
-  padding-right: 20px;
+.days {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(var(--numDays), 1fr);
+  overflow-x: auto;
 }
 
 .date-num {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  display: inline;
-  /* margin-bottom: 10px; */
+  margin-bottom: 0;
 }
 
 .date-day {
-  display: inline;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 100;
-  /* margin-bottom: 10px; */
+}
+
+.date {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+  gap: 5px;
+  /* border-top-left-radius: 8px; */
+  /* border-top-right-radius: 8px; */
+  /* border: 1px solid lightgray; */
+  /* position: fixed; */
+  background-color: white;
+  width: 250px;
+  /* width: 20%; */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* bottom: 37rem; */
 }
 
 /* Timepicker */
@@ -929,8 +947,9 @@
 .react-datepicker-time__header,
 .react-datepicker-year-header {
   color: white !important;
-  font-size: 13px !important;
+  font-size: 11px !important;
   font-weight: 500 !important;
+  font-family: iranyekan !important;
 }
 
 .react-datepicker__navigation--previous,

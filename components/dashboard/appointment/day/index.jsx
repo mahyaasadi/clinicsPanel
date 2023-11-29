@@ -19,6 +19,7 @@ let month = {
 const Day = ({ date, appointment, index }) => {
   // console.log({ appointment });
   date = date.split("/");
+  let left = 200;
   return (
     // <Draggable draggableId={date} index={index}>
     //   {(provided) => (
@@ -27,16 +28,14 @@ const Day = ({ date, appointment, index }) => {
       // {...provided.draggableProps}
       // {...provided.dragHandleProps}
       className="day"
-      // style={{ position: "fixed" }}
     >
-      <div className="">
-        <div class="date">
-          <p class="date-num">{date[2]}</p>
-          <p class="date-day">{month[date[1]]}</p>
-        </div>
-      </div>
+      <div className=""></div>
 
-      <div class="events shadow">
+      <div className="events shadow">
+        <div className="date">
+          <p className="date-num">{date[2]}</p>
+          <p className="date-day">{month[date[1]]}</p>
+        </div>
         {appointment?.map((event) => {
           return <Event key={event._id} data={event} />;
         })}

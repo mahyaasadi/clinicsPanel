@@ -38,8 +38,9 @@ const CashDesk = ({ ClinicUser }) => {
   const [selectedKart, setSelectedKart] = useState(null);
   const [showActionsModal, setShowActionsModal] = useState(false);
   const [actionModalData, setActionModalData] = useState([]);
-  const [paymentData, setPaymentData] = useState([]);
+  const [price, setPrice] = useState(0);
 
+  const [paymentData, setPaymentData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const handleCloseActionsModal = () => setShowActionsModal(false);
 
@@ -129,7 +130,7 @@ const CashDesk = ({ ClinicUser }) => {
     let data = {
       ReceptionID: ActiveReceptionID,
       UserID: ClinicUserID,
-      Price: formProps.price,
+      Price: price,
       Return: formProps.returnPaymentSwitch ? true : false,
       CartID: selectedKart,
     };
@@ -251,6 +252,8 @@ const CashDesk = ({ ClinicUser }) => {
           showPaymentModal={showPaymentModal}
           setShowPaymentModal={setShowPaymentModal}
           ClinicID={ClinicID}
+          price={price}
+          setPrice={setPrice}
         />
       </div>
     </>

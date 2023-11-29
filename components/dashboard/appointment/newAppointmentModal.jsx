@@ -197,6 +197,7 @@ const AddNewAppointmentModal = ({
                   />
                 </div>
               </div>
+
               {/* <div className="row media-md-gap">
                 <div className="col-md-6 col-12">
                   <label className="lblAbs font-12">ساعت شروع</label>
@@ -256,4 +257,5 @@ const AddNewAppointmentModal = ({
     </>
   );
 };
+
 export default AddNewAppointmentModal;

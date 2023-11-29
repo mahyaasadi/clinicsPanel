@@ -9002,6 +9002,12 @@ ul li .active {
   display: none;
 }
 
+.appointmentCard {
+  height: 80vh;
+  overflow-y: auto;
+  /* direction: ltr; */
+}
+
 .patientInfo-container {
   position: relative;
   top: 8em;

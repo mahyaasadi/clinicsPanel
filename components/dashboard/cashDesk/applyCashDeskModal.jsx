@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
 
@@ -11,7 +12,20 @@ const ApplyCashDeskModal = ({
   isLoading,
   returnMode,
   calculatedTotalPC,
+  price,
+  setPrice,
 }) => {
+  const handlePriceChange = (event) => {
+    const rawValue = event.target.value.replace(/,/g, "");
+    const parsedValue = parseFloat(rawValue);
+
+    if (!isNaN(parsedValue)) {
+      setPrice(parsedValue);
+    } else {
+      setPrice("");
+    }
+  };
+
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">
@@ -29,15 +43,21 @@ const ApplyCashDeskModal = ({
               <div className="form-group col">
                 <label className="lblAbs font-12">
                   {!returnMode
-                    ? "مبلغ دریافتی از بیمار"
+                    ? "مبلغ دریافتی از بیمار "
                     : "مبلغ پرداختی به بیمار"}
                 </label>
                 <input
+                  id="priceInput"
                   type="text"
                   dir="ltr"
                   name="price"
                   className="form-control floating inputPadding rounded text-secondary"
-                  defaultValue={!returnMode ? calculatedTotalPC : 0}
+                  value={
+                    price === 0
+                      ? calculatedTotalPC.toLocaleString()
+                      : price.toLocaleString()
+                  }
+                  onChange={handlePriceChange}
                 />
               </div>
             </div>
