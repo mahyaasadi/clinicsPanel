@@ -30,7 +30,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
               <div className="">
                 <p className="fw-bold">سرویس ها</p>
 
-                <Accordion multiple>
+                <Accordion multiple activeIndex={[0]}>
                   {srv?.Items.map((item, index) => {
                     let RowPatientCost = item.Price - item.OC;
                     return (

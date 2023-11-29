@@ -277,6 +277,7 @@ const CashDeskActions = ({
         calculatedTotalPC={calculatedTotalPC}
         price={price}
         setPrice={setPrice}
+        paymentData={paymentData}
       />
     </>
   );

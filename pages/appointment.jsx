@@ -308,6 +308,21 @@ const Appointment = ({ ClinicUser }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
+  let month = {
+    "01": "فروردین",
+    "02": "اردیبهشت",
+    "03": "خرداد",
+    "04": "تیر",
+    "05": "مرداد",
+    "06": "شهریور",
+    "07": "مهر",
+    "08": "آبان",
+    "09": "آذر",
+    10: "دی",
+    11: "بهمن",
+    12: "اسفند",
+  };
+
   return (
     <>
       <Head>
@@ -349,7 +364,21 @@ const Appointment = ({ ClinicUser }) => {
                     {/* <DragDropContext */}
                     {/* // onDragEnd={yourDragEndFunction} */}
                     {/* // > */}
-                    <div className="days">
+
+                    {/* <div className="dates dates-header">
+                      {Dates.map((x, index) => {
+                        let date = x.split("/");
+
+                        return (
+                          <div className="" key={index}>
+                            <p className="">روز : {date[2]}</p>
+                            <p className="">ماه : {month[date[1]]}</p>
+                          </div>
+                        )
+                      })}
+                    </div> */}
+
+                    <div className="days" >
                       <DayList data={appointmentEvent} Dates={Dates} />
                     </div>
                     {/* </DragDropContext> */}

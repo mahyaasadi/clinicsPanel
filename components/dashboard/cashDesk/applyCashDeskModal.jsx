@@ -14,6 +14,7 @@ const ApplyCashDeskModal = ({
   calculatedTotalPC,
   price,
   setPrice,
+  paymentData
 }) => {
   const handlePriceChange = (event) => {
     const rawValue = event.target.value.replace(/,/g, "");
@@ -25,6 +26,8 @@ const ApplyCashDeskModal = ({
       setPrice("");
     }
   };
+
+  console.log(paymentData.Debt);
 
   return (
     <>
@@ -53,11 +56,12 @@ const ApplyCashDeskModal = ({
                   name="price"
                   className="form-control floating inputPadding rounded text-secondary"
                   value={
-                    price === 0
+                    !returnMode && price === 0
                       ? calculatedTotalPC.toLocaleString()
                       : price.toLocaleString()
                   }
                   onChange={handlePriceChange}
+                  key={calculatedTotalPC}
                 />
               </div>
             </div>

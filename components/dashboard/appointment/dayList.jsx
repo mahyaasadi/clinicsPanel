@@ -26,4 +26,5 @@ const DayList = ({ data, Dates }) => {
     </>
   );
 };
+
 export default DayList;

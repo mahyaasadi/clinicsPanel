@@ -5,7 +5,6 @@ import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
-import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
   const router = useRouter();
