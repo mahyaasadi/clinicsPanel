@@ -23,12 +23,12 @@ const AddNewAppointmentModal = ({
   handleStartTimeChange,
   handleEndTimeChange,
   FUSelectDepartment,
-  appointmentIsLoading,
   getPatientInfo,
   patientStatIsLoading,
+  appointmentIsLoading,
   data,
-  getSubmittedAppointments,
-  hoursOptions,
+  // hoursOptions,
+  // getSubmittedAppointments,
 }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -56,17 +56,6 @@ const AddNewAppointmentModal = ({
 
         <Modal.Body>
           <form onSubmit={addAppointment}>
-            {/* <div className="form-group col">
-              <label className="lblAbs font-12">کد ملی بیمار</label>
-              <input
-                type="text"
-                dir="ltr"
-                name="patientNID"
-                className="form-control floating inputPadding rounded text-secondary"
-                // defaultValue={!returnMode ? calculatedTotalPC : 0}
-              />
-            </div> */}
-
             <form className="w-100">
               <div className="input-group mb-3">
                 <label className="lblAbs font-12">
@@ -78,7 +67,6 @@ const AddNewAppointmentModal = ({
                   name="appointmentNationalCode"
                   required
                   className="form-control rounded-right GetPatientInput w-50"
-                  //   defaultValue={ActivePatientNID}
                 />
 
                 {!patientStatIsLoading ? (
@@ -121,7 +109,7 @@ const AddNewAppointmentModal = ({
               </div>
             </div>
 
-            <div id="newAppointmentDate">
+            <div id="additionalAppointmentInfo">
               <div>
                 <label className="lblDrugIns font-12">
                   انتخاب بخش <span className="text-danger">*</span>
@@ -136,7 +124,6 @@ const AddNewAppointmentModal = ({
                   required
                   name="addNewAppointment"
                   onChangeValue={(value) => FUSelectDepartment(value?.value)}
-                  // key={data.Percent}
                   isClearable
                 />
               </div>
@@ -148,7 +135,37 @@ const AddNewAppointmentModal = ({
                 />
               </div>
 
-              <div className="d-flex justify-center mb-4">
+              <div className="row media-md-gap">
+                <div className="col-md-6 col-12">
+                  <label className="lblAbs font-12">ساعت شروع</label>
+                  <DatePicker
+                    selected={selectedStartTime}
+                    onChange={handleStartTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    dateFormat="HH:mm"
+                    timeCaption="انتخاب کنید"
+                    locale="fa"
+                  />
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <label className="lblAbs font-12">ساعت پایان</label>
+                  <DatePicker
+                    selected={selectedEndTime}
+                    onChange={handleEndTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    dateFormat="HH:mm"
+                    timeCaption="انتخاب کنید"
+                    locale="fa"
+                  />
+                </div>
+              </div>
+
+              {/* <div className="d-flex justify-center mb-4">
                 <button
                   type="button"
                   onClick={getSubmittedAppointments}
@@ -156,11 +173,11 @@ const AddNewAppointmentModal = ({
                 >
                   نمایش ساعت های خالی
                 </button>
-              </div>
+              </div> */}
             </div>
 
-            <div id="additionalAppointmentInfo">
-              <div className="d-flex gap-1">
+            {/* <div id="additionalAppointmentInfo"> */}
+            {/* <div className="d-flex gap-1">
                 <div className="col-6">
                   <label className="lblDrugIns font-11">
                     ساعت شروع <span className="text-danger">*</span>
@@ -196,38 +213,9 @@ const AddNewAppointmentModal = ({
                     isClearable
                   />
                 </div>
-              </div>
-
-              {/* <div className="row media-md-gap">
-                <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت شروع</label>
-                  <DatePicker
-                    selected={selectedStartTime}
-                    onChange={handleStartTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                  />
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت پایان</label>
-                  <DatePicker
-                    selected={selectedEndTime}
-                    onChange={handleEndTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                  />
-                </div>
               </div> */}
-            </div>
+
+            {/* </div> */}
 
             <div className="submit-section">
               {!appointmentIsLoading ? (

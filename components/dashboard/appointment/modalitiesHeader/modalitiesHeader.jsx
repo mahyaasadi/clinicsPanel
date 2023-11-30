@@ -1,7 +1,6 @@
 import NavLink from "./navLink";
 
 const ModalitiesHeader = ({ data, handleDepClick }) => {
-  console.log({ data });
   return (
     <>
       <div className="w-100 marginb-3">

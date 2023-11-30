@@ -5,13 +5,13 @@ import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-// import { resetServerContext } from "react-beautiful-dnd";
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "/public/assets/css/appointment.css";
 import DayList from "components/dashboard/appointment/dayList";
 import AddNewAppointmentModal from "components/dashboard/appointment/newAppointmentModal";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
+import Loading from "components/commonComponents/loading/loading";
+import { Skeleton } from "primereact/skeleton";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -32,30 +32,31 @@ export const getServerSideProps = async ({ req, res }) => {
 let ClinicID,
   ActivePatientNID,
   ActivePatientID,
-  ActiveAppointmentDate = null;
+  ActiveAppointmentDate,
+  ActiveModalityID = null;
+
 const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
-  // resetServerContext();
+
+  const [ActiveModalityID, setActiveModalityID] = useState(null);
 
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
-  const [appointmentEvent, setAppointmentEvent] = useState([]);
+  const [appointmentEvents, setAppointmentEvents] = useState([]);
 
   // new appointmentModal
   const [showAddNewAppointmentModal, setShowAddNewAppointmentModal] =
     useState(false);
-  const [defaultDepValue, setDefaultDepValue] = useState();
   const [selectedStartTime, setSelectedStartTime] = useState(null);
   const [selectedEndTime, setSelectedEndTime] = useState(null);
   const [pureStartTime, setPureStartTime] = useState(null);
   const [pureEndTime, setPureEndTime] = useState(null);
   const [appointmentDate, setAppointmentDate] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const closeNewAppointmentModal = () => setShowAddNewAppointmentModal(false);
 
   // patientInfo
   const [patientInfo, setPatientInfo] = useState([]);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
-
-  const closeNewAppointmentModal = () => setShowAddNewAppointmentModal(false);
 
   const addDayToDate = (day, week) => {
     let h = day * 24;
@@ -67,6 +68,7 @@ const Appointment = ({ ClinicUser }) => {
   let plus2 = new JDate(addDayToDate(2)).format("YYYY/MM/DD");
   let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
   let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
+
   let Dates = [today, plus1, plus2, plus3, plus4];
   let Hours = [];
 
@@ -83,84 +85,36 @@ const Appointment = ({ ClinicUser }) => {
     }
   }
 
-  const [disabledHours, setDisabledHours] = useState([]);
-  const [submittedAppointments, setSubmittedAppointments] = useState([]);
-  const hoursOptions = [];
+  // Modality Header
+  const { data: clinicDepartments, isLoading } =
+    useGetAllClinicDepartmentsQuery(ClinicID);
 
-  for (let i = 0; i <= 23; i++) {
-    for (let j = 0; j < 60; j = j + 15) {
-      const hours = i < 10 ? "0" + i : i;
-      const minutes = j < 10 ? "0" + j : j;
-      hoursOptions.push({
-        label: `${hours}:${minutes}`,
-        value: `${hours}:${minutes}`,
-      });
-    }
-  }
-
-  const ActiveAppointmentDate = Object.keys(submittedAppointments);
-  // console.log(ActiveAppointmentDate[0]);
-
-  for (let i = 0; i <= 23; i++) {
-    for (let j = 0; j < 60; j = j + 15) {
-      const hours = i < 10 ? "0" + i : i;
-      const minutes = j < 10 ? "0" + j : j;
-
-      // console.log(`${hours}:${minutes}`);
-
-      // Check if the current time is occupied in the API response
-      const isDisabled = submittedAppointments[ActiveAppointmentDate]?.find(
-        (appointment) =>
-          appointment.ET === `${hours}:${minutes}` &&
-          appointment.ST === `${hours}:${minutes}`
-
-        // console.log(appointment.ST)
-      );
-
-      // console.log({ isDisabled });
-
-      //   hoursOptions.push({
-      //     label: `${hours}:${minutes}`,
-      //     value: `${hours}:${minutes}`,
-      //     isDisabled,
-      //   });
-    }
-  }
+  const handleDepClick = (departmentId) => setActiveModalityID(departmentId);
 
   const getClinicAppointments = () => {
     let url = "Appointment/getByDateClinic";
     let data = {
       ClinicID,
-      DateFrom: "1402/09/08",
-      DateTo: "1402/09/12",
-      // PatientID:
-      // ModalityID:
+      DateFrom: "1402/09/09",
+      DateTo: "1402/09/13",
+      ModalityID: ActiveModalityID,
+      // PatientID: ActivePatientID,
     };
 
     axiosClient
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        setAppointmentEvent(response.data);
+        setAppointmentEvents(response.data);
       })
       .catch((err) => console.log(err));
   };
 
-  console.log({ appointmentEvent });
-
-  // const onDragEndFunc = (result) => {
-  //   const { source, destination } = result;
-
-  //   if (!destination) {
-  //     return;
-  //   }
-
-  //   const reorderedDates = Array.from(Dates);
-  //   const [removed] = reorderedDates.splice(source.index, 1);
-  //   reorderedDates.splice(destination.index, 0, removed);
-  // };
-
-  useEffect(() => getClinicAppointments(), []);
+  useEffect(() => {
+    if (ActiveModalityID !== null) {
+      getClinicAppointments();
+    }
+  }, [ActiveModalityID]);
 
   // Add New Appointment
   const openNewAppointmentModal = () => setShowAddNewAppointmentModal(true);
@@ -199,45 +153,20 @@ const Appointment = ({ ClinicUser }) => {
       NID: $("#appointmentNationalCode").val(),
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         ActivePatientID = response.data.user._id;
         setPatientInfo(response.data.user);
         setPatientStatIsLoading(false);
         $("#appointmentPatientInfoCard").show("");
-        $("#newAppointmentDate").show("");
+        $("#additionalAppointmentInfo").show("");
       })
       .catch((error) => {
         console.log(error);
         setPatientStatIsLoading(false);
         ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
       });
-  };
-
-  const getSubmittedAppointments = () => {
-    let url = "Appointment/getByDateClinic";
-    let data = {
-      ClinicID,
-      DateFrom: appointmentDate,
-      DateTo: appointmentDate,
-      // PatientID: ActivePatientID,
-    };
-
-    console.log({ data });
-
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-        $("#additionalAppointmentInfo").show("");
-        setSubmittedAppointments(response.data);
-      })
-      .catch((err) => console.log(err));
   };
 
   const addAppointment = (e) => {
@@ -256,71 +185,83 @@ const Appointment = ({ ClinicUser }) => {
 
     console.log({ data });
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setShowAddNewAppointmentModal(false);
-    //     setAppointmentIsLoading(false);
-    // SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setAppointmentIsLoading(false);
-    //     ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
-    //   });
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        //     setAppointmentEvents({appointmentEvents, ...response.data});
+
+        // Assuming response.data is an object with date keys and arrays of appointments
+        const newAppointment = response.data;
+
+        console.log({ newAppointment });
+
+        // Iterate through date keys
+        let appointmentsForDate = [];
+        Object.keys(newAppointment).forEach((dateKey) => {
+          if (dateKey === "Date") {
+            appointmentsForDate = newAppointment[dateKey];
+            console.log(appointmentsForDate);
+          }
+        });
+
+        Object.entries(newAppointment).forEach(
+          ([dateKey, appointmentsForDate]) => {
+            // Now you can use appointmentsForDate as needed
+            console.log(`Appointments for a date:`, appointmentsForDate);
+            let obj = {
+              //   Clinic: ,
+              //   Date : ,
+              //   ET: ,
+              // Modality  : ,
+              // Patient : ,
+              // RegisterDate: ,
+              // RegisterTime: ,
+              // ST : ,
+              // _id: ,
+              // __v: ,
+            };
+          }
+        );
+
+        // console.log({ appointmentsForDate });
+
+        // updateAppointments(appointmentsForDate);
+
+        // SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+        setAppointmentIsLoading(false);
+        setShowAddNewAppointmentModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setAppointmentIsLoading(false);
+        ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
+      });
   };
 
-  // useEffect(() => {
-  //   const disabledHoursArray = [];
-  //   for (const key in submittedAppointments) {
-  //     const appointment = submittedAppointments[key];
-  //     console.log({ appointment });
-  //     const startTime = appointment[0].ST?.split(":");
-  //     const endTime = appointment[0].ET?.split(":");
+  const updateAppointments = (newAppointments) => {
+    setAppointmentEvents((prevAppointments) => {
+      // Use the spread operator to create a shallow copy of the previous state
+      let updatedAppointments = { ...prevAppointments };
 
-  //     console.log({ startTime });
-  //     for (let i = startTime[0]; i <= endTime[0]; i++) {
-  //       disabledHoursArray.push(i < 10 ? "0" + i : i);
-  //     }
-  //   }
-  //   setDisabledHours(disabledHoursArray);
-  // }, [submittedAppointments]);
+      // Iterate through newAppointments
+      newAppointments.forEach((appointment) => {
+        // Extract the date from the appointment, adjust this according to your data structure
+        let appointmentDate = appointment.Date; // Adjust this according to your data structure
 
-  // Modality Header
-  const handleDepClick = (departmentId) => {
-    console.log({ departmentId });
-    // setIsLoading(true);
+        console.log({ appointmentDate });
+        // Check if the date already exists in the mapping
+        // if (updatedAppointments.hasOwnProperty(appointmentDate)) {
+        //   // Date exists, add the appointment to the existing array
+        //   updatedAppointments[appointmentDate].push(appointment);
+        // } else {
+        //   // Date doesn't exist, create a new entry with the date as the key
+        //   updatedAppointments[appointmentDate] = [appointment];
+        // }
+      });
 
-    // const correspondingModality = modalityData.find(
-    //   (mod) => mod._id === departmentId
-    // );
-
-    // if (correspondingModality) {
-    //   setCurrentSubDepartments(correspondingModality.Sub);
-    //   setIsLoading(false);
-    // } else {
-    //   setCurrentSubDepartments([]);
-    //   setIsLoading(false);
-    // }
-  };
-
-  const { data: clinicDepartments, isLoading } =
-    useGetAllClinicDepartmentsQuery(ClinicID);
-
-  let month = {
-    "01": "فروردین",
-    "02": "اردیبهشت",
-    "03": "خرداد",
-    "04": "تیر",
-    "05": "مرداد",
-    "06": "شهریور",
-    "07": "مهر",
-    "08": "آبان",
-    "09": "آذر",
-    10: "دی",
-    11: "بهمن",
-    12: "اسفند",
+      return updatedAppointments;
+    });
   };
 
   return (
@@ -329,65 +270,62 @@ const Appointment = ({ ClinicUser }) => {
         <title>نوبت دهی</title>
       </Head>
       <div className="page-wrapper">
-        <div className="content container-fluid">
-          <ModalitiesHeader
-            data={clinicDepartments}
-            handleDepClick={handleDepClick}
-          />
+        {isLoading ? (
+          <div className="content container-fluid">
+            <div className="w-100 marginb-3">
+              <div className="categoryCard">
+                <div className="card-body w-100">
+                  <Skeleton className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+                    {/*  */}
+                  </Skeleton>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="content container-fluid">
+            <ModalitiesHeader
+              data={clinicDepartments}
+              handleDepClick={handleDepClick}
+            />
 
-          {/* Appointment List */}
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="card">
-                <div className="card-header">
-                  <div className="row align-items-center justify-between">
-                    <div className="col-7 text-secondary font-15 fw-bold">
-                      لیست پذیرش
-                    </div>
-                    <div className="col-5">
-                      <button
-                        onClick={openNewAppointmentModal}
-                        className="btn btn-primary font-14 float-end"
-                      >
-                        نوبت جدید
-                      </button>
+            {/* Appointment List */}
+            <div className="row">
+              <div className="col-sm-12">
+                <div className="card">
+                  <div className="card-header">
+                    <div className="row align-items-center justify-between">
+                      <div className="col-7 text-secondary font-15 fw-bold">
+                        لیست پذیرش
+                      </div>
+                      <div className="col-5">
+                        <button
+                          onClick={openNewAppointmentModal}
+                          className="btn btn-primary font-14 float-end"
+                        >
+                          نوبت جدید
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="card-body appointmentCard">
-                  <div className="calendar">
-                    <div className="timeline">
-                      <div className="spacer"></div>
-                      {Hours}
+                  <div className="card-body appointmentCard">
+                    <div className="calendar">
+                      <div className="timeline">
+                        <div className="spacer"></div>
+                        {Hours}
+                      </div>
+
+                      <div className="days">
+                        <DayList data={appointmentEvents} Dates={Dates} />
+                      </div>
                     </div>
-                    {/* <DragDropContext */}
-                    {/* // onDragEnd={yourDragEndFunction} */}
-                    {/* // > */}
-
-                    {/* <div className="dates dates-header">
-                      {Dates.map((x, index) => {
-                        let date = x.split("/");
-
-                        return (
-                          <div className="" key={index}>
-                            <p className="">روز : {date[2]}</p>
-                            <p className="">ماه : {month[date[1]]}</p>
-                          </div>
-                        )
-                      })}
-                    </div> */}
-
-                    <div className="days" >
-                      <DayList data={appointmentEvent} Dates={Dates} />
-                    </div>
-                    {/* </DragDropContext> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
         <AddNewAppointmentModal
           ClinicID={ClinicID}
@@ -399,14 +337,11 @@ const Appointment = ({ ClinicUser }) => {
           selectedEndTime={selectedEndTime}
           handleStartTimeChange={handleStartTimeChange}
           handleEndTimeChange={handleEndTimeChange}
-          selectedDepartment={defaultDepValue}
           FUSelectDepartment={FUSelectDepartment}
           appointmentIsLoading={appointmentIsLoading}
           getPatientInfo={getPatientInfo}
           patientStatIsLoading={patientStatIsLoading}
           data={patientInfo}
-          getSubmittedAppointments={getSubmittedAppointments}
-          hoursOptions={hoursOptions}
         />
       </div>
     </>
@@ -414,3 +349,50 @@ const Appointment = ({ ClinicUser }) => {
 };
 
 export default Appointment;
+
+/* <DragDropContext */
+/* onDragEnd={yourDragEndFunction} */
+
+/* > */
+
+/* <div className="dates dates-header">
+    {Dates.map((x, index) => {
+      let date = x.split("/");
+
+      return (
+        <div className="" key={index}>
+          <p className="">روز : {date[2]}</p>
+          <p className="">ماه : {month[date[1]]}</p>
+        </div>
+      )
+    })}
+  </div> */
+
+/* </DragDropContext> */
+
+// let month = {
+//   "01": "فروردین",
+//   "02": "اردیبهشت",
+//   "03": "خرداد",
+//   "04": "تیر",
+//   "05": "مرداد",
+//   "06": "شهریور",
+//   "07": "مهر",
+//   "08": "آبان",
+//   "09": "آذر",
+//   10: "دی",
+//   11: "بهمن",
+//   12: "اسفند",
+// };
+
+// const onDragEndFunc = (result) => {
+//   const { source, destination } = result;
+
+//   if (!destination) {
+//     return;
+//   }
+
+//   const reorderedDates = Array.from(Dates);
+//   const [removed] = reorderedDates.splice(source.index, 1);
+//   reorderedDates.splice(destination.index, 0, removed);
+// };

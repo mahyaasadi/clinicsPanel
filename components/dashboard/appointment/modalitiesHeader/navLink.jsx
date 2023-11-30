@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 const NavLink = ({ data, activeClass, handleDepClick }) => {
+  useEffect(() => {
+    if (activeClass === "active") handleDepClick(data._id);
+  }, [activeClass]);
+
   return (
     <>
       <li className="nav-item">

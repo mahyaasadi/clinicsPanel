@@ -29,13 +29,12 @@ const Day = ({ date, appointment, index }) => {
       // {...provided.dragHandleProps}
       className="day"
     >
-      <div className=""></div>
+      <div className="date">
+        <p className="date-num">{date[2]}</p>
+        <p className="date-day">{month[date[1]]}</p>
+      </div>
 
       <div className="events shadow">
-        <div className="date">
-          <p className="date-num">{date[2]}</p>
-          <p className="date-day">{month[date[1]]}</p>
-        </div>
         {appointment?.map((event) => {
           return <Event key={event._id} data={event} />;
         })}
