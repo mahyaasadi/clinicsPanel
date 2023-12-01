@@ -7,11 +7,12 @@ import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import "/public/assets/css/appointment.css";
 import DayList from "components/dashboard/appointment/dayList";
-import AddNewAppointmentModal from "components/dashboard/appointment/newAppointmentModal";
+import AppointmentModal from "components/dashboard/appointment/appointmentModal";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import Loading from "components/commonComponents/loading/loading";
 import { Skeleton } from "primereact/skeleton";
+import Day from "@/components/dashboard/appointment/day";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -31,9 +32,7 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ActivePatientNID,
-  ActivePatientID,
-  ActiveAppointmentDate,
-  ActiveModalityID = null;
+  ActivePatientID = null;
 
 const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -43,16 +42,19 @@ const Appointment = ({ ClinicUser }) => {
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
 
-  // new appointmentModal
-  const [showAddNewAppointmentModal, setShowAddNewAppointmentModal] =
+  // appointmentModal
+  const [modalMode, setModalMode] = useState("add")
+  const [showAppointmentModal, setShowAppointmentModal] =
     useState(false);
+  const [editAppointmentData, setEditAppointmentData] = useState([])
+  const closeAppointmentModal = () => setShowAppointmentModal(false);
+
   const [selectedStartTime, setSelectedStartTime] = useState(null);
   const [selectedEndTime, setSelectedEndTime] = useState(null);
   const [pureStartTime, setPureStartTime] = useState(null);
   const [pureEndTime, setPureEndTime] = useState(null);
   const [appointmentDate, setAppointmentDate] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const closeNewAppointmentModal = () => setShowAddNewAppointmentModal(false);
 
   // patientInfo
   const [patientInfo, setPatientInfo] = useState([]);
@@ -80,6 +82,7 @@ const Appointment = ({ ClinicUser }) => {
       Hours.push(
         <div className="time-marker">
           {hours}:{minutes}
+
         </div>
       );
     }
@@ -95,8 +98,8 @@ const Appointment = ({ ClinicUser }) => {
     let url = "Appointment/getByDateClinic";
     let data = {
       ClinicID,
-      DateFrom: "1402/09/09",
-      DateTo: "1402/09/13",
+      DateFrom: today,
+      DateTo: plus4,
       ModalityID: ActiveModalityID,
       // PatientID: ActivePatientID,
     };
@@ -110,14 +113,11 @@ const Appointment = ({ ClinicUser }) => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    if (ActiveModalityID !== null) {
-      getClinicAppointments();
-    }
-  }, [ActiveModalityID]);
-
   // Add New Appointment
-  const openNewAppointmentModal = () => setShowAddNewAppointmentModal(true);
+  const openNewAppointmentModal = () => {
+    setModalMode("add")
+    setShowAppointmentModal(true);
+  }
 
   const FUSelectDepartment = (departmentValue) =>
     setSelectedDepartment(departmentValue);
@@ -142,31 +142,37 @@ const Appointment = ({ ClinicUser }) => {
     setPureEndTime(pureETimeValue);
   };
 
-  const getPatientInfo = () => {
-    setPatientStatIsLoading(true);
+  async function getPatientInfo() {
+
 
     ActivePatientNID = $("#appointmentNationalCode").val();
+    if (ActivePatientNID) {
+      setPatientStatIsLoading(true);
 
-    let url = "Patient/checkByNid";
-    let data = {
-      ClinicID,
-      NID: $("#appointmentNationalCode").val(),
-    };
+      let url = "Patient/checkByNid";
+      let data = {
+        ClinicID,
+        NID: $("#appointmentNationalCode").val(),
+      };
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        ActivePatientID = response.data.user._id;
-        setPatientInfo(response.data.user);
-        setPatientStatIsLoading(false);
-        $("#appointmentPatientInfoCard").show("");
-        $("#additionalAppointmentInfo").show("");
-      })
-      .catch((error) => {
-        console.log(error);
-        setPatientStatIsLoading(false);
-        ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
-      });
+
+
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          ActivePatientID = response.data.user._id;
+          setPatientInfo(response.data.user);
+          setPatientStatIsLoading(false);
+          $("#appointmentPatientInfoCard").show("");
+          $("#additionalAppointmentInfo").show("");
+        })
+        .catch((error) => {
+          console.log(error);
+          setPatientStatIsLoading(false);
+          ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
+        });
+
+    }
   };
 
   const addAppointment = (e) => {
@@ -189,48 +195,22 @@ const Appointment = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        //     setAppointmentEvents({appointmentEvents, ...response.data});
 
-        // Assuming response.data is an object with date keys and arrays of appointments
-        const newAppointment = response.data;
+        if (appointmentEvents.hasOwnProperty(response.data.Date)) {
+          // If it exists, directly push the new appointment to the existing array
+          appointmentEvents[response.data.Date].push(response.data);
+          console.log("object");
+          console.log({ appointmentEvents });
+        } else {
+          // If it doesn't exist, create a new key-value pair with the new date as the key and an array containing the new appointment as the value
+          appointmentEvents[response.data.Date] = [response.data];
+          console.log("array");
+          console.log({ appointmentEvents });
+        }
 
-        console.log({ newAppointment });
-
-        // Iterate through date keys
-        let appointmentsForDate = [];
-        Object.keys(newAppointment).forEach((dateKey) => {
-          if (dateKey === "Date") {
-            appointmentsForDate = newAppointment[dateKey];
-            console.log(appointmentsForDate);
-          }
-        });
-
-        Object.entries(newAppointment).forEach(
-          ([dateKey, appointmentsForDate]) => {
-            // Now you can use appointmentsForDate as needed
-            console.log(`Appointments for a date:`, appointmentsForDate);
-            let obj = {
-              //   Clinic: ,
-              //   Date : ,
-              //   ET: ,
-              // Modality  : ,
-              // Patient : ,
-              // RegisterDate: ,
-              // RegisterTime: ,
-              // ST : ,
-              // _id: ,
-              // __v: ,
-            };
-          }
-        );
-
-        // console.log({ appointmentsForDate });
-
-        // updateAppointments(appointmentsForDate);
-
-        // SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
         setAppointmentIsLoading(false);
-        setShowAddNewAppointmentModal(false);
+        setShowAppointmentModal(false);
+        SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
       })
       .catch((err) => {
         console.log(err);
@@ -239,29 +219,40 @@ const Appointment = ({ ClinicUser }) => {
       });
   };
 
-  const updateAppointments = (newAppointments) => {
-    setAppointmentEvents((prevAppointments) => {
-      // Use the spread operator to create a shallow copy of the previous state
-      let updatedAppointments = { ...prevAppointments };
+  // edit appointment
+  const openEditAppointmentModal = (data) => {
+    setEditAppointmentData(data)
+    console.log({ data });
+    setShowAppointmentModal(true);
+    setModalMode("edit")
+  }
 
-      // Iterate through newAppointments
-      newAppointments.forEach((appointment) => {
-        // Extract the date from the appointment, adjust this according to your data structure
-        let appointmentDate = appointment.Date; // Adjust this according to your data structure
+  useEffect(() => {
+    if (ActiveModalityID !== null) {
+      getClinicAppointments();
+    }
 
-        console.log({ appointmentDate });
-        // Check if the date already exists in the mapping
-        // if (updatedAppointments.hasOwnProperty(appointmentDate)) {
-        //   // Date exists, add the appointment to the existing array
-        //   updatedAppointments[appointmentDate].push(appointment);
-        // } else {
-        //   // Date doesn't exist, create a new entry with the date as the key
-        //   updatedAppointments[appointmentDate] = [appointment];
-        // }
-      });
+    if (editAppointmentData) {
+      getPatientInfo()
+      console.log("object");
+    }
+    // setTimeout(() => {
+    // }, 100);
+  }, [ActiveModalityID]);
 
-      return updatedAppointments;
-    });
+  let month = {
+    "01": "فروردین",
+    "02": "اردیبهشت",
+    "03": "خرداد",
+    "04": "تیر",
+    "05": "مرداد",
+    "06": "شهریور",
+    "07": "مهر",
+    "08": "آبان",
+    "09": "آذر",
+    10: "دی",
+    11: "بهمن",
+    12: "اسفند",
   };
 
   return (
@@ -317,20 +308,119 @@ const Appointment = ({ ClinicUser }) => {
                       </div>
 
                       <div className="days">
-                        <DayList data={appointmentEvents} Dates={Dates} />
+                        <DayList data={appointmentEvents} Dates={Dates} openEditAppointmentModal={openEditAppointmentModal} />
                       </div>
                     </div>
                   </div>
+
+                  {/* <div className="table-responsive">
+                    <table style={{ width: "100%" }}>
+                      <thead style={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
+                        {Dates.map((x, index) => {
+                          let date = x.split("/");
+                          return (
+                            <tr key={index}>
+                              <th>{date[2]} {month[date[1]]}</th>
+                            </tr>
+                          );
+                        })}
+                      </thead>
+                      <DayList data={appointmentEvents} Dates={Dates} />
+                    </table>
+                  </div> */}
+
+                  {/* <div className="table-responsive">
+                    <table style={{ width: "100%", display: "grid" }}>
+                      <thead style={{ display: "flex", justifyContent: "space-between", width: "100%", position: "fixed", backgroundColor: "aquamarine", height: "5vh" }}>
+                        {Dates.map((x, index) => {
+                          let date = x.split("/");
+                          return (
+                            <tr key={index} style={{ width: "20%", display: "flex", justifyContent: "center" }}>
+                              <th>{date[2]} {month[date[1]]}</th>
+                            </tr>
+                          );
+                        })}
+                      </thead>
+                      <tbody className="d-flex">
+
+                        <tr className="">
+                          <td className="">
+                            {Hours}
+                          </td>
+                        </tr>
+
+                        <tr className="">
+                          <td className="">
+                            {Dates.map((date, index) => {
+                              return (
+                                <Day date={date} key={date} index={index} appointment={appointmentEvents[date]} />
+                              );
+                            })}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div> */}
+                  {/* 
+                  <table className="table mt-4 font-13 text-secondary">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+
+                        {Dates.map((x, index) => {
+                          let date = x.split("/")
+                          return (
+
+                            <th key={index}>{date[2]} {month[date[1]]}</th>
+                          );
+                        })}
+                      </tr>
+                    </thead>
+
+                    <tbody className="font-13 text-secondary">
+
+                      <tr>
+                        <td >
+                          {/* <div className="timeline"> */}
+                  {/* <div className="spacer"></div> */}
+                  {/* {Hours} */}
+                  {/* </div> */}
+                  {/* </td>
+              </tr> */}
+
+                  {/* <tr>
+                        <td></td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                      </tr>
+
+                      <tr>
+                        <td></td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                      </tr> */}
+                  {/* 
+            </tbody>
+          </table> * /} */}
+
                 </div>
-              </div>
-            </div>
-          </div>
+              </div >
+            </div >
+          </div >
         )}
 
-        <AddNewAppointmentModal
+        <AppointmentModal
+          data={editAppointmentData}
+          mode={modalMode}
           ClinicID={ClinicID}
-          show={showAddNewAppointmentModal}
-          onHide={closeNewAppointmentModal}
+          show={showAppointmentModal}
+          onHide={closeAppointmentModal}
           addAppointment={addAppointment}
           setAppointmentDate={setAppointmentDate}
           selectedStartTime={selectedStartTime}
@@ -341,19 +431,14 @@ const Appointment = ({ ClinicUser }) => {
           appointmentIsLoading={appointmentIsLoading}
           getPatientInfo={getPatientInfo}
           patientStatIsLoading={patientStatIsLoading}
-          data={patientInfo}
+          patientInfo={patientInfo}
         />
-      </div>
+      </div >
     </>
   );
 };
 
 export default Appointment;
-
-/* <DragDropContext */
-/* onDragEnd={yourDragEndFunction} */
-
-/* > */
 
 /* <div className="dates dates-header">
     {Dates.map((x, index) => {
@@ -368,8 +453,6 @@ export default Appointment;
     })}
   </div> */
 
-/* </DragDropContext> */
-
 // let month = {
 //   "01": "فروردین",
 //   "02": "اردیبهشت",
@@ -383,16 +466,4 @@ export default Appointment;
 //   10: "دی",
 //   11: "بهمن",
 //   12: "اسفند",
-// };
-
-// const onDragEndFunc = (result) => {
-//   const { source, destination } = result;
-
-//   if (!destination) {
-//     return;
-//   }
-
-//   const reorderedDates = Array.from(Dates);
-//   const [removed] = reorderedDates.splice(source.index, 1);
-//   reorderedDates.splice(destination.index, 0, removed);
 // };

@@ -1,26 +1,23 @@
-// import { Draggable, DragDropContext } from 'react-beautiful-dnd';
-// import { resetServerContext } from "react-beautiful-dnd";
 
-const Event = ({ data }) => {
-  // resetServerContext();
+import FeatherIcon from "feather-icons-react";
 
+const Event = ({ data, openEditAppointmentModal }) => {
   return (
     <>
-      {/* <DragDropContext> */}
-      {/* <Draggable draggableId={data._id}> */}
-      {/* {(provided) => ( */}
-      {/* <div className="" style={{ display: "grid" }}> */}
-      {/* {(provided) => ( */}
       <div
         class={`event shadow start-${data.ST.replace(
           ":",
           "-"
         )} end-${data.ET.replace(":", "-")}`}
       >
-        <p className="action-btn">
-          <i className="fe fe-edit"></i>
-          <i className="fe fe-trash"></i>
-        </p>
+        <div className="d-flex float-left">
+          <button className="btn" onClick={() => openEditAppointmentModal(data)}>
+            <FeatherIcon icon="edit-3" style={{ width: "15px" }} />
+          </button>
+          <button className="btn">
+            <FeatherIcon icon="trash" style={{ width: "15px" }} />
+          </button>
+        </div>
         <p class="title">
           {" "}
           <i className="fe fe-user"></i> {data.Patient.Name}
@@ -30,10 +27,6 @@ const Event = ({ data }) => {
           <i className="fe fe-clock"></i> {data.ST} تا {data.ET}
         </p>
       </div>
-      {/* </div> */}
-      {/* )} */}
-      {/* </Draggable> */}
-      {/* </DragDropContext> */}
     </>
   );
 };

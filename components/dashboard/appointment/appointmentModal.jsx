@@ -12,9 +12,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 registerLocale("fa", faIR);
 
-const AddNewAppointmentModal = ({
+const AppointmentModal = ({
   show,
   onHide,
+  mode,
   ClinicID,
   addAppointment,
   setAppointmentDate,
@@ -26,9 +27,8 @@ const AddNewAppointmentModal = ({
   getPatientInfo,
   patientStatIsLoading,
   appointmentIsLoading,
-  data,
-  // hoursOptions,
-  // getSubmittedAppointments,
+  patientInfo,
+  data = {}
 }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -67,10 +67,12 @@ const AddNewAppointmentModal = ({
                   name="appointmentNationalCode"
                   required
                   className="form-control rounded-right GetPatientInput w-50"
+                  defaultValue={mode === "edit" ? data?.Patient?.NationalID : ""}
                 />
 
                 {!patientStatIsLoading ? (
                   <button
+                    id="getPatientInfoBtn"
                     type="button"
                     onClick={getPatientInfo}
                     className="btn-primary btn w-10 rounded-left font-12"
@@ -96,14 +98,14 @@ const AddNewAppointmentModal = ({
               <div className="margin-right-1 font-12 mt-3">
                 <div className="d-flex gap-2 mb-3">
                   <FeatherIcon icon="user" className="mb-0" />
-                  {data.Name}
-                  {data.Age ? (
-                    <p className="m-0">, {data.Age} ساله</p>
+                  {patientInfo.Name}
+                  {patientInfo.Age ? (
+                    <p className="m-0">, {patientInfo.Age} ساله</p>
                   ) : (
                     ""
                   )},{" "}
-                  {data.InsuranceName
-                    ? data.InsuranceName
+                  {patientInfo.InsuranceName
+                    ? patientInfo.InsuranceName
                     : "نوع بیمه مشخص نمی باشد"}
                 </div>
               </div>
@@ -246,4 +248,4 @@ const AddNewAppointmentModal = ({
   );
 };
 
-export default AddNewAppointmentModal;
+export default AppointmentModal;

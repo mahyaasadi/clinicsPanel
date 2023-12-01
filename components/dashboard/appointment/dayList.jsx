@@ -1,28 +1,13 @@
 import Day from "./day";
-// import { Droppable } from "react-beautiful-dnd";
 
-const DayList = ({ data, Dates }) => {
-  // console.log({ data, Dates });
-
+const DayList = ({ data, Dates, openEditAppointmentModal }) => {
   return (
     <>
-      {/* <Droppable droppableId="days" direction="horizontal">
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            className="row"
-          > */}
       {Dates.map((date, index) => {
-        // console.log(data[date]);
         return (
-          <Day date={date} key={date} index={index} appointment={data[date]} />
+          <Day date={date} key={date} index={index} appointment={data[date]} openEditAppointmentModal={openEditAppointmentModal} />
         );
       })}
-      {/* {provided.placeholder} */}
-      {/* </div> */}
-      {/* //   )} */}
-      {/* // </Droppable> */}
     </>
   );
 };

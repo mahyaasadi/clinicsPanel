@@ -1,5 +1,4 @@
 import Event from "../event";
-// import { Draggable } from "react-beautiful-dnd";
 
 let month = {
   "01": "فروردین",
@@ -16,17 +15,10 @@ let month = {
   12: "اسفند",
 };
 
-const Day = ({ date, appointment, index }) => {
-  // console.log({ appointment });
+const Day = ({ date, appointment, openEditAppointmentModal }) => {
   date = date.split("/");
-  let left = 200;
   return (
-    // <Draggable draggableId={date} index={index}>
-    //   {(provided) => (
     <div
-      // ref={provided.innerRef}
-      // {...provided.draggableProps}
-      // {...provided.dragHandleProps}
       className="day"
     >
       <div className="date">
@@ -36,12 +28,10 @@ const Day = ({ date, appointment, index }) => {
 
       <div className="events shadow">
         {appointment?.map((event) => {
-          return <Event key={event._id} data={event} />;
+          return <Event key={event._id} data={event} openEditAppointmentModal={openEditAppointmentModal} />;
         })}
       </div>
     </div>
-    // )}
-    // </Draggable>
   );
 };
 
