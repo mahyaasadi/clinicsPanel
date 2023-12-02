@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
@@ -12,7 +11,6 @@ import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import Loading from "components/commonComponents/loading/loading";
 import { Skeleton } from "primereact/skeleton";
-import Day from "@/components/dashboard/appointment/day";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -48,8 +46,6 @@ const Appointment = ({ ClinicUser }) => {
   const [editAppointmentData, setEditAppointmentData] = useState([]);
   const closeAppointmentModal = () => setShowAppointmentModal(false);
 
-  const [selectedStartTime, setSelectedStartTime] = useState(null);
-  const [selectedEndTime, setSelectedEndTime] = useState(null);
   const [pureStartTime, setPureStartTime] = useState(null);
   const [pureEndTime, setPureEndTime] = useState(null);
   const [appointmentDate, setAppointmentDate] = useState(null);
@@ -180,28 +176,28 @@ const Appointment = ({ ClinicUser }) => {
 
     console.log({ data });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
 
-        if (appointmentEvents.hasOwnProperty(response.data.Date)) {
-          // If it exists, directly push the new appointment to the existing array
-          appointmentEvents[response.data.Date].push(response.data);
-        } else {
-          // If it doesn't exist, create a new key-value pair with the new date as the key and an array containing the new appointment as the value
-          appointmentEvents[response.data.Date] = [response.data];
-        }
+    //     if (appointmentEvents.hasOwnProperty(response.data.Date)) {
+    //       // If it exists, directly push the new appointment to the existing array
+    //       appointmentEvents[response.data.Date].push(response.data);
+    //     } else {
+    //       // If it doesn't exist, create a new key-value pair with the new date as the key and an array containing the new appointment as the value
+    //       appointmentEvents[response.data.Date] = [response.data];
+    //     }
 
-        setAppointmentIsLoading(false);
-        setShowAppointmentModal(false);
-        SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
-      })
-      .catch((err) => {
-        console.log(err);
-        setAppointmentIsLoading(false);
-        ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
-      });
+    //     setAppointmentIsLoading(false);
+    //     setShowAppointmentModal(false);
+    //     SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setAppointmentIsLoading(false);
+    //     ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
+    //   });
   };
 
   // Edit Appointment
@@ -259,22 +255,13 @@ const Appointment = ({ ClinicUser }) => {
   };
 
   const updateAppointmentItem = (id, newArr, OldDate) => {
-    console.log(appointmentEvents[OldDate].filter((x) => x._id !== id));
-    // console.log({ filtered });
-    // console.log(appointmentEvents[OldDate].push(filtered));
-    // setAppointmentEvents(appointmentEvents);
-
     // if (appointmentEvents[newArr.Date]) {
     //   appointmentEvents[newArr.Date].push(newArr);
     // } else {
     //   appointmentEvents[newArr.Date] = [newArr];
     // }
 
-    console.log("old", appointmentEvents[OldDate]);
-    console.log("new", appointmentEvents[newArr.Date]);
-
     // let found = false;
-
     // for (let key in appointmentEvents) {
     //   let arr = appointmentEvents[key];
 
@@ -291,10 +278,89 @@ const Appointment = ({ ClinicUser }) => {
 
     //   if (found) break;
     // }
+
+    // Check if the date has changed
+    if (OldDate !== newArr.Date) {
+      // Remove the old entry
+      if (appointmentEvents[OldDate]) {
+        const index = appointmentEvents[OldDate].findIndex(
+          (item) => item._id === id
+        );
+        if (index !== -1) {
+          appointmentEvents[OldDate].splice(index, 1);
+
+          // If no items are left for the old date, remove the date entry
+          if (appointmentEvents[OldDate].length === 0) {
+            delete appointmentEvents[OldDate];
+          }
+        }
+      }
+    } else {
+      const existingEntry = appointmentEvents[OldDate].find(
+        (item) => item._id === id
+      );
+
+      if (existingEntry) {
+        existingEntry.ST = newArr.ST;
+        existingEntry.ET = newArr.ET;
+        existingEntry.ModalityID = newArr.ModalityID;
+        return
+      }
+    }
+
+    // Update the appointmentEvents with the new date
+    if (appointmentEvents[newArr.Date]) {
+      appointmentEvents[newArr.Date].push(newArr);
+    } else {
+      appointmentEvents[newArr.Date] = [newArr];
+    }
   };
 
   // Delete Appointment
   const deleteAppointment = async (id, date) => {
+    // let result = await QuestionAlert(
+    //   "حذف نوبت!",
+    //   "آیا از حذف نوبت اطمینان دارید؟"
+    // );
+
+    // if (result) {
+    //   console.log(appointmentEvents[date]);
+    //   let url = `Appointment/deleteClinic/${id}`;
+
+    //   const existingEntry = appointmentEvents[date].find(
+    //     (item) => item._id === id
+    //   );
+
+
+    //   axiosClient
+    //     .delete(url)
+    //     .then((response) => {
+    //       console.log(response.data);
+    //       if (existingEntry) delete appointmentEvents[date];
+
+    //       //     let filteredAppointments = [];
+
+    //       //     // for (let key in appointmentEvents) {
+    //       //     //   let arr = appointmentEvents[key];
+
+    //       //     //   console.log({ arr });
+
+    //       //     //   let filteredArr = arr.filter((item) => item._id !== id);
+    //       //     //   // console.log({ filteredArr });
+
+    //       //     //   // Add the filtered array to the final result
+    //       //     //   filteredAppointments = [...filteredAppointments, ...filteredArr];
+    //       //     // }
+
+    //       //     console.log({ filteredAppointments });
+    //       //     console.log({ appointmentEvents });
+
+    //       //     return filteredAppointments;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
     let result = await QuestionAlert(
       "حذف نوبت!",
       "آیا از حذف نوبت اطمینان دارید؟"
@@ -302,40 +368,47 @@ const Appointment = ({ ClinicUser }) => {
 
     if (result) {
       console.log(appointmentEvents[date]);
-      // let url = `Appointment/deleteClinic/${id}`;
+      let url = `Appointment/deleteClinic/${id}`;
 
-      // axiosClient
-      //   .delete(url)
-      //   .then((response) => {
-      //     console.log(response.data);
+      // Check if the date entry exists
+      if (appointmentEvents[date]) {
+        const existingEntryIndex = appointmentEvents[date].findIndex(
+          (item) => item._id === id
+        );
 
-      //     let filteredAppointments = [];
+        if (existingEntryIndex !== -1) {
+          console.log({ existingEntryIndex });
+          // Remove the entry from the array
+          appointmentEvents[date].splice(existingEntryIndex, 1);
 
-      //     // for (let key in appointmentEvents) {
-      //     //   let arr = appointmentEvents[key];
+          // If no items are left for the date, delete the date entry
+          if (appointmentEvents[date].length === 0) {
+            delete appointmentEvents[date];
+          }
+        }
+      }
 
-      //     //   console.log({ arr });
 
-      //     //   let filteredArr = arr.filter((item) => item._id !== id);
-      //     //   // console.log({ filteredArr });
+      console.log({ appointmentEvents });
 
-      //     //   // Add the filtered array to the final result
-      //     //   filteredAppointments = [...filteredAppointments, ...filteredArr];
-      //     // }
-
-      //     console.log({ filteredAppointments });
-      //     console.log({ appointmentEvents });
-
-      //     return filteredAppointments;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      axiosClient
+        .delete(url)
+        .then((response) => {
+          console.log(response.data);
+          setAppointmentEvents({ ...appointmentEvents });
+          // getClinicAppointments()
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   useEffect(() => {
-    if (ActiveModalityID !== null) getClinicAppointments();
+    if (ActiveModalityID !== null) {
+      getClinicAppointments()
+      setSelectedDepartment(ActiveModalityID)
+    }
   }, [ActiveModalityID]);
 
   let month = {
@@ -526,8 +599,6 @@ const Appointment = ({ ClinicUser }) => {
           onHide={closeAppointmentModal}
           onSubmit={modalMode === "add" ? addAppointment : editAppointment}
           setAppointmentDate={setAppointmentDate}
-          selectedStartTime={selectedStartTime}
-          selectedEndTime={selectedEndTime}
           FUSelectStartTime={FUSelectStartTime}
           FUSelectEndTime={FUSelectEndTime}
           FUSelectDepartment={FUSelectDepartment}
@@ -536,6 +607,7 @@ const Appointment = ({ ClinicUser }) => {
           patientStatIsLoading={patientStatIsLoading}
           patientInfo={patientInfo}
           hoursOptions={hoursOptions}
+          selectedDepartment={selectedDepartment}
         />
       </div>
     </>

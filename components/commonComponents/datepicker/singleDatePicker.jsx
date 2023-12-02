@@ -27,6 +27,12 @@ const SingleDatePicker = ({ setDate, label, defaultDate }) => {
     };
   }
 
+  const minimumDate = {
+    year: currentYear,
+    month: currentMonth,
+    day: currentDay,
+  };
+
   const handleDateChange = (e) => {
     if (e?.month.toString().length === 1) {
       e.month = "0" + e.month.toString();
@@ -55,7 +61,7 @@ const SingleDatePicker = ({ setDate, label, defaultDate }) => {
           inputName="date"
           name="selectedDate"
           initValue={initialDate}
-          // minDate={initialDate}
+          minDate={minimumDate}
         />
 
         <i className="calendarIcon text-secondary">

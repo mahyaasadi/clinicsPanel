@@ -1,17 +1,11 @@
 import { Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
-import { faIR } from "date-fns/locale";
-import DatePicker from "react-datepicker";
-import { registerLocale } from "react-datepicker";
-import FeatherIcon from "feather-icons-react";
 import "public/assets/css/appointment.css";
 import "react-datepicker/dist/react-datepicker.css";
-
-registerLocale("fa", faIR);
 
 const AppointmentModal = ({
   show,
@@ -20,19 +14,18 @@ const AppointmentModal = ({
   ClinicID,
   onSubmit,
   setAppointmentDate,
-  selectedStartTime,
-  selectedEndTime,
   FUSelectDepartment,
   getPatientInfo,
   patientStatIsLoading,
   appointmentIsLoading,
   patientInfo,
   data,
-  hoursOptions,
   FUSelectStartTime,
   FUSelectEndTime,
+  hoursOptions,
+  selectedDepartment
 }) => {
-  // console.log({ data });
+  console.log({ data, selectedDepartment });
 
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -51,15 +44,17 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
     (x) => x.value == selectedModalityValue
   );
+
+  const defaultAddModalityValue = modalityOptions.find((x) => x.value === selectedDepartment)
 
   const defaultStartTime = { value: data.ST, label: data.ST };
   const defaultEndTime = { value: data.ET, label: data.ET };
@@ -158,7 +153,7 @@ const AppointmentModal = ({
                   name="selectedDepartment"
                   className="text-center font-12"
                   onChangeValue={(value) => FUSelectDepartment(value?.value)}
-                  defaultValue={mode === "edit" ? selectedModalityType : ""}
+                  defaultValue={mode === "edit" ? selectedModalityType : defaultAddModalityValue}
                   placeholder={"انتخاب کنید"}
                   required
                   isClearable
