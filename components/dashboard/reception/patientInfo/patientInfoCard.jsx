@@ -88,6 +88,8 @@ const PatientInfoCard = ({
       NID: formProps.patientNID,
     };
 
+    console.log({ editData });
+
     axiosClient
       .post(url, editData)
       .then((response) => {
@@ -113,6 +115,7 @@ const PatientInfoCard = ({
             "خطا",
             "تغییر بیمه بیمار ، به دلیل عدم پوشش بیمه امکان پذیر نیست"
           );
+          return false;
         }
         setIsLoading(false);
         $("#changeInsuranceTypeModal").hide("");

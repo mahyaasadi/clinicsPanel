@@ -62,19 +62,19 @@
   background-color: whitesmoke;
 }
 
-.start-24-00 {
+.start-00-00 {
   grid-row-start: 1;
 }
 
-.start-24-15 {
+.start-00-15 {
   grid-row-start: 2;
 }
 
-.start-24-30 {
+.start-00-30 {
   grid-row-start: 3;
 }
 
-.start-24-45 {
+.start-00-45 {
   grid-row-start: 4;
 }
 
@@ -446,19 +446,19 @@
   grid-row-start: 96;
 }
 
-.end-24-00 {
+.end-00-00 {
   grid-row-end: 1;
 }
 
-.end-24-15 {
+.end-00-15 {
   grid-row-end: 2;
 }
 
-.end-24-30 {
+.end-00-30 {
   grid-row-end: 3;
 }
 
-.end-24-45 {
+.end-00-45 {
   grid-row-end: 4;
 }
 

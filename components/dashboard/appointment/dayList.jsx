@@ -1,11 +1,22 @@
 import Day from "./day";
 
-const DayList = ({ data, Dates, openEditAppointmentModal }) => {
+const DayList = ({
+  data,
+  Dates,
+  openEditAppointmentModal,
+  deleteAppointment,
+}) => {
   return (
     <>
       {Dates.map((date, index) => {
         return (
-          <Day date={date} key={date} index={index} appointment={data[date]} openEditAppointmentModal={openEditAppointmentModal} />
+          <Day
+            date={date}
+            key={date}
+            appointment={data[date]}
+            openEditAppointmentModal={openEditAppointmentModal}
+            deleteAppointment={deleteAppointment}
+          />
         );
       })}
     </>

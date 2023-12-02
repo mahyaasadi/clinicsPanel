@@ -15,12 +15,15 @@ let month = {
   12: "اسفند",
 };
 
-const Day = ({ date, appointment, openEditAppointmentModal }) => {
+const Day = ({
+  date,
+  appointment,
+  openEditAppointmentModal,
+  deleteAppointment,
+}) => {
   date = date.split("/");
   return (
-    <div
-      className="day"
-    >
+    <div className="day">
       <div className="date">
         <p className="date-num">{date[2]}</p>
         <p className="date-day">{month[date[1]]}</p>
@@ -28,7 +31,14 @@ const Day = ({ date, appointment, openEditAppointmentModal }) => {
 
       <div className="events shadow">
         {appointment?.map((event) => {
-          return <Event key={event._id} data={event} openEditAppointmentModal={openEditAppointmentModal} />;
+          return (
+            <Event
+              key={event._id}
+              data={event}
+              openEditAppointmentModal={openEditAppointmentModal}
+              deleteAppointment={deleteAppointment}
+            />
+          );
         })}
       </div>
     </div>

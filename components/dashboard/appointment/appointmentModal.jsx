@@ -1,4 +1,5 @@
 import { Modal } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
@@ -17,19 +18,22 @@ const AppointmentModal = ({
   onHide,
   mode,
   ClinicID,
-  addAppointment,
+  onSubmit,
   setAppointmentDate,
   selectedStartTime,
   selectedEndTime,
-  handleStartTimeChange,
-  handleEndTimeChange,
   FUSelectDepartment,
   getPatientInfo,
   patientStatIsLoading,
   appointmentIsLoading,
   patientInfo,
-  data = {}
+  data,
+  hoursOptions,
+  FUSelectStartTime,
+  FUSelectEndTime,
 }) => {
+  // console.log({ data });
+
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
@@ -43,70 +47,100 @@ const AppointmentModal = ({
     modalityOptions.push(obj);
   }
 
+  const insuranceType =
+    data?.Patient?.Insurance === "1"
+      ? "سلامت ایرانیان"
+      : data?.Patient?.Insurance === "2"
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
+
+  const selectedModalityValue = data?.Modality;
+  const selectedModalityType = modalityOptions.find(
+    (x) => x.value == selectedModalityValue
+  );
+
+  const defaultStartTime = { value: data.ST, label: data.ST };
+  const defaultEndTime = { value: data.ET, label: data.ET };
+
   return (
     <>
       <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row text-secondary font-14 fw-bold margin-right-sm">
-              ثبت نوبت جدید
+              {mode === "add" ? "ثبت نوبت جدید" : "ویرایش اطلاعات"}
             </div>
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <form onSubmit={addAppointment}>
+          <form onSubmit={onSubmit}>
             <form className="w-100">
-              <div className="input-group mb-3">
-                <label className="lblAbs font-12">
-                  کد ملی / کد اتباع بیمار
-                </label>
-                <input
-                  type="text"
-                  id="appointmentNationalCode"
-                  name="appointmentNationalCode"
-                  required
-                  className="form-control rounded-right GetPatientInput w-50"
-                  defaultValue={mode === "edit" ? data?.Patient?.NationalID : ""}
-                />
+              {mode === "add" ? (
+                <div className="input-group mb-3">
+                  <label className="lblAbs font-12">
+                    کد ملی / کد اتباع بیمار
+                  </label>
+                  <input
+                    type="text"
+                    id="appointmentNationalCode"
+                    name="appointmentNationalCode"
+                    required
+                    className="form-control rounded-right GetPatientInput w-50"
+                  />
 
-                {!patientStatIsLoading ? (
-                  <button
-                    id="getPatientInfoBtn"
-                    type="button"
-                    onClick={getPatientInfo}
-                    className="btn-primary btn w-10 rounded-left font-12"
-                  >
-                    استعلام
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="btn-primary btn rounded-left"
-                    disabled
-                  >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                  </button>
-                )}
-              </div>
+                  {!patientStatIsLoading ? (
+                    <button
+                      id="getPatientInfoBtn"
+                      type="button"
+                      onClick={getPatientInfo}
+                      className="btn-primary btn w-10 rounded-left font-12"
+                    >
+                      استعلام
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn-primary btn rounded-left"
+                      disabled
+                    >
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                      ></span>
+                    </button>
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
             </form>
 
             <div className="font-13 mt-3" id="appointmentPatientInfoCard">
               <div className="margin-right-1 font-12 mt-3">
                 <div className="d-flex gap-2 mb-3">
                   <FeatherIcon icon="user" className="mb-0" />
-                  {patientInfo.Name}
-                  {patientInfo.Age ? (
-                    <p className="m-0">, {patientInfo.Age} ساله</p>
+                  {mode === "edit" ? data?.Patient?.Name : patientInfo?.Name}
+                  {data?.Patient?.Age || patientInfo.Age ? (
+                    <p className="m-0">
+                      , {mode === "edit" ? data.Patient.Age : patientInfo.Age}{" "}
+                      ساله
+                    </p>
                   ) : (
                     ""
-                  )},{" "}
-                  {patientInfo.InsuranceName
-                    ? patientInfo.InsuranceName
-                    : "نوع بیمه مشخص نمی باشد"}
+                  )}
+                  ,{" "}
+                  {insuranceType || patientInfo.InsuranceName ? (
+                    <p className="">
+                      {mode === "edit"
+                        ? insuranceType
+                        : patientInfo.InsuranceName}
+                    </p>
+                  ) : (
+                    "نوع بیمه مشخص نمی باشد"
+                  )}
                 </div>
               </div>
             </div>
@@ -121,24 +155,26 @@ const AppointmentModal = ({
                   styles={selectfieldColourStyles}
                   options={modalityOptions}
                   label={true}
+                  name="selectedDepartment"
                   className="text-center font-12"
+                  onChangeValue={(value) => FUSelectDepartment(value?.value)}
+                  defaultValue={mode === "edit" ? selectedModalityType : ""}
                   placeholder={"انتخاب کنید"}
                   required
-                  name="addNewAppointment"
-                  onChangeValue={(value) => FUSelectDepartment(value?.value)}
                   isClearable
                 />
               </div>
-
+              <input type="hidden" name="OldDate" value={data.Date} />
               <div className="form-group">
                 <SingleDatePicker
+                  defaultDate={data.Date}
                   setDate={setAppointmentDate}
                   label="انتخاب تاریخ"
                 />
               </div>
 
               <div className="row media-md-gap">
-                <div className="col-md-6 col-12">
+                {/* <div className="col-md-6 col-12">
                   <label className="lblAbs font-12">ساعت شروع</label>
                   <DatePicker
                     selected={selectedStartTime}
@@ -149,6 +185,7 @@ const AppointmentModal = ({
                     dateFormat="HH:mm"
                     timeCaption="انتخاب کنید"
                     locale="fa"
+                    defaultValue={mode === "edit" ? defaultStartTime : ""}
                   />
                 </div>
 
@@ -164,10 +201,81 @@ const AppointmentModal = ({
                     timeCaption="انتخاب کنید"
                     locale="fa"
                   />
+                </div> */}
+
+                <div className="col-6">
+                  <label className="lblDrugIns font-11">
+                    ساعت شروع <span className="text-danger">*</span>
+                  </label>
+                  <SelectField
+                    styles={selectfieldColourStyles}
+                    options={hoursOptions}
+                    label={true}
+                    className="text-center font-12"
+                    placeholder={"انتخاب کنید"}
+                    name="pureStartTime"
+                    onChangeValue={(value) => FUSelectStartTime(value?.value)}
+                    defaultValue={mode === "edit" ? defaultStartTime : ""}
+                    key={data?.ST}
+                    required
+                    isClearable
+                  />
+                </div>
+
+                <div className="col-6">
+                  <label className="lblDrugIns font-11">
+                    ساعت پایان <span className="text-danger">*</span>
+                  </label>
+                  <SelectField
+                    styles={selectfieldColourStyles}
+                    options={hoursOptions}
+                    label={true}
+                    className="text-center font-12"
+                    placeholder={"انتخاب کنید"}
+                    name="pureEndTime"
+                    onChangeValue={(value) => FUSelectEndTime(value?.value)}
+                    defaultValue={mode === "edit" ? defaultEndTime : ""}
+                    key={data?.ET}
+                    required
+                    isClearable
+                  />
                 </div>
               </div>
+            </div>
 
-              {/* <div className="d-flex justify-center mb-4">
+            <div className="submit-section">
+              {!appointmentIsLoading ? (
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded btn-save font-13"
+                >
+                  ثبت
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded font-13"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                  در حال ثبت
+                </button>
+              )}
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
+export default AppointmentModal;
+
+{
+  /* <div className="d-flex justify-center mb-4">
                 <button
                   type="button"
                   onClick={getSubmittedAppointments}
@@ -175,11 +283,14 @@ const AppointmentModal = ({
                 >
                   نمایش ساعت های خالی
                 </button>
-              </div> */}
-            </div>
+              </div> */
+}
 
-            {/* <div id="additionalAppointmentInfo"> */}
-            {/* <div className="d-flex gap-1">
+{
+  /* <div id="additionalAppointmentInfo"> */
+}
+{
+  /* <div className="d-flex gap-1">
                 <div className="col-6">
                   <label className="lblDrugIns font-11">
                     ساعت شروع <span className="text-danger">*</span>
@@ -215,37 +326,9 @@ const AppointmentModal = ({
                     isClearable
                   />
                 </div>
-              </div> */}
+              </div> */
+}
 
-            {/* </div> */}
-
-            <div className="submit-section">
-              {!appointmentIsLoading ? (
-                <button
-                  type="submit"
-                  className="btn btn-primary rounded btn-save font-13"
-                >
-                  ثبت
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="btn btn-primary rounded font-13"
-                  disabled
-                >
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                  ></span>
-                  در حال ثبت
-                </button>
-              )}
-            </div>
-          </form>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
-
-export default AppointmentModal;
+{
+  /* </div> */
+}
