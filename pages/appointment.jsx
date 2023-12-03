@@ -69,7 +69,14 @@ const Appointment = ({ ClinicUser }) => {
   let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
   let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
 
+  let todayDay = new JDate(addDayToDate(0)).format("dddd");
+  let plus1Day = new JDate(addDayToDate(1)).format("dddd");
+  let plus2Day = new JDate(addDayToDate(2)).format("dddd");
+  let plus3Day = new JDate(addDayToDate(3)).format("dddd");
+  let plus4Day = new JDate(addDayToDate(4)).format("dddd");
+
   let Dates = [today, plus1, plus2, plus3, plus4];
+  let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
   let Hours = [];
 
   for (let i = 0; i < 24; i++) {
@@ -369,6 +376,23 @@ const Appointment = ({ ClinicUser }) => {
     }
   };
 
+  let month = {
+    "01": "فروردین",
+    "02": "اردیبهشت",
+    "03": "خرداد",
+    "04": "تیر",
+    "05": "مرداد",
+    "06": "شهریور",
+    "07": "مهر",
+    "08": "آبان",
+    "09": "آذر",
+    10: "دی",
+    11: "بهمن",
+    12: "اسفند",
+  };
+
+
+
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
@@ -422,6 +446,37 @@ const Appointment = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div>
+
+                  {/* <div className="card-body appointmentCard">
+                    <div className="d-flex" style={{ width: "100%", justifyContent: "space-evenly" }}>
+                      {Dates.map((x, index) => {
+                        let date = x.split("/");
+                        return (
+                          <div className="" key={index} style={{ width: "18%", textAlign: "center" }}>
+                            <p key={index}>{DatesDays[index]}</p>
+                            <p className=""> {date[2]} {month[date[1]]} </p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <div className="calendar" style={{ width: "75vw", overflowX: "auto" }}>
+                      <div className="timeline">
+                        {Hours}
+                      </div>
+
+                      <div>
+                        <div className="days" style={{ width: "75vw", overflowX: "auto", minWidth: "175px" }}>
+                          <DayList
+                            data={appointmentEvents}
+                            Dates={Dates}
+                            openEditAppointmentModal={openEditAppointmentModal}
+                            deleteAppointment={deleteAppointment}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+
 
                   <div className="card-body appointmentCard">
                     <div className="calendar">
@@ -573,30 +628,4 @@ const Appointment = ({ ClinicUser }) => {
 
 export default Appointment;
 
-// let month = {
-//   "01": "فروردین",
-//   "02": "اردیبهشت",
-//   "03": "خرداد",
-//   "04": "تیر",
-//   "05": "مرداد",
-//   "06": "شهریور",
-//   "07": "مهر",
-//   "08": "آبان",
-//   "09": "آذر",
-//   10: "دی",
-//   11: "بهمن",
-//   12: "اسفند",
-// };
 
-/* <div className="dates dates-header">
-    {Dates.map((x, index) => {
-      let date = x.split("/");
-
-      return (
-        <div className="" key={index}>
-          <p className="">روز : {date[2]}</p>
-          <p className="">ماه : {month[date[1]]}</p>
-        </div>
-      )
-    })}
-  </div> */

@@ -112,11 +112,11 @@ const CashDeskActions = ({
         </Modal.Header>
 
         <Modal.Body className="p-4">
-          <div className="row marginb-md1 media-flex-column media-gap-md px-10">
+          <div className="row media-flex-column media-gap-md px-10">
             <div className="col-12 col-xl-3">
               <button
                 type="submit"
-                className="btn btn-outline-secondary rounded btn-save font-13 d-flex align-items-center gap-2 justify-center w-100"
+                className="btn btn-outline-secondary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
                 onClick={handlePaymentBtn}
               >
                 <FeatherIcon icon="credit-card" />
@@ -191,7 +191,7 @@ const CashDeskActions = ({
 
           <div className="table-responsive p-2">
             <table className="table mt-4 font-13 text-secondary table-bordered">
-              <thead>
+              <thead className="thead-bg">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">کد خدمت</th>
@@ -237,7 +237,7 @@ const CashDeskActions = ({
                         <tr>
                           <td></td>
                           <td></td>
-                          <td>جمع کل : </td>
+                          <td>جمع کل </td>
                           <td>
                             {data?.Calculated?.TotalQty?.toLocaleString()}
                           </td>
@@ -258,33 +258,29 @@ const CashDeskActions = ({
           </div>
 
           <div className="table-responsive p-2">
-            <table className="table mt-4 font-13 text-secondary table-bordered">
+            <table className="table mt-4 font-12 text-secondary table-bordered">
               <tbody>
                 <tr className="">
                   <td>
-                    مبلغ پرداخت با کارت :
-                    {paymentData?.CartPayment
+                    مبلغ پرداخت با کارت : {paymentData?.CartPayment
                       ? parseInt(paymentData.CartPayment).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ پرداخت نقدی :
-                    {paymentData?.CashPayment
+                    مبلغ پرداخت نقدی : {paymentData?.CashPayment
                       ? parseInt(paymentData?.CashPayment).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ بدهی :
-                    {paymentData?.Debt
+                    مبلغ بدهی : {paymentData?.Debt
                       ? parseInt(paymentData?.Debt).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ عودت :
-                    {paymentData?.ReturnPayment
+                    مبلغ عودت : {paymentData?.ReturnPayment
                       ? parseInt(paymentData?.ReturnPayment).toLocaleString()
                       : 0}{" "}
                     ریال

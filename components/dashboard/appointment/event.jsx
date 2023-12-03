@@ -25,7 +25,7 @@ const Event = ({ data, openEditAppointmentModal, deleteAppointment }) => {
           </button>
         </div>
 
-        <div className="title d-flex align-items-center gap-2">
+        <div className="title d-flex flex-wrap align-items-center gap-2">
           <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
           {data.Patient.Name}
         </div>
