@@ -39,23 +39,19 @@ const KartModal = ({
           </div>
 
           <div className="form-group ">
-            <label className="lblAbs font-12">
-              بانک <span className="text-danger">*</span>
-            </label>
+            <label className="lblAbs font-12">بانک</label>
             <input
               className="form-control floating inputPadding rounded"
               type="text"
               name="kartBank"
               defaultValue={mode == "edit" ? data.Bank : ""}
               key={data.Bank}
-              required
+              // required
             />
           </div>
 
           <div className="form-group ">
-            <label className="lblAbs font-12">
-              شماره <span className="text-danger">*</span>
-            </label>
+            <label className="lblAbs font-12">شماره</label>
             <input
               dir="ltr"
               className="form-control floating inputPadding rounded"
@@ -63,7 +59,7 @@ const KartModal = ({
               name="kartNumber"
               defaultValue={mode == "edit" ? data.Number : ""}
               key={data.Number}
-              required
+              // required
             />
           </div>
 

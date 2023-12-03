@@ -224,7 +224,7 @@ const Sidebar = () => {
                   </li>
                   <li className={router.pathname == "/karts" ? "active" : ""}>
                     <Link href="/karts" className="font-12">
-                      پایانه های بانک
+                      کارت ها
                     </Link>
                   </li>
                   <li

@@ -11,10 +11,11 @@ const ApplyCashDeskModal = ({
   applyCashDeskActions,
   isLoading,
   returnMode,
+  cashMode,
   calculatedTotalPC,
   price,
   setPrice,
-  paymentData
+  paymentData,
 }) => {
   const handlePriceChange = (event) => {
     const rawValue = event.target.value.replace(/,/g, "");
@@ -27,11 +28,11 @@ const ApplyCashDeskModal = ({
     }
   };
 
-  console.log(paymentData.Debt);
+  // console.log(paymentData.Debt);
 
   return (
     <>
-      <Modal show={show} onHide={onHide} centered size="lg">
+      <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <p className="mb-0 text-secondary font-14 fw-bold">
@@ -47,7 +48,8 @@ const ApplyCashDeskModal = ({
                 <label className="lblAbs font-12">
                   {!returnMode
                     ? "مبلغ دریافتی از بیمار "
-                    : "مبلغ پرداختی به بیمار"}
+                    : "مبلغ پرداختی به بیمار"}{" "}
+                  (ریال)
                 </label>
                 <input
                   id="priceInput"
@@ -60,15 +62,18 @@ const ApplyCashDeskModal = ({
                       ? calculatedTotalPC.toLocaleString()
                       : price.toLocaleString()
                   }
+                  defaultValue={!returnMode ? calculatedTotalPC : 0}
                   onChange={handlePriceChange}
-                  key={calculatedTotalPC}
+                  // key={calculatedTotalPC}
                 />
               </div>
             </div>
 
-            {!returnMode ? (
+            {!returnMode && !cashMode ? (
               <div id="kartsDropdown" className="col media-mt-1 marginb-1">
-                <label className="lblAbs font-12">انتخاب کارت</label>
+                <label className="lblAbs font-12">
+                  انتخاب کارت <span className="text-danger">*</span>
+                </label>
                 <Dropdown
                   value={selectedKart}
                   onChange={(e) => setSelectedKart(e.value)}
@@ -77,6 +82,7 @@ const ApplyCashDeskModal = ({
                   placeholder="انتخاب کنید"
                   filter
                   showClear
+                  required
                 />
               </div>
             ) : (
@@ -103,7 +109,7 @@ const ApplyCashDeskModal = ({
               ""
             )}
 
-            <div className="submit-section">
+            <div className="submit-section mt-1">
               {!isLoading ? (
                 <button
                   type="submit"

@@ -10,28 +10,30 @@ const Event = ({ data, openEditAppointmentModal, deleteAppointment }) => {
           "-"
         )} end-${data.ET.replace(":", "-")}`}
       >
-        <div className="d-flex float-left">
+        <div className="d-flex gap-1 justify-end align-items-center">
           <button
-            className="btn"
+            className="btn btn-sm p-0"
             onClick={() => openEditAppointmentModal(data)}
           >
             <FeatherIcon icon="edit-3" style={{ width: "15px" }} />
           </button>
           <button
-            className="btn"
+            className="btn btn-sm p-0"
             onClick={() => deleteAppointment(data._id, data.Date)}
           >
             <FeatherIcon icon="trash" style={{ width: "15px" }} />
           </button>
         </div>
-        <p className="title">
+
+        <div className="title d-flex align-items-center gap-2">
+          <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
+          {data.Patient.Name}
+        </div>
+        <div className="time d-flex align-items-center gap-2">
           {" "}
-          <i className="fe fe-user"></i> {data.Patient.Name}
-        </p>
-        <p className="time">
-          {" "}
-          <i className="fe fe-clock"></i> {data.ST} تا {data.ET}
-        </p>
+          <FeatherIcon icon="clock" style={{ width: "15px" }} /> {data.ST} تا{" "}
+          {data.ET}
+        </div>
       </div>
     </>
   );

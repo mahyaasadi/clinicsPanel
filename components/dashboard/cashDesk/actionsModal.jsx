@@ -32,12 +32,23 @@ const CashDeskActions = ({
   setPrice,
 }) => {
   const [returnMode, setReturnMode] = useState(false);
+  const [cashMode, setCashMode] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
 
   const handleClosePrintModal = () => setShowPrintModal(false);
-  const handleCloseModal = () => setShowPaymentModal(false);
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+    setPrice(0);
+  };
 
   const handlePaymentBtn = () => {
+    setCashMode(false);
+    setReturnMode(false);
+    setShowPaymentModal(true);
+  };
+
+  const handleCashPaymentBtn = () => {
+    setCashMode(true);
     setReturnMode(false);
     setShowPaymentModal(true);
   };
@@ -100,41 +111,86 @@ const CashDeskActions = ({
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-          <div className="row p-2 gap-2">
-            <button
-              type="submit"
-              className="btn btn-primary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
-              onClick={handlePaymentBtn}
-            >
-              <FeatherIcon icon="credit-card" />
-              دریافت وجه از بیمار
-            </button>
-            <button
-              type="submit"
-              className="btn btn-secondary rounded btn-save font-13 col-lg-3 d-flex align-items-center gap-2 justify-center"
-              onClick={handleReturnPaymentBtn}
-            >
-              <Image
+        <Modal.Body className="p-4">
+          <div className="row marginb-md1 media-flex-column media-gap-md px-10">
+            <div className="col-12 col-xl-3">
+              <button
+                type="submit"
+                className="btn btn-outline-secondary rounded btn-save font-13 d-flex align-items-center gap-2 justify-center w-100"
+                onClick={handlePaymentBtn}
+              >
+                <FeatherIcon icon="credit-card" />
+                واریز وجه با کارت
+              </button>
+            </div>
+
+            <div className="col-12 col-xl-3">
+              <button
+                type="submit"
+                className="btn btn-outline-secondary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
+                onClick={handleCashPaymentBtn}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-21"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
+                  />
+                </svg>
+                دریافت وجه نقد
+              </button>
+            </div>
+            <div className="col-12 col-xl-3">
+              <button
+                type="submit"
+                className="btn btn-outline-secondary text-center rounded font-13 d-flex align-items-center gap-2 justify-center w-100"
+                onClick={handleReturnPaymentBtn}
+              >
+                {/* <Image
                 src={returnedCash}
                 alt="returnedCash"
                 width="20"
                 height="20"
-              />
-              پرداخت وجه به بیمار
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-primary rounded col-lg-3 font-13 d-flex align-items-center gap-2 justify-center"
-              onClick={() => setShowPrintModal(true)}
-            >
-              <FeatherIcon icon="printer" />
-              چاپ قبض
-            </button>
+              /> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokWidth="1.5"
+                  stroke="currentColor"
+                  className="w-21"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
+                  />
+                </svg>
+                پرداخت وجه به بیمار
+              </button>
+            </div>
+
+            <div className="col-12 col-xl-3">
+              <button
+                type="button"
+                className="btn btn-outline-primary text-center rounded font-13 d-flex align-items-center gap-2 justify-center w-100"
+                onClick={() => setShowPrintModal(true)}
+              >
+                <FeatherIcon icon="printer" />
+                چاپ قبض
+              </button>
+            </div>
           </div>
 
-          <div className="table-responsive actionTable">
-            <table className="table mt-4 font-13 text-secondary">
+          <div className="table-responsive p-2">
+            <table className="table mt-4 font-13 text-secondary table-bordered">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -181,7 +237,7 @@ const CashDeskActions = ({
                         <tr>
                           <td></td>
                           <td></td>
-                          <td></td>
+                          <td>جمع کل : </td>
                           <td>
                             {data?.Calculated?.TotalQty?.toLocaleString()}
                           </td>
@@ -201,56 +257,41 @@ const CashDeskActions = ({
             </table>
           </div>
 
-          <div className="row p-2 media-gap-sm">
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">
-                {" "}
-                مبلغ پرداخت با کارت (ریال)
-              </label>
-              <div
-                dir="ltr"
-                className="form-control floating rounded text-secondary"
-              >
-                {paymentData?.CartPayment
-                  ? parseInt(paymentData.CartPayment).toLocaleString()
-                  : 0}
-              </div>
-            </div>
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ پرداخت نقدی (ریال)</label>
-              <div
-                dir="ltr"
-                className="form-control floating rounded text-secondary"
-              >
-                {paymentData?.CashPayment
-                  ? parseInt(paymentData?.CashPayment).toLocaleString()
-                  : 0}
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ بدهی (ریال)</label>
-              <div
-                dir="ltr"
-                className="form-control floating rounded text-secondary"
-              >
-                {paymentData?.Debt
-                  ? parseInt(paymentData?.Debt).toLocaleString()
-                  : 0}
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">مبلغ عودت (ریال)</label>
-              <div
-                dir="ltr"
-                className="form-control floating rounded text-secondary"
-              >
-                {paymentData?.ReturnPayment
-                  ? parseInt(paymentData?.ReturnPayment).toLocaleString()
-                  : 0}
-              </div>
-            </div>
+          <div className="table-responsive p-2">
+            <table className="table mt-4 font-13 text-secondary table-bordered">
+              <tbody>
+                <tr className="">
+                  <td>
+                    مبلغ پرداخت با کارت :
+                    {paymentData?.CartPayment
+                      ? parseInt(paymentData.CartPayment).toLocaleString()
+                      : 0}{" "}
+                    ریال
+                  </td>
+                  <td>
+                    مبلغ پرداخت نقدی :
+                    {paymentData?.CashPayment
+                      ? parseInt(paymentData?.CashPayment).toLocaleString()
+                      : 0}{" "}
+                    ریال
+                  </td>
+                  <td>
+                    مبلغ بدهی :
+                    {paymentData?.Debt
+                      ? parseInt(paymentData?.Debt).toLocaleString()
+                      : 0}{" "}
+                    ریال
+                  </td>
+                  <td>
+                    مبلغ عودت :
+                    {paymentData?.ReturnPayment
+                      ? parseInt(paymentData?.ReturnPayment).toLocaleString()
+                      : 0}{" "}
+                    ریال
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </Modal.Body>
       </Modal>
@@ -274,6 +315,7 @@ const CashDeskActions = ({
         applyCashDeskActions={applyCashDeskActions}
         isLoading={isLoading}
         returnMode={returnMode}
+        cashMode={cashMode}
         calculatedTotalPC={calculatedTotalPC}
         price={price}
         setPrice={setPrice}

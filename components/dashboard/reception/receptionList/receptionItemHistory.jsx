@@ -16,13 +16,17 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
       <div>
         <ul>
           {historyArray?.EditHistory?.map((historyItem, index) => (
-            console.log({ historyItem }),
+            // console.log({ historyItem }),
             <li key={index}>
               {/* <div className="card"> */}
               <div className="">
-                {historyItem.EditDate ? historyArray.EditDate : historyArray.Date} {""}
-                {historyItem.EditTime ? historyArray.EditTime : historyArray.Time}{" "}
-
+                {historyItem.EditDate
+                  ? historyArray.EditDate
+                  : historyArray.Date}{" "}
+                {""}
+                {historyItem.EditTime
+                  ? historyArray.EditTime
+                  : historyArray.Time}{" "}
                 <Accordion multiple>
                   {historyItem?.Items.map((item, index) => {
                     let RowPatientCost = item.Price - item.OC;
@@ -135,21 +139,19 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
                       <div className="d-flex flex-wrap media-flex-col gap-2 align-items-center prescDetails">
                         <p className="mb-0">{item.Qty} عدد,</p>
                         <p className="mb-0">
-                          قیمت واحد :{" "}
-                          {parseInt(item.Price).toLocaleString()} ریال,
-                        </p>
-
-                        <p className="mb-0">
-                          قیمت کل :{" "}
-                          {(
-                            item.Qty * parseInt(item.Price)
-                          ).toLocaleString()}{" "}
+                          قیمت واحد : {parseInt(item.Price).toLocaleString()}{" "}
                           ریال,
                         </p>
 
                         <p className="mb-0">
-                          سهم سازمان :{" "}
-                          {parseInt(item.OC).toLocaleString()} ریال,
+                          قیمت کل :{" "}
+                          {(item.Qty * parseInt(item.Price)).toLocaleString()}{" "}
+                          ریال,
+                        </p>
+
+                        <p className="mb-0">
+                          سهم سازمان : {parseInt(item.OC).toLocaleString()}{" "}
+                          ریال,
                         </p>
 
                         <p className="mb-0">
@@ -166,9 +168,7 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
                     {item.Des ? (
                       <>
                         <hr />
-                        <div className="font-12">
-                          توضیحات : {item.Des}
-                        </div>
+                        <div className="font-12">توضیحات : {item.Des}</div>
                       </>
                     ) : (
                       ""

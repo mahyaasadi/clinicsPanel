@@ -29,7 +29,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
       name: "هزینه خدمت",
       selector: (row) => row.Price,
       sortable: true,
-      width: "400px",
+      width: "500px",
     },
     {
       name: "عملیات ها",
@@ -80,6 +80,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
             defaultSortAsc={false}
             pagination
             highlightOnHover
+            paginationPerPage="30"
             noDataComponent={
               <div style={{ padding: "24px", fontSize: "13px" }}>
                 موردی برای نمایش وجود ندارد.

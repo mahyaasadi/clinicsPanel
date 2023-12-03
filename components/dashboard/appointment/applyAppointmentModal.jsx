@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { faIR } from "date-fns/locale";
-import DatePicker from "react-datepicker";
 import { Dropdown } from "primereact/dropdown";
-import { registerLocale } from "react-datepicker";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import "public/assets/css/appointment.css";
-import "react-datepicker/dist/react-datepicker.css";
-
-registerLocale("fa", faIR);
 
 const ApplyAppointmentModal = ({
   ClinicID,
@@ -19,13 +14,12 @@ const ApplyAppointmentModal = ({
   onHide,
   addAppointment,
   setAppointmentDate,
-  selectedStartTime,
-  selectedEndTime,
-  handleStartTimeChange,
-  handleEndTimeChange,
+  FUSelectStartTime,
+  FUSelectEndTime,
   selectedDepartment,
   FUSelectDepartment,
   appointmentIsLoading,
+  hoursOptions,
 }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -76,41 +70,43 @@ const ApplyAppointmentModal = ({
             <div className="form-group">
               <SingleDatePicker setDate={setAppointmentDate} label="تاریخ" />
             </div>
+
             <div className="row media-md-gap">
-              <div className="col-md-6 col-12">
-                {/* <label htmlFor="timeInput">Select Time:</label>
-              <input
-                type="time"
-                id="timeInput"
-                name="timeInput"
-                value={selectedTime}
-                onChange={handleTimeChange}
-                step="900" // 900 seconds = 15 minutes
-              /> */}
-                <label className="lblAbs font-12">ساعت شروع</label>
-                <DatePicker
-                  selected={selectedStartTime}
-                  onChange={handleStartTimeChange}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="HH:mm"
-                  timeCaption="انتخاب کنید"
-                  locale="fa"
+              <div className="col-6">
+                <label className="lblDrugIns font-11">
+                  ساعت شروع <span className="text-danger">*</span>
+                </label>
+                <SelectField
+                  styles={selectfieldColourStyles}
+                  options={hoursOptions}
+                  label={true}
+                  className="text-center font-12"
+                  placeholder={"انتخاب کنید"}
+                  name="pureStartTime"
+                  onChangeValue={(value) => FUSelectStartTime(value?.value)}
+                  // defaultValue={mode === "edit" ? defaultStartTime : ""}
+                  // key={data?.ST}
+                  required
+                  isClearable
                 />
               </div>
 
-              <div className="col-md-6 col-12">
-                <label className="lblAbs font-12">ساعت پایان</label>
-                <DatePicker
-                  selected={selectedEndTime}
-                  onChange={handleEndTimeChange}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="HH:mm"
-                  timeCaption="انتخاب کنید"
-                  locale="fa"
+              <div className="col-6">
+                <label className="lblDrugIns font-11">
+                  ساعت پایان <span className="text-danger">*</span>
+                </label>
+                <SelectField
+                  styles={selectfieldColourStyles}
+                  options={hoursOptions}
+                  label={true}
+                  className="text-center font-12"
+                  placeholder={"انتخاب کنید"}
+                  name="pureEndTime"
+                  onChangeValue={(value) => FUSelectEndTime(value?.value)}
+                  // defaultValue={mode === "edit" ? defaultEndTime : ""}
+                  // key={data?.ET}
+                  required
+                  isClearable
                 />
               </div>
             </div>

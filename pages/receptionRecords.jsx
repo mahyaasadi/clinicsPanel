@@ -156,6 +156,21 @@ const ReceptionRecords = ({ ClinicUser }) => {
   };
 
   // Appointments
+  const hoursOptions = [];
+
+  for (let i = 0; i < 24; i++) {
+    for (let j = 0; j < 60; j = j + 15) {
+      const hours = i < 10 ? "0" + i : i;
+      const minutes = j < 10 ? "0" + j : j;
+      const str = hours + ":" + minutes;
+      let obj = {
+        value: str,
+        label: str,
+      };
+      hoursOptions.push(obj);
+    }
+  }
+
   const [defaultDepValue, setDefaultDepValue] = useState();
   const openAppointmnetModal = (patientData, modalityID, modalityName) => {
     ActivePatientID = patientData._id;
@@ -170,25 +185,8 @@ const ReceptionRecords = ({ ClinicUser }) => {
 
   const [appointmentDate, setAppointmentDate] = useState(null);
 
-  const handleStartTimeChange = (time) => {
-    setSelectedStartTime(time);
-    const pureSTimeValue = time?.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-    setPureStartTime(pureSTimeValue);
-  };
-
-  const handleEndTimeChange = (time) => {
-    setSelectedEndTime(time);
-    const pureETimeValue = time?.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-    setPureEndTime(pureETimeValue);
-  };
+  const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
+  const FUSelectEndTime = (endTime) => setPureEndTime(endTime);
 
   const addAppointment = (e) => {
     e.preventDefault();
@@ -221,9 +219,7 @@ const ReceptionRecords = ({ ClinicUser }) => {
       });
   };
 
-  useEffect(() => {
-    getReceptionList();
-  }, []);
+  useEffect(() => getReceptionList(), []);
 
   return (
     <>
@@ -272,11 +268,12 @@ const ReceptionRecords = ({ ClinicUser }) => {
           setAppointmentDate={setAppointmentDate}
           selectedStartTime={selectedStartTime}
           selectedEndTime={selectedEndTime}
-          handleStartTimeChange={handleStartTimeChange}
-          handleEndTimeChange={handleEndTimeChange}
+          FUSelectStartTime={FUSelectStartTime}
+          FUSelectEndTime={FUSelectEndTime}
           selectedDepartment={defaultDepValue}
           FUSelectDepartment={FUSelectDepartment}
           appointmentIsLoading={appointmentIsLoading}
+          hoursOptions={hoursOptions}
         />
       </div>
     </>
