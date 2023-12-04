@@ -24,8 +24,6 @@ const AppointmentModal = ({
   hoursOptions,
   selectedDepartment,
 }) => {
-  // console.log({ data, selectedDepartment });
-
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
@@ -129,7 +127,7 @@ const AppointmentModal = ({
                   )}
                   ,{" "}
                   {insuranceType || patientInfo.InsuranceName ? (
-                    <p className="">
+                    <p>
                       {mode === "edit"
                         ? insuranceType
                         : patientInfo.InsuranceName}

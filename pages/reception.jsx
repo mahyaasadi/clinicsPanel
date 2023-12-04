@@ -59,6 +59,19 @@ const Reception = ({ ClinicUser }) => {
   const [editSrvData, setEditSrvData] = useState([]);
   const [editSrvMode, setEditSrvMode] = useState(false);
 
+  // Discounts
+  const [showDiscountModal, setShowDiscountModal] = useState(false);
+  const [discountCost, setDiscountCost] = useState({});
+  const [selectedDiscount, setSelectedDiscount] = useState({});
+
+  // AdditionalCosts
+  const [showAdditionalCostsModal, setShowAdditionalCostsModal] =
+    useState(false);
+  const [additionalCostsData, setAdditionalCostsData] = useState([]);
+  const handleCloseAdditionalCostsModal = () =>
+    setShowAdditionalCostsModal(false);
+  const openAdditionalCostsModal = () => setShowAdditionalCostsModal(true);
+
   //----- Patients Info -----//
   const getPatientInfo = (e) => {
     e.preventDefault();
@@ -189,19 +202,54 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //----- Discount -----//
+  const handleCloseDiscountModal = () => setShowDiscountModal(false);
+  const openDiscountModal = () => setShowDiscountModal(true);
+
+  // add discounts from discountsOptions
   const applyDiscount = (id, Discount) => {
+    setSelectedDiscount(Discount);
+    console.log({ id, Discount });
+
     const updatedData = addedSrvItems.map((item) => {
       if (item._id === id) {
         return {
           ...item,
-          Discount: Discount,
+          Discount: Discount ? Discount : 0,
         };
       }
       return item;
     });
+
     setAddedSrvItems(updatedData);
+    console.log({ updatedData });
+    handleCloseDiscountModal();
   };
 
+  // submit manual discount
+  let SelectDiscountPercent = "";
+  let ActiveSrvItemID = null;
+
+  const FUSelectDiscountPercent = (id, Percent) => {
+    SelectDiscountPercent = Percent;
+    ActiveSrvItemID = id;
+  };
+
+  const submitManualDiscount = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let manualDiscount = {
+      Des: formProps.receptionDiscountDes,
+      Percent: formProps.receptionDiscountOptions === "1" ? true : false,
+      Value: formProps.receptionDiscountValue,
+    };
+
+    applyDiscount(ActiveSrvItemID, manualDiscount);
+  };
+
+  // remove discount from receptionItem
   const removeDiscount = (id) => {
     const itemWithDiscount = addedSrvItems.find((x) => x._id === id);
     itemWithDiscount.Discount = 0;
@@ -210,6 +258,26 @@ const Reception = ({ ClinicUser }) => {
       setAddedSrvItems(addedSrvItems);
     }, 100);
   };
+
+  //---- Additional Costs ----//
+  const submitAdditionalCosts = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let data = {
+      Name: formProps.additionalSrvName,
+      Qty: formProps.additionalSrvQty,
+      Price: formProps.additionalSrvCost,
+    };
+
+    setAdditionalCostsData([...additionalCostsData, [data]]);
+    // handleCloseAdditionalCostsModal()
+    console.log({ data });
+  };
+
+  console.log({ additionalCostsData });
 
   //----- Edit Service -----//
   const getOneReception = () => {
@@ -308,7 +376,7 @@ const Reception = ({ ClinicUser }) => {
     } else {
       addData.OC = 0;
     }
-    addData.Discount = ActiveDiscountShare;
+    addData.Discount = ActiveDiscountShare ? ActiveDiscountShare : 0;
 
     setAddedSrvItems((prevItems) => {
       if (!editSrvMode) {
@@ -458,19 +526,32 @@ const Reception = ({ ClinicUser }) => {
                     data={addedSrvItems}
                     ClinicID={ClinicID}
                     handleEditService={handleEditService}
-                    applyDiscount={applyDiscount}
                     deleteService={deleteService}
                     removeDiscount={removeDiscount}
+                    openDiscountModal={openDiscountModal}
+                    show={showDiscountModal}
+                    onHide={handleCloseDiscountModal}
+                    applyDiscount={applyDiscount}
+                    discountCost={discountCost}
+                    setDiscountCost={setDiscountCost}
+                    selectedDiscount={selectedDiscount}
+                    FUSelectDiscountPercent={FUSelectDiscountPercent}
+                    submitManualDiscount={submitManualDiscount}
+                    additionalCostsData={additionalCostsData}
                   />
                 </div>
               </div>
             </div>
 
-            <div className="mt-3 col-md-12 prescInfoCard">
+            <div className="col-md-12 prescInfoCard">
               <PrescInfo
                 data={addedSrvItems}
                 submitReceptionPrescript={submitReceptionPrescript}
                 isLoading={isLoading}
+                show={showAdditionalCostsModal}
+                onHide={handleCloseAdditionalCostsModal}
+                openAdditionalCostsModal={openAdditionalCostsModal}
+                submitAdditionalCosts={submitAdditionalCosts}
               />
             </div>
           </div>

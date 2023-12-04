@@ -11,7 +11,6 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 };
 
 const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
-  // console.log({ srv });
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">
@@ -27,7 +26,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
         <Modal.Body>
           <div className="card">
             <div className="card-body text-secondary">
-              <div className="">
+              <div>
                 <p className="fw-bold">سرویس ها</p>
 
                 <Accordion multiple activeIndex={[0]}>

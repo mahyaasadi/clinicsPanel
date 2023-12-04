@@ -49,7 +49,7 @@ const ApplyAppointmentModal = ({
 
         <Modal.Body>
           <form onSubmit={addAppointment}>
-            <div className="">
+            <div>
               <label className="lblDrugIns font-12">
                 انتخاب بخش <span className="text-danger">*</span>
               </label>

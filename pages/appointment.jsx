@@ -122,7 +122,7 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setAppointmentEvents(response.data);
         setLoadingState(false);
       })
@@ -274,12 +274,9 @@ const Appointment = ({ ClinicUser }) => {
       ET: pureEndTime ? pureEndTime : formProps.pureEndTime,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
         updateAppointmentItem(
           ActiveAppointmentID,
           response.data,
@@ -349,8 +346,6 @@ const Appointment = ({ ClinicUser }) => {
       axiosClient
         .delete(url)
         .then((response) => {
-          console.log(response.data);
-
           if (appointmentEvents[date]) {
             const index = appointmentEvents[date].findIndex(
               (item) => item._id === id
@@ -390,8 +385,6 @@ const Appointment = ({ ClinicUser }) => {
     11: "بهمن",
     12: "اسفند",
   };
-
-
 
   useEffect(() => {
     if (ActiveModalityID !== null) {
@@ -434,7 +427,7 @@ const Appointment = ({ ClinicUser }) => {
                           />
                         </div>
                         <div className="col-5">
-                          <div className=""></div>
+                          <div></div>
                           <button
                             onClick={openNewAppointmentModal}
                             className="btn btn-primary appointmentBtn font-14 float-end"
@@ -452,9 +445,9 @@ const Appointment = ({ ClinicUser }) => {
                       {Dates.map((x, index) => {
                         let date = x.split("/");
                         return (
-                          <div className="" key={index} style={{ width: "18%", textAlign: "center" }}>
+                          <div  key={index} style={{ width: "18%", textAlign: "center" }}>
                             <p key={index}>{DatesDays[index]}</p>
-                            <p className=""> {date[2]} {month[date[1]]} </p>
+                            <p > {date[2]} {month[date[1]]} </p>
                           </div>
                         )
                       })}
@@ -476,7 +469,6 @@ const Appointment = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div> */}
-
 
                   <div className="card-body appointmentCard">
                     <div className="calendar">
@@ -526,14 +518,14 @@ const Appointment = ({ ClinicUser }) => {
                     </thead>
                     <tbody className="d-flex">
 
-                      <tr className="">
-                        <td className="">
+                      <tr >
+                        <td >
                           {Hours}
                         </td>
                       </tr>
 
-                      <tr className="">
-                        <td className="">
+                      <tr >
+                        <td >
                           {Dates.map((date, index) => {
                             return (
                               <Day date={date} key={date} index={index} appointment={appointmentEvents[date]} />
@@ -627,5 +619,3 @@ const Appointment = ({ ClinicUser }) => {
 };
 
 export default Appointment;
-
-

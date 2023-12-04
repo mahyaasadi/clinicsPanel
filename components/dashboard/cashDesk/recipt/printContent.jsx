@@ -212,7 +212,7 @@ export default PrintContent;
 // const printContents = [];
 // for (let i = 0; i < clinicData?.PrintSetting?.NumberOfCopy; i++) {
 // printContents.push(
-// <div className="">
+// <div >
 {
   /* <div className={`${i == 0 ? "" : "dottedBorder"} `}></div> */
 }

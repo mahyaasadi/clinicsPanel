@@ -191,7 +191,7 @@ const CashDeskActions = ({
 
           <div className="table-responsive p-2">
             <table className="table mt-4 font-13 text-secondary table-bordered">
-              <thead className="thead-bg">
+              <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">کد خدمت</th>
@@ -260,27 +260,31 @@ const CashDeskActions = ({
           <div className="table-responsive p-2">
             <table className="table mt-4 font-12 text-secondary table-bordered">
               <tbody>
-                <tr className="">
+                <tr>
                   <td>
-                    مبلغ پرداخت با کارت : {paymentData?.CartPayment
+                    مبلغ پرداخت با کارت :{" "}
+                    {paymentData?.CartPayment
                       ? parseInt(paymentData.CartPayment).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ پرداخت نقدی : {paymentData?.CashPayment
+                    مبلغ پرداخت نقدی :{" "}
+                    {paymentData?.CashPayment
                       ? parseInt(paymentData?.CashPayment).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ بدهی : {paymentData?.Debt
+                    مبلغ بدهی :{" "}
+                    {paymentData?.Debt
                       ? parseInt(paymentData?.Debt).toLocaleString()
                       : 0}{" "}
                     ریال
                   </td>
                   <td>
-                    مبلغ عودت : {paymentData?.ReturnPayment
+                    مبلغ عودت :{" "}
+                    {paymentData?.ReturnPayment
                       ? parseInt(paymentData?.ReturnPayment).toLocaleString()
                       : 0}{" "}
                     ریال

@@ -51,21 +51,19 @@ const DiscountModal = ({
           </div>
 
           <div className="form-group">
-            <label className="lblAbs font-12">
-              مشخصات<span className="text-danger">*</span>
-            </label>
+            <label className="lblAbs font-12">توضیحات</label>
             <input
               className="form-control floating inputPadding rounded"
               name={mode == "edit" ? "EditDiscountDes" : "discountDescription"}
               defaultValue={mode == "edit" ? data.Des : ""}
               key={data.Des}
-              required
+              // required
             />
           </div>
 
           <div className="form-group">
             <label className="lblAbs font-12">
-              درصد تخفیف <span className="text-danger">*</span>
+              مبلغ / درصد تخفیف <span className="text-danger">*</span>
             </label>
             <input
               className="form-control floating inputPadding rounded"
@@ -78,7 +76,7 @@ const DiscountModal = ({
 
           <div className="col media-w-100 font-12">
             <label className="lblDrugIns font-12">
-              روش محاسبه<span className="text-danger">*</span>
+              روش محاسبه <span className="text-danger">*</span>
             </label>
 
             <SelectField

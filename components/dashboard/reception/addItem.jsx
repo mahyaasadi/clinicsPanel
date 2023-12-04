@@ -1,6 +1,7 @@
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Dropdown } from "primereact/dropdown";
+import ApplyDiscountModal from "components/dashboard/discounts/applyManualDiscountModal";
 
 const AddItem = ({
   srv,
@@ -9,6 +10,14 @@ const AddItem = ({
   handleEditService,
   deleteService,
   removeDiscount,
+  openDiscountModal,
+  show,
+  onHide,
+  discountCost,
+  setDiscountCost,
+  selectedDiscount,
+  FUSelectDiscountPercent,
+  submitManualDiscount,
 }) => {
   let RowTotalPrice = srv.Price * srv.Qty;
   let OrgTotalCost = srv.OC * srv.Qty;
@@ -23,8 +32,6 @@ const AddItem = ({
     }
     PatientCost = RowTotalPrice - (OrgTotalCost + DiscountValue);
   }
-
-  console.log({ srv });
 
   return (
     <>
@@ -50,6 +57,16 @@ const AddItem = ({
 
               <button
                 type="button"
+                className="btn btn-sm btn-outline-secondary dicountBtn height-27"
+                onClick={openDiscountModal}
+                data-pr-position="top"
+              >
+                <Tooltip target=".dicountBtn">اعمال تخفیف</Tooltip>
+                <FeatherIcon icon="credit-card" className="prescItembtns" />
+              </button>
+
+              <button
+                type="button"
                 className="btn btn-sm btn-outline-danger removeBtn height-27"
                 onClick={() => deleteService(srv._id)}
                 data-pr-position="top"
@@ -57,25 +74,13 @@ const AddItem = ({
                 <Tooltip target=".removeBtn">حذف</Tooltip>
                 <FeatherIcon icon="trash" className="prescItembtns" />
               </button>
-
-              <div
-                className={`discountOptions receptionPage`}
-                data-pr-position="top"
-              >
-                <Dropdown
-                  onChange={(e) => applyDiscount(srv._id, e.value)}
-                  options={discountsList}
-                  optionLabel="Name"
-                />
-                <Tooltip target=".discountOptions">انتخاب تخفیف</Tooltip>
-              </div>
             </div>
           </div>
 
           <div className="row">
             <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-11">
               <div className="d-flex">
-                <div className="">{srv.Qty} عدد</div>
+                <div>{srv.Qty} عدد</div>
               </div>
 
               <div className="vertical-line"></div>
@@ -136,6 +141,19 @@ const AddItem = ({
             ""
           )}
         </div>
+
+        <ApplyDiscountModal
+          srv={srv}
+          show={show}
+          onHide={onHide}
+          discountCost={discountCost}
+          setDiscountCost={setDiscountCost}
+          discountsList={discountsList}
+          applyDiscount={applyDiscount}
+          selectedDiscount={selectedDiscount}
+          FUSelectDiscountPercent={FUSelectDiscountPercent}
+          submitManualDiscount={submitManualDiscount}
+        />
       </div>
     </>
   );

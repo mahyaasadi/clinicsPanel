@@ -136,9 +136,9 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
 
                 <div className="d-flex gap-2 mt-2 flex-wrap">
                   <FeatherIcon icon="calendar" className="prescItembtns" />
-                  <div className="">{srv.Date}</div>
-                  <div className="">,</div>
-                  <div className="">{srv.Time}</div>
+                  <div>{srv.Date}</div>
+                  <div>,</div>
+                  <div>{srv.Time}</div>
                 </div>
 
                 <p className="mb-1 d-flex gap-2 flex-wrap">
@@ -186,7 +186,7 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
               </svg>
 
               {srv.Items?.map((item, index) => (
-                <span className="" key={index}>
+                <span key={index}>
                   {item.Name}
                   {item.Des ? " (" + item.Des + ")" : ""}
                   {" | "}

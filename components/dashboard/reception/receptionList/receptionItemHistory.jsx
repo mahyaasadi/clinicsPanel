@@ -10,7 +10,6 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
   return 0;
 };
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
-  console.log({ srv });
   const renderEditHistory = (historyArray) => {
     return (
       <div>
@@ -18,15 +17,16 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
           {historyArray?.EditHistory?.map((historyItem, index) => (
             <li key={index}>
               <div className="text-secondary font-12">
-                <div className="">
+                <div>
                   <p className="mb-1">
                     تاریخ ویرایش :
                     {historyItem.EditDate
                       ? historyArray.EditDate
                       : historyArray.Date}
                   </p>
-                  <p className="">
-                    ساعت ویرایش :    {historyItem.EditTime
+                  <p>
+                    ساعت ویرایش :{" "}
+                    {historyItem.EditTime
                       ? historyArray.EditTime
                       : historyArray.Time}
                   </p>
@@ -116,13 +116,14 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
       <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
-            <p className="mb-0 text-secondary font-14 fw-bold">تاریخچه پذیرش {srv.ReceptionID}</p>
+            <p className="mb-0 text-secondary font-14 fw-bold">
+              تاریخچه پذیرش {srv.ReceptionID}
+            </p>
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body className="recHistoryModal">
-          <div dir="rtl"
-          >
+          <div dir="rtl">
             <p className="text-secondary font-13">حالت اولیه</p>
             <Accordion multiple>
               {srv?.Items.map((item, index) => {
@@ -191,7 +192,6 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
 
             {renderEditHistory(srv || [])}
           </div>
-
         </Modal.Body>
       </Modal>
     </>

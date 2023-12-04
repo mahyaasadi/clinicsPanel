@@ -8,7 +8,15 @@ const AddToListItems = ({
   ClinicID,
   applyDiscount,
   deleteService,
-  removeDiscount
+  removeDiscount,
+  openDiscountModal,
+  show,
+  onHide,
+  discountCost,
+  setDiscountCost,
+  selectedDiscount,
+  FUSelectDiscountPercent,
+  submitManualDiscount,
 }) => {
   const [discountsList, setDiscountsList] = useState([]);
 
@@ -37,6 +45,14 @@ const AddToListItems = ({
           handleEditService={handleEditService}
           deleteService={deleteService}
           removeDiscount={removeDiscount}
+          openDiscountModal={openDiscountModal}
+          show={show}
+          onHide={onHide}
+          discountCost={discountCost}
+          setDiscountCost={setDiscountCost}
+          selectedDiscount={selectedDiscount}
+          FUSelectDiscountPercent={FUSelectDiscountPercent}
+          submitManualDiscount={submitManualDiscount}
         />
       ))}
     </>
