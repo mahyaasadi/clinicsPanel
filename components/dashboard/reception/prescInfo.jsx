@@ -1,4 +1,4 @@
-import AdditionalCostsModal from "components/dashboard/reception/additionalCosts/additionalCostsModal";
+import AdditionalCostsModal from "@/components/dashboard/reception/additionalCostsModal";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
   if (srvItem.Discount?.Percent) {
@@ -60,7 +60,7 @@ const PrescInfo = ({
               <div className="d-flex gap-2">
                 <div>
                   <button
-                    className="btn btn-primary border-radius px-4 font-13 w-100"
+                    className="btn btn-outline-secondary border-radius px-4 font-13 w-100"
                     onClick={() => openAdditionalCostsModal(true)}
                   >
                     افزودن هزینه

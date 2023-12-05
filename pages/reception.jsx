@@ -4,11 +4,11 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import { useRouter } from "next/router";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import PatientInfoCard from "@/components/dashboard/reception/patientInfo/patientInfoCard";
+import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
-import NewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
+import NewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -80,6 +80,7 @@ const Reception = ({ ClinicUser }) => {
 
   const handleCloseAdditionalCostsModal = () => {
     setShowAdditionalCostsModal(false);
+    setEditAdditionalCostMode(false)
     setAdditionalCost(0);
   };
 
@@ -299,8 +300,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -502,10 +503,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });

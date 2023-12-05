@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import { gender, insurance } from "components/commonComponents/imagepath";
 import EditPatientInfoModal from "./editPatientInfo";
-import EditInsuranceTypeModal from "components/dashboard/reception/patientInfo/editInsuranceTypeModal";
+import EditInsuranceTypeModal from "@/components/dashboard/patientInfo/editInsuranceTypeModal";
 
 const PatientInfoCard = ({
   data,
@@ -143,11 +143,10 @@ const PatientInfoCard = ({
               />
               {!patientStatIsLoading ? (
                 <button
-                  className={`${
-                    router.pathname === "/salamatPrescription"
-                      ? "btn-secondary"
-                      : "btn-primary"
-                  } btn w-10 rounded-left font-12`}
+                  className={`${router.pathname === "/salamatPrescription"
+                    ? "btn-secondary"
+                    : "btn-primary"
+                    } btn w-10 rounded-left font-12`}
                   id="frmPatientInfoBtnSubmit"
                 >
                   استعلام
@@ -155,11 +154,10 @@ const PatientInfoCard = ({
               ) : (
                 <button
                   type="submit"
-                  className={`${
-                    router.pathname === "/salamatPrescription"
-                      ? "btn-secondary"
-                      : "btn-primary"
-                  } btn rounded-left`}
+                  className={`${router.pathname === "/salamatPrescription"
+                    ? "btn-secondary"
+                    : "btn-primary"
+                    } btn rounded-left`}
                   disabled
                 >
                   <span

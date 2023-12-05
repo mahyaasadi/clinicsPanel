@@ -9,7 +9,7 @@ import { ErrorAlert, SuccessAlert, QuestionAlert } from "class/AlertManage";
 import DayList from "components/dashboard/appointment/dayList";
 import Loading from "components/commonComponents/loading/loading";
 import AppointmentModal from "components/dashboard/appointment/appointmentModal";
-import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
+import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";

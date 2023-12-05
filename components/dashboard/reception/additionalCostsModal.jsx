@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import FeatherIcon from "feather-icons-react";
 import { convertToLocaleString } from "utils/convertToLocaleString";
 
 const AdditionalCostsModal = ({
@@ -33,7 +31,7 @@ const AdditionalCostsModal = ({
         <Modal.Header>
           <Modal.Title>
             <p className="mb-0 text-secondary font-14 fw-bold">
-              ثبت سایر هزینه ها
+              {mode ? "ویرایش اطلاعات" : "ثبت سایر هزینه ها"}
             </p>
           </Modal.Title>
         </Modal.Header>
@@ -109,7 +107,7 @@ const AdditionalCostsModal = ({
                 // }
 
                 value={
-                  additionalCost
+                  additionalCost !== 0
                     ? additionalCost.toLocaleString()
                     : editSrvData?.Price?.toLocaleString()
                 }

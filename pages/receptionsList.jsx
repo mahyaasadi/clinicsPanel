@@ -6,7 +6,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
-import ReceptionList from "components/dashboard/reception/receptionList/receptionList";
+import ReceptionList from "@/components/dashboard/receptionsList/receptionList";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 export const getServerSideProps = async ({ req, res }) => {

@@ -15,7 +15,7 @@ const Sidebar = () => {
     const receptionSubRoutes = [
       "/reception",
       "/discounts",
-      "/receptionRecords",
+      "/receptionsList",
       "/cashDesk",
     ];
 
@@ -84,9 +84,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    receptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -98,10 +97,10 @@ const Sidebar = () => {
 
                   <li
                     className={
-                      router.pathname == "/receptionRecords" ? "active" : ""
+                      router.pathname == "/receptionsList" ? "active" : ""
                     }
                   >
-                    <Link href="/receptionRecords" className="font-12">
+                    <Link href="/receptionsList" className="font-12">
                       لیست پذیرش ها
                     </Link>
                   </li>
@@ -139,9 +138,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    appointmentsubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${appointmentsubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -170,9 +168,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -209,9 +206,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={

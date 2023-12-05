@@ -6,7 +6,7 @@ import { ErrorAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import CashDeskActions from "components/dashboard/cashDesk/actionsModal";
 import PatientsCategories from "components/dashboard/cashDesk/patientCategories";
-import FilterReceptionItems from "components/dashboard/reception/receptionList/filterReceptionItems";
+import FilterReceptionItems from "@/components/dashboard/receptionsList/filterReceptionItems";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -133,8 +133,8 @@ const CashDesk = ({ ClinicUser }) => {
       Price: price
         ? price
         : formProps.price !== 0
-        ? parseInt(formProps.price.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.price.replaceAll(/,/g, ""))
+          : 0,
       Return: formProps.returnPaymentSwitch ? true : false,
       CartID: selectedKart ? selectedKart : false,
     };

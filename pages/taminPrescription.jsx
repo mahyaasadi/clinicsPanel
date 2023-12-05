@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import PatientInfoCard from "components/dashboard/reception/patientInfo/patientInfoCard";
-import AddNewPatient from "components/dashboard/reception/patientInfo/addNewPatient";
+import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
+import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
 import {
