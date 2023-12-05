@@ -13,11 +13,15 @@ const PrescInfo = ({
   data,
   submitReceptionPrescript,
   isLoading,
+  mode,
   show,
   onHide,
   openAdditionalCostsModal,
   submitAdditionalCosts,
-  additionalCostsData,
+  additionalCost,
+  setAdditionalCost,
+  editSrvData,
+  editAdditionalCost,
 }) => {
   let qty = 0;
   let price = 0;
@@ -57,7 +61,7 @@ const PrescInfo = ({
                 <div>
                   <button
                     className="btn btn-primary border-radius px-4 font-13 w-100"
-                    onClick={openAdditionalCostsModal}
+                    onClick={() => openAdditionalCostsModal(true)}
                   >
                     افزودن هزینه
                   </button>
@@ -116,8 +120,11 @@ const PrescInfo = ({
         <AdditionalCostsModal
           show={show}
           onHide={onHide}
-          onSubmit={submitAdditionalCosts}
-          additionalCostsData={additionalCostsData}
+          onSubmit={!mode ? submitAdditionalCosts : editAdditionalCost}
+          mode={mode}
+          additionalCost={additionalCost}
+          setAdditionalCost={setAdditionalCost}
+          editSrvData={editSrvData}
         />
       </div>
     </>

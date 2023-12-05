@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
+import { convertToLocaleString } from "utils/convertToLocaleString";
 
 const DepartmentsModal = ({
   mode = "add", // Default is 'add'
@@ -9,6 +10,8 @@ const DepartmentsModal = ({
   isLoading,
   show,
   onHide,
+  serviceCost,
+  setServiceCost,
 }) => {
   const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن سرویس";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
@@ -66,13 +69,19 @@ const DepartmentsModal = ({
             </div>
 
             <div className="form-group col-md-6 col-12">
-              <label className="lblAbs font-12">هزینه خدمت</label>
+              <label className="lblAbs font-12">هزینه خدمت (ریال)</label>
               <input
                 type="text"
                 dir="ltr"
                 className="form-control floating inputPadding rounded"
                 name="servicePrice"
-                defaultValue={mode == "edit" ? data.Price : ""}
+                // defaultValue={mode == "edit" ? data.Price : ""}
+                value={
+                  mode === "edit"
+                    ? data.Price.toLocaleString()
+                    : serviceCost.toLocaleString()
+                }
+                onChange={(e) => convertToLocaleString(e, setServiceCost)}
                 key={data.Price}
               />
             </div>

@@ -27,7 +27,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
     },
     {
       name: "هزینه خدمت",
-      selector: (row) => row.Price,
+      selector: (row) => row.Price.toLocaleString() + " ریال",
       sortable: true,
       width: "500px",
     },

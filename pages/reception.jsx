@@ -26,6 +26,7 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
+let additionalCostCode = 100000;
 let Services = [];
 let ClinicID,
   ClinicUserID,
@@ -58,6 +59,7 @@ const Reception = ({ ClinicUser }) => {
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
   const [editSrvMode, setEditSrvMode] = useState(false);
+  const [editAdditionalCostMode, setEditAdditionalCostMode] = useState(false);
 
   // Discounts
   const [showDiscountModal, setShowDiscountModal] = useState(false);
@@ -67,10 +69,19 @@ const Reception = ({ ClinicUser }) => {
   // AdditionalCosts
   const [showAdditionalCostsModal, setShowAdditionalCostsModal] =
     useState(false);
-  const [additionalCostsData, setAdditionalCostsData] = useState([]);
-  const handleCloseAdditionalCostsModal = () =>
+  const [additionalCost, setAdditionalCost] = useState(0);
+  const openAdditionalCostsModal = (Add) => {
+    if (Add) {
+      setAdditionalCost(0);
+      setEditSrvData([]);
+    }
+    setShowAdditionalCostsModal(true);
+  };
+
+  const handleCloseAdditionalCostsModal = () => {
     setShowAdditionalCostsModal(false);
-  const openAdditionalCostsModal = () => setShowAdditionalCostsModal(true);
+    setAdditionalCost(0);
+  };
 
   //----- Patients Info -----//
   const getPatientInfo = (e) => {
@@ -165,17 +176,7 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
-  const selectSearchedSrv = (
-    _id,
-    name,
-    code,
-    engName,
-    price,
-    ss,
-    st,
-    sa
-    // modalityID
-  ) => {
+  const selectSearchedSrv = (_id, name, code, engName, price, ss, st, sa) => {
     ActiveSrvID = _id;
     ActiveSrvName = name;
     ActiveSrvEngName = engName;
@@ -208,7 +209,6 @@ const Reception = ({ ClinicUser }) => {
   // add discounts from discountsOptions
   const applyDiscount = (id, Discount) => {
     setSelectedDiscount(Discount);
-    console.log({ id, Discount });
 
     const updatedData = addedSrvItems.map((item) => {
       if (item._id === id) {
@@ -221,7 +221,6 @@ const Reception = ({ ClinicUser }) => {
     });
 
     setAddedSrvItems(updatedData);
-    console.log({ updatedData });
     handleCloseDiscountModal();
   };
 
@@ -267,17 +266,71 @@ const Reception = ({ ClinicUser }) => {
     const formProps = Object.fromEntries(formData);
 
     let data = {
+      _id: (additionalCostCode++).toString(),
+      Code: additionalCostCode++,
       Name: formProps.additionalSrvName,
       Qty: formProps.additionalSrvQty,
-      Price: formProps.additionalSrvCost,
+      Price: additionalCost,
+
+      OC: 0,
+      Discount: 0,
+      ModalityID: ActiveModalityID,
     };
 
-    setAdditionalCostsData([...additionalCostsData, [data]]);
-    // handleCloseAdditionalCostsModal()
-    console.log({ data });
+    e.target.reset();
+    setAdditionalCost(0);
+    setAddedSrvItems([...addedSrvItems, data]);
+    handleCloseAdditionalCostsModal();
   };
 
-  console.log({ additionalCostsData });
+  // edit additionalCost item
+  const editAdditionalCost = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let data = {
+      _id: formProps.additionalSrvID,
+      Code: formProps.additionalSrvCode,
+      Name: formProps.additionalSrvName,
+      Qty: formProps.additionalSrvQty,
+      // Price: additionalCost ? additionalCost : formProps.additionalSrvCost,
+      Price: additionalCost
+        ? additionalCost
+        : formProps.additionalSrvCost !== 0
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
+      OC: 0,
+      Discount: 0,
+      ModalityID: ActiveModalityID,
+    };
+
+    updateAdditionalCostItem(formProps.additionalSrvID, data);
+    handleCloseAdditionalCostsModal();
+    e.target.reset();
+    setEditAdditionalCostMode(false);
+  };
+
+  const updateAdditionalCostItem = (id, newArr) => {
+    let index = addedSrvItems.findIndex((x) => x._id === id);
+    let g = addedSrvItems[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else {
+      setTimeout(() => {
+        setAddedSrvItems([
+          ...addedSrvItems.slice(0, index),
+          g,
+          ...addedSrvItems.slice(index + 1),
+        ]);
+      }, 5);
+    }
+  };
+
+  console.log({ addedSrvItems });
 
   //----- Edit Service -----//
   const getOneReception = () => {
@@ -301,26 +354,32 @@ const Reception = ({ ClinicUser }) => {
 
   const handleEditService = (srvData) => {
     setEditSrvData(srvData);
-    setEditSrvMode(true);
 
-    ActiveSrvName = srvData.Name;
-    ActiveSrvCode = srvData.Code;
-    ActiveEditSrvID = srvData._id;
-    ActiveSrvPrice = srvData.Price;
-    ActiveSrvID = srvData._id;
-    ActiveSrvEngName = srvData.EngName;
-    ActiveDiscountShare = srvData.Discount;
-
-    $("#srvSearchInput").val(srvData.Name);
-    $("#QtyInput").val(srvData.Qty);
-    $("#ResPrescDescription").val(srvData.Des);
-
-    if (ActiveInsuranceType == "1") {
-      ActiveSalamatShare = srvData.OC;
-    } else if (ActiveInsuranceType == "2") {
-      ActiveTaminShare = srvData.OC;
+    if (parseInt(srvData.Code) >= 100000) {
+      openAdditionalCostsModal();
+      setEditAdditionalCostMode(true);
     } else {
-      ActiveArteshShare = srvData.OC;
+      setEditSrvMode(true);
+
+      ActiveSrvName = srvData.Name;
+      ActiveSrvCode = srvData.Code;
+      ActiveEditSrvID = srvData._id;
+      ActiveSrvPrice = srvData.Price;
+      ActiveSrvID = srvData._id;
+      ActiveSrvEngName = srvData.EngName;
+      ActiveDiscountShare = srvData.Discount;
+
+      $("#srvSearchInput").val(srvData.Name);
+      $("#QtyInput").val(srvData.Qty);
+      $("#ResPrescDescription").val(srvData.Des);
+
+      if (ActiveInsuranceType == "1") {
+        ActiveSalamatShare = srvData.OC;
+      } else if (ActiveInsuranceType == "2") {
+        ActiveTaminShare = srvData.OC;
+      } else {
+        ActiveArteshShare = srvData.OC;
+      }
     }
   };
 
@@ -537,7 +596,6 @@ const Reception = ({ ClinicUser }) => {
                     selectedDiscount={selectedDiscount}
                     FUSelectDiscountPercent={FUSelectDiscountPercent}
                     submitManualDiscount={submitManualDiscount}
-                    additionalCostsData={additionalCostsData}
                   />
                 </div>
               </div>
@@ -546,12 +604,17 @@ const Reception = ({ ClinicUser }) => {
             <div className="col-md-12 prescInfoCard">
               <PrescInfo
                 data={addedSrvItems}
+                mode={editAdditionalCostMode}
                 submitReceptionPrescript={submitReceptionPrescript}
                 isLoading={isLoading}
                 show={showAdditionalCostsModal}
                 onHide={handleCloseAdditionalCostsModal}
                 openAdditionalCostsModal={openAdditionalCostsModal}
                 submitAdditionalCosts={submitAdditionalCosts}
+                editAdditionalCost={editAdditionalCost}
+                additionalCost={additionalCost}
+                setAdditionalCost={setAdditionalCost}
+                editSrvData={editSrvData}
               />
             </div>
           </div>

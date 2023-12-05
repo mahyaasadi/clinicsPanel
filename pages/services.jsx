@@ -37,6 +37,7 @@ const Services = ({ ClinicUser }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [servicesData, setServicesData] = useState([]);
+  const [serviceCost, setServiceCost] = useState(0);
   const [editServiceData, setEditServiceData] = useState([]);
 
   const handleCloseModal = () => setShowModal(false);
@@ -78,7 +79,7 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: formProps.servicePrice,
+      Price: serviceCost,
       SA: formProps.arteshShare,
       ST: formProps.taminShare,
       SS: formProps.salamatShare,
@@ -122,7 +123,7 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: formProps.servicePrice,
+      Price: formProps.servicePrice ? formProps.servicePrice : serviceCost,
       SA: formProps.arteshShare,
       ST: formProps.taminShare,
       SS: formProps.salamatShare,
@@ -240,6 +241,8 @@ const Services = ({ ClinicUser }) => {
           onSubmit={modalMode === "add" ? addService : editService}
           data={editServiceData}
           isLoading={isLoading}
+          serviceCost={serviceCost}
+          setServiceCost={setServiceCost}
         />
       </div>
     </>
