@@ -20,7 +20,7 @@ export default function Page() {
   const { control } = useForm();
   const router = useRouter();
   const [eye, setEye] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onEyeClick = () => setEye(!eye);
 
@@ -59,96 +59,109 @@ export default function Page() {
 
   return (
     <>
-      {!isLoading ? (
+      {/* {!isLoading ? (
         <Loading />
-      ) : (
-        <div className="row loginBg p-0 d-flex align-items-center">
-          <div className="col-md-6 login-bg p-0">
-            <div className="login-banner">
-              <Image
-                src={logo}
-                alt="login-banner"
-                unoptimized={true}
-                priority={true}
-              />
-            </div>
+      ) : ( */}
+      <div className="row loginBg p-0 d-flex align-items-center">
+        <div className="col-md-6 login-bg p-0">
+          <div className="login-banner">
+            <Image
+              src={logo}
+              alt="login-banner"
+              unoptimized={true}
+              priority={true}
+            />
           </div>
+        </div>
 
-          <div className="col-lg-6 col-12 login-wrap-bg">
-            {/* <div className="login-page"> */}
-            <div className="login-wrapper">
-              <div className="loginbox">
-                <h3 className="loginTitle stretch">ایران نوبت</h3>
-                <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
+        <div className="col-lg-6 col-12 login-wrap-bg">
+          <div className="login-wrapper">
+            <div className="loginbox">
+              <h3 className="loginTitle stretch">ایران نوبت</h3>
+              <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
 
-                <form onSubmit={handleSubmit}>
-                  <div className="form-group form-focus">
-                    <Controller
-                      control={control}
-                      name="UserName"
-                      render={({ field: { value, onChange } }) => (
+              <form onSubmit={handleSubmit}>
+                <div className="form-group form-focus">
+                  <Controller
+                    control={control}
+                    name="UserName"
+                    render={({ field: { value, onChange } }) => (
+                      <input
+                        className="form-control floating"
+                        type="text"
+                        id="UserName"
+                        name="UserName"
+                        autoComplete="false"
+                        placeholder="نام کاربری"
+                        required
+                      />
+                    )}
+                  />
+                </div>
+                <div className="form-group form-focus">
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { value, onChange } }) => (
+                      <div className="pass-group">
                         <input
                           className="form-control floating"
-                          type="text"
-                          id="UserName"
-                          name="UserName"
+                          type={eye ? "password" : "text"}
                           autoComplete="false"
-                          placeholder="نام کاربری"
+                          placeholder="رمز عبور"
+                          id="Password"
                           required
                         />
-                      )}
-                    />
-                  </div>
-                  <div className="form-group form-focus">
-                    <Controller
-                      control={control}
-                      name="password"
-                      render={({ field: { value, onChange } }) => (
-                        <div className="pass-group">
-                          <input
-                            className="form-control floating"
-                            type={eye ? "password" : "text"}
-                            autoComplete="false"
-                            placeholder="رمز عبور"
-                            id="Password"
-                            required
-                          />
-                          <span
-                            onClick={onEyeClick}
-                            className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                              }`}
-                          />
-                        </div>
-                      )}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <div className="row">
-                      <div className="col-6">
-                        <label className="custom_check mr-2 mb-0 d-inline-flex font-12">
-                          مرا به خاطر داشته باش
-                          <input type="checkbox" name="radio" />
-                          <span className="checkmark" />
-                        </label>
+                        <span
+                          onClick={onEyeClick}
+                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
+                        />
                       </div>
+                    )}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <div className="row">
+                    <div className="col-6">
+                      <label className="custom_check mr-2 mb-0 d-inline-flex font-12">
+                        مرا به خاطر داشته باش
+                        <input type="checkbox" name="radio" />
+                        <span className="checkmark" />
+                      </label>
                     </div>
                   </div>
-                  <div className="d-grid">
+                </div>
+                <div className="d-grid">
+                  {isLoading ? (
+                    <button
+                      className="btn btn-primary loginBtn disabled d-flex align-items-center justify-center gap-2"
+                      type="submit"
+                    >
+                      در حال ورود
+
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                      ></span>
+                    </button>
+                  ) : (
                     <button
                       className="btn btn-primary loginBtn"
                       type="submit"
                     >
                       ورود
                     </button>
-                  </div>
-                </form>
-              </div>
+
+                  )}
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        // </div>
-      )}
+      </div>
+      {/* )} */}
     </>
   );
 }

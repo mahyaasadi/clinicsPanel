@@ -233,7 +233,7 @@ const ReceptionsList = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card ">
+                <div className="card">
                   <ReceptionList
                     data={currentItems}
                     ClinicID={ClinicID}
