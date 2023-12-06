@@ -62,7 +62,6 @@ const CashDesk = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setReceptionList(response.data);
         if (response.data) getReceptionPatients(response.data);
         setIsLoading(false);
@@ -133,28 +132,28 @@ const CashDesk = ({ ClinicUser }) => {
       Price: price
         ? price
         : formProps.price !== 0
-          ? parseInt(formProps.price.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.price.replaceAll(/,/g, ""))
+        : 0,
       Return: formProps.returnPaymentSwitch ? true : false,
       CartID: selectedKart ? selectedKart : false,
     };
 
     console.log({ data });
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     setPaymentData(response.data.CashDesk);
-    //     getReceptionList();
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setPaymentData(response.data.CashDesk);
+        getReceptionList();
 
-    //     e.target.reset();
-    //     setShowPaymentModal(false);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //   });
+        e.target.reset();
+        setShowPaymentModal(false);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   // Apply Filter on ReceptionItems

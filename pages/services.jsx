@@ -40,7 +40,10 @@ const Services = ({ ClinicUser }) => {
   const [serviceCost, setServiceCost] = useState(0);
   const [editServiceData, setEditServiceData] = useState([]);
 
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setServiceCost(0);
+  };
 
   const getDepServices = () => {
     setIsLoading(true);
@@ -63,6 +66,7 @@ const Services = ({ ClinicUser }) => {
   const openAddModal = () => {
     setModalMode("add");
     setShowModal(true);
+    if (modalMode === "add") setServiceCost(0);
   };
 
   const addService = async (e) => {
@@ -79,11 +83,14 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: serviceCost,
+      Price: formProps.servicePrice,
+      // Price: serviceCost,
       SA: formProps.arteshShare,
       ST: formProps.taminShare,
       SS: formProps.salamatShare,
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
@@ -92,6 +99,7 @@ const Services = ({ ClinicUser }) => {
         setShowModal(false);
         setIsLoading(false);
         e.target.reset();
+        setServiceCost(0);
       })
       .catch((err) => {
         console.log(err);
@@ -123,11 +131,14 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: formProps.servicePrice ? formProps.servicePrice : serviceCost,
+      Price: formProps.servicePrice,
+      // Price: formProps.servicePrice ? formProps.servicePrice : serviceCost,
       SA: formProps.arteshShare,
       ST: formProps.taminShare,
       SS: formProps.salamatShare,
     };
+
+    console.log({ data });
 
     axiosClient
       .put(url, data)
@@ -217,7 +228,7 @@ const Services = ({ ClinicUser }) => {
                   <div className="card-header border-bottom-0">
                     <div className="row align-items-center">
                       <div className="col">
-                        <p className="card-title font-16 text-secondary">
+                        <p className="card-title font-15 text-secondary">
                           لیست خدمات بخش {DepName}
                         </p>
                       </div>

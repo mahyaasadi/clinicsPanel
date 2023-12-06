@@ -32,7 +32,7 @@ let ClinicID,
 
 const jdate = new JDate();
 
-const ReceptionRecords = ({ ClinicUser }) => {
+const ReceptionsList = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
@@ -280,4 +280,4 @@ const ReceptionRecords = ({ ClinicUser }) => {
   );
 };
 
-export default ReceptionRecords;
+export default ReceptionsList;

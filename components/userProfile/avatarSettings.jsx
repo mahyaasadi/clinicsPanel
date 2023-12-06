@@ -6,13 +6,14 @@ import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 
 const AvatarSettings = ({
-  UserData,
-  // changeUserAvatar,
-  isLoading,
+  userInfo,
+  changeUserAvatar,
+  avatarIsLoading,
+  ClinicUser,
 }) => {
   const router = useRouter();
 
-  const [avatarSrc, setAvatarSrc] = useState(UserData.Avatar);
+  const [avatarSrc, setAvatarSrc] = useState(ClinicUser.Avatar);
   const [cropper, setCropper] = useState(null);
   const imageElement = useRef(null);
 
@@ -24,24 +25,24 @@ const AvatarSettings = ({
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //   if (cropper) {
-  //     const croppedCanvas = cropper.getCroppedCanvas();
+    if (cropper) {
+      const croppedCanvas = cropper.getCroppedCanvas();
 
-  //     if (!croppedCanvas) {
-  //       return;
-  //     }
-  //     croppedCanvas.toBlob(async (blob) => {
-  //       let formData = new FormData();
-  //       formData.append("editUserAvatar", blob);
-  //       formData.append("userId", UserData._id);
+      if (!croppedCanvas) {
+        return;
+      }
+      croppedCanvas.toBlob(async (blob) => {
+        let formData = new FormData();
+        formData.append("editUserAvatar", blob);
+        formData.append("userId", userInfo._id);
 
-  //       await changeUserAvatar(formData);
-  //     });
-  //   }
-  // };
+        await changeUserAvatar(formData);
+      });
+    }
+  };
 
   const handleCancelBtn = (e) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ const AvatarSettings = ({
   };
 
   useEffect(() => {
-    if (avatarSrc !== UserData.Avatar && imageElement.current) {
+    if (avatarSrc !== ClinicUser.Avatar && imageElement.current) {
       if (cropper) cropper.destroy();
       const newCropper = new Cropper(imageElement.current, {
         aspectRatio: 1,
@@ -73,9 +74,7 @@ const AvatarSettings = ({
             <div className="card-header">
               <p className="font-16 fw-bold text-secondary">تغییر آواتار</p>
             </div>
-            <form
-            // onSubmit={handleSubmit}
-            >
+            <form onSubmit={handleSubmit}>
               <div className="settings-form">
                 <p className="font-12 lblAbs">آواتار فعلی</p>
                 <div className="upload-images">
@@ -83,7 +82,7 @@ const AvatarSettings = ({
                     type="hidden"
                     className="form-control floating"
                     name="userId"
-                    value={UserData._id}
+                    value={ClinicUser._id}
                   />
 
                   <img
@@ -119,18 +118,32 @@ const AvatarSettings = ({
                 </div>
 
                 <div className="d-flex gap-1 justify-center margin-top-3 media-flex-column">
-                  <button
-                    type="submit"
-                    className="btn btn-primary rounded profileSettingsBtn font-13"
-                    id="submitUserBtn"
-                  >
-                    ثبت
-                  </button>
+                  {!avatarIsLoading ? (
+                    <button
+                      type="submit"
+                      id="submitUserBtn"
+                      className="btn btn-primary rounded btn-save font-13"
+                    >
+                      ثبت
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary rounded btn-save font-13"
+                      disabled
+                    >
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                      ></span>
+                      در حال ثبت
+                    </button>
+                  )}
 
                   <button
                     type="button"
                     href="/profileSettings"
-                    className="btn btn-outline-dark rounded profileSettingsBtn font-13"
+                    className="btn btn-outline-secondary rounded profileSettingsBtn font-13"
                     id="cancelAvatarEdit"
                     onClick={handleCancelBtn}
                   >

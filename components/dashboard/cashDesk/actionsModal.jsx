@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import ApplyCashDeskModal from "./applyCashDeskModal";
-import { returnedCash } from "components/commonComponents/imagepath";
 import PrintContent from "components/dashboard/cashDesk/recipt/printContent";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
@@ -153,12 +152,6 @@ const CashDeskActions = ({
                 className="btn btn-outline-secondary text-center rounded font-13 d-flex align-items-center gap-2 justify-center w-100"
                 onClick={handleReturnPaymentBtn}
               >
-                {/* <Image
-                src={returnedCash}
-                alt="returnedCash"
-                width="20"
-                height="20"
-              /> */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

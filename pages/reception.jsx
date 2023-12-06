@@ -8,7 +8,7 @@ import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard"
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
-import NewPatient from "@/components/dashboard/patientInfo/addNewPatient";
+import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -80,7 +80,7 @@ const Reception = ({ ClinicUser }) => {
 
   const handleCloseAdditionalCostsModal = () => {
     setShowAdditionalCostsModal(false);
-    setEditAdditionalCostMode(false)
+    setEditAdditionalCostMode(false);
     setAdditionalCost(0);
   };
 
@@ -124,15 +124,28 @@ const Reception = ({ ClinicUser }) => {
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
+    data.Clinic = true;
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         setPatientInfo(response.data);
         $("#newPatientModal").modal("hide");
-        SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
-        if (response.data.errors) {
+        $("#patientInfoCard").show("");
+        if (response.data === false) {
+          ErrorAlert(
+            "خطا",
+            "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
+          );
+          return false;
+        } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+          return false;
+        } else {
+          SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
       })
       .catch((err) => {
@@ -300,8 +313,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -503,10 +516,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -524,7 +537,7 @@ const Reception = ({ ClinicUser }) => {
           SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
           setTimeout(() => {
             if (response.data.Register) {
-              router.push("/receptionRecords");
+              router.push("/receptionsList");
             }
           }, 300);
           setIsLoading(false);

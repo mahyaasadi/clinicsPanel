@@ -3,47 +3,43 @@ import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
 
 const PasswordSettings = ({
+  userInfo,
+  passIsLoading,
   newPassword,
   handleNewPassword,
   editUserPassword,
-  UserData,
+  showPasswordAlertText,
+  setShowPasswordAlertText,
+  showConfPassAlertText,
+  setShowConfPassAlertText,
 }) => {
   const router = useRouter();
   const [eye, setEye] = useState(true);
   const onEyeClick = () => setEye(!eye);
 
-  // const validatePasswordLength = (e) => {
-  //   e.preventDefault();
+  const validatePassword = () => {
+    if (newPassword.length < 7) {
+      setShowPasswordAlertText(true);
+      $("#submitNewPasswordBtn").attr("disabled", true);
+    } else {
+      setShowPasswordAlertText(false);
+      $("#submitNewPasswordBtn").attr("disabled", false);
+    }
+  };
 
-  //   // password length
-  //   if (newPassword.length < 7) {
-  //     $("#newPassValidationText1").show();
-  //     $("#submitNewPasswordBtn").attr("disabled", true);
-  //     return;
-  //   } else {
-  //     $("#newPassValidationText1").hide();
-  //     $("#submitNewPasswordBtn").attr("disabled", false);
-  //   }
-  // };
+  // confirm password validation
+  const validateConfirmPassword = () => {
+    let passValue = $("#newPassword").val();
+    let confpassValue = $("#confirmNewPassword").val();
 
-  // const validateConfirmPassword = (e) => {
-  //   e.preventDefault();
-
-  //   let formData = new FormData(document.getElementById("passwordSettingsFrm"));
-  //   const formProps = Object.fromEntries(formData);
-
-  //   let passValue = $("#newPassword").val();
-  //   let confpassValue = $("#confirmNewPassword").val();
-
-  //   // confirm password validation
-  //   if (passValue !== confpassValue) {
-  //     $("#newPassValidationText2").show();
-  //     $("#submitNewPasswordBtn").attr("disabled", true);
-  //   } else {
-  //     $("#newPassValidationText2").hide();
-  //     $("#submitNewPasswordBtn").attr("disabled", false);
-  //   }
-  // };
+    if (passValue !== confpassValue) {
+      setShowConfPassAlertText(true);
+      $("#submitNewPasswordBtn").attr("disabled", true);
+    } else {
+      setShowConfPassAlertText(false);
+      $("#submitNewPasswordBtn").attr("disabled", false);
+    }
+  };
 
   const handleCancelBtn = (e) => {
     e.preventDefault();
@@ -58,16 +54,13 @@ const PasswordSettings = ({
             <div className="card-header">
               <p className="font-16 fw-bold text-secondary">تغییر رمز عبور</p>
             </div>
-            <form
-              id="passwordSettingsFrm"
-              // onSubmit={editUserPassword}
-            >
+            <form id="passwordSettingsFrm" onSubmit={editUserPassword}>
               <div className="form-group mt-4">
                 <input
                   type="hidden"
                   className="form-control floating"
                   name="userId"
-                  value={UserData._id}
+                  value={userInfo._id}
                 />
 
                 <label className="lblAbs font-12">
@@ -102,7 +95,7 @@ const PasswordSettings = ({
                       value={newPassword}
                       onChange={handleNewPassword}
                       autoComplete="false"
-                      // onBlur={validatePasswordLength}
+                      onBlur={validatePassword}
                       required
                     />
                     <span
@@ -115,20 +108,19 @@ const PasswordSettings = ({
                 </div>
 
                 {/* password validation */}
-                {/* <div className="marginb-med mt-4">
-                  <div
-                    className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1"
-                    id="newPassValidationText1"
-                  >
-                    <FeatherIcon
-                      icon="alert-triangle"
-                      className="frmValidationTxt"
-                    />
-                    <div className="frmValidationTxt">
-                      رمز عبور باید حداقل 7 رقم باشد!
+                {showPasswordAlertText && (
+                  <div className="marginb-med mt-4">
+                    <div className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1">
+                      <FeatherIcon
+                        icon="alert-triangle"
+                        className="frmValidationTxt"
+                      />
+                      <div className="frmValidationTxt">
+                        رمز عبور باید حداقل 7 رقم باشد!
+                      </div>
                     </div>
                   </div>
-                </div> */}
+                )}
 
                 <div className="form-group">
                   <label className="lblAbs font-12">
@@ -141,7 +133,7 @@ const PasswordSettings = ({
                       id="confirmNewPassword"
                       className="form-control floating inputPadding rounded"
                       autoComplete="false"
-                      // onBlur={validateConfirmPassword}
+                      onBlur={validateConfirmPassword}
                       required
                     />
                     <span
@@ -153,31 +145,46 @@ const PasswordSettings = ({
                   </div>
                 </div>
 
-                {/* <div className="marginb-med mt-4">
-                  <div
-                    className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1"
-                    id="newPassValidationText2"
-                  >
-                    <FeatherIcon
-                      icon="alert-triangle"
-                      className="frmValidationTxt"
-                    />
-                    <div className="frmValidationTxt">
-                      رمز عبور باید تطابق داشته باشد!
+                {showConfPassAlertText && (
+                  <div className="marginb-med mt-4">
+                    <div className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1">
+                      <FeatherIcon
+                        icon="alert-triangle"
+                        className="frmValidationTxt"
+                      />
+                      <div className="frmValidationTxt">
+                        رمز عبور باید تطابق داشته باشد!
+                      </div>
                     </div>
                   </div>
-                </div> */}
+                )}
 
                 <div className="settings-btns d-flex gap-1 justify-center media-flex-column margin-top-3">
+                  {!passIsLoading ? (
+                    <button
+                      type="submit"
+                      id="submitNewPasswordBtn"
+                      className="btn btn-primary rounded btn-save font-13"
+                    >
+                      ثبت
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary rounded btn-save font-13"
+                      disabled
+                    >
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                      ></span>
+                      در حال ثبت
+                    </button>
+                  )}
+
                   <button
                     type="submit"
-                    className="btn btn-primary rounded profileSettingsBtn font-13"
-                  >
-                    ثبت
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-outline-dark rounded profileSettingsBtn font-13"
+                    className="btn btn-outline-secondary rounded profileSettingsBtn font-13"
                     id="cancelNewPasswordBtn"
                     onClick={handleCancelBtn}
                   >

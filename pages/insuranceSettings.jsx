@@ -163,6 +163,7 @@ const InsuranceSettings = ({ ClinicUser }) => {
         ? activeInsuranceName?.IName
         : selectedInsuranceName,
       IUName: formProps.insuranceUserName,
+      IPass: formProps.insurancePassword,
     };
 
     axiosClient

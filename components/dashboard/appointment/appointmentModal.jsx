@@ -70,48 +70,48 @@ const AppointmentModal = ({
         </Modal.Header>
 
         <Modal.Body>
+          <form className="w-100" onSubmit={getPatientInfo}>
+            {mode === "add" ? (
+              <div className="input-group mb-3">
+                <label className="lblAbs font-12">
+                  کد ملی / کد اتباع بیمار
+                </label>
+                <input
+                  type="text"
+                  id="appointmentNationalCode"
+                  name="appointmentNationalCode"
+                  required
+                  className="form-control rounded-right GetPatientInput w-50"
+                />
+
+                {!patientStatIsLoading ? (
+                  <button
+                    id="getPatientInfoBtn"
+                    type="button"
+                    onClick={getPatientInfo}
+                    className="btn-primary btn w-10 rounded-left font-12"
+                  >
+                    استعلام
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn-primary btn rounded-left"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                    ></span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+          </form>
+
           <form onSubmit={onSubmit}>
-            <form className="w-100">
-              {mode === "add" ? (
-                <div className="input-group mb-3">
-                  <label className="lblAbs font-12">
-                    کد ملی / کد اتباع بیمار
-                  </label>
-                  <input
-                    type="text"
-                    id="appointmentNationalCode"
-                    name="appointmentNationalCode"
-                    required
-                    className="form-control rounded-right GetPatientInput w-50"
-                  />
-
-                  {!patientStatIsLoading ? (
-                    <button
-                      id="getPatientInfoBtn"
-                      type="button"
-                      onClick={getPatientInfo}
-                      className="btn-primary btn w-10 rounded-left font-12"
-                    >
-                      استعلام
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="btn-primary btn rounded-left"
-                      disabled
-                    >
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                      ></span>
-                    </button>
-                  )}
-                </div>
-              ) : (
-                ""
-              )}
-            </form>
-
             <div className="font-13 mt-3" id="appointmentPatientInfoCard">
               <div className="margin-right-1 font-12 mt-3">
                 <div className="d-flex gap-2 mb-3">

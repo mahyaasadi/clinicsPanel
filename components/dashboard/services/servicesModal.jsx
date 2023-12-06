@@ -4,7 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { convertToLocaleString } from "utils/convertToLocaleString";
 
 const DepartmentsModal = ({
-  mode = "add", // Default is 'add'
+  mode = "add",
   onSubmit,
   data = {},
   isLoading,
@@ -13,6 +13,8 @@ const DepartmentsModal = ({
   serviceCost,
   setServiceCost,
 }) => {
+  // console.log({ mode, serviceCost });
+
   const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن سرویس";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
@@ -75,13 +77,13 @@ const DepartmentsModal = ({
                 dir="ltr"
                 className="form-control floating inputPadding rounded"
                 name="servicePrice"
-                // defaultValue={mode == "edit" ? data.Price : ""}
-                value={
-                  mode === "edit"
-                    ? data.Price.toLocaleString()
-                    : serviceCost.toLocaleString()
-                }
-                onChange={(e) => convertToLocaleString(e, setServiceCost)}
+                // value={
+                //   serviceCost !== 0
+                //     ? serviceCost.toLocaleString()
+                //     : data?.Price?.toLocaleString()
+                // }
+                defaultValue={mode == "edit" ? data.Price : ""}
+                // onChange={(e) => convertToLocaleString(e, setServiceCost)}
                 key={data.Price}
               />
             </div>

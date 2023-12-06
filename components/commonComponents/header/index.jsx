@@ -32,12 +32,12 @@ const Header = ({ ClinicUser }) => {
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
 
-    // document.getElementById("avatar").setAttribute("src", data.Avatar);
-    // document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
-    // document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);
-    // document
-    //   .getElementById("dropdownAvatar")
-    //   .setAttribute("srcSet", data.Avatar);
+    document.getElementById("avatar").setAttribute("src", data.Avatar);
+    document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
+    document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);
+    document
+      .getElementById("dropdownAvatar")
+      .setAttribute("srcSet", data.Avatar);
   };
 
   const handleLogout = async (ClinicUser) => {

@@ -1,16 +1,31 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import FeatherIcon from "feather-icons-react";
 
 const GenralUserInfoSettings = ({
   userInfo,
   editGeneralUserInfo,
-  isLoading,
+  infoIsLoading,
+  showTelAlertText,
+  setShowTelAlertText,
 }) => {
   const router = useRouter();
 
   const handleCancelBtn = (e) => {
     e.preventDefault();
     router.push("/profile");
+  };
+
+  const validateTel = () => {
+    const userTel = $("#editUserTel").val();
+
+    if (userTel.length < 11) {
+      setShowTelAlertText(true);
+      $("#submitUserBtn").attr("disabled", true);
+    } else {
+      setShowTelAlertText(false);
+      $("#submitUserBtn").attr("disabled", false);
+    }
   };
 
   return (
@@ -21,9 +36,7 @@ const GenralUserInfoSettings = ({
             <div className="card-header">
               <p className="font-16 fw-bold text-secondary">اطلاعات شخصی</p>
             </div>
-            <form
-            // onSubmit={editGeneralUserInfo}
-            >
+            <form onSubmit={editGeneralUserInfo}>
               <div className="form-group mt-4">
                 <input
                   type="hidden"
@@ -56,8 +69,8 @@ const GenralUserInfoSettings = ({
                     className="form-control floating inputPadding rounded"
                     type="text"
                     name="editUserName"
-                    // defaultValue={userInfo.User}
-                    // key={userInfo.User}
+                    defaultValue={userInfo.User}
+                    key={userInfo.User}
                     readOnly
                     required
                   />
@@ -71,25 +84,61 @@ const GenralUserInfoSettings = ({
                 <div className="col p-0">
                   <input
                     className="form-control floating inputPadding rounded"
-                    type="number"
+                    type="tel"
+                    id="editUserTel"
                     name="editUserTel"
-                    // defaultValue={userInfo.Tel}
-                    // key={userInfo.Tel}
+                    defaultValue={userInfo.Tel}
+                    key={userInfo.Tel}
+                    onBlur={validateTel}
                     required
                   />
                 </div>
               </div>
 
+              {/* userTel validation */}
+              {showTelAlertText && (
+                <div className="marginb-med">
+                  <div
+                    className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1"
+                    id="formValidationText3"
+                  >
+                    <FeatherIcon
+                      icon="alert-triangle"
+                      className="frmValidationTxt"
+                    />
+                    <div className="frmValidationTxt">
+                      شماره همراه باید دارای 11 رقم باشد!
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="settings-btns d-flex gap-1 justify-center media-flex-column margin-top-3">
+                {!infoIsLoading ? (
+                  <button
+                    type="submit"
+                    id="submitUserBtn"
+                    className="btn btn-primary rounded btn-save font-13"
+                  >
+                    ثبت
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-primary rounded btn-save font-13"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                    ></span>
+                    در حال ثبت
+                  </button>
+                )}
+
                 <button
                   type="submit"
-                  className="btn btn-primary rounded btn-save"
-                >
-                  ثبت
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-outline-dark rounded profileSettingsBtn font-13"
+                  className="btn btn-outline-secondary rounded profileSettingsBtn font-13"
                   id="cancelGeneralInfoBtn"
                   onClick={handleCancelBtn}
                 >

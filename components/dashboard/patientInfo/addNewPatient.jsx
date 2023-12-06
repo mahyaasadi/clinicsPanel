@@ -168,7 +168,7 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
                         className="form-control rounded padding-right-2"
                         id="addPatientName"
                         name="PatientName"
-                        required
+                        // required
                       />
                     </div>
 
@@ -188,20 +188,20 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
                         onChangeValue={(value) =>
                           selectInsuranceType(value?.value)
                         }
-                        required
+                        // required
                       />
                     </div>
 
                     <div className="col-md-12 media-w-100 mt-3">
                       <label className="lblAbs margin-top-25 font-12">
-                        تاریخ تولد <span className="text-danger">*</span>
+                        سال تولد <span className="text-danger">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-control rounded padding-right-2"
                         id="addPatientBD"
                         name="PatientBD"
-                        required
+                        // required
                       />
                     </div>
                   </div>

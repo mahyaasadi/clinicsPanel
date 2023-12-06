@@ -136,9 +136,18 @@ const TaminPrescription = ({
       .then((response) => {
         setPatientInfo(response.data);
         $("#newPatientModal").modal("hide");
-        SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
-        if (response.data.errors) {
+        $("#patientInfoCard").show("");
+        if (response.data === false) {
+          ErrorAlert(
+            "خطا",
+            "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
+          );
+          return false;
+        } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+          return false;
+        } else {
+          SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
       })
       .catch((err) => {

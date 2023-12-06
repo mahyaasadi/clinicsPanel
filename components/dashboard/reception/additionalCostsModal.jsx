@@ -100,12 +100,6 @@ const AdditionalCostsModal = ({
                 type="text"
                 className="form-control floating inputPadding rounded"
                 name="additionalSrvCost"
-                // value={
-                //   !mode
-                //     ? additionalCost.toLocaleString()
-                //     : editSrvData.Price.toLocaleString()
-                // }
-
                 value={
                   additionalCost !== 0
                     ? additionalCost.toLocaleString()
