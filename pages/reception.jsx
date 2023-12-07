@@ -61,8 +61,11 @@ const Reception = ({ ClinicUser }) => {
   const [editSrvMode, setEditSrvMode] = useState(false);
   const [editAdditionalCostMode, setEditAdditionalCostMode] = useState(false);
 
+  // patient Birthday
+  const [birthYear, setBirthYear] = useState("");
+  const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
+
   // Discounts
-  const [showDiscountModal, setShowDiscountModal] = useState(false);
   const [discountCost, setDiscountCost] = useState({});
   const [selectedDiscount, setSelectedDiscount] = useState({});
 
@@ -70,6 +73,7 @@ const Reception = ({ ClinicUser }) => {
   const [showAdditionalCostsModal, setShowAdditionalCostsModal] =
     useState(false);
   const [additionalCost, setAdditionalCost] = useState(0);
+
   const openAdditionalCostsModal = (Add) => {
     if (Add) {
       setAdditionalCost(0);
@@ -217,8 +221,9 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //----- Discount -----//
-  const handleCloseDiscountModal = () => setShowDiscountModal(false);
-  const openDiscountModal = () => setShowDiscountModal(true);
+  const openDiscountModal = () => {
+    $("#manualDiscountModal").modal("show");
+  };
 
   // add discounts from discountsOptions
   const applyDiscount = (id, Discount) => {
@@ -235,7 +240,7 @@ const Reception = ({ ClinicUser }) => {
     });
 
     setAddedSrvItems(updatedData);
-    handleCloseDiscountModal();
+    $("#manualDiscountModal").modal("hide");
   };
 
   // submit manual discount
@@ -343,8 +348,6 @@ const Reception = ({ ClinicUser }) => {
       }, 5);
     }
   };
-
-  console.log({ addedSrvItems });
 
   //----- Edit Service -----//
   const getOneReception = () => {
@@ -552,6 +555,7 @@ const Reception = ({ ClinicUser }) => {
 
   useEffect(() => {
     $("#BtnActiveSearch").hide();
+    setShowBirthDigitsAlert(false);
   }, []);
 
   useEffect(() => {
@@ -602,8 +606,6 @@ const Reception = ({ ClinicUser }) => {
                     deleteService={deleteService}
                     removeDiscount={removeDiscount}
                     openDiscountModal={openDiscountModal}
-                    show={showDiscountModal}
-                    onHide={handleCloseDiscountModal}
                     applyDiscount={applyDiscount}
                     discountCost={discountCost}
                     setDiscountCost={setDiscountCost}
@@ -638,6 +640,10 @@ const Reception = ({ ClinicUser }) => {
           addNewPatient={addNewPatient}
           ClinicID={ClinicID}
           ActivePatientNID={ActivePatientNID}
+          birthYear={birthYear}
+          setBirthYear={setBirthYear}
+          showBirthDigitsAlert={showBirthDigitsAlert}
+          setShowBirthDigitsAlert={setShowBirthDigitsAlert}
         />
       </div>
     </>

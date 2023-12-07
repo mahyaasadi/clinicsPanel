@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
@@ -12,9 +13,13 @@ const DepartmentsModal = ({
   onHide,
   serviceCost,
   setServiceCost,
+  taminShare,
+  setTaminShare,
+  salamatShare,
+  setSalamatShare,
+  arteshShare,
+  setArteshShare,
 }) => {
-  // console.log({ mode, serviceCost });
-
   const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن سرویس";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
@@ -77,13 +82,13 @@ const DepartmentsModal = ({
                 dir="ltr"
                 className="form-control floating inputPadding rounded"
                 name="servicePrice"
-                // value={
-                //   serviceCost !== 0
-                //     ? serviceCost.toLocaleString()
-                //     : data?.Price?.toLocaleString()
-                // }
-                defaultValue={mode == "edit" ? data.Price : ""}
-                // onChange={(e) => convertToLocaleString(e, setServiceCost)}
+                value={
+                  serviceCost !== 0
+                    ? serviceCost.toLocaleString()
+                    : data?.Price?.toLocaleString()
+                }
+                defaultValue={mode == "edit" ? data.Price : 0}
+                onChange={(e) => convertToLocaleString(e, setServiceCost)}
                 key={data.Price}
               />
             </div>
@@ -92,42 +97,62 @@ const DepartmentsModal = ({
           <div className="row media-flex-col">
             <div className="col">
               <div className="form-group">
-                <label className="lblAbs font-12">سهم تامین</label>
+                <label className="lblAbs font-12">سهم بیمه تامین (ریال)</label>
                 <input
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="taminShare"
-                  key={data.ST}
+                  value={
+                    taminShare !== 0
+                      ? taminShare.toLocaleString()
+                      : data?.ST?.toLocaleString()
+                  }
                   defaultValue={mode == "edit" ? data.ST : 0}
+                  onChange={(e) => convertToLocaleString(e, setTaminShare)}
+                  key={data.ST}
                 />
               </div>
             </div>
 
             <div className="col">
               <div className="form-group">
-                <label className="lblAbs font-12">سهم سلامت</label>
+                <label className="lblAbs font-12">سهم بیمه سلامت (ریال)</label>
                 <input
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="salamatShare"
-                  key={data.SS}
+                  value={
+                    salamatShare !== 0
+                      ? salamatShare.toLocaleString()
+                      : data?.SS?.toLocaleString()
+                  }
                   defaultValue={mode == "edit" ? data.SS : 0}
+                  onChange={(e) => convertToLocaleString(e, setSalamatShare)}
+                  key={data.SS}
                 />
               </div>
             </div>
 
             <div className="col">
               <div className="form-group ">
-                <label className="lblAbs font-12">سهم ارتش</label>
+                <label className="lblAbs font-12">
+                  سهم بیمه نیروهای مسلح (ریال)
+                </label>
                 <input
                   type="text"
                   dir="ltr"
                   className="form-control floating inputPadding rounded"
                   name="arteshShare"
-                  key={data.SA}
+                  value={
+                    arteshShare !== 0
+                      ? arteshShare.toLocaleString()
+                      : data?.SA?.toLocaleString()
+                  }
                   defaultValue={mode == "edit" ? data.SA : 0}
+                  onChange={(e) => convertToLocaleString(e, setArteshShare)}
+                  key={data.SA}
                 />
               </div>
             </div>

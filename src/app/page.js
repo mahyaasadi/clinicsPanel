@@ -34,12 +34,9 @@ export default function Page() {
       Password: document.getElementById("Password").value,
     };
 
-    console.log({ data });
-
     await axiosClient
       .post(url, data)
       .then(async function (response) {
-        console.log(response.data);
         const loginRes = response.data;
         let in24Hours = 24 * 60 * 60;
 
@@ -51,6 +48,7 @@ export default function Page() {
       })
       .catch(function (error) {
         console.log(error);
+        setIsLoading(false);
         error.message == "Network Error"
           ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
           : ErrorAlert("خطا", "اطلاعات اشتباه وارد شده است!");
@@ -114,8 +112,9 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                          className={`fa toggle-password" ${
+                            eye ? "fa-eye-slash" : "fa-eye"
+                          }`}
                         />
                       </div>
                     )}
@@ -140,20 +139,15 @@ export default function Page() {
                       type="submit"
                     >
                       در حال ورود
-
                       <span
                         className="spinner-border spinner-border-sm"
                         role="status"
                       ></span>
                     </button>
                   ) : (
-                    <button
-                      className="btn btn-primary loginBtn"
-                      type="submit"
-                    >
+                    <button className="btn btn-primary loginBtn" type="submit">
                       ورود
                     </button>
-
                   )}
                 </div>
               </form>

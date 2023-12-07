@@ -11,8 +11,6 @@ const AddItem = ({
   deleteService,
   removeDiscount,
   openDiscountModal,
-  show,
-  onHide,
   discountCost,
   setDiscountCost,
   selectedDiscount,
@@ -144,8 +142,6 @@ const AddItem = ({
 
         <ApplyDiscountModal
           srv={srv}
-          show={show}
-          onHide={onHide}
           discountCost={discountCost}
           setDiscountCost={setDiscountCost}
           discountsList={discountsList}

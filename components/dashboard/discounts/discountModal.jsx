@@ -57,7 +57,6 @@ const DiscountModal = ({
               name={mode == "edit" ? "EditDiscountDes" : "discountDescription"}
               defaultValue={mode == "edit" ? data.Des : ""}
               key={data.Des}
-              // required
             />
           </div>
 
@@ -85,11 +84,11 @@ const DiscountModal = ({
               label={true}
               className="text-center"
               placeholder={"روش محاسبه را انتخاب کنید"}
-              required
               name="EditDiscountPercent"
               defaultValue={selectedPercent}
               onChangeValue={(value) => FUSelectDiscountPercent(value?.value)}
               key={data.Percent}
+              required
             />
           </div>
 

@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert } from "class/AlertManage";
 import { axiosClient } from "class/axiosConfig.js";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
-const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
+const jdate = new JDate();
+let currentYear = jdate.getFullYear();
+const NewPatient = ({
+  ClinicID,
+  addNewPatient,
+  ActivePatientNID,
+  birthYear,
+  setBirthYear,
+  showBirthDigitsAlert,
+  setShowBirthDigitsAlert,
+}) => {
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
   const [genderOptionsList, setGenderOptionsList] = useState([
     { label: "مرد", value: "0" },
@@ -67,6 +78,43 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
   };
 
   useEffect(() => getInsuranceList(), []);
+
+  const handleBlur = (e) => {
+    validateInput(birthYear);
+    if (e.target.value === "") setShowBirthDigitsAlert(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const input = value.replace(/\D/g, "").slice(0, 4);
+    setBirthYear(input);
+    validateInput(input);
+
+    if (name === "PatientBD") {
+      let calculatedAge = currentYear - input;
+      if (input === "") calculatedAge = "";
+      $("#Age").val(calculatedAge);
+    }
+
+    if (name === "Age") {
+      let calculatedYear = currentYear - e.target.value;
+      if (e.target.value === "") calculatedYear = "";
+      setBirthYear(calculatedYear);
+      $("#PatientBD").val(calculatedYear);
+
+      if (calculatedYear > 1000) setShowBirthDigitsAlert(false);
+    }
+  };
+
+  const validateInput = (input) => {
+    if (input.length < 4) {
+      setShowBirthDigitsAlert(true);
+      $("#submitNewPatient").attr("disabled", true);
+    } else {
+      setShowBirthDigitsAlert(false);
+      $("#submitNewPatient").attr("disabled", false);
+    }
+  };
 
   return (
     <>
@@ -192,23 +240,62 @@ const NewPatient = ({ ClinicID, addNewPatient, ActivePatientNID }) => {
                       />
                     </div>
 
-                    <div className="col-md-12 media-w-100 mt-3">
-                      <label className="lblAbs margin-top-25 font-12">
-                        سال تولد <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control rounded padding-right-2"
-                        id="addPatientBD"
-                        name="PatientBD"
-                        // required
-                      />
+                    <div className="row mt-3">
+                      <div className="col">
+                        <div>
+                          <label className="lblAbs margin-top-25 font-12">
+                            سال تولد <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control rounded padding-right-2"
+                            id="addPatientBD"
+                            name="PatientBD"
+                            value={birthYear}
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            maxLength={4}
+                            minLength={4}
+                            // required
+                          />
+
+                          {showBirthDigitsAlert && (
+                            <div className="mb-3 mt-4 col">
+                              <div className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1">
+                                <FeatherIcon
+                                  icon="alert-triangle"
+                                  className="frmValidationTxt"
+                                />
+                                <div className="frmValidationTxt">
+                                  سال تولد باید دارای 4 رقم باشد!
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col">
+                        <label className="lblAbs margin-top-25 font-12">
+                          سن <span className="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control rounded padding-right-2"
+                          id="Age"
+                          name="Age"
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                          // required
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="submit-section">
                   <button
+                    id="submitNewPatient"
                     type="submit"
                     className="btn btn-primary btn-save rounded font-14"
                   >

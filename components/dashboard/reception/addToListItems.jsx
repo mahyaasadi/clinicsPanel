@@ -10,8 +10,6 @@ const AddToListItems = ({
   deleteService,
   removeDiscount,
   openDiscountModal,
-  show,
-  onHide,
   discountCost,
   setDiscountCost,
   selectedDiscount,
@@ -46,8 +44,6 @@ const AddToListItems = ({
           deleteService={deleteService}
           removeDiscount={removeDiscount}
           openDiscountModal={openDiscountModal}
-          show={show}
-          onHide={onHide}
           discountCost={discountCost}
           setDiscountCost={setDiscountCost}
           selectedDiscount={selectedDiscount}

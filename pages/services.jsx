@@ -37,12 +37,18 @@ const Services = ({ ClinicUser }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const [servicesData, setServicesData] = useState([]);
-  const [serviceCost, setServiceCost] = useState(0);
   const [editServiceData, setEditServiceData] = useState([]);
+  const [serviceCost, setServiceCost] = useState(0);
+  const [taminShare, setTaminShare] = useState(0);
+  const [salamatShare, setSalamatShare] = useState(0);
+  const [arteshShare, setArteshShare] = useState(0);
 
   const handleCloseModal = () => {
     setShowModal(false);
     setServiceCost(0);
+    setTaminShare(0);
+    setArteshShare(0);
+    setSalamatShare(0);
   };
 
   const getDepServices = () => {
@@ -63,10 +69,17 @@ const Services = ({ ClinicUser }) => {
   };
 
   // add service
-  const openAddModal = () => {
+  const openAddModal = (Add) => {
     setModalMode("add");
     setShowModal(true);
-    if (modalMode === "add") setServiceCost(0);
+
+    if (Add) {
+      setServiceCost(0);
+      setTaminShare(0);
+      setSalamatShare(0);
+      setArteshShare(0);
+      setEditServiceData([]);
+    }
   };
 
   const addService = async (e) => {
@@ -83,29 +96,31 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: formProps.servicePrice,
-      // Price: serviceCost,
-      SA: formProps.arteshShare,
-      ST: formProps.taminShare,
-      SS: formProps.salamatShare,
+      Price: serviceCost.toString(),
+      SA: arteshShare.toString(),
+      ST: taminShare.toString(),
+      SS: salamatShare.toString(),
     };
 
     console.log({ data });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        setServicesData([...servicesData, response.data]);
-        setShowModal(false);
-        setIsLoading(false);
-        e.target.reset();
-        setServiceCost(0);
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "افزودن سرویس با خطا مواجه گردید!");
-        setIsLoading(false);
-      });
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     setServicesData([...servicesData, response.data]);
+    //     setShowModal(false);
+    //     setIsLoading(false);
+    //     e.target.reset();
+    //     setServiceCost(0);
+    // setTaminShare(0);
+    // setSalamatShare(0);
+    // setArteshShare(0)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     ErrorAlert("خطا", "افزودن سرویس با خطا مواجه گردید!");
+    //     setIsLoading(false);
+    //   });
   };
 
   // edit service
@@ -131,27 +146,42 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: formProps.servicePrice,
-      // Price: formProps.servicePrice ? formProps.servicePrice : serviceCost,
-      SA: formProps.arteshShare,
-      ST: formProps.taminShare,
-      SS: formProps.salamatShare,
+      Price: serviceCost
+        ? serviceCost.toString()
+        : formProps.servicePrice !== 0
+        ? formProps.servicePrice.replaceAll(/,/g, "")
+        : 0,
+      SA: arteshShare
+        ? arteshShare.toString()
+        : formProps.arteshShare !== 0
+        ? formProps.arteshShare.replaceAll(/,/g, "")
+        : 0,
+      ST: taminShare
+        ? taminShare.toString()
+        : formProps.taminShare !== 0
+        ? formProps.taminShare.replaceAll(/,/g, "")
+        : 0,
+      SS: salamatShare
+        ? salamatShare.toString()
+        : formProps.salamatShare !== 0
+        ? formProps.salamatShare.replaceAll(/,/g, "")
+        : 0,
     };
 
     console.log({ data });
 
-    axiosClient
-      .put(url, data)
-      .then((response) => {
-        updateItem(formProps.serviceID, response.data);
-        setShowModal(false);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-        ErrorAlert("خطا", "ویرایش اطلاعات سرویس با خطا مواجه گردید!");
-      });
+    // axiosClient
+    //   .put(url, data)
+    //   .then((response) => {
+    //     updateItem(formProps.serviceID, response.data);
+    //     setShowModal(false);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setIsLoading(false);
+    //     ErrorAlert("خطا", "ویرایش اطلاعات سرویس با خطا مواجه گردید!");
+    //   });
   };
 
   const updateItem = (id, newArr) => {
@@ -211,7 +241,7 @@ const Services = ({ ClinicUser }) => {
               <div className="row align-items-center">
                 <div className="col-md-12 d-flex justify-content-end">
                   <button
-                    onClick={openAddModal}
+                    onClick={() => openAddModal(true)}
                     className="btn btn-primary btn-add font-14 media-font-12"
                   >
                     <i className="me-1">
@@ -254,6 +284,12 @@ const Services = ({ ClinicUser }) => {
           isLoading={isLoading}
           serviceCost={serviceCost}
           setServiceCost={setServiceCost}
+          taminShare={taminShare}
+          setTaminShare={setTaminShare}
+          salamatShare={salamatShare}
+          setSalamatShare={setSalamatShare}
+          arteshShare={arteshShare}
+          setArteshShare={setArteshShare}
         />
       </div>
     </>
