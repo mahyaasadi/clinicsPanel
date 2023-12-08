@@ -126,8 +126,10 @@ const Appointment = ({ ClinicUser }) => {
         setAppointmentEvents(response.data);
         setLoadingState(false);
       })
-      .catch((err) => console.log(err));
-    setLoadingState(false);
+      .catch((err) => {
+        console.log(err);
+        setLoadingState(false);
+      })
   };
 
   // Modality Header
@@ -411,8 +413,7 @@ const Appointment = ({ ClinicUser }) => {
         <title>نوبت دهی</title>
       </Head>
       <div className="page-wrapper">
-        {isLoading ? (
-          <div className="content container-fluid">
+        {/* <div className="content container-fluid">
             <div className="w-100 marginb-3">
               <div className="categoryCard">
                 <div className="card-body w-100">
@@ -420,39 +421,39 @@ const Appointment = ({ ClinicUser }) => {
                 </div>
               </div>
             </div>
-          </div>
-        ) : loadingState ? (
-          <Loading />
-        ) : (
-          <div className="content container-fluid">
-            {/* Appointment List */}
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="card">
-                  <div className="card-header">
-                    <div className="row align-items-center justify-between">
-                      <div className="d-flex align-items-center justify-between">
-                        <div className="col-7">
-                          <ModalitiesHeader
-                            data={clinicDepartments}
-                            handleDepClick={handleDepClick}
-                          />
-                        </div>
-                        <div className="col-5">
-                          <div></div>
-                          <button
-                            onClick={openNewAppointmentModal}
-                            className="btn btn-primary appointmentBtn font-14 float-end"
-                          >
-                            <FeatherIcon icon="plus-square" />
-                            نوبت جدید
-                          </button>
-                        </div>
+          </div> */}
+        {/* // ) : loadingState ? (
+        //   <Loading />
+        // ) : ( */}
+        <div className="content container-fluid">
+          {/* Appointment List */}
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="card">
+                <div className="card-header">
+                  <div className="row align-items-center justify-between">
+                    <div className="d-flex align-items-center justify-between">
+                      <div className="col-7">
+                        <ModalitiesHeader
+                          data={clinicDepartments}
+                          handleDepClick={handleDepClick}
+                        />
+                      </div>
+                      <div className="col-5">
+                        <div></div>
+                        <button
+                          onClick={openNewAppointmentModal}
+                          className="btn btn-primary appointmentBtn font-14 float-end"
+                        >
+                          <FeatherIcon icon="plus-square" />
+                          نوبت جدید
+                        </button>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* <div className="card-body appointmentCard">
+                {/* <div className="card-body appointmentCard">
                     <div className="d-flex" style={{ width: "100%", justifyContent: "space-evenly" }}>
                       {Dates.map((x, index) => {
                         let date = x.split("/");
@@ -482,6 +483,7 @@ const Appointment = ({ ClinicUser }) => {
                     </div>
                   </div> */}
 
+                {loadingState ? <Loading /> : (
                   <div className="card-body appointmentCard">
                     <div className="calendar">
                       <div className="timeline">
@@ -499,8 +501,10 @@ const Appointment = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div>
+                )}
 
-                  {/* <div className="table-responsive">
+
+                {/* <div className="table-responsive">
                   <table style={{ width: "100%" }}>
                     <thead style={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
                       {Dates.map((x, index) => {
@@ -516,7 +520,7 @@ const Appointment = ({ ClinicUser }) => {
                   </table>
                 </div> */}
 
-                  {/* <div className="table-responsive">
+                {/* <div className="table-responsive">
                   <table style={{ width: "100%", display: "grid" }}>
                     <thead style={{ display: "flex", justifyContent: "space-between", width: "100%", position: "fixed", backgroundColor: "aquamarine", height: "5vh" }}>
                       {Dates.map((x, index) => {
@@ -548,7 +552,7 @@ const Appointment = ({ ClinicUser }) => {
                     </tbody>
                   </table>
                 </div> */}
-                  {/* 
+                {/* 
                 <table className="table mt-4 font-13 text-secondary">
                   <thead>
                     <tr>
@@ -569,13 +573,13 @@ const Appointment = ({ ClinicUser }) => {
                     <tr>
                       <td >
                         {/* <div className="timeline"> */}
-                  {/* <div className="spacer"></div> */}
-                  {/* {Hours} */}
-                  {/* </div> */}
-                  {/* </td>
+                {/* <div className="spacer"></div> */}
+                {/* {Hours} */}
+                {/* </div> */}
+                {/* </td>
             </tr> */}
 
-                  {/* <tr>
+                {/* <tr>
                       <td></td>
                       <td>1</td>
                       <td>2</td>
@@ -592,14 +596,14 @@ const Appointment = ({ ClinicUser }) => {
                       <td>11</td>
                       <td>12</td>
                     </tr> */}
-                  {/* 
+                {/* 
           </tbody>
         </table> * /} */}
-                </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
+
 
         <AppointmentModal
           data={editAppointmentData}
