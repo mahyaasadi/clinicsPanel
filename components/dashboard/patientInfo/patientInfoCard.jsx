@@ -8,7 +8,8 @@ import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import { gender, insurance } from "components/commonComponents/imagepath";
 import EditPatientInfoModal from "./editPatientInfo";
-import EditInsuranceTypeModal from "@/components/dashboard/patientInfo/editInsuranceTypeModal";
+import EditInsuranceTypeModal from "./editInsuranceTypeModal";
+import { convertDateFormat } from "utils/convertDateFormat";
 
 const PatientInfoCard = ({
   data,
@@ -17,6 +18,7 @@ const PatientInfoCard = ({
   ClinicID,
   setPatientInfo,
   patientStatIsLoading,
+  getPatientActiveSearch,
 }) => {
   const router = useRouter();
 
@@ -24,16 +26,6 @@ const PatientInfoCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-
-  const dateFormat = (str) => {
-    if (str !== " " || str !== null) {
-      let date =
-        str.substr(0, 4) + "/" + str.substr(4, 2) + "/" + str.substr(6, 7);
-      return date;
-    } else {
-      return 0;
-    }
-  };
 
   const handleChangePatientInfo = (type, value) => {
     console.log(`Changing ${type} to ${value}`);
@@ -127,6 +119,43 @@ const PatientInfoCard = ({
       });
   };
 
+  const handleBlur = (e) => {
+    validateInput(birthYear);
+    if (e.target.value === "") setShowBirthDigitsAlert(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const input = value.replace(/\D/g, "").slice(0, 4);
+    setBirthYear(input);
+    validateInput(input);
+
+    if (name === "PatientBD") {
+      let calculatedAge = currentYear - input;
+      if (input === "") calculatedAge = "";
+      $("#Age").val(calculatedAge);
+    }
+
+    if (name === "Age") {
+      let calculatedYear = currentYear - e.target.value;
+      if (e.target.value === "") calculatedYear = "";
+      setBirthYear(calculatedYear);
+      $("#PatientBD").val(calculatedYear);
+
+      if (calculatedYear > 1000) setShowBirthDigitsAlert(false);
+    }
+  };
+
+  const validateInput = (input) => {
+    if (input.length < 4) {
+      setShowBirthDigitsAlert(true);
+      $("#submitNewPatient").attr("disabled", true);
+    } else {
+      setShowBirthDigitsAlert(false);
+      $("#submitNewPatient").attr("disabled", false);
+    }
+  };
+
   return (
     <>
       <div className="card presCard">
@@ -137,16 +166,28 @@ const PatientInfoCard = ({
               <input
                 type="text"
                 name="nationalCode"
+                id="patientNID"
                 required
                 className="form-control rounded-right GetPatientInput w-50"
                 defaultValue={ActivePatientNID}
               />
+
+              <button
+                className="btn btn-primary rounded-left w-10 disNone"
+                id="getPatientCloseBtn"
+                onClick={getPatientActiveSearch}
+                type="button"
+              >
+                <i className="fe fe-close"></i>
+              </button>
+
               {!patientStatIsLoading ? (
                 <button
-                  className={`${router.pathname === "/salamatPrescription"
-                    ? "btn-secondary"
-                    : "btn-primary"
-                    } btn w-10 rounded-left font-12`}
+                  className={`${
+                    router.pathname === "/salamatPrescription"
+                      ? "btn-secondary"
+                      : "btn-primary"
+                  } btn w-10 rounded-left font-12`}
                   id="frmPatientInfoBtnSubmit"
                 >
                   استعلام
@@ -154,10 +195,12 @@ const PatientInfoCard = ({
               ) : (
                 <button
                   type="submit"
-                  className={`${router.pathname === "/salamatPrescription"
-                    ? "btn-secondary"
-                    : "btn-primary"
-                    } btn rounded-left`}
+                  id="frmPatientInfoBtnSubmit"
+                  className={`${
+                    router.pathname === "/salamatPrescription"
+                      ? "btn-secondary"
+                      : "btn-primary"
+                  } btn rounded-left`}
                   disabled
                 >
                   <span
@@ -170,7 +213,7 @@ const PatientInfoCard = ({
           </form>
 
           <div className="font-13 mt-3" id="patientInfoCard">
-            <div className="smartphone-container border-radius font-13 phone-input">
+            <div className="smartphone-container font-13 phone-input">
               <div className="d-flex smartphone-padding">
                 <i className="smartphone-icon">
                   <FeatherIcon icon="smartphone" />
@@ -199,7 +242,13 @@ const PatientInfoCard = ({
 
               <div className="d-flex gap-1 align-items-center">
                 <Image src={gender} alt="genderIcon" width="20" />
-                {data.Gender ? data.Gender : "-"}
+                {data.Gender
+                  ? data.Gender === "M"
+                    ? "مرد"
+                    : data.Gender === "F"
+                    ? "زن"
+                    : "دیگر"
+                  : "-"}
               </div>
 
               <div className="d-flex gap-2 mt-3">
@@ -226,7 +275,7 @@ const PatientInfoCard = ({
 
               <p className="mt-3 margin-right-sm">
                 تاریخ اعتبار تا {""}
-                {data.accountValidto && dateFormat(`${data.accountValidto}`)}
+                {data.accountValidto && convertDateFormat(data.accountValidto)}
               </p>
             </div>
           </div>

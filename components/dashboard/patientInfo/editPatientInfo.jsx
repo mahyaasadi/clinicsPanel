@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
+import Select from "react-select";
+import genderDataClass from "class/genderDataClass";
+import selectfieldColourStyles from "class/selectfieldStyle";
 
 const EditPatientInfoModal = ({
   showModal,
@@ -12,7 +15,8 @@ const EditPatientInfoModal = ({
   const [value, setValue] = useState("");
 
   const handleTabChange = (tab) => setSelectedTab(tab);
-  const handleInputChange = (event) => setValue(event.target.value);
+  const handleInputChange = (e) =>
+    setValue(e.target ? e.target.value : e.value);
 
   const handleSubmit = () => {
     handleChangePatientInfo(selectedTab, value);
@@ -100,6 +104,7 @@ const EditPatientInfoModal = ({
             <Form.Group controlId="patientAge">
               <label className="lblAbs font-12">سن بیمار</label>
               <Form.Control
+                dir="ltr"
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
@@ -108,15 +113,22 @@ const EditPatientInfoModal = ({
             </Form.Group>
           </div>
           <div className="tab-pane" id="solid-rounded-tab3">
-            <Form.Group controlId="patientGender">
-              <label className="lblAbs font-12">جنسیت</label>
-              <Form.Control
-                type="text"
-                className="rounded"
+            <div className="col-md-12 media-w-100">
+              <label className="lblAbs font-12">
+                جنسیت {""}
+                <span className="text-danger">*</span>
+              </label>
+              <Select
+                styles={selectfieldColourStyles}
+                className="w-100 font-12 text-center prescForm mt-3"
+                options={genderDataClass}
+                name="genderOption"
+                placeholder="جنسیت بیمار را مشخص کنید"
+                id="addGenderType"
+                instanceId="addGenderType"
                 onChange={handleInputChange}
-                defaultValue={data.Gender}
               />
-            </Form.Group>
+            </div>
           </div>
           <div className="tab-pane" id="solid-rounded-tab4">
             <Form.Group controlId="patientPhoneNumber">

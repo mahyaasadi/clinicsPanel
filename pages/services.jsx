@@ -96,31 +96,31 @@ const Services = ({ ClinicUser }) => {
       Code: formProps.internalCode,
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
-      Price: serviceCost.toString(),
-      SA: arteshShare.toString(),
-      ST: taminShare.toString(),
-      SS: salamatShare.toString(),
+      Price: serviceCost,
+      SA: arteshShare,
+      ST: taminShare,
+      SS: salamatShare,
     };
 
-    console.log({ data });
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setServicesData([...servicesData, response.data]);
+        setShowModal(false);
+        setIsLoading(false);
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     setServicesData([...servicesData, response.data]);
-    //     setShowModal(false);
-    //     setIsLoading(false);
-    //     e.target.reset();
-    //     setServiceCost(0);
-    // setTaminShare(0);
-    // setSalamatShare(0);
-    // setArteshShare(0)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     ErrorAlert("خطا", "افزودن سرویس با خطا مواجه گردید!");
-    //     setIsLoading(false);
-    //   });
+        // reset
+        e.target.reset();
+        setServiceCost(0);
+        setTaminShare(0);
+        setSalamatShare(0);
+        setArteshShare(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "افزودن سرویس با خطا مواجه گردید!");
+        setIsLoading(false);
+      });
   };
 
   // edit service
@@ -147,41 +147,39 @@ const Services = ({ ClinicUser }) => {
       Name: formProps.serviceName,
       EngName: formProps.serviceEngName,
       Price: serviceCost
-        ? serviceCost.toString()
+        ? serviceCost
         : formProps.servicePrice !== 0
         ? formProps.servicePrice.replaceAll(/,/g, "")
         : 0,
       SA: arteshShare
-        ? arteshShare.toString()
+        ? arteshShare
         : formProps.arteshShare !== 0
         ? formProps.arteshShare.replaceAll(/,/g, "")
         : 0,
       ST: taminShare
-        ? taminShare.toString()
+        ? taminShare
         : formProps.taminShare !== 0
         ? formProps.taminShare.replaceAll(/,/g, "")
         : 0,
       SS: salamatShare
-        ? salamatShare.toString()
+        ? salamatShare
         : formProps.salamatShare !== 0
         ? formProps.salamatShare.replaceAll(/,/g, "")
         : 0,
     };
 
-    console.log({ data });
-
-    // axiosClient
-    //   .put(url, data)
-    //   .then((response) => {
-    //     updateItem(formProps.serviceID, response.data);
-    //     setShowModal(false);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setIsLoading(false);
-    //     ErrorAlert("خطا", "ویرایش اطلاعات سرویس با خطا مواجه گردید!");
-    //   });
+    axiosClient
+      .put(url, data)
+      .then((response) => {
+        updateItem(formProps.serviceID, response.data);
+        setShowModal(false);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+        ErrorAlert("خطا", "ویرایش اطلاعات سرویس با خطا مواجه گردید!");
+      });
   };
 
   const updateItem = (id, newArr) => {

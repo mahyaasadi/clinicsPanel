@@ -109,19 +109,36 @@ const Reception = ({ ClinicUser }) => {
         console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
+          $("#patientNID").prop("readonly", true);
         } else {
           ActivePatientID = response.data.user._id;
           ActiveInsuranceType = response.data.user.InsuranceType;
           setPatientInfo(response.data.user);
           $("#patientInfoCard").show("");
+          $("#patientNID").prop("readonly", true);
         }
+
         setPatientStatIsLoading(false);
+        $("#frmPatientInfoBtnSubmit").hide();
+        $("#getPatientCloseBtn").show();
+        // $("#patientNID").focus();
       })
       .catch((error) => {
         console.log(error);
         setPatientStatIsLoading(false);
         ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
       });
+  };
+
+  const getPatientActiveSearch = () => {
+    $("#patientNID").val("");
+    $("#getPatientCloseBtn").hide();
+    $("#frmPatientInfoBtnSubmit").show();
+    $("#patientNID").prop("readonly", false);
+    $("#patientInfoCard").hide();
+
+    ActivePatientID = null;
+    ActivePatientNID = null;
   };
 
   const addNewPatient = (props) => {
@@ -555,6 +572,7 @@ const Reception = ({ ClinicUser }) => {
 
   useEffect(() => {
     $("#BtnActiveSearch").hide();
+    $("#getPatientCloseBtn").hide();
     setShowBirthDigitsAlert(false);
   }, []);
 
@@ -581,6 +599,7 @@ const Reception = ({ ClinicUser }) => {
                   ActivePatientNID={ActivePatientNID}
                   ClinicID={ClinicID}
                   patientStatIsLoading={patientStatIsLoading}
+                  getPatientActiveSearch={getPatientActiveSearch}
                 />
               </div>
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">

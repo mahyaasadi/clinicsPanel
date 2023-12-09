@@ -13,6 +13,8 @@ import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";
+import Day from "components/dashboard/appointment/day";
+import TestCalendar from "components/dashboard/appointment/testCalendar";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -129,7 +131,7 @@ const Appointment = ({ ClinicUser }) => {
       .catch((err) => {
         console.log(err);
         setLoadingState(false);
-      })
+      });
   };
 
   // Modality Header
@@ -453,6 +455,10 @@ const Appointment = ({ ClinicUser }) => {
                   </div>
                 </div>
 
+                <div className="card-body">
+                  <TestCalendar />
+                </div>
+
                 {/* <div className="card-body appointmentCard">
                     <div className="d-flex" style={{ width: "100%", justifyContent: "space-evenly" }}>
                       {Dates.map((x, index) => {
@@ -483,7 +489,9 @@ const Appointment = ({ ClinicUser }) => {
                     </div>
                   </div> */}
 
-                {loadingState ? <Loading /> : (
+                {/* {loadingState ? (
+                  <Loading />
+                ) : (
                   <div className="card-body appointmentCard">
                     <div className="calendar">
                       <div className="timeline">
@@ -501,17 +509,24 @@ const Appointment = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div>
-                )}
-
+                )} */}
 
                 {/* <div className="table-responsive">
                   <table style={{ width: "100%" }}>
-                    <thead style={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}>
+                    <thead
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        width: "100%",
+                      }}
+                    >
                       {Dates.map((x, index) => {
                         let date = x.split("/");
                         return (
                           <tr key={index}>
-                            <th>{date[2]} {month[date[1]]}</th>
+                            <th>
+                              {date[2]} {month[date[1]]}
+                            </th>
                           </tr>
                         );
                       })}
@@ -522,29 +537,50 @@ const Appointment = ({ ClinicUser }) => {
 
                 {/* <div className="table-responsive">
                   <table style={{ width: "100%", display: "grid" }}>
-                    <thead style={{ display: "flex", justifyContent: "space-between", width: "100%", position: "fixed", backgroundColor: "aquamarine", height: "5vh" }}>
+                    <thead
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        width: "100%",
+                        position: "fixed",
+                        backgroundColor: "aquamarine",
+                        height: "5vh",
+                      }}
+                    >
                       {Dates.map((x, index) => {
                         let date = x.split("/");
                         return (
-                          <tr key={index} style={{ width: "20%", display: "flex", justifyContent: "center" }}>
-                            <th>{date[2]} {month[date[1]]}</th>
+                          <tr
+                            key={index}
+                            style={{
+                              width: "20%",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <th>
+                              {date[2]} {month[date[1]]}
+                            </th>
                           </tr>
                         );
                       })}
                     </thead>
-                    <tbody className="d-flex">
 
-                      <tr >
-                        <td >
-                          {Hours}
-                        </td>
+                    <tbody className="">
+                      <tr>
+                        <td>{Hours}</td>
                       </tr>
 
-                      <tr >
-                        <td >
+                      <tr>
+                        <td>
                           {Dates.map((date, index) => {
                             return (
-                              <Day date={date} key={date} index={index} appointment={appointmentEvents[date]} />
+                              <Day
+                                date={date}
+                                key={date}
+                                index={index}
+                                appointment={appointmentEvents[date]}
+                              />
                             );
                           })}
                         </td>
@@ -552,6 +588,7 @@ const Appointment = ({ ClinicUser }) => {
                     </tbody>
                   </table>
                 </div> */}
+
                 {/* 
                 <table className="table mt-4 font-13 text-secondary">
                   <thead>
@@ -604,7 +641,6 @@ const Appointment = ({ ClinicUser }) => {
           </div>
         </div>
 
-
         <AppointmentModal
           data={editAppointmentData}
           mode={modalMode}
@@ -635,3 +671,23 @@ const Appointment = ({ ClinicUser }) => {
 };
 
 export default Appointment;
+
+// {loadingState ? <Loading /> : (
+//   <div className="card-body appointmentCard">
+//     <div className="calendar">
+//       <div className="timeline">
+//         <div className="spacer"></div>
+//         {Hours}
+//       </div>
+
+//       <div className="days">
+//         <DayList
+//           data={appointmentEvents}
+//           Dates={Dates}
+//           openEditAppointmentModal={openEditAppointmentModal}
+//           deleteAppointment={deleteAppointment}
+//         />
+//       </div>
+//     </div>
+//   </div>
+// )}

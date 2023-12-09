@@ -57,9 +57,6 @@ export default function Page() {
 
   return (
     <>
-      {/* {!isLoading ? (
-        <Loading />
-      ) : ( */}
       <div className="row loginBg p-0 d-flex align-items-center">
         <div className="col-md-6 login-bg p-0">
           <div className="login-banner">
@@ -135,10 +132,9 @@ export default function Page() {
                 <div className="d-grid">
                   {isLoading ? (
                     <button
-                      className="btn btn-primary loginBtn disabled d-flex align-items-center justify-center gap-2"
+                      className="btn btn-primary loginBtn disabled d-flex align-items-center justify-center gap-2 p-2"
                       type="submit"
                     >
-                      در حال ورود
                       <span
                         className="spinner-border spinner-border-sm"
                         role="status"
@@ -155,7 +151,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* )} */}
     </>
   );
 }

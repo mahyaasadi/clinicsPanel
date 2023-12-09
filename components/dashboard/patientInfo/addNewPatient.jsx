@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import Select from "react-select";
 import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert } from "class/AlertManage";
 import { axiosClient } from "class/axiosConfig.js";
+import genderDataClass from "class/genderDataClass";
+import SelectField from "components/commonComponents/selectfield";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
 const jdate = new JDate();
 let currentYear = jdate.getFullYear();
+
 const NewPatient = ({
   ClinicID,
   addNewPatient,
@@ -18,10 +20,6 @@ const NewPatient = ({
   setShowBirthDigitsAlert,
 }) => {
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
-  const [genderOptionsList, setGenderOptionsList] = useState([
-    { label: "مرد", value: "0" },
-    { label: "زن", value: "1" },
-  ]);
 
   const ChangeForeigners = (e) => {
     if (e.target.checked) {
@@ -48,7 +46,7 @@ const NewPatient = ({
     }
   };
 
-  //get insuranceType optionsList
+  // get insuranceType optionsList
   const getInsuranceList = () => {
     let url = `Patient/getInsuranceType/${ClinicID}`;
 
@@ -193,7 +191,7 @@ const NewPatient = ({
                     <label className="lblAbs margin-top-25 font-12">
                       انتخاب نوع بیمه
                     </label>
-                    <Select
+                    <SelectField
                       styles={selectfieldColourStyles}
                       options={insuranceOptionsList}
                       onChange={handleOnChange}
@@ -225,17 +223,14 @@ const NewPatient = ({
                         جنسیت {""}
                         <span className="text-danger">*</span>
                       </label>
-                      <Select
+                      <SelectField
                         styles={selectfieldColourStyles}
                         className="w-100 font-12 text-center prescForm mt-3"
-                        options={genderOptionsList}
-                        name="genderOptions"
+                        options={genderDataClass}
+                        name="genderOption"
                         placeholder="جنسیت بیمار را مشخص کنید"
                         id="addGenderType"
                         instanceId="addGenderType"
-                        onChangeValue={(value) =>
-                          selectInsuranceType(value?.value)
-                        }
                         // required
                       />
                     </div>

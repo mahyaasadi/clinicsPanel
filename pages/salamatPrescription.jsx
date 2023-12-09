@@ -71,7 +71,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
         } else {

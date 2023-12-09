@@ -24,10 +24,10 @@ const Day = ({
   date = date.split("/");
   return (
     <div className="day">
-      <div className="date">
+      {/* <div className="date">
         <p className="date-num">{date[2]}</p>
         <p className="date-day">{month[date[1]]}</p>
-      </div>
+      </div> */}
 
       <div className="events shadow">
         {appointment?.map((event) => {
