@@ -2,7 +2,12 @@ import { useEffect } from "react";
 
 const NavLink = ({ data, activeClass, handleDepClick }) => {
   useEffect(() => {
-    if (activeClass === "active") handleDepClick(data._id);
+    if (activeClass === "active")
+      handleDepClick(
+        data._id,
+        parseInt(data.OpeningHours),
+        parseInt(data.ClosingHours)
+      );
   }, [activeClass]);
 
   return (
@@ -11,7 +16,13 @@ const NavLink = ({ data, activeClass, handleDepClick }) => {
         <a
           className={"nav-link ServiceNav " + activeClass}
           data-bs-toggle="tab"
-          onClick={() => handleDepClick(data._id)}
+          onClick={() =>
+            handleDepClick(
+              data._id,
+              parseInt(data.OpeningHours),
+              parseInt(data.ClosingHours)
+            )
+          }
         >
           {data.Name}
         </a>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
 import { convertToLocaleString } from "utils/convertToLocaleString";
+import { convertToFixedNumber } from "utils/convertToFixedNumber";
 
 const ApplyCashDeskModal = ({
   show,
@@ -18,6 +19,7 @@ const ApplyCashDeskModal = ({
   setPrice,
   paymentData,
 }) => {
+  console.log(convertToFixedNumber(calculatedTotalPC.toLocaleString()));
   return (
     <>
       <Modal show={show} onHide={onHide} centered>
@@ -47,10 +49,12 @@ const ApplyCashDeskModal = ({
                   className="form-control floating inputPadding rounded text-secondary"
                   value={
                     !returnMode && price === 0
-                      ? calculatedTotalPC.toLocaleString()
-                      : price.toLocaleString()
+                      ? convertToFixedNumber(calculatedTotalPC.toLocaleString())
+                      : convertToFixedNumber(price.toLocaleString())
                   }
-                  defaultValue={!returnMode ? calculatedTotalPC : 0}
+                  defaultValue={
+                    !returnMode ? convertToFixedNumber(calculatedTotalPC) : 0
+                  }
                   onChange={(e) => convertToLocaleString(e, setPrice)}
                 />
               </div>

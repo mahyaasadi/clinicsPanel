@@ -44,10 +44,14 @@ const Appointment = ({ ClinicUser }) => {
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
 
+  // modalitiesHeader
+  const [ActiveModalityID, setActiveModalityID] = useState(null);
+  const [depOpeningHour, setDepOpeningHour] = useState(0);
+  const [depClosingHour, setDepClosingHour] = useState(24);
+
   // appointmentModal
   const [modalMode, setModalMode] = useState("add");
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  const [ActiveModalityID, setActiveModalityID] = useState(null);
   const [editAppointmentData, setEditAppointmentData] = useState([]);
   const closeAppointmentModal = () => setShowAppointmentModal(false);
 
@@ -81,7 +85,7 @@ const Appointment = ({ ClinicUser }) => {
   let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
   let Hours = [];
 
-  for (let i = 0; i < 24; i++) {
+  for (let i = depOpeningHour; i < depClosingHour; i++) {
     for (let j = 0; j < 60; j = j + 15) {
       const hours = i < 10 ? "0" + i : i;
       const minutes = j < 10 ? "0" + j : j;
@@ -94,8 +98,7 @@ const Appointment = ({ ClinicUser }) => {
   }
 
   const hoursOptions = [];
-
-  for (let i = 0; i < 24; i++) {
+  for (let i = depOpeningHour; i < depClosingHour; i++) {
     for (let j = 0; j < 60; j = j + 15) {
       const hours = i < 10 ? "0" + i : i;
       const minutes = j < 10 ? "0" + j : j;
@@ -124,7 +127,6 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
         setAppointmentEvents(response.data);
         setLoadingState(false);
       })
@@ -138,7 +140,11 @@ const Appointment = ({ ClinicUser }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
-  const handleDepClick = (departmentId) => setActiveModalityID(departmentId);
+  const handleDepClick = (departmentId, depOpeningHour, depClosingHour) => {
+    setActiveModalityID(departmentId);
+    setDepOpeningHour(depOpeningHour);
+    setDepClosingHour(depClosingHour);
+  };
 
   // PatientInfo in AppointmentModal
   const getPatientInfo = (e) => {
@@ -207,9 +213,10 @@ const Appointment = ({ ClinicUser }) => {
   };
 
   // Add New Appointment
-  const openNewAppointmentModal = () => {
+  const openNewAppointmentModal = (date) => {
     setModalMode("add");
     setShowAppointmentModal(true);
+    if (date) console.log({ date });
   };
 
   const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
@@ -259,8 +266,8 @@ const Appointment = ({ ClinicUser }) => {
 
   // Edit Appointment
   const openEditAppointmentModal = (data, appointmentID) => {
-    setShowAppointmentModal(true);
     setModalMode("edit");
+    setShowAppointmentModal(true);
     setEditAppointmentData(data);
     ActivePatientID = data.Patient._id;
     ActiveAppointmentID = data._id;
@@ -387,21 +394,6 @@ const Appointment = ({ ClinicUser }) => {
     }
   };
 
-  let month = {
-    "01": "فروردین",
-    "02": "اردیبهشت",
-    "03": "خرداد",
-    "04": "تیر",
-    "05": "مرداد",
-    "06": "شهریور",
-    "07": "مهر",
-    "08": "آبان",
-    "09": "آذر",
-    10: "دی",
-    11: "بهمن",
-    12: "اسفند",
-  };
-
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
@@ -415,20 +407,7 @@ const Appointment = ({ ClinicUser }) => {
         <title>نوبت دهی</title>
       </Head>
       <div className="page-wrapper">
-        {/* <div className="content container-fluid">
-            <div className="w-100 marginb-3">
-              <div className="categoryCard">
-                <div className="card-body w-100">
-                  <Skeleton className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll"></Skeleton>
-                </div>
-              </div>
-            </div>
-          </div> */}
-        {/* // ) : loadingState ? (
-        //   <Loading />
-        // ) : ( */}
         <div className="content container-fluid">
-          {/* Appointment List */}
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
@@ -455,46 +434,13 @@ const Appointment = ({ ClinicUser }) => {
                   </div>
                 </div>
 
-                <div className="card-body">
-                  <TestCalendar />
-                </div>
-
-                {/* <div className="card-body appointmentCard">
-                    <div className="d-flex" style={{ width: "100%", justifyContent: "space-evenly" }}>
-                      {Dates.map((x, index) => {
-                        let date = x.split("/");
-                        return (
-                          <div  key={index} style={{ width: "18%", textAlign: "center" }}>
-                            <p key={index}>{DatesDays[index]}</p>
-                            <p > {date[2]} {month[date[1]]} </p>
-                          </div>
-                        )
-                      })}
-                    </div>
-                    <div className="calendar" style={{ width: "75vw", overflowX: "auto" }}>
-                      <div className="timeline">
-                        {Hours}
-                      </div>
-
-                      <div>
-                        <div className="days" style={{ width: "75vw", overflowX: "auto", minWidth: "175px" }}>
-                          <DayList
-                            data={appointmentEvents}
-                            Dates={Dates}
-                            openEditAppointmentModal={openEditAppointmentModal}
-                            deleteAppointment={deleteAppointment}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-
-                {/* {loadingState ? (
+                {loadingState ? (
                   <Loading />
                 ) : (
                   <div className="card-body appointmentCard">
                     <div className="calendar">
-                      <div className="timeline">
+                      <div className="timeline text-secondary font-13">
+                        <div className="spacer"></div>
                         <div className="spacer"></div>
                         {Hours}
                       </div>
@@ -503,139 +449,16 @@ const Appointment = ({ ClinicUser }) => {
                         <DayList
                           data={appointmentEvents}
                           Dates={Dates}
+                          depOpeningHour={depOpeningHour}
+                          depClosingHour={depClosingHour}
                           openEditAppointmentModal={openEditAppointmentModal}
                           deleteAppointment={deleteAppointment}
+                          openNewAppointmentModal={openNewAppointmentModal}
                         />
                       </div>
                     </div>
                   </div>
-                )} */}
-
-                {/* <div className="table-responsive">
-                  <table style={{ width: "100%" }}>
-                    <thead
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-evenly",
-                        width: "100%",
-                      }}
-                    >
-                      {Dates.map((x, index) => {
-                        let date = x.split("/");
-                        return (
-                          <tr key={index}>
-                            <th>
-                              {date[2]} {month[date[1]]}
-                            </th>
-                          </tr>
-                        );
-                      })}
-                    </thead>
-                    <DayList data={appointmentEvents} Dates={Dates} />
-                  </table>
-                </div> */}
-
-                {/* <div className="table-responsive">
-                  <table style={{ width: "100%", display: "grid" }}>
-                    <thead
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        position: "fixed",
-                        backgroundColor: "aquamarine",
-                        height: "5vh",
-                      }}
-                    >
-                      {Dates.map((x, index) => {
-                        let date = x.split("/");
-                        return (
-                          <tr
-                            key={index}
-                            style={{
-                              width: "20%",
-                              display: "flex",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <th>
-                              {date[2]} {month[date[1]]}
-                            </th>
-                          </tr>
-                        );
-                      })}
-                    </thead>
-
-                    <tbody className="">
-                      <tr>
-                        <td>{Hours}</td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          {Dates.map((date, index) => {
-                            return (
-                              <Day
-                                date={date}
-                                key={date}
-                                index={index}
-                                appointment={appointmentEvents[date]}
-                              />
-                            );
-                          })}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div> */}
-
-                {/* 
-                <table className="table mt-4 font-13 text-secondary">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-
-                      {Dates.map((x, index) => {
-                        let date = x.split("/")
-                        return (
-
-                          <th key={index}>{date[2]} {month[date[1]]}</th>
-                        );
-                      })}
-                    </tr>
-                  </thead>
-
-                  <tbody className="font-13 text-secondary">
-
-                    <tr>
-                      <td >
-                        {/* <div className="timeline"> */}
-                {/* <div className="spacer"></div> */}
-                {/* {Hours} */}
-                {/* </div> */}
-                {/* </td>
-            </tr> */}
-
-                {/* <tr>
-                      <td></td>
-                      <td>1</td>
-                      <td>2</td>
-                      <td>3</td>
-                      <td>4</td>
-                      <td>5</td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td>8</td>
-                      <td>9</td>
-                      <td>10</td>
-                      <td>11</td>
-                      <td>12</td>
-                    </tr> */}
-                {/* 
-          </tbody>
-        </table> * /} */}
+                )}
               </div>
             </div>
           </div>

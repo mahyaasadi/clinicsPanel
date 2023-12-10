@@ -24,6 +24,8 @@ const AppointmentModal = ({
   hoursOptions,
   selectedDepartment,
 }) => {
+  console.log("data in appointmentModal", data);
+
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 

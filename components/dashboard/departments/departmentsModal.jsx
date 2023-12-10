@@ -20,6 +20,8 @@ const DepartmentsModal = ({
     }
   };
 
+  console.log({ data });
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -63,6 +65,42 @@ const DepartmentsModal = ({
                 key={data.EngName}
                 required
               />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="form-group col-md-6 col-12">
+              <label className="lblAbs font-12">
+                ساعت شروع کار <span className="text-danger">*</span>
+              </label>
+              <div className="col p-0">
+                <input
+                  className="form-control floating inputPadding rounded"
+                  type="number"
+                  name="departmentOpeningHour"
+                  defaultValue={mode == "edit" ? data.OpeningHours : ""}
+                  key={data.OpeningHours}
+                  maxLength="2"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group col-md-6 col-12">
+              <label className="lblAbs font-12">
+                ساعت پایان کار <span className="text-danger">*</span>
+              </label>
+              <div className="col p-0">
+                <input
+                  className="form-control floating inputPadding rounded"
+                  type="number"
+                  name="departmentClosingHour"
+                  defaultValue={mode == "edit" ? data.ClosingHours : ""}
+                  key={data.ClosingHours}
+                  maxLength="2"
+                  required
+                />
+              </div>
             </div>
           </div>
 

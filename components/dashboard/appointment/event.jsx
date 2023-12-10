@@ -1,14 +1,36 @@
 import FeatherIcon from "feather-icons-react";
 
-const Event = ({ data, openEditAppointmentModal, deleteAppointment }) => {
-  // console.log("event", data);
+const Event = ({
+  data,
+  openEditAppointmentModal,
+  deleteAppointment,
+  depOpeningHour,
+}) => {
+  console.log({ data });
+  function subtractHoursFromTime(timeString, hoursToSubtract) {
+    const defaultTime = timeString.split(":");
+    const hour = defaultTime[0];
+    const minute = defaultTime[1];
+
+    let calculatedTime = hour - hoursToSubtract;
+    if (calculatedTime < 10) calculatedTime = "0" + calculatedTime;
+
+    const formattedTime = (calculatedTime + ":" + minute).toString();
+    return formattedTime;
+  }
+
+  const calculatedStartTime = subtractHoursFromTime(data.ST, depOpeningHour);
+  const calculatedEndTime = subtractHoursFromTime(data.ET, depOpeningHour);
+  console.log({ calculatedEndTime });
+
   return (
     <>
       <div
-        className={`event shadow start-${data.ST.replace(
+        onDoubleClick={() => openEditAppointmentModal(data)}
+        className={`event shadow start-${calculatedStartTime.replace(
           ":",
           "-"
-        )} end-${data.ET.replace(":", "-")}`}
+        )} end-${calculatedEndTime.replace(":", "-")}`}
       >
         <div className="d-flex gap-1 justify-end align-items-center">
           <button

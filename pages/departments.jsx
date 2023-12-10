@@ -73,11 +73,16 @@ const Departments = ({ ClinicUser }) => {
       ClinicID,
       Name: formProps.departmentName,
       EngName: formProps.departmentEngName,
+      OpeningHours: formProps.departmentOpeningHour,
+      ClosingHours: formProps.departmentClosingHour,
       Icon: clinicIcon,
     };
 
+    console.log({ newDepartment });
+
     try {
       const response = await addClinicDepartment(newDepartment).unwrap();
+      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);
@@ -108,11 +113,16 @@ const Departments = ({ ClinicUser }) => {
       DepartmentID: formProps.departmentID,
       Name: formProps.departmentName,
       EngName: formProps.departmentEngName,
+      OpeningHours: formProps.departmentOpeningHour,
+      ClosingHours: formProps.departmentClosingHour,
       Icon: newClinicIcon ? newClinicIcon : formProps.currentIcon,
     };
 
+    console.log({ updatedDepartment });
+
     try {
       const response = await editClinicDepartment(updatedDepartment).unwrap();
+      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);
