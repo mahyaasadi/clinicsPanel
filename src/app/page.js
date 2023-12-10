@@ -8,7 +8,6 @@ import { useForm, Controller } from "react-hook-form";
 import Cookies from "js-cookie";
 import { setSession } from "lib/SessionMange";
 import { logo } from "components/commonComponents/imagepath";
-import Loading from "components/commonComponents/loading/loading";
 import "public/assets/css/bootstrap.min.css";
 import "public/assets/css/feather.css";
 import "public/assets/css/feathericon.min.css";
@@ -109,9 +108,8 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${
-                            eye ? "fa-eye-slash" : "fa-eye"
-                          }`}
+                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
                         />
                       </div>
                     )}

@@ -1,4 +1,4 @@
-import Event from "../event";
+import Event from "./event";
 
 const Day = ({
   date,
@@ -11,7 +11,7 @@ const Day = ({
   return (
     <div
       className="day"
-      // onDoubleClick={() => openNewAppointmentModal(date)}
+    // onDoubleClick={() => openNewAppointmentModal(date)}
     >
       <div className="events shadow-sm">
         {appointment?.map((event) => {

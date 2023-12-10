@@ -121,6 +121,8 @@ const ProfileSettings = ({ ClinicUser }) => {
           Avatar: avatarBlob,
         };
 
+        console.log({ data });
+
         axiosClient
           .put(url, data)
           .then(async (response) => {

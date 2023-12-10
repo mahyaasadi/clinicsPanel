@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
-import { ErrorAlert } from "class/AlertManage.js";
 import { avatar01, headerLogo } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
@@ -21,13 +20,8 @@ const Header = ({ ClinicUser }) => {
     settask1(!task1);
   };
 
-  const handlesidebar = () => {
-    document.body.classList.toggle("mini-sidebar");
-  };
-
-  const handlesidebarmobilemenu = () => {
-    document.body.classList.toggle("slide-nav");
-  };
+  const handlesidebar = () => document.body.classList.toggle("mini-sidebar");
+  const handlesidebarmobilemenu = () => document.body.classList.toggle("slide-nav");
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
@@ -46,9 +40,7 @@ const Header = ({ ClinicUser }) => {
     router.push("/");
   };
 
-  useEffect(() => {
-    fetchUserToken(ClinicUser);
-  }, [ClinicUser]);
+  useEffect(() => fetchUserToken(ClinicUser), [ClinicUser]);
 
   return (
     <>

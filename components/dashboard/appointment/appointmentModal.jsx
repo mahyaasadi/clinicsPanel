@@ -43,10 +43,10 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -273,62 +273,3 @@ const AppointmentModal = ({
 };
 
 export default AppointmentModal;
-
-{
-  /* <div className="d-flex justify-center mb-4">
-                <button
-                  type="button"
-                  onClick={getSubmittedAppointments}
-                  className="btn-outline-primary btn w-10 rounded font-12"
-                >
-                  نمایش ساعت های خالی
-                </button>
-              </div> */
-}
-
-{
-  /* <div id="additionalAppointmentInfo"> */
-}
-{
-  /* <div className="d-flex gap-1">
-                <div className="col-6">
-                  <label className="lblDrugIns font-11">
-                    ساعت شروع <span className="text-danger">*</span>
-                  </label>
-                  <SelectField
-                    styles={selectfieldColourStyles}
-                    options={hoursOptions}
-                    label={true}
-                    className="text-center font-12"
-                    placeholder={"انتخاب کنید"}
-                    required
-                    name="addNewAppointment"
-                    //   onChangeValue={(value) => FUSelectDepartment(value?.value)}
-                    // key={data.Percent}
-                    isClearable
-                  />
-                </div>
-
-                <div className="col-6">
-                  <label className="lblDrugIns font-11">
-                    ساعت پایان <span className="text-danger">*</span>
-                  </label>
-                  <SelectField
-                    styles={selectfieldColourStyles}
-                    options={hoursOptions}
-                    label={true}
-                    className="text-center font-12"
-                    placeholder={"انتخاب کنید"}
-                    required
-                    name="addNewAppointment"
-                    //   onChangeValue={(value) => FUSelectDepartment(value?.value)}
-                    // key={data.Percent}
-                    isClearable
-                  />
-                </div>
-              </div> */
-}
-
-{
-  /* </div> */
-}

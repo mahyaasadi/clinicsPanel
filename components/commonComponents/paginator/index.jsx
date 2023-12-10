@@ -1,14 +1,12 @@
 import FeatherIcon from "feather-icons-react";
 
 const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
-    const maxPageNumbersDisplayed = 4; // adjust this number as per your need
+    const maxPageNumbersDisplayed = 4;
     const middlePagesCount = 3;
-
     const startPage = Math.max(2, currentPage - Math.floor(middlePagesCount / 2));
     const endPage = Math.min(nPages - 1, currentPage + Math.floor(middlePagesCount / 2));
 
     let pageNumbers = [];
-
     if (nPages <= maxPageNumbersDisplayed) {
         pageNumbers = [...Array(nPages + 1).keys()].slice(1);
     } else {

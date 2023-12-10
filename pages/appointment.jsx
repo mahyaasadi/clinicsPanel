@@ -3,7 +3,6 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import FeatherIcon from "feather-icons-react";
-import { Skeleton } from "primereact/skeleton";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert, QuestionAlert } from "class/AlertManage";
 import DayList from "components/dashboard/appointment/dayList";
@@ -13,8 +12,9 @@ import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";
-import Day from "components/dashboard/appointment/day";
-import TestCalendar from "components/dashboard/appointment/testCalendar";
+// import { Skeleton } from "primereact/skeleton";
+// import Day from "components/dashboard/appointment/day";
+// import TestCalendar from "components/dashboard/appointment/testCalendar";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -64,7 +64,7 @@ const Appointment = ({ ClinicUser }) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
 
-  const addDayToDate = (day, week) => {
+  const addDayToDate = (day) => {
     let h = day * 24;
     return new Date(new Date().getTime() + h * 60 * 60 * 1000);
   };
@@ -75,11 +75,11 @@ const Appointment = ({ ClinicUser }) => {
   let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
   let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
 
-  let todayDay = new JDate(addDayToDate(0)).format("dddd");
-  let plus1Day = new JDate(addDayToDate(1)).format("dddd");
-  let plus2Day = new JDate(addDayToDate(2)).format("dddd");
-  let plus3Day = new JDate(addDayToDate(3)).format("dddd");
-  let plus4Day = new JDate(addDayToDate(4)).format("dddd");
+  let todayDay = new JDate(addDayToDate(0)).format("dd");
+  let plus1Day = new JDate(addDayToDate(1)).format("dd");
+  let plus2Day = new JDate(addDayToDate(2)).format("dd");
+  let plus3Day = new JDate(addDayToDate(3)).format("dd");
+  let plus4Day = new JDate(addDayToDate(4)).format("dd");
 
   let Dates = [today, plus1, plus2, plus3, plus4];
   let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
@@ -442,6 +442,7 @@ const Appointment = ({ ClinicUser }) => {
                       <div className="timeline text-secondary font-13">
                         <div className="spacer"></div>
                         <div className="spacer"></div>
+                        <div className="spacer"></div>
                         {Hours}
                       </div>
 
@@ -449,6 +450,7 @@ const Appointment = ({ ClinicUser }) => {
                         <DayList
                           data={appointmentEvents}
                           Dates={Dates}
+                          DatesDays={DatesDays}
                           depOpeningHour={depOpeningHour}
                           depClosingHour={depClosingHour}
                           openEditAppointmentModal={openEditAppointmentModal}

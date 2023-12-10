@@ -837,15 +837,37 @@
   margin-bottom: 0.25rem;
 }
 
+.DateDayContainer {
+  padding: 12px;
+  margin: 0 auto;
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.DateDayContainer:hover {
+  border: 1px solid lightgray;
+  border-radius: 100%;
+  background-color: lightgray;
+}
+
+.currentMonthContainer {
+  margin: 0 auto;
+  padding-bottom: 1rem;
+}
+
 .event {
-  /* border: 1px solid var(--eventBorderColor); */
   border-radius: 8px;
   padding: 0.5rem;
   margin: 0 0.5rem;
-  /* background: white; */
   background-color: #fcf6e6;
   overflow: auto;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .space,
@@ -871,13 +893,11 @@
 
 .date {
   display: flex;
-  /* flex-direction: column; */
-  gap: 5px;
   text-align: center;
-  padding-right: 20px;
-  /* text-align: center; */
   justify-content: center;
   align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .date-num {

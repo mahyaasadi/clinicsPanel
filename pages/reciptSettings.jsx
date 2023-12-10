@@ -28,6 +28,9 @@ const ReciptSettings = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [reciptSettingsData, setReciptSettingsData] = useState([]);
+  const [description, setDescription] = useState("");
+  const [ansText, setAnsText] = useState("");
+
   const [orientation, setOrientention] = useState({
     portrait: true,
     landscape: false,
@@ -104,8 +107,6 @@ const ReciptSettings = ({ ClinicUser }) => {
       QRCode: hasQrCode.QRCode,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
@@ -120,9 +121,6 @@ const ReciptSettings = ({ ClinicUser }) => {
         setIsLoading(false);
       });
   };
-
-  const [description, setDescription] = useState("");
-  const [ansText, setAnsText] = useState("");
 
   const handleDesKeyDown = (e) => {
     if (e.key === "Enter")
