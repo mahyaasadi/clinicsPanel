@@ -1,5 +1,6 @@
 import Day from "./day";
 import JDate from "jalali-date";
+import FeatherIcon from "feather-icons-react";
 
 let month = {
   "01": "فروردین",
@@ -31,8 +32,27 @@ const DayList = ({
 
   return (
     <div className="appointmentTableContainer">
-      <div className="currentMonthContainer font-17 fw-bold">
-        {currentMonth}
+      <div className="d-flex justify-center">
+
+        <div className="col"></div>
+        <div className="col currentMonthContainer font-17 fw-bold text-center">
+          {currentMonth}
+        </div>
+        {/* <div className="col d-flex justify-end">
+          <button className="paginateBtn">
+            <FeatherIcon
+              icon="arrow-right"
+              style={{ width: "13px", color: "white" }}
+            />
+          </button>
+          <button className="paginateBtn">
+            <FeatherIcon
+              icon="arrow-left"
+              style={{ width: "13px", color: "white" }}
+            />
+          </button>
+        </div> */}
+
       </div>
       <table className="table">
         <thead className="bg-light sticky-top top-0">

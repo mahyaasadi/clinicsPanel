@@ -13,6 +13,7 @@ import DelayAppointmentModal from "components/dashboard/appointment/delayAppoint
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";
+import { Skeleton } from "primereact/skeleton";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -459,12 +460,25 @@ const Appointment = ({ ClinicUser }) => {
                 <div className="card-header">
                   <div className="row align-items-center justify-between">
                     <div className="d-flex align-items-center justify-between">
-                      <div className="col-7">
-                        <ModalitiesHeader
-                          data={clinicDepartments}
-                          handleDepClick={handleDepClick}
-                        />
-                      </div>
+                      {!isLoading ? (
+                        <div className="col-7">
+                          <ModalitiesHeader
+                            data={clinicDepartments}
+                            handleDepClick={handleDepClick}
+                          />
+                        </div>
+                      ) : (
+                        <Skeleton>
+                          <ul className="nav nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-tabs-scroll font-14 flex-nowrap paddingb-0">
+                            <li className="nav-item">
+                              <a
+                                className="nav-link"
+                              >
+                              </a>
+                            </li>
+                          </ul>
+                        </Skeleton>
+                      )}
                       <div className="col-5 d-flex justify-end">
                         <div className="d-flex gap-1">
                           <button

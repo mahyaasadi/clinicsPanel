@@ -36,25 +36,7 @@ const Event = ({
           "-"
         )} end-${calculatedEndTime.replace(":", "-")}`}
       >
-        <div className="d-flex flex-col gap-1 justify-end">
-          <button
-            className="btn btn-sm p-0 editButton d-flex justify-end"
-            onClick={() => openEditAppointmentModal(data)}
-          >
-            <FeatherIcon icon="edit-2" style={{ width: "14px" }} />
-          </button>
-          <button
-            className="btn btn-sm p-0 editButton d-flex justify-end"
-            // onClick={() => deleteAppointment(data._id, data.Date)}
-          >
-            <FeatherIcon icon="copy" style={{ width: "15px" }} />
-          </button>
-          <button
-            className="btn btn-sm p-0 trashButton d-flex justify-end"
-            onClick={() => deleteAppointment(data._id, data.Date)}
-          >
-            <FeatherIcon icon="trash" style={{ width: "15px" }} />
-          </button>
+        <div className="d-flex gap-1 justify-between">
           <div className="">
             <div className="title d-flex flex-wrap align-items-center gap-2">
               <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
@@ -66,6 +48,27 @@ const Event = ({
               تا {data.ET}
             </div>
           </div>
+          <div className="">
+            <button
+              className="btn btn-sm p-0 editButton d-flex justify-end"
+              onClick={() => openEditAppointmentModal(data)}
+            >
+              <FeatherIcon icon="edit-2" style={{ width: "14px" }} />
+            </button>
+            <button
+              className="btn btn-sm p-0 editButton d-flex justify-end"
+            // onClick={() => deleteAppointment(data._id, data.Date)}
+            >
+              <FeatherIcon icon="copy" style={{ width: "15px" }} />
+            </button>
+            <button
+              className="btn btn-sm p-0 trashButton d-flex justify-end"
+              onClick={() => deleteAppointment(data._id, data.Date)}
+            >
+              <FeatherIcon icon="trash" style={{ width: "15px" }} />
+            </button>
+          </div>
+
         </div>
       </div>
     </>

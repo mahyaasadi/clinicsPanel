@@ -61,6 +61,45 @@ const Header = ({ ClinicUser }) => {
           <Link href="#" id="toggle_btn" onClick={handlesidebar}>
             <FeatherIcon icon="chevrons-left" />
           </Link>
+          {/* Search */}
+          <div className="top-nav-search">
+            <div className="main">
+              <form className="search" method="post" action="/admin">
+                <div className="s-icon">
+                  <i className="fas fa-search" />
+                </div>
+                <input
+                  type="text"
+                  className="form-control font-13"
+                  placeholder="جستجو ..."
+                />
+                {/* <ul className="results">
+                  <li>
+                    <h6>
+                      <i className="me-1"> <FeatherIcon icon="user" /></i> Doctors
+                    </h6>
+                    <p>
+                      No matched Appointment found.{" "}
+                      <Link href="/admin/doctor-list">
+                        <span>View all</span>
+                      </Link>
+                    </p>
+                  </li>
+                  <li>
+                    <h6>
+                      <i className="me-1"> <FeatherIcon icon="user" /></i>Patients
+                    </h6>
+                    <p>
+                      No matched Appointment found.{" "}
+                      <Link href="/admin/patient-list">
+                        <span>View all</span>
+                      </Link>
+                    </p>
+                  </li>
+                </ul> */}
+              </form>
+            </div>
+          </div>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -151,4 +190,3 @@ const Header = ({ ClinicUser }) => {
 };
 
 export default Header;
-
