@@ -8,6 +8,7 @@
   --eventColor2: #fafaa3;
   --eventColor3: #e2f8ff;
   --eventColor4: #d1ffe6;
+  /* --timeMarkerHeight: fit-content */
 }
 
 .calendar {
@@ -38,6 +39,8 @@
 
 .time-marker {
   direction: ltr !important;
+  padding: 15px 0;
+  /* height: var(--timeMarkerHeight) */
 }
 
 .timeline {
@@ -58,10 +61,11 @@
   display: grid;
   grid-template-rows: repeat(var(--numHours), var(--timeHeight));
   border: 1px solid #e8e8e8;
-  /* background-color: whitesmoke; */
   background-color: rgba(253, 253, 253, 0.788);
   min-width: 14rem;
+  cursor: pointer;
   /* max-width: 11rem; */
+  /* height: var(--timeMarkerHeight); */
 }
 
 .start-00-00 {
@@ -449,387 +453,387 @@
 }
 
 .end-00-00 {
-  grid-row-end: 1;
-}
-
-.end-00-15 {
   grid-row-end: 2;
 }
 
-.end-00-30 {
+.end-00-15 {
   grid-row-end: 3;
 }
 
-.end-00-45 {
+.end-00-30 {
   grid-row-end: 4;
 }
 
-.end-01-00 {
+.end-00-45 {
   grid-row-end: 5;
 }
 
-.end-01-15 {
+.end-01-00 {
   grid-row-end: 6;
 }
 
-.end-01-30 {
+.end-01-15 {
   grid-row-end: 7;
 }
 
-.end-01-45 {
+.end-01-30 {
   grid-row-end: 8;
 }
 
-.end-02-00 {
+.end-01-45 {
   grid-row-end: 9;
 }
 
-.end-02-15 {
+.end-02-00 {
   grid-row-end: 10;
 }
 
-.end-02-30 {
+.end-02-15 {
   grid-row-end: 11;
 }
 
-.end-02-45 {
+.end-02-30 {
   grid-row-end: 12;
 }
 
-.end-03-00 {
+.end-02-45 {
   grid-row-end: 13;
 }
 
-.end-03-15 {
+.end-03-00 {
   grid-row-end: 14;
 }
 
-.end-03-30 {
+.end-03-15 {
   grid-row-end: 15;
 }
 
-.end-03-45 {
+.end-03-30 {
   grid-row-end: 16;
 }
 
-.end-04-00 {
+.end-03-45 {
   grid-row-end: 17;
 }
 
-.end-04-15 {
+.end-04-00 {
   grid-row-end: 18;
 }
 
-.end-04-30 {
+.end-04-15 {
   grid-row-end: 19;
 }
 
-.end-04-45 {
+.end-04-30 {
   grid-row-end: 20;
 }
 
-.end-05-00 {
+.end-04-45 {
   grid-row-end: 21;
 }
 
-.end-05-15 {
+.end-05-00 {
   grid-row-end: 22;
 }
 
-.end-05-30 {
+.end-05-15 {
   grid-row-end: 23;
 }
 
-.end-05-45 {
+.end-05-30 {
   grid-row-end: 24;
 }
 
-.end-06-00 {
+.end-05-45 {
   grid-row-end: 25;
 }
 
-.end-06-15 {
+.end-06-00 {
   grid-row-end: 26;
 }
 
-.end-06-30 {
+.end-06-15 {
   grid-row-end: 27;
 }
 
-.end-06-45 {
+.end-06-30 {
   grid-row-end: 28;
 }
 
-.end-07-00 {
+.end-06-45 {
   grid-row-end: 29;
 }
 
-.end-07-15 {
+.end-07-00 {
   grid-row-end: 30;
 }
 
-.end-07-30 {
+.end-07-15 {
   grid-row-end: 31;
 }
 
-.end-07-45 {
+.end-07-30 {
   grid-row-end: 32;
 }
 
-.end-08-00 {
+.end-07-45 {
   grid-row-end: 33;
 }
 
-.end-08-15 {
+.end-08-00 {
   grid-row-end: 34;
 }
 
-.end-08-30 {
+.end-08-15 {
   grid-row-end: 35;
 }
 
-.end-08-45 {
+.end-08-30 {
   grid-row-end: 36;
 }
 
-.end-09-00 {
+.end-08-45 {
   grid-row-end: 37;
 }
 
-.end-09-15 {
+.end-09-00 {
   grid-row-end: 38;
 }
 
-.end-09-30 {
+.end-09-15 {
   grid-row-end: 39;
 }
 
-.end-09-45 {
+.end-09-30 {
   grid-row-end: 40;
 }
 
-.end-10-00 {
+.end-09-45 {
   grid-row-end: 41;
 }
 
-.end-10-15 {
+.end-10-00 {
   grid-row-end: 42;
 }
 
-.end-10-30 {
+.end-10-15 {
   grid-row-end: 43;
 }
 
-.end-10-45 {
+.end-10-30 {
   grid-row-end: 44;
 }
 
-.end-11-00 {
+.end-10-45 {
   grid-row-end: 45;
 }
 
-.end-11-15 {
+.end-11-00 {
   grid-row-end: 46;
 }
 
-.end-11-30 {
+.end-11-15 {
   grid-row-end: 47;
 }
 
-.end-11-45 {
+.end-11-30 {
   grid-row-end: 48;
 }
 
-.end-12-00 {
+.end-11-45 {
   grid-row-end: 49;
 }
 
-.end-12-15 {
+.end-12-00 {
   grid-row-end: 50;
 }
 
-.end-12-30 {
+.end-12-15 {
   grid-row-end: 51;
 }
 
-.end-12-45 {
+.end-12-30 {
   grid-row-end: 52;
 }
 
-.end-13-00 {
+.end-12-45 {
   grid-row-end: 53;
 }
 
-.end-13-15 {
+.end-13-00 {
   grid-row-end: 54;
 }
 
-.end-13-30 {
+.end-13-15 {
   grid-row-end: 55;
 }
 
-.end-13-45 {
+.end-13-30 {
   grid-row-end: 56;
 }
 
-.end-14-00 {
+.end-13-45 {
   grid-row-end: 57;
 }
 
-.end-14-15 {
+.end-14-00 {
   grid-row-end: 58;
 }
 
-.end-14-30 {
+.end-14-15 {
   grid-row-end: 59;
 }
 
-.end-14-45 {
+.end-14-30 {
   grid-row-end: 60;
 }
 
-.end-15-00 {
+.end-14-45 {
   grid-row-end: 61;
 }
 
-.end-15-15 {
+.end-15-00 {
   grid-row-end: 62;
 }
 
-.end-15-30 {
+.end-15-15 {
   grid-row-end: 63;
 }
 
-.end-15-45 {
+.end-15-30 {
   grid-row-end: 64;
 }
 
-.end-16-00 {
+.end-15-45 {
   grid-row-end: 65;
 }
 
-.end-16-15 {
+.end-16-00 {
   grid-row-end: 66;
 }
 
-.end-16-30 {
+.end-16-15 {
   grid-row-end: 67;
 }
 
-.end-16-45 {
+.end-16-30 {
   grid-row-end: 68;
 }
 
-.end-17-00 {
+.end-16-45 {
   grid-row-end: 69;
 }
 
-.end-17-15 {
+.end-17-00 {
   grid-row-end: 70;
 }
 
-.end-17-30 {
+.end-17-15 {
   grid-row-end: 71;
 }
 
-.end-17-45 {
+.end-17-30 {
   grid-row-end: 72;
 }
 
-.end-18-00 {
+.end-17-45 {
   grid-row-end: 73;
 }
 
-.end-18-15 {
+.end-18-00 {
   grid-row-end: 74;
 }
 
-.end-18-30 {
+.end-18-15 {
   grid-row-end: 75;
 }
 
-.end-18-45 {
+.end-18-30 {
   grid-row-end: 76;
 }
 
-.end-19-00 {
+.end-18-45 {
   grid-row-end: 77;
 }
 
-.end-19-15 {
+.end-19-00 {
   grid-row-end: 78;
 }
 
-.end-19-30 {
+.end-19-15 {
   grid-row-end: 79;
 }
 
-.end-19-45 {
+.end-19-30 {
   grid-row-end: 80;
 }
 
-.end-20-00 {
+.end-19-45 {
   grid-row-end: 81;
 }
 
-.end-20-15 {
+.end-20-00 {
   grid-row-end: 82;
 }
 
-.end-20-30 {
+.end-20-15 {
   grid-row-end: 83;
 }
 
-.end-20-45 {
+.end-20-30 {
   grid-row-end: 84;
 }
 
-.end-21-00 {
+.end-20-45 {
   grid-row-end: 85;
 }
 
-.end-21-15 {
+.end-21-00 {
   grid-row-end: 86;
 }
 
-.end-21-30 {
+.end-21-15 {
   grid-row-end: 87;
 }
 
-.end-21-45 {
+.end-21-30 {
   grid-row-end: 88;
 }
 
-.end-22-00 {
+.end-21-45 {
   grid-row-end: 89;
 }
 
-.end-22-15 {
+.end-22-00 {
   grid-row-end: 90;
 }
 
-.end-22-30 {
+.end-22-15 {
   grid-row-end: 91;
 }
 
-.end-22-45 {
+.end-22-30 {
   grid-row-end: 92;
 }
 
-.end-23-00 {
+.end-22-45 {
   grid-row-end: 93;
 }
 
-.end-23-15 {
+.end-23-00 {
   grid-row-end: 94;
 }
 
-.end-23-30 {
+.end-23-15 {
   grid-row-end: 95;
 }
 
-.end-23-45 {
+.end-23-30 {
   grid-row-end: 96;
+}
+
+.end-23-45 {
+  grid-row-end: 97;
 }
 
 .title {
@@ -860,7 +864,16 @@
   padding-bottom: 1rem;
 }
 
+.appointmentTableContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 75vw;
+  overflow-x: auto;
+}
+
 .event {
+  border: 1px solid transparent;
   border-radius: 8px;
   padding: 0.5rem;
   margin: 0 0.5rem;
@@ -868,6 +881,15 @@
   overflow: auto;
   margin-top: 5px;
   cursor: pointer;
+  color: #594b0d;
+  opacity: 1;
+}
+
+.event:hover {
+  opacity: 0.9;
+  border: 1px solid #594b0d;
+  transition: ease-in-out all;
+  transition-duration: 0.25s;
 }
 
 .space,
@@ -903,7 +925,7 @@
 .date-num {
   font-size: 1.25rem;
   font-weight: 600;
-  display: inline;
+  /* display: inline; */
   margin-bottom: 0;
 }
 

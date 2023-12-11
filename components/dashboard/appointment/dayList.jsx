@@ -27,31 +27,37 @@ const DayList = ({
   deleteAppointment,
   depOpeningHour,
 }) => {
-
   let currentMonth = jdate.format("MMM");
-  console.log({ currentMonth });
 
   return (
-    <div className="d-flex flex-col">
-      <div className="currentMonthContainer">{currentMonth}</div>
-      <table className="table w-auto">
-        <thead className="bg-light sticky-top">
+    <div className="appointmentTableContainer">
+      <div className="currentMonthContainer font-17 fw-bold">
+        {currentMonth}
+      </div>
+      <table className="table">
+        <thead className="bg-light sticky-top top-0">
           <tr>
-            {Dates.map((date, index) => (
-              date = date.split("/")
-              ,
-              <th key={index}>
-                <div className="date d-flex flex-col">
-                  <div className="mb-1">{DatesDays[index]}</div>
-                  <div className="d-flex align-items-center">
-                    <p className="date-num DateDayContainer">{date[2]}</p>
-                    {/* <p className="date-day">{month[date[1]]}</p> */}
-                  </div>
-                </div>
-              </th>
-
-              // ))
-            ))}
+            {Dates.map(
+              (date, index) => (
+                (date = date.split("/")),
+                (
+                  // console.log(date[2][0] + date[2][1]),
+                  <th key={index}>
+                    <div className="date d-flex flex-col">
+                      <div className="mb-1">{DatesDays[index]}</div>
+                      <div className="d-flex align-items-center">
+                        <p className="date-num DateDayContainer">{date[2]}</p>
+                        {/* {date[2] === date[2][0] + date[2][1] ? (
+                          <p className="">YYY</p>
+                        ) : (
+                          <p className="">NNN</p>
+                        )} */}
+                      </div>
+                    </div>
+                  </th>
+                )
+              )
+            )}
           </tr>
         </thead>
 
@@ -81,7 +87,6 @@ const DayList = ({
 
 export default DayList;
 
-
 // import Day from "./day";
 // let month = {
 //   "01": "فروردین",
@@ -97,6 +102,7 @@ export default DayList;
 //   11: "بهمن",
 //   12: "اسفند",
 // };
+
 // const DayList = ({
 //   data,
 //   Dates,

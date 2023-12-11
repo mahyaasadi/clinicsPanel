@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Image from "next/image";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";

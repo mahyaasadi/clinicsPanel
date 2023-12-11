@@ -22,27 +22,26 @@ let UserID = null;
 const Profile = ({ ClinicUser }) => {
   UserID = ClinicUser._id;
   const [isLoading, setIsLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState([])
+  const [userInfo, setUserInfo] = useState([]);
 
   const getUserByID = () => {
     let url = "ClinicUser/getUserById";
     let data = {
-      UserID
-    }
+      UserID,
+    };
 
-    axiosClient.post(url, data)
+    axiosClient
+      .post(url, data)
       .then((response) => {
         console.log(response.data);
-        setUserInfo(response.data)
+        setUserInfo(response.data);
       })
       .catch((err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
-  useEffect(() => {
-    getUserByID()
-  }, [])
+  useEffect(() => getUserByID(), []);
 
   return (
     <>

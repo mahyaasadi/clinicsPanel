@@ -21,7 +21,8 @@ const Header = ({ ClinicUser }) => {
   };
 
   const handlesidebar = () => document.body.classList.toggle("mini-sidebar");
-  const handlesidebarmobilemenu = () => document.body.classList.toggle("slide-nav");
+  const handlesidebarmobilemenu = () =>
+    document.body.classList.toggle("slide-nav");
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
@@ -40,7 +41,9 @@ const Header = ({ ClinicUser }) => {
     router.push("/");
   };
 
-  useEffect(() => fetchUserToken(ClinicUser), [ClinicUser]);
+  useEffect(() => {
+    fetchUserToken(ClinicUser);
+  }, [ClinicUser]);
 
   return (
     <>

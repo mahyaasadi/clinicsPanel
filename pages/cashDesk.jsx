@@ -110,6 +110,9 @@ const CashDesk = ({ ClinicUser }) => {
           kartOptions.push(obj);
         }
         setKartsOptionsList(kartOptions);
+        setSelectedKart(
+          kartsOptionList.length > 0 ? kartsOptionList[0].value : null
+        );
         setIsLoading(false);
       })
       .catch((err) => {
@@ -120,7 +123,7 @@ const CashDesk = ({ ClinicUser }) => {
 
   const applyCashDeskActions = (e) => {
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -153,6 +156,7 @@ const CashDesk = ({ ClinicUser }) => {
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
+        ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
       });
   };
 

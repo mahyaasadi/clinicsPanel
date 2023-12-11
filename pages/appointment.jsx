@@ -8,13 +8,11 @@ import { ErrorAlert, SuccessAlert, QuestionAlert } from "class/AlertManage";
 import DayList from "components/dashboard/appointment/dayList";
 import Loading from "components/commonComponents/loading/loading";
 import AppointmentModal from "components/dashboard/appointment/appointmentModal";
-import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
+import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
+import DelayAppointmentModal from "components/dashboard/appointment/delayAppointmentModal";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";
-// import { Skeleton } from "primereact/skeleton";
-// import Day from "components/dashboard/appointment/day";
-// import TestCalendar from "components/dashboard/appointment/testCalendar";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -37,11 +35,16 @@ let ClinicID,
   ActivePatientID,
   ActiveAppointmentID = null;
 
+let ActiveDate = null;
+const jdate = new JDate();
+const todaysDate = jdate.format("YYYY/MM/DD");
+
 const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [loadingState, setLoadingState] = useState(false);
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
+  const [delayIsLoading, setDelayIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
 
   // modalitiesHeader
@@ -53,7 +56,16 @@ const Appointment = ({ ClinicUser }) => {
   const [modalMode, setModalMode] = useState("add");
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [editAppointmentData, setEditAppointmentData] = useState([]);
-  const closeAppointmentModal = () => setShowAppointmentModal(false);
+
+  const closeAppointmentModal = () => {
+    setShowAppointmentModal(false);
+    ActiveDate = null;
+  };
+
+  // delayAppointmenModal
+  const [showDelayModal, setShowDelayModal] = useState(false);
+  const closeDelayModal = () => setShowDelayModal(false);
+  const openDelayModal = () => setShowDelayModal(true);
 
   const [pureStartTime, setPureStartTime] = useState(null);
   const [pureEndTime, setPureEndTime] = useState(null);
@@ -75,11 +87,11 @@ const Appointment = ({ ClinicUser }) => {
   let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
   let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
 
-  let todayDay = new JDate(addDayToDate(0)).format("dd");
-  let plus1Day = new JDate(addDayToDate(1)).format("dd");
-  let plus2Day = new JDate(addDayToDate(2)).format("dd");
-  let plus3Day = new JDate(addDayToDate(3)).format("dd");
-  let plus4Day = new JDate(addDayToDate(4)).format("dd");
+  let todayDay = new JDate(addDayToDate(0)).format("dddd");
+  let plus1Day = new JDate(addDayToDate(1)).format("dddd");
+  let plus2Day = new JDate(addDayToDate(2)).format("dddd");
+  let plus3Day = new JDate(addDayToDate(3)).format("dddd");
+  let plus4Day = new JDate(addDayToDate(4)).format("dddd");
 
   let Dates = [today, plus1, plus2, plus3, plus4];
   let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
@@ -148,7 +160,6 @@ const Appointment = ({ ClinicUser }) => {
 
   // PatientInfo in AppointmentModal
   const getPatientInfo = (e) => {
-    console.log("object");
     e.preventDefault();
 
     ActivePatientNID = $("#appointmentNationalCode").val();
@@ -163,7 +174,7 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
           setShowAppointmentModal(false);
@@ -215,8 +226,11 @@ const Appointment = ({ ClinicUser }) => {
   // Add New Appointment
   const openNewAppointmentModal = (date) => {
     setModalMode("add");
-    setShowAppointmentModal(true);
-    if (date) console.log({ date });
+    ActiveDate = date;
+
+    setTimeout(() => {
+      setShowAppointmentModal(true);
+    }, 200);
   };
 
   const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
@@ -237,8 +251,6 @@ const Appointment = ({ ClinicUser }) => {
       ST: pureStartTime,
       ET: pureEndTime,
     };
-
-    console.log({ data });
 
     axiosClient
       .post(url, data)
@@ -394,6 +406,39 @@ const Appointment = ({ ClinicUser }) => {
     }
   };
 
+  // Delay in Appointments
+  const applyDelayInAppoinytments = (e) => {
+    e.preventDefault();
+    setDelayIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "Appointment/SetDelayClinic";
+    let data = {
+      ClinicID,
+      ModalityID: ActiveModalityID,
+      Date: appointmentDate,
+      DelayH: formProps.delayHour ? parseInt(formProps.delayHour) : 0,
+      DelayM: formProps.delayMinute ? parseInt(formProps.delayMinute) : 0,
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        getClinicAppointments();
+        setDelayIsLoading(false);
+        closeDelayModal();
+      })
+      .catch((err) => {
+        console.log(err);
+        setDelayIsLoading(false);
+      });
+  };
+
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
@@ -420,15 +465,23 @@ const Appointment = ({ ClinicUser }) => {
                           handleDepClick={handleDepClick}
                         />
                       </div>
-                      <div className="col-5">
-                        <div></div>
-                        <button
-                          onClick={openNewAppointmentModal}
-                          className="btn btn-primary appointmentBtn font-14 float-end"
-                        >
-                          <FeatherIcon icon="plus-square" />
-                          نوبت جدید
-                        </button>
+                      <div className="col-5 d-flex justify-end">
+                        <div className="d-flex gap-1">
+                          <button
+                            className="btn btn-outline-secondary appointmentBtn font-14"
+                            onClick={openDelayModal}
+                          >
+                            <FeatherIcon icon="clock" />
+                            ثبت تاخیر
+                          </button>
+                          <button
+                            onClick={() => openNewAppointmentModal(todaysDate)}
+                            className="btn btn-primary appointmentBtn font-14 float-end"
+                          >
+                            <FeatherIcon icon="plus-square" />
+                            نوبت جدید
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -452,7 +505,6 @@ const Appointment = ({ ClinicUser }) => {
                           Dates={Dates}
                           DatesDays={DatesDays}
                           depOpeningHour={depOpeningHour}
-                          depClosingHour={depClosingHour}
                           openEditAppointmentModal={openEditAppointmentModal}
                           deleteAppointment={deleteAppointment}
                           openNewAppointmentModal={openNewAppointmentModal}
@@ -483,12 +535,21 @@ const Appointment = ({ ClinicUser }) => {
           patientInfo={patientInfo}
           hoursOptions={hoursOptions}
           selectedDepartment={selectedDepartment}
+          ActiveDate={ActiveDate}
         />
 
         <AddNewPatient
           addNewPatient={addNewPatient}
           ClinicID={ClinicID}
           ActivePatientNID={ActivePatientNID}
+        />
+
+        <DelayAppointmentModal
+          show={showDelayModal}
+          onHide={closeDelayModal}
+          onSubmit={applyDelayInAppoinytments}
+          setAppointmentDate={setAppointmentDate}
+          isLoading={delayIsLoading}
         />
       </div>
     </>

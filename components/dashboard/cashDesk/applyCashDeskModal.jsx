@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
 import { convertToLocaleString } from "utils/convertToLocaleString";
@@ -19,7 +18,6 @@ const ApplyCashDeskModal = ({
   setPrice,
   paymentData,
 }) => {
-  console.log(convertToFixedNumber(calculatedTotalPC.toLocaleString()));
   return (
     <>
       <Modal show={show} onHide={onHide} centered>

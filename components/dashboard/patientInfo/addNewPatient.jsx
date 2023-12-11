@@ -75,8 +75,6 @@ const NewPatient = ({
     }
   };
 
-  useEffect(() => getInsuranceList(), []);
-
   const handleBlur = (e) => {
     validateInput(birthYear);
     if (e.target.value === "") setShowBirthDigitsAlert(false);
@@ -113,6 +111,8 @@ const NewPatient = ({
       $("#submitNewPatient").attr("disabled", false);
     }
   };
+
+  useEffect(() => getInsuranceList(), []);
 
   return (
     <>

@@ -5,8 +5,8 @@ const Event = ({
   openEditAppointmentModal,
   deleteAppointment,
   depOpeningHour,
+  onDoubleClick,
 }) => {
-  console.log({ data });
   function subtractHoursFromTime(timeString, hoursToSubtract) {
     const defaultTime = timeString.split(":");
     const hour = defaultTime[0];
@@ -21,40 +21,51 @@ const Event = ({
 
   const calculatedStartTime = subtractHoursFromTime(data.ST, depOpeningHour);
   const calculatedEndTime = subtractHoursFromTime(data.ET, depOpeningHour);
-  console.log({ calculatedEndTime });
+
+  const handleDoubleClick = (event) => {
+    event.stopPropagation(); // Stop the event from reaching the parent (Day) component
+    onDoubleClick();
+  };
 
   return (
     <>
       <div
-        onDoubleClick={() => openEditAppointmentModal(data)}
+        onClick={handleDoubleClick}
         className={`event shadow start-${calculatedStartTime.replace(
           ":",
           "-"
         )} end-${calculatedEndTime.replace(":", "-")}`}
       >
-        <div className="d-flex gap-1 justify-end align-items-center">
+        <div className="d-flex flex-col gap-1 justify-end">
           <button
-            className="btn btn-sm p-0"
+            className="btn btn-sm p-0 editButton d-flex justify-end"
             onClick={() => openEditAppointmentModal(data)}
           >
-            <FeatherIcon icon="edit-3" style={{ width: "15px" }} />
+            <FeatherIcon icon="edit-2" style={{ width: "14px" }} />
           </button>
           <button
-            className="btn btn-sm p-0"
+            className="btn btn-sm p-0 editButton d-flex justify-end"
+            // onClick={() => deleteAppointment(data._id, data.Date)}
+          >
+            <FeatherIcon icon="copy" style={{ width: "15px" }} />
+          </button>
+          <button
+            className="btn btn-sm p-0 trashButton d-flex justify-end"
             onClick={() => deleteAppointment(data._id, data.Date)}
           >
             <FeatherIcon icon="trash" style={{ width: "15px" }} />
           </button>
-        </div>
-
-        <div className="title d-flex flex-wrap align-items-center gap-2">
-          <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
-          {data.Patient.Name}
-        </div>
-        <div className="time d-flex align-items-center gap-2">
-          {" "}
-          <FeatherIcon icon="clock" style={{ width: "15px" }} /> {data.ST} تا{" "}
-          {data.ET}
+          <div className="">
+            <div className="title d-flex flex-wrap align-items-center gap-2">
+              <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
+              {data.Patient.Name}
+            </div>
+            <div className="time d-flex align-items-center gap-2">
+              {" "}
+              <FeatherIcon icon="clock" style={{ width: "15px" }} /> {data.ST}{" "}
+              تا {data.ET}
+            </div>
+          </div>
         </div>
       </div>
     </>

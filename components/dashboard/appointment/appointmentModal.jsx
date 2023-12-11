@@ -23,8 +23,10 @@ const AppointmentModal = ({
   FUSelectEndTime,
   hoursOptions,
   selectedDepartment,
+  ActiveDate,
 }) => {
-  console.log("data in appointmentModal", data);
+  let cleanedDateString = null;
+  if (ActiveDate) cleanedDateString = ActiveDate.replace(/""/g, "");
 
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -43,10 +45,10 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-        ? "تامین اجتماعی"
-        : data?.Patient?.Insurance === "3"
-          ? "نیروهای مسلح"
-          : "آزاد";
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -146,7 +148,6 @@ const AppointmentModal = ({
                 <label className="lblDrugIns font-12">
                   انتخاب بخش <span className="text-danger">*</span>
                 </label>
-
                 <SelectField
                   styles={selectfieldColourStyles}
                   options={modalityOptions}
@@ -164,45 +165,20 @@ const AppointmentModal = ({
                   isClearable
                 />
               </div>
+
               <input type="hidden" name="OldDate" value={data.Date} />
+
               <div className="form-group">
                 <SingleDatePicker
-                  defaultDate={data.Date}
+                  defaultDate={
+                    cleanedDateString ? cleanedDateString : data.Date
+                  }
                   setDate={setAppointmentDate}
                   label="انتخاب تاریخ"
                 />
               </div>
 
               <div className="row media-md-gap">
-                {/* <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت شروع</label>
-                  <DatePicker
-                    selected={selectedStartTime}
-                    onChange={handleStartTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                    defaultValue={mode === "edit" ? defaultStartTime : ""}
-                  />
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت پایان</label>
-                  <DatePicker
-                    selected={selectedEndTime}
-                    onChange={handleEndTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                  />
-                </div> */}
-
                 <div className="col-6">
                   <label className="lblDrugIns font-11">
                     ساعت شروع <span className="text-danger">*</span>
@@ -273,3 +249,34 @@ const AppointmentModal = ({
 };
 
 export default AppointmentModal;
+
+{
+  /* <div className="col-md-6 col-12">
+                  <label className="lblAbs font-12">ساعت شروع</label>
+                  <DatePicker
+                    selected={selectedStartTime}
+                    onChange={handleStartTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    dateFormat="HH:mm"
+                    timeCaption="انتخاب کنید"
+                    locale="fa"
+                    defaultValue={mode === "edit" ? defaultStartTime : ""}
+                  />
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <label className="lblAbs font-12">ساعت پایان</label>
+                  <DatePicker
+                    selected={selectedEndTime}
+                    onChange={handleEndTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    dateFormat="HH:mm"
+                    timeCaption="انتخاب کنید"
+                    locale="fa"
+                  />
+                </div> */
+}

@@ -20,8 +20,6 @@ const DepartmentsModal = ({
     }
   };
 
-  console.log({ data });
-
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -75,8 +73,9 @@ const DepartmentsModal = ({
               </label>
               <div className="col p-0">
                 <input
+                  type="text"
+                  dir="ltr"
                   className="form-control floating inputPadding rounded"
-                  type="number"
                   name="departmentOpeningHour"
                   defaultValue={mode == "edit" ? data.OpeningHours : ""}
                   key={data.OpeningHours}
@@ -92,8 +91,9 @@ const DepartmentsModal = ({
               </label>
               <div className="col p-0">
                 <input
+                  type="text"
+                  dir="ltr"
                   className="form-control floating inputPadding rounded"
-                  type="number"
                   name="departmentClosingHour"
                   defaultValue={mode == "edit" ? data.ClosingHours : ""}
                   key={data.ClosingHours}

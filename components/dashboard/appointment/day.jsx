@@ -8,11 +8,12 @@ const Day = ({
   deleteAppointment,
   depOpeningHour,
 }) => {
+  const handleColumnDoubleClick = () => {
+    openNewAppointmentModal(date);
+  };
+
   return (
-    <div
-      className="day"
-    // onDoubleClick={() => openNewAppointmentModal(date)}
-    >
+    <div className="day" onDoubleClick={handleColumnDoubleClick}>
       <div className="events shadow-sm">
         {appointment?.map((event) => {
           return (
@@ -22,6 +23,7 @@ const Day = ({
               depOpeningHour={depOpeningHour}
               openEditAppointmentModal={openEditAppointmentModal}
               deleteAppointment={deleteAppointment}
+              onDoubleClick={() => openEditAppointmentModal(event)}
             />
           );
         })}
