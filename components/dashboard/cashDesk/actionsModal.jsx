@@ -29,6 +29,8 @@ const CashDeskActions = ({
   setShowPaymentModal,
   price,
   setPrice,
+  paymentDefaultValue,
+  setPaymentDefaultValue,
 }) => {
   const [returnMode, setReturnMode] = useState(false);
   const [cashMode, setCashMode] = useState(false);
@@ -313,6 +315,8 @@ const CashDeskActions = ({
         price={price}
         setPrice={setPrice}
         paymentData={paymentData}
+        paymentDefaultValue={paymentDefaultValue}
+        setPaymentDefaultValue={setPaymentDefaultValue}
       />
     </>
   );

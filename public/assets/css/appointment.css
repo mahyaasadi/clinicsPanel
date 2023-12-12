@@ -54,7 +54,10 @@
   grid-column: 2;
   gap: 5px;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  /* border-bottom: 1px solid black; */
+}
+
+.eventBtns {
+  color: #594b0d;
 }
 
 .events {

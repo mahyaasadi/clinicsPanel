@@ -1,5 +1,5 @@
 const convertToLocaleString = (event, setValue) => {
-  const rawValue = event.target.value.replace(/,/g, "");
+  const rawValue = event.target.value.replace(/٬/g, ",").replace(/,/g, "");
   const parsedValue = parseFloat(rawValue);
 
   if (!isNaN(parsedValue)) {

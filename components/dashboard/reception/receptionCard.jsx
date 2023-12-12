@@ -48,7 +48,7 @@ const ReceptionCard = ({
           {/* departments header */}
           <div className="card-body">
             {isLoading ? (
-              <Skeleton className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+              <Skeleton className="nav nav-tabs nav-tabs-bottom">
                 {/*  */}
               </Skeleton>
             ) : (

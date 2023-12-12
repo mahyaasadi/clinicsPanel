@@ -25,16 +25,16 @@ const DayList = ({
   DatesDays,
   openNewAppointmentModal,
   openEditAppointmentModal,
+  openDuplicateModal,
   deleteAppointment,
   depOpeningHour,
 }) => {
-  let currentMonth = jdate.format("MMM");
+  let currentMonth = jdate.format("MMM YYYY");
 
   return (
     <div className="appointmentTableContainer">
       <div className="d-flex justify-center">
-
-        <div className="col"></div>
+        {/* <div className="col"></div> */}
         <div className="col currentMonthContainer font-17 fw-bold text-center">
           {currentMonth}
         </div>
@@ -52,7 +52,6 @@ const DayList = ({
             />
           </button>
         </div> */}
-
       </div>
       <table className="table">
         <thead className="bg-light sticky-top top-0">
@@ -61,17 +60,11 @@ const DayList = ({
               (date, index) => (
                 (date = date.split("/")),
                 (
-                  // console.log(date[2][0] + date[2][1]),
                   <th key={index}>
                     <div className="date d-flex flex-col">
                       <div className="mb-1">{DatesDays[index]}</div>
                       <div className="d-flex align-items-center">
                         <p className="date-num DateDayContainer">{date[2]}</p>
-                        {/* {date[2] === date[2][0] + date[2][1] ? (
-                          <p className="">YYY</p>
-                        ) : (
-                          <p className="">NNN</p>
-                        )} */}
                       </div>
                     </div>
                   </th>
@@ -92,6 +85,7 @@ const DayList = ({
                     appointment={data[date]}
                     openNewAppointmentModal={openNewAppointmentModal}
                     openEditAppointmentModal={openEditAppointmentModal}
+                    openDuplicateModal={openDuplicateModal}
                     deleteAppointment={deleteAppointment}
                     depOpeningHour={depOpeningHour}
                   />

@@ -42,7 +42,13 @@ const CashDesk = ({ ClinicUser }) => {
 
   const [paymentData, setPaymentData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const handleCloseActionsModal = () => setShowActionsModal(false);
+  const [paymentDefaultValue, setPaymentDefaultValue] = useState(0);
+
+  const handleCloseActionsModal = () => {
+    setShowActionsModal(false);
+    setSelectedKart(null);
+    // setPaymentDefaultValue(paymentDefaultValue);
+  };
 
   // searchBox
   const [searchIsLoading, setSearchIsLoading] = useState(false);
@@ -138,7 +144,7 @@ const CashDesk = ({ ClinicUser }) => {
         ? parseInt(formProps.price.replaceAll(/,/g, ""))
         : 0,
       Return: formProps.returnPaymentSwitch ? true : false,
-      CartID: selectedKart ? selectedKart : false,
+      CartID: selectedKart ? selectedKart : null,
     };
 
     console.log({ data });
@@ -149,9 +155,11 @@ const CashDesk = ({ ClinicUser }) => {
         setPaymentData(response.data.CashDesk);
         getReceptionList();
 
-        e.target.reset();
+        // reset
         setShowPaymentModal(false);
         setIsLoading(false);
+        setSelectedKart(null);
+        setPaymentDefaultValue(0);
       })
       .catch((err) => {
         console.log(err);
@@ -263,6 +271,8 @@ const CashDesk = ({ ClinicUser }) => {
           ClinicID={ClinicID}
           price={price}
           setPrice={setPrice}
+          paymentDefaultValue={paymentDefaultValue}
+          setPaymentDefaultValue={setPaymentDefaultValue}
         />
       </div>
     </>

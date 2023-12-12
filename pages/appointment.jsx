@@ -63,7 +63,7 @@ const Appointment = ({ ClinicUser }) => {
     ActiveDate = null;
   };
 
-  // delayAppointmenModal
+  // delayAppointmentModal
   const [showDelayModal, setShowDelayModal] = useState(false);
   const closeDelayModal = () => setShowDelayModal(false);
   const openDelayModal = () => setShowDelayModal(true);
@@ -408,20 +408,42 @@ const Appointment = ({ ClinicUser }) => {
   };
 
   // Delay in Appointments
-  const applyDelayInAppoinytments = (e) => {
+  const delayHoursOptions = [];
+  for (let i = 1; i < 11; i++) {
+    const hourOption = i;
+    let obj = {
+      value: hourOption,
+      label: hourOption,
+    };
+    delayHoursOptions.push(obj);
+  }
+
+  const delayMinutesOptions = [];
+  for (let i = 15; i < 60; i = i + 15) {
+    const minOption = i;
+    let obj = {
+      value: minOption,
+      label: minOption,
+    };
+    delayMinutesOptions.push(obj);
+  }
+
+  let delayHr,
+    delayMin = null;
+  const FUSelectDelayHour = (hour) => (delayHr = hour);
+  const FUSelectDelayMinute = (minute) => (delayMin = minute);
+
+  const applyDelayOnAppointments = (e) => {
     e.preventDefault();
     setDelayIsLoading(true);
-
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
 
     let url = "Appointment/SetDelayClinic";
     let data = {
       ClinicID,
       ModalityID: ActiveModalityID,
       Date: appointmentDate,
-      DelayH: formProps.delayHour ? parseInt(formProps.delayHour) : 0,
-      DelayM: formProps.delayMinute ? parseInt(formProps.delayMinute) : 0,
+      DelayH: delayHr ? delayHr : 0,
+      DelayM: delayMin ? delayMin : 0,
     };
 
     console.log({ data });
@@ -431,13 +453,27 @@ const Appointment = ({ ClinicUser }) => {
       .then((response) => {
         console.log(response.data);
         getClinicAppointments();
+
+        SuccessAlert("موفق", "ثبت تاخیر با موفقیت ثبت گردید!");
         setDelayIsLoading(false);
         closeDelayModal();
       })
       .catch((err) => {
         console.log(err);
         setDelayIsLoading(false);
+        ErrorAlert("خطا", "ثبت تاخیر با خطا مواجه گردید!");
       });
+  };
+
+  // Duplicate event modal
+  const openDuplicateModal = (data) => {
+    console.log({ data });
+    setModalMode("copy");
+    setShowAppointmentModal(true);
+    setEditAppointmentData(data);
+
+    ActivePatientID = data.Patient._id;
+    ActiveAppointmentID = data._id;
   };
 
   useEffect(() => {
@@ -469,12 +505,9 @@ const Appointment = ({ ClinicUser }) => {
                         </div>
                       ) : (
                         <Skeleton>
-                          <ul className="nav nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-tabs-scroll font-14 flex-nowrap paddingb-0">
+                          <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded paddingb-0">
                             <li className="nav-item">
-                              <a
-                                className="nav-link"
-                              >
-                              </a>
+                              <a className="nav-link"></a>
                             </li>
                           </ul>
                         </Skeleton>
@@ -522,6 +555,7 @@ const Appointment = ({ ClinicUser }) => {
                           openEditAppointmentModal={openEditAppointmentModal}
                           deleteAppointment={deleteAppointment}
                           openNewAppointmentModal={openNewAppointmentModal}
+                          openDuplicateModal={openDuplicateModal}
                         />
                       </div>
                     </div>
@@ -561,9 +595,13 @@ const Appointment = ({ ClinicUser }) => {
         <DelayAppointmentModal
           show={showDelayModal}
           onHide={closeDelayModal}
-          onSubmit={applyDelayInAppoinytments}
+          onSubmit={applyDelayOnAppointments}
           setAppointmentDate={setAppointmentDate}
           isLoading={delayIsLoading}
+          delayHoursOptions={delayHoursOptions}
+          delayMinutesOptions={delayMinutesOptions}
+          FUSelectDelayHour={FUSelectDelayHour}
+          FUSelectDelayMinute={FUSelectDelayMinute}
         />
       </div>
     </>

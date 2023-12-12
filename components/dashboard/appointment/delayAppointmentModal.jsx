@@ -1,4 +1,6 @@
 import { Modal } from "react-bootstrap";
+import selectfieldColourStyles from "class/selectfieldStyle";
+import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 const DelayAppointmentModal = ({
@@ -7,6 +9,10 @@ const DelayAppointmentModal = ({
   onSubmit,
   setAppointmentDate,
   isLoading,
+  delayHoursOptions,
+  delayMinutesOptions,
+  FUSelectDelayHour,
+  FUSelectDelayMinute,
 }) => {
   return (
     <>
@@ -28,24 +34,37 @@ const DelayAppointmentModal = ({
               />
             </div>
 
-            <div className="form-group col">
-              <label className="lblAbs font-12">میزان ساعت تاخیر</label>
-              <input
-                type="number"
+            <div className="col">
+              <label className="lblDrugIns font-12">میزان ساعت تاخیر</label>
+              <SelectField
+                styles={selectfieldColourStyles}
+                options={delayHoursOptions}
+                label={true}
                 name="delayHour"
-                className="form-control floating inputPadding rounded text-secondary"
-              />
-            </div>
-            <div className="form-group col">
-              <label className="lblAbs font-12">میزان دقیقه تاخیر</label>
-              <input
-                type="number"
-                name="delayMinute"
-                className="form-control floating inputPadding rounded text-secondary"
+                className="text-center font-12"
+                onChangeValue={(value) => FUSelectDelayHour(value?.value)}
+                placeholder={"انتخاب کنید"}
+                isClearable
+                // required
               />
             </div>
 
-            <div className="submit-section mt-1">
+            <div className="col marginb-md1">
+              <label className="lblDrugIns font-12">میزان دقیقه تاخیر</label>
+              <SelectField
+                styles={selectfieldColourStyles}
+                options={delayMinutesOptions}
+                label={true}
+                name="delayMinute"
+                className="text-center font-12"
+                onChangeValue={(value) => FUSelectDelayMinute(value?.value)}
+                placeholder={"انتخاب کنید"}
+                isClearable
+                // required
+              />
+            </div>
+
+            <div className="submit-section mt-4">
               {!isLoading ? (
                 <button
                   type="submit"

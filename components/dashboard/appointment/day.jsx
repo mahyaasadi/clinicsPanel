@@ -5,6 +5,7 @@ const Day = ({
   appointment,
   openEditAppointmentModal,
   openNewAppointmentModal,
+  openDuplicateModal,
   deleteAppointment,
   depOpeningHour,
 }) => {
@@ -22,6 +23,7 @@ const Day = ({
               data={event}
               depOpeningHour={depOpeningHour}
               openEditAppointmentModal={openEditAppointmentModal}
+              openDuplicateModal={openDuplicateModal}
               deleteAppointment={deleteAppointment}
               onDoubleClick={() => openEditAppointmentModal(event)}
             />

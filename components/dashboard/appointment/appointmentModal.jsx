@@ -62,13 +62,18 @@ const AppointmentModal = ({
   const defaultStartTime = { value: data.ST, label: data.ST };
   const defaultEndTime = { value: data.ET, label: data.ET };
 
+  console.log({ mode, data });
   return (
     <>
       <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row text-secondary font-14 fw-bold margin-right-sm">
-              {mode === "add" ? "ثبت نوبت جدید" : "ویرایش اطلاعات"}
+              {mode === "add"
+                ? "ثبت نوبت جدید"
+                : mode === "edit"
+                ? "ویرایش اطلاعات"
+                : "ثبت مجدد نوبت"}
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -120,7 +125,9 @@ const AppointmentModal = ({
               <div className="margin-right-1 font-12 mt-3">
                 <div className="d-flex gap-2 mb-3">
                   <FeatherIcon icon="user" className="mb-0" />
-                  {mode === "edit" ? data?.Patient?.Name : patientInfo?.Name}
+                  {mode === "edit" || mode === "copy"
+                    ? data?.Patient?.Name
+                    : patientInfo?.Name}
                   {data?.Patient?.Age || patientInfo.Age ? (
                     <p className="m-0">
                       , {mode === "edit" ? data.Patient.Age : patientInfo.Age}{" "}
@@ -218,6 +225,28 @@ const AppointmentModal = ({
                 </div>
               </div>
             </div>
+
+            {mode === "copy" ? (
+              <div className="margin-right-1 font-12">
+                <div className="d-flex gap-2 mb-3">
+                  <FeatherIcon icon="user" className="mb-0" />
+                  {data?.Patient?.Name}
+                  {data?.Patient?.Age ? (
+                    <p className="m-0">, {data.Patient.Age} ساله</p>
+                  ) : (
+                    ""
+                  )}
+                  ,{" "}
+                  {insuranceType ? (
+                    <p>{insuranceType}</p>
+                  ) : (
+                    "نوع بیمه مشخص نمی باشد"
+                  )}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="submit-section">
               {!appointmentIsLoading ? (

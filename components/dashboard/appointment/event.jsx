@@ -3,6 +3,7 @@ import FeatherIcon from "feather-icons-react";
 const Event = ({
   data,
   openEditAppointmentModal,
+  openDuplicateModal,
   deleteAppointment,
   depOpeningHour,
   onDoubleClick,
@@ -27,6 +28,21 @@ const Event = ({
     onDoubleClick();
   };
 
+  const handleOpenEditModal = (event) => {
+    event.stopPropagation();
+    openEditAppointmentModal(data);
+  };
+
+  const handleOpenDuplicateModal = (event) => {
+    event.stopPropagation();
+    openDuplicateModal(data);
+  };
+
+  const handleDelete = (event) => {
+    event.stopPropagation();
+    deleteAppointment(data._id, data.Date);
+  };
+
   return (
     <>
       <div
@@ -37,7 +53,7 @@ const Event = ({
         )} end-${calculatedEndTime.replace(":", "-")}`}
       >
         <div className="d-flex gap-1 justify-between">
-          <div className="">
+          <div>
             <div className="title d-flex flex-wrap align-items-center gap-2">
               <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
               {data.Patient.Name}
@@ -48,27 +64,27 @@ const Event = ({
               تا {data.ET}
             </div>
           </div>
-          <div className="">
+
+          <div className="d-flex flex-col gap-1 align-items-center">
             <button
-              className="btn btn-sm p-0 editButton d-flex justify-end"
-              onClick={() => openEditAppointmentModal(data)}
+              className="btn btn-sm p-0 eventBtns editButton d-flex justify-end"
+              onClick={handleOpenEditModal}
             >
               <FeatherIcon icon="edit-2" style={{ width: "14px" }} />
             </button>
             <button
-              className="btn btn-sm p-0 editButton d-flex justify-end"
-            // onClick={() => deleteAppointment(data._id, data.Date)}
+              className="btn btn-sm p-0 eventBtns editButton d-flex justify-end"
+              onClick={handleOpenDuplicateModal}
             >
               <FeatherIcon icon="copy" style={{ width: "15px" }} />
             </button>
             <button
-              className="btn btn-sm p-0 trashButton d-flex justify-end"
-              onClick={() => deleteAppointment(data._id, data.Date)}
+              className="btn btn-sm p-0 eventBtns trashButton d-flex justify-end"
+              onClick={handleDelete}
             >
               <FeatherIcon icon="trash" style={{ width: "15px" }} />
             </button>
           </div>
-
         </div>
       </div>
     </>
