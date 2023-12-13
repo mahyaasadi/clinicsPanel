@@ -479,6 +479,10 @@ p:last-child {
   justify-content: center;
 }
 
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
 .justify-end {
   justify-content: flex-end;
 }
@@ -4448,27 +4452,27 @@ html.menu-opened body {
   width: 1px;
 
   &:checked+.checkbox-tile {
-    border-color: #0743a3;
-    color: #0743a3;
+    border-color: #594b0d;
+    color: #594b0d;
 
     &:before {
       transform: scale(1);
       opacity: 1;
-      background-color: #0743a3;
-      border-color: #0743a3;
+      background-color: #594b0d;
+      border-color: #594b0d;
     }
 
     .checkbox-icon {
-      color: #0743a3;
+      color: #594b0d;
     }
 
     .checkbox-label {
-      color: #0743a3;
+      color: #594b0d;
     }
   }
 
   &:focus+.checkbox-tile {
-    border-color: #0743a3;
+    border-color: #594b0d;
 
     :before {
       transform: scale(1);
@@ -4483,7 +4487,7 @@ html.menu-opened body {
   align-items: center;
   justify-content: center;
   min-height: 8rem;
-  border-radius: 0.5rem;
+  border-radius: 14px;
   border: 1px solid #e4eef0;
   background-color: #fff;
   transition: 0.15s ease;
@@ -4495,9 +4499,9 @@ html.menu-opened body {
     content: "";
     position: absolute;
     display: block;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid #b5bfd9;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #b5bfd9;
     background-color: #fff;
     border-radius: 50%;
     top: 0.25rem;
@@ -4512,10 +4516,10 @@ html.menu-opened body {
   }
 
   &:hover {
-    border-color: #0743a3;
+    border-color: #594b0d;
 
     &:hover .checkbox-label {
-      color: #0743a3;
+      color: #594b0d;
     }
 
     &:before {
@@ -4523,6 +4527,19 @@ html.menu-opened body {
       opacity: 1;
     }
   }
+}
+
+.checkbox-label {
+  color: #594b0d !important;
+}
+
+.defaultDateCheckboxTile {
+  width: 5rem !important;
+  min-height: 2.5rem !important;
+}
+
+.defaultDateCheckboxWrapper {
+  box-shadow: none !important;
 }
 
 .PerCheckbox-input {

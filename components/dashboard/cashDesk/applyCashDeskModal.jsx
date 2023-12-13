@@ -13,6 +13,7 @@ const ApplyCashDeskModal = ({
   applyCashDeskActions,
   isLoading,
   returnMode,
+  setReturnMode,
   cashMode,
   calculatedTotalPC,
   price,
@@ -21,23 +22,58 @@ const ApplyCashDeskModal = ({
   paymentDefaultValue,
   setPaymentDefaultValue,
 }) => {
+  const [returnPayment, setReturnPayment] = useState(0);
+
   let paidCost =
     parseInt(paymentData.CashPayment) + parseInt(paymentData.CartPayment);
 
   useEffect(() => {
     setTimeout(() => {
-      if (paidCost === calculatedTotalPC || paidCost > calculatedTotalPC) {
+      if (paymentData.Debt && paymentData.Debt !== "0") {
+        setPaymentDefaultValue(paymentData.Debt);
+        console.log("has debt");
+      } else if (paidCost === calculatedTotalPC && returnMode === false) {
         setPaymentDefaultValue(0);
-        console.log("fullPayment or returnMode");
+        console.log("fullPayment");
       } else if (paidCost < calculatedTotalPC) {
         setPaymentDefaultValue(calculatedTotalPC - paidCost);
         console.log("debt");
+      } else if (paidCost > calculatedTotalPC) {
+        console.log("in return mode");
+        setReturnMode(true);
+        setReturnPayment(paidCost - calculatedTotalPC);
       } else {
         setPaymentDefaultValue(calculatedTotalPC);
-        console.log("zeroPayment");
+        console.log("zero payment");
       }
-    }, 300);
+    }, 200);
+
+    return () => {
+      setPaymentDefaultValue(0);
+      setReturnMode(false);
+      setReturnPayment(0);
+    };
   }, [paymentData]);
+
+  console.log({ returnMode, returnPayment });
+
+  // let paidCost =
+  //   parseInt(paymentData.CashPayment) + parseInt(paymentData.CartPayment);
+
+  // useEffect(() => {
+  //   // setTimeout(() => {
+  //   if (paidCost === calculatedTotalPC || paidCost > calculatedTotalPC) {
+  //     setPaymentDefaultValue(0);
+  //     console.log("fullPayment or returnMode");
+  //   } else if (paymentData.Debt && paymentData.Debt !== "0") {
+  //     setPaymentDefaultValue(paymentData.Debt);
+  //     console.log("debt");
+  //   } else {
+  //     setPaymentDefaultValue(calculatedTotalPC);
+  //     console.log("zeroPayment");
+  //   }
+  //   // }, 300);
+  // }, [paymentData]);
 
   console.log({ paymentDefaultValue });
 
@@ -79,12 +115,14 @@ const ApplyCashDeskModal = ({
                   value={
                     !returnMode && price === 0
                       ? convertToFixedNumber(
-                          paymentDefaultValue.toLocaleString()
+                          paymentDefaultValue?.toLocaleString()
                         )
                       : convertToFixedNumber(price.toLocaleString())
                   }
                   defaultValue={
-                    !returnMode ? convertToFixedNumber(paymentDefaultValue) : 0
+                    !returnMode
+                      ? convertToFixedNumber(paymentDefaultValue)
+                      : convertToFixedNumber(returnPayment)
                   }
                   onChange={(e) => convertToLocaleString(e, setPrice)}
                 />

@@ -40,22 +40,24 @@ const CashDeskActions = ({
   const handleCloseModal = () => {
     setShowPaymentModal(false);
     setPrice(0);
+    // setPaymentDefaultValue(0);
   };
 
   const handlePaymentBtn = () => {
-    setCashMode(false);
     setReturnMode(false);
+    setCashMode(false);
     setShowPaymentModal(true);
   };
 
   const handleCashPaymentBtn = () => {
-    setCashMode(true);
     setReturnMode(false);
+    setCashMode(true);
     setShowPaymentModal(true);
   };
 
   const handleReturnPaymentBtn = () => {
     setReturnMode(true);
+    setCashMode(false);
     setShowPaymentModal(true);
   };
 
@@ -271,6 +273,13 @@ const CashDeskActions = ({
                     ریال
                   </td>
                   <td>
+                    جمع مبالغ واریزی به بیمار:{" "}
+                    {paymentData?.ReturnedPayment
+                      ? parseInt(paymentData.ReturnedPayment).toLocaleString()
+                      : 0}{" "}
+                    ریال
+                  </td>
+                  <td>
                     مبلغ بدهی :{" "}
                     {paymentData?.Debt
                       ? parseInt(paymentData?.Debt).toLocaleString()
@@ -310,6 +319,7 @@ const CashDeskActions = ({
         applyCashDeskActions={applyCashDeskActions}
         isLoading={isLoading}
         returnMode={returnMode}
+        setReturnMode={setReturnMode}
         cashMode={cashMode}
         calculatedTotalPC={calculatedTotalPC}
         price={price}

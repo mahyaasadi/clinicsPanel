@@ -1,33 +1,30 @@
 import { Modal } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
-import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
+import defaultAppointmentDateOptions from "class/defaultAppointmentDateOptions";
 import "public/assets/css/appointment.css";
 
-const AppointmentModal = ({
+const DuplicateAppointmentModal = ({
   show,
-  mode,
   onHide,
   onSubmit,
   data,
   ClinicID,
-  setAppointmentDate,
+  selectedDepartment,
   FUSelectDepartment,
-  patientInfo,
-  getPatientInfo,
-  patientStatIsLoading,
-  appointmentIsLoading,
+  setAppointmentDate,
   FUSelectStartTime,
   FUSelectEndTime,
-  hoursOptions,
   ActiveDate,
-  selectedDepartment,
+  hoursOptions,
+  appointmentIsLoading,
+  appointmentDate,
 }) => {
-  let cleanedDateString = null;
-  if (ActiveDate) cleanedDateString = ActiveDate.replace(/""/g, "");
-
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
@@ -62,88 +59,69 @@ const AppointmentModal = ({
   const defaultStartTime = { value: data.ST, label: data.ST };
   const defaultEndTime = { value: data.ET, label: data.ET };
 
+  const currentDate = new JDate();
+  const addDayToDate = (day) => {
+    let h = day * 24;
+    return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+  };
+
+  const handleOptionSelect = (option) => {
+    let newDate;
+    switch (option) {
+      case "tomorrow":
+        newDate = new JDate(addDayToDate(1)).format("YYYY/MM/DD");
+        break;
+      case "dayAfterTomorrow":
+        newDate = new JDate(addDayToDate(2)).format("YYYY/MM/DD");
+        break;
+      case "nextWeek":
+        newDate = new JDate(addDayToDate(7)).format("YYYY/MM/DD");
+        break;
+      case "nextMonth":
+        newDate = new JDate(addDayToDate(30)).format("YYYY/MM/DD");
+        break;
+      case "reset":
+        newDate = currentDate.format("YYYY/MM/DD");
+        console.log("reset");
+        break;
+      default:
+        newDate = currentDate;
+    }
+    setAppointmentDate(newDate);
+  };
+
   return (
     <>
       <Modal show={show} onHide={onHide} centered>
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row text-secondary font-14 fw-bold margin-right-sm">
-              {mode === "add" ? "ثبت نوبت جدید" : "ویرایش اطلاعات"}
+              ایجاد کپی از نوبت
             </div>
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <form className="w-100" onSubmit={getPatientInfo}>
-            {mode === "add" ? (
-              <div className="input-group mb-3">
-                <label className="lblAbs font-12">
-                  کد ملی / کد اتباع بیمار
-                </label>
-                <input
-                  type="text"
-                  id="appointmentNationalCode"
-                  name="appointmentNationalCode"
-                  required
-                  className="form-control rounded-right GetPatientInput w-50"
-                />
-
-                {!patientStatIsLoading ? (
-                  <button
-                    id="getPatientInfoBtn"
-                    type="button"
-                    onClick={getPatientInfo}
-                    className="btn-primary btn w-10 rounded-left font-12"
-                  >
-                    استعلام
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="btn-primary btn rounded-left"
-                    disabled
-                  >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                  </button>
-                )}
-              </div>
-            ) : (
-              ""
-            )}
-          </form>
-
           <form onSubmit={onSubmit}>
-            <div className="font-13 mt-3" id="appointmentPatientInfoCard">
-              <div className="margin-right-1 font-12 mt-3">
-                <div className="d-flex gap-2 mb-3">
-                  <FeatherIcon icon="user" className="mb-0" />
-                  {mode === "edit" ? data?.Patient?.Name : patientInfo?.Name}
-                  {data?.Patient?.Age || patientInfo.Age ? (
-                    <p className="m-0">
-                      , {mode === "edit" ? data.Patient.Age : patientInfo.Age}{" "}
-                      ساله
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                  ,{" "}
-                  {insuranceType || patientInfo.InsuranceName ? (
-                    <p>
-                      {mode === "edit"
-                        ? insuranceType
-                        : patientInfo.InsuranceName}
-                    </p>
-                  ) : (
-                    "نوع بیمه مشخص نمی باشد"
-                  )}
-                </div>
+            <div className="margin-right-1 font-12">
+              <div className="d-flex gap-2 mb-3">
+                <FeatherIcon icon="user" className="mb-0" />
+                {data?.Patient?.Name}
+                {data?.Patient?.Age ? (
+                  <p className="m-0">, {data.Patient.Age} ساله</p>
+                ) : (
+                  ""
+                )}
+                ,{" "}
+                {insuranceType ? (
+                  <p>{insuranceType}</p>
+                ) : (
+                  "نوع بیمه مشخص نمی باشد"
+                )}
               </div>
             </div>
 
-            <div id="additionalAppointmentInfo">
+            <div>
               <div>
                 <label className="lblDrugIns font-12">
                   انتخاب بخش <span className="text-danger">*</span>
@@ -156,9 +134,9 @@ const AppointmentModal = ({
                   className="text-center font-12"
                   onChangeValue={(value) => FUSelectDepartment(value?.value)}
                   defaultValue={
-                    mode === "edit"
-                      ? selectedModalityType
-                      : defaultAddModalityValue
+                    defaultAddModalityValue
+                      ? defaultAddModalityValue
+                      : selectedModalityType
                   }
                   placeholder={"انتخاب کنید"}
                   required
@@ -166,13 +144,36 @@ const AppointmentModal = ({
                 />
               </div>
 
-              <input type="hidden" name="OldDate" value={data.Date} />
+              {/* default date options */}
+              <div className="defaultDateOptions font-13 d-flex gap-2 justify-evenly mb-2">
+                {defaultAppointmentDateOptions.map((dateOption, index) => (
+                  <div className="checkbox" key={index}>
+                    <label className="checkbox-wrapper defaultDateCheckboxWrapper">
+                      <input
+                        type="radio"
+                        name="Dep"
+                        value={dateOption.value}
+                        id={dateOption.value}
+                        className="checkbox-input"
+                        onChange={() => handleOptionSelect(dateOption.value)}
+                      />
+                      <div className="checkbox-tile defaultDateCheckboxTile">
+                        <span className="checkbox-icon"></span>
+
+                        <div className="checkbox-items">
+                          <span className="checkbox-label">
+                            {dateOption.label}
+                          </span>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
 
               <div className="form-group">
                 <SingleDatePicker
-                  defaultDate={
-                    cleanedDateString ? cleanedDateString : data.Date
-                  }
+                  defaultDate={appointmentDate}
                   setDate={setAppointmentDate}
                   label="انتخاب تاریخ"
                 />
@@ -191,7 +192,7 @@ const AppointmentModal = ({
                     placeholder={"انتخاب کنید"}
                     name="pureStartTime"
                     onChangeValue={(value) => FUSelectStartTime(value?.value)}
-                    defaultValue={mode === "edit" ? defaultStartTime : ""}
+                    defaultValue={defaultStartTime ? defaultStartTime : ""}
                     key={data?.ST}
                     required
                     isClearable
@@ -210,7 +211,7 @@ const AppointmentModal = ({
                     placeholder={"انتخاب کنید"}
                     name="pureEndTime"
                     onChangeValue={(value) => FUSelectEndTime(value?.value)}
-                    defaultValue={mode === "edit" ? defaultEndTime : ""}
+                    defaultValue={defaultEndTime ? defaultEndTime : ""}
                     key={data?.ET}
                     required
                     isClearable
@@ -248,35 +249,4 @@ const AppointmentModal = ({
   );
 };
 
-export default AppointmentModal;
-
-{
-  /* <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت شروع</label>
-                  <DatePicker
-                    selected={selectedStartTime}
-                    onChange={handleStartTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                    defaultValue={mode === "edit" ? defaultStartTime : ""}
-                  />
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت پایان</label>
-                  <DatePicker
-                    selected={selectedEndTime}
-                    onChange={handleEndTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                  />
-                </div> */
-}
+export default DuplicateAppointmentModal;

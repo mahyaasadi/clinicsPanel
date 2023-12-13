@@ -47,7 +47,7 @@ const CashDesk = ({ ClinicUser }) => {
   const handleCloseActionsModal = () => {
     setShowActionsModal(false);
     setSelectedKart(null);
-    // setPaymentDefaultValue(paymentDefaultValue);
+    // setPaymentDefaultValue(0);
   };
 
   // searchBox

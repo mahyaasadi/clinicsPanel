@@ -4,16 +4,17 @@ import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
+import { Skeleton } from "primereact/skeleton";
 import { ErrorAlert, SuccessAlert, QuestionAlert } from "class/AlertManage";
 import DayList from "components/dashboard/appointment/dayList";
 import Loading from "components/commonComponents/loading/loading";
 import AppointmentModal from "components/dashboard/appointment/appointmentModal";
 import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
 import DelayAppointmentModal from "components/dashboard/appointment/delayAppointmentModal";
+import DuplicateAppointmentModal from "components/dashboard/appointment/duplicateAppointmentModal";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import "/public/assets/css/appointment.css";
-import { Skeleton } from "primereact/skeleton";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -67,6 +68,11 @@ const Appointment = ({ ClinicUser }) => {
   const [showDelayModal, setShowDelayModal] = useState(false);
   const closeDelayModal = () => setShowDelayModal(false);
   const openDelayModal = () => setShowDelayModal(true);
+
+  // duplicateAppointmentModal
+  const [showDupliacteModal, setShowDuplicateModal] = useState(false);
+  const closeDuplicateModal = () => setShowDuplicateModal(false);
+  const [duplicateData, setDuplicateData] = useState([]);
 
   const [pureStartTime, setPureStartTime] = useState(null);
   const [pureEndTime, setPureEndTime] = useState(null);
@@ -243,14 +249,17 @@ const Appointment = ({ ClinicUser }) => {
     e.preventDefault();
     setAppointmentIsLoading(true);
 
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
     let url = "Appointment/addClinic";
     let data = {
       ClinicID,
       PatientID: ActivePatientID,
-      ModalityID: selectedDepartment ? selectedDepartment : "",
+      ModalityID: selectedDepartment ? selectedDepartment : ActiveModalityID,
       Date: appointmentDate,
-      ST: pureStartTime,
-      ET: pureEndTime,
+      ST: pureStartTime ? pureStartTime : formProps.pureStartTime,
+      ET: pureEndTime ? pureEndTime : formProps.pureEndTime,
     };
 
     axiosClient
@@ -268,6 +277,7 @@ const Appointment = ({ ClinicUser }) => {
 
         setAppointmentIsLoading(false);
         setShowAppointmentModal(false);
+        setShowDuplicateModal(false);
         SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
       })
       .catch((err) => {
@@ -465,16 +475,60 @@ const Appointment = ({ ClinicUser }) => {
       });
   };
 
-  // Duplicate event modal
+  // DuplicateAppointment modal
   const openDuplicateModal = (data) => {
-    console.log({ data });
-    setModalMode("copy");
-    setShowAppointmentModal(true);
-    setEditAppointmentData(data);
+    setShowDuplicateModal(true);
+    setDuplicateData(data);
+    ActiveDate = data.Date;
+
+    setAppointmentDate(ActiveDate?.replace(/""/g, ""));
 
     ActivePatientID = data.Patient._id;
     ActiveAppointmentID = data._id;
   };
+
+  // const applyDuplicateAppointment = (e) => {
+  //   e.preventDefault();
+  //   // setAppointmentIsLoading(true);
+
+  //   let formData = new FormData(e.target);
+  //   const formProps = Object.fromEntries(formData);
+
+  //   let url = "Appointment/addClinic";
+  //   let data = {
+  //     ClinicID,
+  //     PatientID: ActivePatientID,
+  //     ModalityID: selectedDepartment ? selectedDepartment : ActiveModalityID,
+  //     Date: appointmentDate,
+  //     ST: pureStartTime ? pureStartTime : formProps.pureStartTime,
+  //     ET: pureEndTime ? pureEndTime : formProps.pureEndTime,
+  //   };
+
+  //   axiosClient
+  //     .post(url, data)
+  //     .then((response) => {
+  //       console.log(response.data);
+
+  //       if (appointmentEvents.hasOwnProperty(response.data.Date)) {
+  //         // If it exists, directly push the new appointment to the existing array
+  //         appointmentEvents[response.data.Date].push(response.data);
+  //       } else {
+  //         // If it doesn't exist, create a new key-value pair with the new date as the key and an array containing the new appointment as the value
+  //         appointmentEvents[response.data.Date] = [response.data];
+  //       }
+
+  //       setAppointmentIsLoading(false);
+  //       setShowAppointmentModal(false);
+  //       SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setAppointmentIsLoading(false);
+  //       ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
+  //     });
+
+  //   console.log({ data });
+  // };
 
   useEffect(() => {
     if (ActiveModalityID !== null) {
@@ -602,6 +656,23 @@ const Appointment = ({ ClinicUser }) => {
           delayMinutesOptions={delayMinutesOptions}
           FUSelectDelayHour={FUSelectDelayHour}
           FUSelectDelayMinute={FUSelectDelayMinute}
+        />
+
+        <DuplicateAppointmentModal
+          show={showDupliacteModal}
+          onHide={closeDuplicateModal}
+          onSubmit={addAppointment}
+          data={duplicateData}
+          ClinicID={ClinicID}
+          selectedDepartment={selectedDepartment}
+          FUSelectDepartment={FUSelectDepartment}
+          setAppointmentDate={setAppointmentDate}
+          ActiveDate={ActiveDate}
+          hoursOptions={hoursOptions}
+          appointmentIsLoading={appointmentIsLoading}
+          appointmentDate={appointmentDate}
+          FUSelectStartTime={FUSelectStartTime}
+          FUSelectEndTime={FUSelectEndTime}
         />
       </div>
     </>

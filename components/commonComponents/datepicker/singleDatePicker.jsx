@@ -11,6 +11,8 @@ const currentDay = jdate.getDate();
 let initialDate = null;
 
 const SingleDatePicker = ({ setDate, label, defaultDate }) => {
+  console.log({ defaultDate });
+
   if (defaultDate) {
     defaultDate = defaultDate.replaceAll(/\//g, "");
     initialDate = {

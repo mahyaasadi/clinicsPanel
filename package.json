@@ -27,7 +27,6 @@
     "primereact": "^10.0.7",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
-    "react-big-calendar": "^1.8.5",
     "react-bootstrap": "^2.9.1",
     "react-calendar-datetime-picker": "^1.6.3",
     "react-data-table-component": "^7.5.3",
