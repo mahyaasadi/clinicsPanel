@@ -45,10 +45,10 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -250,33 +250,4 @@ const AppointmentModal = ({
 
 export default AppointmentModal;
 
-{
-  /* <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت شروع</label>
-                  <DatePicker
-                    selected={selectedStartTime}
-                    onChange={handleStartTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                    defaultValue={mode === "edit" ? defaultStartTime : ""}
-                  />
-                </div>
 
-                <div className="col-md-6 col-12">
-                  <label className="lblAbs font-12">ساعت پایان</label>
-                  <DatePicker
-                    selected={selectedEndTime}
-                    onChange={handleEndTimeChange}
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    dateFormat="HH:mm"
-                    timeCaption="انتخاب کنید"
-                    locale="fa"
-                  />
-                </div> */
-}

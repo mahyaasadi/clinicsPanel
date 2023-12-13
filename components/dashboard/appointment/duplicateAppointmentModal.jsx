@@ -42,10 +42,10 @@ const DuplicateAppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -145,7 +145,7 @@ const DuplicateAppointmentModal = ({
               </div>
 
               {/* default date options */}
-              <div className="defaultDateOptions font-13 d-flex gap-2 justify-evenly mb-2">
+              <div className="defaultDateOptions font-12 d-flex gap-3 justify-evenly mb-2">
                 {defaultAppointmentDateOptions.map((dateOption, index) => (
                   <div className="checkbox" key={index}>
                     <label className="checkbox-wrapper defaultDateCheckboxWrapper">
@@ -162,7 +162,11 @@ const DuplicateAppointmentModal = ({
 
                         <div className="checkbox-items">
                           <span className="checkbox-label">
-                            {dateOption.label}
+                            {dateOption.label === "تنظیم مجدد" ? (
+                              <i className="secondaryColor">
+                                <FeatherIcon icon="refresh-cw" />
+                              </i>
+                            ) : dateOption.label}
                           </span>
                         </div>
                       </div>
@@ -181,7 +185,7 @@ const DuplicateAppointmentModal = ({
 
               <div className="row media-md-gap">
                 <div className="col-6">
-                  <label className="lblDrugIns font-11">
+                  <label className="lblDrugIns font-12">
                     ساعت شروع <span className="text-danger">*</span>
                   </label>
                   <SelectField
@@ -200,7 +204,7 @@ const DuplicateAppointmentModal = ({
                 </div>
 
                 <div className="col-6">
-                  <label className="lblDrugIns font-11">
+                  <label className="lblDrugIns font-12">
                     ساعت پایان <span className="text-danger">*</span>
                   </label>
                   <SelectField

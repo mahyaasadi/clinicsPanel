@@ -568,12 +568,16 @@ const Appointment = ({ ClinicUser }) => {
                       )}
                       <div className="col-5 d-flex justify-end">
                         <div className="d-flex gap-1">
-                          <button
+                          {/* <button
                             className="btn btn-outline-secondary appointmentBtn font-14"
-                            onClick={openDelayModal}
+                            
                           >
-                            <FeatherIcon icon="clock" />
-                            ثبت تاخیر
+                          </button> */}
+                          <button
+                            className="btn btn-outline-secondary appointmentBtn font-14 delayButton"
+                            onClick={openDelayModal}>
+                            <span class="delayIcon"><FeatherIcon icon="clock" /></span>
+                            <span class="delayText">ثبت تاخیر</span>
                           </button>
                           <button
                             onClick={() => openNewAppointmentModal(todaysDate)}
