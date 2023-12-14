@@ -21,30 +21,37 @@ const ApplyCashDeskModal = ({
   paymentData,
   paymentDefaultValue,
   setPaymentDefaultValue,
+  returnPayment,
+  setReturnPayment,
 }) => {
-  const [returnPayment, setReturnPayment] = useState(0);
-
-  let paidCost =
-    parseInt(paymentData.CashPayment) + parseInt(paymentData.CartPayment);
+  let paidCost = 0;
+  if (paymentData.CashPayment || paymentData.CartPayment) {
+    paidCost =
+      parseInt(paymentData.CashPayment) + parseInt(paymentData.CartPayment);
+  }
 
   useEffect(() => {
     setTimeout(() => {
       if (paymentData.Debt && paymentData.Debt !== "0") {
-        setPaymentDefaultValue(paymentData.Debt);
-        console.log("has debt");
+        setPaymentDefaultValue(parseInt(paymentData.Debt));
       } else if (paidCost === calculatedTotalPC && returnMode === false) {
         setPaymentDefaultValue(0);
-        console.log("fullPayment");
       } else if (paidCost < calculatedTotalPC) {
         setPaymentDefaultValue(calculatedTotalPC - paidCost);
-        console.log("debt");
-      } else if (paidCost > calculatedTotalPC) {
-        console.log("in return mode");
+      } else if (
+        paymentData.ReturnedPayment !== "0" &&
+        paymentData.ReturnPayment == "0"
+      ) {
+        setReturnPayment(0);
+        setPaymentDefaultValue(0);
+      } else if (
+        paymentData.ReturnPayment &&
+        paymentData.ReturnPayment !== "0"
+      ) {
         setReturnMode(true);
-        setReturnPayment(paidCost - calculatedTotalPC);
+        setReturnPayment(parseInt(paymentData.ReturnPayment));
       } else {
         setPaymentDefaultValue(calculatedTotalPC);
-        console.log("zero payment");
       }
     }, 200);
 
@@ -54,28 +61,6 @@ const ApplyCashDeskModal = ({
       setReturnPayment(0);
     };
   }, [paymentData]);
-
-  console.log({ returnMode, returnPayment });
-
-  // let paidCost =
-  //   parseInt(paymentData.CashPayment) + parseInt(paymentData.CartPayment);
-
-  // useEffect(() => {
-  //   // setTimeout(() => {
-  //   if (paidCost === calculatedTotalPC || paidCost > calculatedTotalPC) {
-  //     setPaymentDefaultValue(0);
-  //     console.log("fullPayment or returnMode");
-  //   } else if (paymentData.Debt && paymentData.Debt !== "0") {
-  //     setPaymentDefaultValue(paymentData.Debt);
-  //     console.log("debt");
-  //   } else {
-  //     setPaymentDefaultValue(calculatedTotalPC);
-  //     console.log("zeroPayment");
-  //   }
-  //   // }, 300);
-  // }, [paymentData]);
-
-  console.log({ paymentDefaultValue });
 
   return (
     <>
@@ -104,27 +89,23 @@ const ApplyCashDeskModal = ({
                   dir="ltr"
                   name="price"
                   className="form-control floating inputPadding rounded text-secondary"
-                  // value={
-                  //   !returnMode && price === 0
-                  //     ? convertToFixedNumber(calculatedTotalPC.toLocaleString())
-                  //     : convertToFixedNumber(price.toLocaleString())
-                  // }
-                  // defaultValue={
-                  //   !returnMode ? convertToFixedNumber(calculatedTotalPC) : 0
-                  // }
                   value={
-                    !returnMode && price === 0
+                    returnMode
+                      ? convertToFixedNumber(returnPayment.toLocaleString())
+                      : !returnMode && price === 0
                       ? convertToFixedNumber(
                           paymentDefaultValue?.toLocaleString()
                         )
                       : convertToFixedNumber(price.toLocaleString())
                   }
-                  defaultValue={
-                    !returnMode
-                      ? convertToFixedNumber(paymentDefaultValue)
-                      : convertToFixedNumber(returnPayment)
-                  }
-                  onChange={(e) => convertToLocaleString(e, setPrice)}
+                  onChange={(e) => {
+                    if (!returnMode) {
+                      convertToLocaleString(e, setPrice);
+                    } else {
+                      convertToLocaleString(e, setReturnPayment);
+                    }
+                  }}
+                  // defaultValue={convertToFixedNumber(paymentDefaultValue)}
                 />
               </div>
             </div>

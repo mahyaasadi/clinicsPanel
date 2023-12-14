@@ -479,56 +479,13 @@ const Appointment = ({ ClinicUser }) => {
   const openDuplicateModal = (data) => {
     setShowDuplicateModal(true);
     setDuplicateData(data);
-    ActiveDate = data.Date;
 
+    ActiveDate = data.Date;
     setAppointmentDate(ActiveDate?.replace(/""/g, ""));
 
     ActivePatientID = data.Patient._id;
     ActiveAppointmentID = data._id;
   };
-
-  // const applyDuplicateAppointment = (e) => {
-  //   e.preventDefault();
-  //   // setAppointmentIsLoading(true);
-
-  //   let formData = new FormData(e.target);
-  //   const formProps = Object.fromEntries(formData);
-
-  //   let url = "Appointment/addClinic";
-  //   let data = {
-  //     ClinicID,
-  //     PatientID: ActivePatientID,
-  //     ModalityID: selectedDepartment ? selectedDepartment : ActiveModalityID,
-  //     Date: appointmentDate,
-  //     ST: pureStartTime ? pureStartTime : formProps.pureStartTime,
-  //     ET: pureEndTime ? pureEndTime : formProps.pureEndTime,
-  //   };
-
-  //   axiosClient
-  //     .post(url, data)
-  //     .then((response) => {
-  //       console.log(response.data);
-
-  //       if (appointmentEvents.hasOwnProperty(response.data.Date)) {
-  //         // If it exists, directly push the new appointment to the existing array
-  //         appointmentEvents[response.data.Date].push(response.data);
-  //       } else {
-  //         // If it doesn't exist, create a new key-value pair with the new date as the key and an array containing the new appointment as the value
-  //         appointmentEvents[response.data.Date] = [response.data];
-  //       }
-
-  //       setAppointmentIsLoading(false);
-  //       setShowAppointmentModal(false);
-  //       SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setAppointmentIsLoading(false);
-  //       ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
-  //     });
-
-  //   console.log({ data });
-  // };
 
   useEffect(() => {
     if (ActiveModalityID !== null) {
@@ -566,18 +523,15 @@ const Appointment = ({ ClinicUser }) => {
                           </ul>
                         </Skeleton>
                       )}
+
                       <div className="col-5 d-flex justify-end">
                         <div className="d-flex gap-1">
-                          {/* <button
-                            className="btn btn-outline-secondary appointmentBtn font-14"
-                            
-                          >
-                          </button> */}
                           <button
-                            className="btn btn-outline-secondary appointmentBtn font-14 delayButton"
-                            onClick={openDelayModal}>
-                            <span class="delayIcon"><FeatherIcon icon="clock" /></span>
-                            <span class="delayText">ثبت تاخیر</span>
+                            className="btn btn-outline-secondary appointmentBtn font-14"
+                            onClick={openDelayModal}
+                          >
+                            <FeatherIcon icon="clock" />
+                            ثبت تاخیر
                           </button>
                           <button
                             onClick={() => openNewAppointmentModal(todaysDate)}

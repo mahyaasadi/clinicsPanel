@@ -43,6 +43,7 @@ const CashDesk = ({ ClinicUser }) => {
   const [paymentData, setPaymentData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentDefaultValue, setPaymentDefaultValue] = useState(0);
+  const [returnPayment, setReturnPayment] = useState(0);
 
   const handleCloseActionsModal = () => {
     setShowActionsModal(false);
@@ -61,22 +62,48 @@ const CashDesk = ({ ClinicUser }) => {
     setPaymentData(data?.CashDesk);
   };
 
+  // const getReceptionList = () => {
+  //   setIsLoading(true);
+  //   let url = `ClinicReception//FindByClinic/${ClinicID}`;
+
+  //   axiosClient
+  //     .get(url)
+  //     .then((response) => {
+  //       setReceptionList(response.data);
+  //       if (response.data) getReceptionPatients(response.data);
+  //       setTimeout(() => {
+  //         setIsLoading(false);
+  //       }, 100);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       ErrorAlert("خطا", "خطا در دریافت اطلاعات");
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const getReceptionList = () => {
-    setIsLoading(true);
     let url = `ClinicReception//FindByClinic/${ClinicID}`;
 
-    axiosClient
-      .get(url)
-      .then((response) => {
-        setReceptionList(response.data);
-        if (response.data) getReceptionPatients(response.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "خطا در دریافت اطلاعات");
-        setIsLoading(false);
-      });
+    return new Promise((resolve, reject) => {
+      // Assuming axios is used for making the API call
+      axiosClient
+        .get(url)
+        .then((response) => {
+          setReceptionList(response.data);
+          if (response.data) getReceptionPatients(response.data);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 100);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات");
+          setIsLoading(false);
+          reject(err);
+        });
+    });
   };
 
   const getReceptionPatients = (newReceptionList) => {
@@ -153,13 +180,27 @@ const CashDesk = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         setPaymentData(response.data.CashDesk);
-        getReceptionList();
+        // getReceptionList();
 
-        // reset
-        setShowPaymentModal(false);
-        setIsLoading(false);
-        setSelectedKart(null);
-        setPaymentDefaultValue(0);
+        // // reset
+        // setShowPaymentModal(false);
+        // setIsLoading(false);
+        // setSelectedKart(null);
+        // setPaymentDefaultValue(0);
+
+        getReceptionList()
+          .then(() => {
+            // Reset and hide loader
+            setShowPaymentModal(false);
+            setSelectedKart(null);
+            setPaymentDefaultValue(0);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+            ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -273,6 +314,8 @@ const CashDesk = ({ ClinicUser }) => {
           setPrice={setPrice}
           paymentDefaultValue={paymentDefaultValue}
           setPaymentDefaultValue={setPaymentDefaultValue}
+          returnPayment={returnPayment}
+          setReturnPayment={setReturnPayment}
         />
       </div>
     </>

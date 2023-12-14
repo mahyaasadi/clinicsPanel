@@ -31,6 +31,8 @@ const CashDeskActions = ({
   setPrice,
   paymentDefaultValue,
   setPaymentDefaultValue,
+  returnPayment,
+  setReturnPayment,
 }) => {
   const [returnMode, setReturnMode] = useState(false);
   const [cashMode, setCashMode] = useState(false);
@@ -40,7 +42,6 @@ const CashDeskActions = ({
   const handleCloseModal = () => {
     setShowPaymentModal(false);
     setPrice(0);
-    // setPaymentDefaultValue(0);
   };
 
   const handlePaymentBtn = () => {
@@ -327,6 +328,8 @@ const CashDeskActions = ({
         paymentData={paymentData}
         paymentDefaultValue={paymentDefaultValue}
         setPaymentDefaultValue={setPaymentDefaultValue}
+        returnPayment={returnPayment}
+        setReturnPayment={setReturnPayment}
       />
     </>
   );

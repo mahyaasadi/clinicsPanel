@@ -9,6 +9,7 @@ import { setSession } from "lib/SessionMange";
 import { avatar01, headerLogo } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
+  console.log({ ClinicUser });
   let router = useRouter();
 
   const [task, settask] = useState(true);
@@ -141,13 +142,34 @@ const Header = ({ ClinicUser }) => {
               data-bs-toggle="dropdown"
             >
               <span className="user-img">
-                <Image
+                <img
                   id="avatar"
                   src={avatar01}
                   className="rounded-circle"
                   width="30"
                   height="30"
                   alt="Admin"
+                  // currentTarget.src = "public/assets/img/NotFoundAvatar.jpeg";
+                  // onError={(e) => {
+                  //   const currentTarget = e.currentTarget;
+                  //   if (
+                  //     currentTarget.src !== "assets/img/NotFoundAvatar.jpeg"
+                  //   ) {
+                  //     currentTarget.src = "assets/img/NotFoundAvatar.jpeg";
+                  //   }
+                  // }}
+                  // onError={(e) => {
+                  //   const currentTarget = e.currentTarget;
+                  //   const defaultImageSrc = "assets/img/NotFoundAvatar.jpeg";
+
+                  //   if (currentTarget.src !== defaultImageSrc) {
+                  //     currentTarget.src = defaultImageSrc;
+                  //   } else {
+                  //     // If setting the default image still causes an error,
+                  //     // set an empty image source to prevent further attempts
+                  //     currentTarget.src = "";
+                  //   }
+                  // }}
                 />
               </span>
             </a>
@@ -190,3 +212,4 @@ const Header = ({ ClinicUser }) => {
 };
 
 export default Header;
+
