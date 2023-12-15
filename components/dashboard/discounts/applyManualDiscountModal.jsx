@@ -1,15 +1,11 @@
-import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
-import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
-import discountPercentDataClass from "class/discountPercentDataClass";
+import { discountPercentDataClass } from "class/staticDropdownOptions";
 
 const ApplyDiscountModal = ({
   srv,
-  discountCost,
-  setDiscountCost,
   discountsList,
   applyDiscount,
   selectedDiscount,

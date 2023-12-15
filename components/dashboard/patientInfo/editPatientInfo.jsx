@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import Select from "react-select";
-import genderDataClass from "class/genderDataClass";
+import { genderDataClass } from "class/staticDropdownOptions";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
 const EditPatientInfoModal = ({

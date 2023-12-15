@@ -3,9 +3,12 @@ const selectfieldColourStyles = {
   control: (styles) => ({
     ...styles,
     minHeight: 43,
-    borderRadius: 20,
+    borderRadius: 14,
     border: "1px solid #E6E9F4",
     textAlign: "center",
+    '&:hover': {
+      borderColor: '#594b0d',
+    },
   }),
 };
 

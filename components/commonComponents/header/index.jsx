@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
-import { avatar01, headerLogo } from "components/commonComponents/imagepath";
+import { headerLogo, imgNotFound } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
   console.log({ ClinicUser });
@@ -28,12 +28,14 @@ const Header = ({ ClinicUser }) => {
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
 
-    document.getElementById("avatar").setAttribute("src", data.Avatar);
-    document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
-    document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);
-    document
-      .getElementById("dropdownAvatar")
-      .setAttribute("srcSet", data.Avatar);
+    if (data.Avatar) {
+      document.getElementById("avatar").setAttribute("src", data.Avatar);
+      document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
+      document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);
+      document
+        .getElementById("dropdownAvatar")
+        .setAttribute("srcSet", data.Avatar);
+    }
   };
 
   const handleLogout = async (ClinicUser) => {
@@ -74,30 +76,6 @@ const Header = ({ ClinicUser }) => {
                   className="form-control font-13"
                   placeholder="جستجو ..."
                 />
-                {/* <ul className="results">
-                  <li>
-                    <h6>
-                      <i className="me-1"> <FeatherIcon icon="user" /></i> Doctors
-                    </h6>
-                    <p>
-                      No matched Appointment found.{" "}
-                      <Link href="/admin/doctor-list">
-                        <span>View all</span>
-                      </Link>
-                    </p>
-                  </li>
-                  <li>
-                    <h6>
-                      <i className="me-1"> <FeatherIcon icon="user" /></i>Patients
-                    </h6>
-                    <p>
-                      No matched Appointment found.{" "}
-                      <Link href="/admin/patient-list">
-                        <span>View all</span>
-                      </Link>
-                    </p>
-                  </li>
-                </ul> */}
               </form>
             </div>
           </div>
@@ -142,34 +120,13 @@ const Header = ({ ClinicUser }) => {
               data-bs-toggle="dropdown"
             >
               <span className="user-img">
-                <img
+                <Image
                   id="avatar"
-                  src={avatar01}
+                  src={imgNotFound}
                   className="rounded-circle"
                   width="30"
                   height="30"
                   alt="Admin"
-                  // currentTarget.src = "public/assets/img/NotFoundAvatar.jpeg";
-                  // onError={(e) => {
-                  //   const currentTarget = e.currentTarget;
-                  //   if (
-                  //     currentTarget.src !== "assets/img/NotFoundAvatar.jpeg"
-                  //   ) {
-                  //     currentTarget.src = "assets/img/NotFoundAvatar.jpeg";
-                  //   }
-                  // }}
-                  // onError={(e) => {
-                  //   const currentTarget = e.currentTarget;
-                  //   const defaultImageSrc = "assets/img/NotFoundAvatar.jpeg";
-
-                  //   if (currentTarget.src !== defaultImageSrc) {
-                  //     currentTarget.src = defaultImageSrc;
-                  //   } else {
-                  //     // If setting the default image still causes an error,
-                  //     // set an empty image source to prevent further attempts
-                  //     currentTarget.src = "";
-                  //   }
-                  // }}
                 />
               </span>
             </a>
@@ -179,7 +136,7 @@ const Header = ({ ClinicUser }) => {
                 <div className="avatar avatar-sm">
                   <Image
                     id="dropdownAvatar"
-                    src={avatar01}
+                    src={imgNotFound}
                     alt="User Image"
                     className="avatar-img rounded-circle"
                     width="30"
@@ -212,4 +169,3 @@ const Header = ({ ClinicUser }) => {
 };
 
 export default Header;
-

@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
-import { faIR } from "date-fns/locale";
-import { Dropdown } from "primereact/dropdown";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";

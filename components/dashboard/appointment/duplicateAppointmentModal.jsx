@@ -1,12 +1,11 @@
 import { Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
 import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import defaultAppointmentDateOptions from "class/defaultAppointmentDateOptions";
+import { defaultAppointmentDateOptions } from "class/staticDropdownOptions";
 import "public/assets/css/appointment.css";
 
 const DuplicateAppointmentModal = ({
@@ -20,7 +19,6 @@ const DuplicateAppointmentModal = ({
   setAppointmentDate,
   FUSelectStartTime,
   FUSelectEndTime,
-  ActiveDate,
   hoursOptions,
   appointmentIsLoading,
   appointmentDate,
@@ -42,10 +40,10 @@ const DuplicateAppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(

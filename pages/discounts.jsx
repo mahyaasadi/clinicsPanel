@@ -5,7 +5,7 @@ import { axiosClient } from "class/axiosConfig";
 import { QuestionAlert, ErrorAlert } from "class/AlertManage";
 import FeatherIcon from "feather-icons-react";
 import Loading from "components/commonComponents/loading/loading";
-import discountPercentDataClass from "class/discountPercentDataClass";
+import { discountPercentDataClass } from "class/staticDropdownOptions";
 import DiscountModal from "components/dashboard/discounts/discountModal";
 import DiscountsListTable from "components/dashboard/discounts/discountListTable";
 // import {

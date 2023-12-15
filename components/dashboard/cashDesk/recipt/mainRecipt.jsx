@@ -55,7 +55,7 @@ const MainRecipt = ({
           </div>
         </div>
 
-        <div className="table-responsive actionTable">
+        <div className="table-responsive  actionTable">
           <table className="table mt-4 font-10">
             <thead>
               <tr>

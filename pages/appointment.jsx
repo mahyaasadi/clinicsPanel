@@ -530,9 +530,16 @@ const Appointment = ({ ClinicUser }) => {
                             className="btn btn-outline-secondary appointmentBtn font-14"
                             onClick={openDelayModal}
                           >
-                            <FeatherIcon icon="clock" />
+                            <span className=""><FeatherIcon icon="clock" /></span>
+
                             ثبت تاخیر
                           </button>
+                          {/* <button
+                            className="btn btn-outline-secondary appointmentBtn font-14 delayButton"
+                            onClick={openDelayModal}>
+                            <span class="delayIcon"><FeatherIcon icon="clock" /></span>
+                            <span class="delayText">ثبت تاخیر</span>
+                          </button> */}
                           <button
                             onClick={() => openNewAppointmentModal(todaysDate)}
                             className="btn btn-primary appointmentBtn font-14 float-end"
@@ -625,7 +632,6 @@ const Appointment = ({ ClinicUser }) => {
           selectedDepartment={selectedDepartment}
           FUSelectDepartment={FUSelectDepartment}
           setAppointmentDate={setAppointmentDate}
-          ActiveDate={ActiveDate}
           hoursOptions={hoursOptions}
           appointmentIsLoading={appointmentIsLoading}
           appointmentDate={appointmentDate}

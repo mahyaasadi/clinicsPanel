@@ -11,6 +11,7 @@ const SelectField = ({
   placeholder,
   isRequired,
   onChangeValue,
+  // isClearable
   ...props
 }) => {
   const colourStyles = {
@@ -40,6 +41,7 @@ const SelectField = ({
           onChange={onChangeValue}
           {...props}
           instanceId={useId()}
+        // isClearable
         />
         {error && <p className="error-message">{errorMessage}</p>}
       </div>
