@@ -2,11 +2,12 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import CashDeskActions from "components/dashboard/cashDesk/actionsModal";
 import PatientsCategories from "components/dashboard/cashDesk/patientCategories";
-import FilterReceptionItems from "@/components/dashboard/receptionsList/filterReceptionItems";
+import FilterReceptionItems from "components/dashboard/receptionsList/filterReceptionItems";
+import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -26,7 +27,9 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ClinicUserID,
-  ActiveReceptionID = null;
+  ActiveReceptionID,
+  ActivePatientID = null;
+let ActiveModalityData = {};
 const CashDesk = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
@@ -60,6 +63,23 @@ const CashDesk = ({ ClinicUser }) => {
     ActiveReceptionID = receptionID;
     setActionModalData(data);
     setPaymentData(data?.CashDesk);
+  };
+
+  // appointmentModal
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [defaultDepValue, setDefaultDepValue] = useState();
+  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
+
+  const openNewAppointmentModal = (patientData, modality, item) => {
+    console.log({ item });
+    setShowAppointmentModal(true);
+
+    ActivePatientID = patientData._id;
+    ActiveModalityData = modality;
+    setDefaultDepValue({
+      Name: modality.Name,
+      _id: modality._id,
+    });
   };
 
   // const getReceptionList = () => {
@@ -259,6 +279,14 @@ const CashDesk = ({ ClinicUser }) => {
     $("#patientName").val("");
   };
 
+  // appointment
+  const addAppointment = (data) => {
+    if (data) {
+      setShowAppointmentModal(false);
+      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    }
+  };
+
   useEffect(() => {
     getReceptionList();
     if (receptionList) {
@@ -292,6 +320,7 @@ const CashDesk = ({ ClinicUser }) => {
               setPatientsInfo={setPatientsInfo}
               openActionModal={openActionModal}
               isLoading={isLoading}
+              openNewAppointmentModal={openNewAppointmentModal}
             />
           </div>
         )}
@@ -316,6 +345,16 @@ const CashDesk = ({ ClinicUser }) => {
           setPaymentDefaultValue={setPaymentDefaultValue}
           returnPayment={returnPayment}
           setReturnPayment={setReturnPayment}
+        />
+
+        <ApplyAppointmentModal
+          ClinicID={ClinicID}
+          show={showAppointmentModal}
+          onHide={handleCloseAppointmentModal}
+          addAppointment={addAppointment}
+          ActivePatientID={ActivePatientID}
+          defaultDepValue={defaultDepValue}
+          ActiveModalityData={ActiveModalityData}
         />
       </div>
     </>

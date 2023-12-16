@@ -22,6 +22,7 @@ const DuplicateAppointmentModal = ({
   hoursOptions,
   appointmentIsLoading,
   appointmentDate,
+  endHoursOptions,
 }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
@@ -40,10 +41,10 @@ const DuplicateAppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-        ? "تامین اجتماعی"
-        : data?.Patient?.Insurance === "3"
-          ? "نیروهای مسلح"
-          : "آزاد";
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -212,7 +213,7 @@ const DuplicateAppointmentModal = ({
                   </label>
                   <SelectField
                     styles={selectfieldColourStyles}
-                    options={hoursOptions}
+                    options={endHoursOptions}
                     label={true}
                     className="text-center font-12"
                     placeholder={"انتخاب کنید"}

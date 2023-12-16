@@ -24,6 +24,7 @@ const AppointmentModal = ({
   hoursOptions,
   ActiveDate,
   selectedDepartment,
+  endHoursOptions,
 }) => {
   let cleanedDateString = null;
   if (ActiveDate) cleanedDateString = ActiveDate.replace(/""/g, "");
@@ -45,10 +46,10 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-        ? "تامین اجتماعی"
-        : data?.Patient?.Insurance === "3"
-          ? "نیروهای مسلح"
-          : "آزاد";
+      ? "تامین اجتماعی"
+      : data?.Patient?.Insurance === "3"
+      ? "نیروهای مسلح"
+      : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -59,8 +60,8 @@ const AppointmentModal = ({
     (x) => x.value === selectedDepartment
   );
 
-  const defaultStartTime = { value: data.ST, label: data.ST };
-  const defaultEndTime = { value: data.ET, label: data.ET };
+  const defaultStartTime = { value: data?.ST, label: data?.ST };
+  const defaultEndTime = { value: data?.ET, label: data?.ET };
 
   return (
     <>
@@ -121,9 +122,10 @@ const AppointmentModal = ({
                 <div className="d-flex gap-2 mb-3">
                   <FeatherIcon icon="user" className="mb-0" />
                   {mode === "edit" ? data?.Patient?.Name : patientInfo?.Name}
-                  {data?.Patient?.Age || patientInfo.Age ? (
+                  {data?.Patient?.Age || patientInfo?.Age ? (
                     <p className="m-0">
-                      , {mode === "edit" ? data.Patient.Age : patientInfo.Age}{" "}
+                      ,{" "}
+                      {mode === "edit" ? data?.Patient?.Age : patientInfo?.Age}{" "}
                       ساله
                     </p>
                   ) : (
@@ -134,7 +136,7 @@ const AppointmentModal = ({
                     <p>
                       {mode === "edit"
                         ? insuranceType
-                        : patientInfo.InsuranceName}
+                        : patientInfo?.InsuranceName}
                     </p>
                   ) : (
                     "نوع بیمه مشخص نمی باشد"
@@ -166,20 +168,20 @@ const AppointmentModal = ({
                 />
               </div>
 
-              <input type="hidden" name="OldDate" value={data.Date} />
+              <input type="hidden" name="OldDate" value={data?.Date} />
 
               <div className="form-group">
                 <SingleDatePicker
                   defaultDate={
-                    cleanedDateString ? cleanedDateString : data.Date
+                    cleanedDateString ? cleanedDateString : data?.Date
                   }
                   setDate={setAppointmentDate}
                   label="انتخاب تاریخ"
                 />
               </div>
 
-              <div className="row media-md-gap">
-                <div className="col-6">
+              <div className="row">
+                <div className="col-md-6 col-12">
                   <label className="lblDrugIns font-11">
                     ساعت شروع <span className="text-danger">*</span>
                   </label>
@@ -198,13 +200,13 @@ const AppointmentModal = ({
                   />
                 </div>
 
-                <div className="col-6">
+                <div className="col-md-6 col-12">
                   <label className="lblDrugIns font-11">
                     ساعت پایان <span className="text-danger">*</span>
                   </label>
                   <SelectField
                     styles={selectfieldColourStyles}
-                    options={hoursOptions}
+                    options={endHoursOptions}
                     label={true}
                     className="text-center font-12"
                     placeholder={"انتخاب کنید"}
@@ -249,5 +251,3 @@ const AppointmentModal = ({
 };
 
 export default AppointmentModal;
-
-

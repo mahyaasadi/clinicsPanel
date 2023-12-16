@@ -26,9 +26,8 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
-  ActivePatientID,
-  ActiveModalityID,
-  ActiveModalityName = null;
+  ActivePatientID = null;
+let ActiveModalityData = {};
 
 const jdate = new JDate();
 
@@ -37,18 +36,13 @@ const ReceptionsList = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-  const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [defaultDepValue, setDefaultDepValue] = useState();
 
   // appointment modal
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
-
-  const [selectedStartTime, setSelectedStartTime] = useState(null);
-  const [selectedEndTime, setSelectedEndTime] = useState(null);
-  const [pureStartTime, setPureStartTime] = useState(null);
-  const [pureEndTime, setPureEndTime] = useState(null);
 
   // Pagination
   const itemsPerPage = 20;
@@ -70,7 +64,6 @@ const ReceptionsList = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setReceptionList(response.data);
         setIsLoading(false);
       })
@@ -155,68 +148,22 @@ const ReceptionsList = ({ ClinicUser }) => {
     $("#patientName").val("");
   };
 
-  // Appointments
-  const hoursOptions = [];
-
-  for (let i = 0; i < 24; i++) {
-    for (let j = 0; j < 60; j = j + 15) {
-      const hours = i < 10 ? "0" + i : i;
-      const minutes = j < 10 ? "0" + j : j;
-      const str = hours + ":" + minutes;
-      let obj = {
-        value: str,
-        label: str,
-      };
-      hoursOptions.push(obj);
-    }
-  }
-
-  const [defaultDepValue, setDefaultDepValue] = useState();
-  const openAppointmnetModal = (patientData, modalityID, modalityName) => {
-    ActivePatientID = patientData._id;
-    ActiveModalityID = modalityID;
-    ActiveModalityName = modalityName;
-    setDefaultDepValue({
-      Name: ActiveModalityName,
-      _id: ActiveModalityID,
-    });
+  const openAppointmentModal = (patientData, modality) => {
     setShowAppointmentModal(true);
+
+    ActivePatientID = patientData._id;
+    ActiveModalityData = modality;
+    setDefaultDepValue({
+      Name: modality.Name,
+      _id: modality._id,
+    });
   };
 
-  const [appointmentDate, setAppointmentDate] = useState(null);
-
-  const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
-  const FUSelectEndTime = (endTime) => setPureEndTime(endTime);
-
-  const addAppointment = (e) => {
-    e.preventDefault();
-    setAppointmentIsLoading(true);
-
-    let url = "Appointment/addClinic";
-    let data = {
-      ClinicID,
-      PatientID: ActivePatientID,
-      ModalityID: selectedDepartment ? selectedDepartment : ActiveModalityID,
-      Date: appointmentDate,
-      ST: pureStartTime,
-      ET: pureEndTime,
-    };
-
-    console.log({ data });
-
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        // console.log(response.data);
-        setShowAppointmentModal(false);
-        SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
-        setAppointmentIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "ثبت نوبت با خطا مواجه گردید!");
-        setAppointmentIsLoading(false);
-      });
+  const addAppointment = (data) => {
+    if (data) {
+      setShowAppointmentModal(false);
+      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    }
   };
 
   useEffect(() => getReceptionList(), []);
@@ -244,7 +191,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                     selectedDepartment={selectedDepartment}
                     FUSelectDepartment={FUSelectDepartment}
                     searchIsLoading={searchIsLoading}
-                    openAppointmnetModal={openAppointmnetModal}
+                    openAppointmentModal={openAppointmentModal}
                   />
 
                   {currentItems.length > 0 && (
@@ -265,15 +212,9 @@ const ReceptionsList = ({ ClinicUser }) => {
           show={showAppointmentModal}
           onHide={handleCloseAppointmentModal}
           addAppointment={addAppointment}
-          setAppointmentDate={setAppointmentDate}
-          selectedStartTime={selectedStartTime}
-          selectedEndTime={selectedEndTime}
-          FUSelectStartTime={FUSelectStartTime}
-          FUSelectEndTime={FUSelectEndTime}
-          selectedDepartment={defaultDepValue}
-          FUSelectDepartment={FUSelectDepartment}
-          appointmentIsLoading={appointmentIsLoading}
-          hoursOptions={hoursOptions}
+          ActivePatientID={ActivePatientID}
+          defaultDepValue={defaultDepValue}
+          ActiveModalityData={ActiveModalityData}
         />
       </div>
     </>

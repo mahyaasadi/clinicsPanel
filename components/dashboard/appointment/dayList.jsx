@@ -13,37 +13,31 @@ const DayList = ({
   openDuplicateModal,
   deleteAppointment,
   depOpeningHour,
+  Hours,
 }) => {
   let currentMonth = jdate.format("MMM YYYY");
 
   return (
     <div className="appointmentTableContainer">
-      <div className="d-flex justify-center">
-        {/* <div className="col"></div> */}
-        <div className="col currentMonthContainer font-17 fw-bold text-center">
+      <div className="d-flex justify-center ">
+        <button className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35">
+          <FeatherIcon icon="chevron-right" />
+          بعدی
+        </button>
+        <div className="col currentMonthContainer secondaryColor fw-bold text-center">
           {currentMonth}
         </div>
-        {/* <div className="col d-flex justify-end">
-          <button className="paginateBtn">
-            <FeatherIcon
-              icon="arrow-right"
-              style={{ width: "13px", color: "white" }}
-            />
-          </button>
-          <button className="paginateBtn">
-            <FeatherIcon
-              icon="arrow-left"
-              style={{ width: "13px", color: "white" }}
-            />
-          </button>
-        </div> */}
+        <button className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35">
+          قبلی
+          <FeatherIcon icon="chevron-left" />
+        </button>
       </div>
 
       <div className="tContainer">
-
         <table className="table">
-          <thead className="bg-light">
+          <thead className="bg-light secondaryColor">
             <tr>
+              <th></th>
               {Dates.map(
                 (date, index) => (
                   (date = date.split("/")),
@@ -64,12 +58,14 @@ const DayList = ({
 
           <tbody>
             <tr>
+              <td>
+                <div className="timeline text-secondary font-13">{Hours}</div>
+              </td>
               {Dates.map((date, index) => {
                 return (
                   <td key={index} className="p-0">
                     <Day
                       date={date}
-                      key={date}
                       appointment={data[date]}
                       openNewAppointmentModal={openNewAppointmentModal}
                       openEditAppointmentModal={openEditAppointmentModal}

@@ -6,7 +6,7 @@ import { SpeedDial } from "primereact/speeddial";
 import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
 
-const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
+const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -76,11 +76,7 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmnetModal }) => {
                   data-pr-position="top"
                   className="btn btn-outline-secondary editBtn receptBtnPadding appointment"
                   onClick={() =>
-                    openAppointmnetModal(
-                      srv.Patient,
-                      srv.Modality?._id,
-                      srv.Modality?.Name
-                    )
+                    openAppointmentModal(srv?.Patient, srv?.Modality)
                   }
                 >
                   <FeatherIcon

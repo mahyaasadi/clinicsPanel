@@ -11,7 +11,7 @@ const ReceptionList = ({
   selectedDepartment,
   FUSelectDepartment,
   searchIsLoading,
-  openAppointmnetModal,
+  openAppointmentModal,
 }) => {
   return (
     <>
@@ -33,7 +33,7 @@ const ReceptionList = ({
             key={index}
             srv={item}
             deleteReception={deleteReception}
-            openAppointmnetModal={openAppointmnetModal}
+            openAppointmentModal={openAppointmentModal}
           />
         ))}
       </div>

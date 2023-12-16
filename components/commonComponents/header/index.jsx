@@ -9,7 +9,6 @@ import { setSession } from "lib/SessionMange";
 import { headerLogo, imgNotFound } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
-  console.log({ ClinicUser });
   let router = useRouter();
 
   const [task, settask] = useState(true);
@@ -31,7 +30,9 @@ const Header = ({ ClinicUser }) => {
     if (data.Avatar) {
       document.getElementById("avatar").setAttribute("src", data.Avatar);
       document.getElementById("avatar").setAttribute("srcSet", data.Avatar);
-      document.getElementById("dropdownAvatar").setAttribute("src", data.Avatar);
+      document
+        .getElementById("dropdownAvatar")
+        .setAttribute("src", data.Avatar);
       document
         .getElementById("dropdownAvatar")
         .setAttribute("srcSet", data.Avatar);

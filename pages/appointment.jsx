@@ -338,6 +338,10 @@ const Appointment = ({ ClinicUser }) => {
       });
   };
 
+  const endHoursOptions = pureStartTime
+    ? hoursOptions.filter((option) => option.value > pureStartTime)
+    : hoursOptions;
+
   const updateAppointmentItem = (id, newArr, oldDate) => {
     // Check if the date has changed
     if (oldDate !== newArr.Date) {
@@ -492,6 +496,11 @@ const Appointment = ({ ClinicUser }) => {
       getClinicAppointments();
       setSelectedDepartment(ActiveModalityID);
     }
+
+    // columns dynamic height
+    var root = document.querySelector(":root");
+    let set = 96 - 4 * depOpeningHour;
+    root.style.setProperty("--numHours", set);
   }, [ActiveModalityID]);
 
   return (
@@ -500,15 +509,15 @@ const Appointment = ({ ClinicUser }) => {
         <title>نوبت دهی</title>
       </Head>
       <div className="page-wrapper">
-        <div className="content container-fluid">
+        <div className="content container-fluid p-3">
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
                 <div className="card-header">
                   <div className="row align-items-center justify-between">
-                    <div className="d-flex align-items-center justify-between">
+                    <div className="d-flex align-items-center justify-between flex-col-md media-md-gap">
                       {!isLoading ? (
-                        <div className="col-7">
+                        <div className="col-md-7 col-12">
                           <ModalitiesHeader
                             data={clinicDepartments}
                             handleDepClick={handleDepClick}
@@ -524,14 +533,15 @@ const Appointment = ({ ClinicUser }) => {
                         </Skeleton>
                       )}
 
-                      <div className="col-5 d-flex justify-end">
+                      <div className="col-md-5 col-12 d-flex justify-end">
                         <div className="d-flex gap-1">
                           <button
-                            className="btn btn-outline-secondary appointmentBtn font-14"
+                            className="btn btn-outline-secondary appointmentBtn font-14 "
                             onClick={openDelayModal}
                           >
-                            <span className=""><FeatherIcon icon="clock" /></span>
-
+                            <span className="">
+                              <FeatherIcon icon="clock" />
+                            </span>
                             ثبت تاخیر
                           </button>
                           {/* <button
@@ -558,12 +568,12 @@ const Appointment = ({ ClinicUser }) => {
                 ) : (
                   <div className="card-body appointmentCard">
                     <div className="calendar">
-                      <div className="timeline text-secondary font-13">
+                      {/* <div className="timeline text-secondary font-13">
                         <div className="spacer"></div>
                         <div className="spacer"></div>
                         <div className="spacer"></div>
                         {Hours}
-                      </div>
+                      </div> */}
 
                       <div className="days">
                         <DayList
@@ -575,6 +585,7 @@ const Appointment = ({ ClinicUser }) => {
                           deleteAppointment={deleteAppointment}
                           openNewAppointmentModal={openNewAppointmentModal}
                           openDuplicateModal={openDuplicateModal}
+                          Hours={Hours}
                         />
                       </div>
                     </div>
@@ -603,6 +614,7 @@ const Appointment = ({ ClinicUser }) => {
           hoursOptions={hoursOptions}
           selectedDepartment={selectedDepartment}
           ActiveDate={ActiveDate}
+          endHoursOptions={endHoursOptions}
         />
 
         <AddNewPatient
@@ -637,6 +649,8 @@ const Appointment = ({ ClinicUser }) => {
           appointmentDate={appointmentDate}
           FUSelectStartTime={FUSelectStartTime}
           FUSelectEndTime={FUSelectEndTime}
+          endHoursOptions={endHoursOptions}
+
         />
       </div>
     </>

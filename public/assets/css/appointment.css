@@ -39,8 +39,7 @@
 
 .time-marker {
   direction: ltr !important;
-  padding: 15px 0;
-  /* height: var(--timeMarkerHeight) */
+  padding: 18px 0;
 }
 
 .timeline {
@@ -68,7 +67,6 @@
   min-width: 14rem;
   cursor: pointer;
   /* max-width: 11rem; */
-  /* height: var(--timeMarkerHeight); */
 }
 
 .start-00-00 {
@@ -865,14 +863,15 @@
 .currentMonthContainer {
   margin: 0 auto;
   padding-bottom: 1rem;
+  font-size: 19px;
 }
 
 .appointmentTableContainer {
   display: flex;
   flex-direction: column;
-  position: relative;
-  max-width: 75vw;
-  overflow-x: auto;
+  /* position: relative; */
+  /* max-width: 75vw; */
+  /* overflow-x: auto; */
 }
 
 .event {
@@ -893,6 +892,7 @@
   border: 1px solid #594b0d;
   transition: ease-in-out all;
   transition-duration: 0.25s;
+  z-index: 1;
 }
 
 .space,
