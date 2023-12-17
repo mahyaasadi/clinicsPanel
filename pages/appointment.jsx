@@ -45,6 +45,7 @@ const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [loadingState, setLoadingState] = useState(false);
+  const [dateMode, setDateMode] = useState("current")
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [delayIsLoading, setDelayIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
@@ -84,9 +85,27 @@ const Appointment = ({ ClinicUser }) => {
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
 
   const addDayToDate = (day) => {
-    let h = day * 24;
-    return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+    if (dateMode === "current") {
+      let h = day * 24;
+      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+    } else if (dateMode === "nextFiveDays") {
+      day = day + 5
+      let h = (day) * 24;
+      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+    } else {
+      day = day - 5
+      let h = (day) * 24;
+      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+    }
   };
+
+  const displayNextFiveDays = () => {
+    setDateMode("nextFiveDays")
+  }
+
+  const displayLastFiveDays = () => {
+    setDateMode("lastFiveDays")
+  }
 
   let today = new JDate(addDayToDate(0)).format("YYYY/MM/DD");
   let plus1 = new JDate(addDayToDate(1)).format("YYYY/MM/DD");
@@ -535,7 +554,7 @@ const Appointment = ({ ClinicUser }) => {
 
                       <div className="col-md-5 col-12 d-flex justify-end">
                         <div className="d-flex gap-1">
-                          <button
+                          {/* <button
                             className="btn btn-outline-secondary appointmentBtn font-14 "
                             onClick={openDelayModal}
                           >
@@ -543,13 +562,13 @@ const Appointment = ({ ClinicUser }) => {
                               <FeatherIcon icon="clock" />
                             </span>
                             ثبت تاخیر
-                          </button>
-                          {/* <button
+                          </button> */}
+                          <button
                             className="btn btn-outline-secondary appointmentBtn font-14 delayButton"
                             onClick={openDelayModal}>
                             <span class="delayIcon"><FeatherIcon icon="clock" /></span>
                             <span class="delayText">ثبت تاخیر</span>
-                          </button> */}
+                          </button>
                           <button
                             onClick={() => openNewAppointmentModal(todaysDate)}
                             className="btn btn-primary appointmentBtn font-14 float-end"
@@ -586,6 +605,8 @@ const Appointment = ({ ClinicUser }) => {
                           openNewAppointmentModal={openNewAppointmentModal}
                           openDuplicateModal={openDuplicateModal}
                           Hours={Hours}
+                          displayNextFiveDays={displayNextFiveDays}
+                          displayLastFiveDays={displayLastFiveDays}
                         />
                       </div>
                     </div>

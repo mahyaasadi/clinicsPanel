@@ -93,10 +93,10 @@ const ApplyCashDeskModal = ({
                     returnMode
                       ? convertToFixedNumber(returnPayment.toLocaleString())
                       : !returnMode && price === 0
-                      ? convertToFixedNumber(
+                        ? convertToFixedNumber(
                           paymentDefaultValue?.toLocaleString()
                         )
-                      : convertToFixedNumber(price.toLocaleString())
+                        : convertToFixedNumber(price.toLocaleString())
                   }
                   onChange={(e) => {
                     if (!returnMode) {
@@ -105,7 +105,6 @@ const ApplyCashDeskModal = ({
                       convertToLocaleString(e, setReturnPayment);
                     }
                   }}
-                  // defaultValue={convertToFixedNumber(paymentDefaultValue)}
                 />
               </div>
             </div>

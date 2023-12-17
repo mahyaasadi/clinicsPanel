@@ -131,6 +131,7 @@ const ReceptionsList = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         setReceptionList(response.data);
         setSearchIsLoading(false);
       })

@@ -14,20 +14,27 @@ const DayList = ({
   deleteAppointment,
   depOpeningHour,
   Hours,
+  displayNextFiveDays,
+  displayLastFiveDays
 }) => {
   let currentMonth = jdate.format("MMM YYYY");
 
   return (
     <div className="appointmentTableContainer">
       <div className="d-flex justify-center ">
-        <button className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35">
+        <button
+          className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35"
+          onClick={displayNextFiveDays}>
           <FeatherIcon icon="chevron-right" />
           بعدی
         </button>
         <div className="col currentMonthContainer secondaryColor fw-bold text-center">
           {currentMonth}
         </div>
-        <button className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35">
+        <button
+          className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35"
+          onClick={displayLastFiveDays}
+        >
           قبلی
           <FeatherIcon icon="chevron-left" />
         </button>
