@@ -42,9 +42,8 @@ const InsuranceSettings = ({ ClinicUser }) => {
   const handleCloseModal = () => setShowModal(false);
 
   const FUSelectInsurance = (insurance) => {
-    console.log({ insurance });
-    setSelectedInsuranceID(insurance.value);
-    setSelectedInsuranceName(insurance.label);
+    setSelectedInsuranceID(insurance?.value);
+    setSelectedInsuranceName(insurance?.label);
   };
 
   // Get All ClinicInsurances

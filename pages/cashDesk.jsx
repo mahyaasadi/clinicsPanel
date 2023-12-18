@@ -37,21 +37,17 @@ const CashDesk = ({ ClinicUser }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [patientsInfo, setPatientsInfo] = useState([]);
   const [receptionList, setReceptionList] = useState([]);
-  const [kartsOptionList, setKartsOptionsList] = useState([]);
-  const [selectedKart, setSelectedKart] = useState(null);
+  // const [selectedKart, setSelectedKart] = useState(null);
   const [showActionsModal, setShowActionsModal] = useState(false);
   const [actionModalData, setActionModalData] = useState([]);
   const [price, setPrice] = useState(0);
 
   const [paymentData, setPaymentData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentDefaultValue, setPaymentDefaultValue] = useState(0);
-  const [returnPayment, setReturnPayment] = useState(0);
 
   const handleCloseActionsModal = () => {
     setShowActionsModal(false);
-    setSelectedKart(null);
-    // setPaymentDefaultValue(0);
+    // setSelectedKart(null);
   };
 
   // searchBox
@@ -70,8 +66,7 @@ const CashDesk = ({ ClinicUser }) => {
   const [defaultDepValue, setDefaultDepValue] = useState();
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
 
-  const openNewAppointmentModal = (patientData, modality, item) => {
-    console.log({ item });
+  const openNewAppointmentModal = (patientData, modality) => {
     setShowAppointmentModal(true);
 
     ActivePatientID = patientData._id;
@@ -82,31 +77,10 @@ const CashDesk = ({ ClinicUser }) => {
     });
   };
 
-  // const getReceptionList = () => {
-  //   setIsLoading(true);
-  //   let url = `ClinicReception//FindByClinic/${ClinicID}`;
-
-  //   axiosClient
-  //     .get(url)
-  //     .then((response) => {
-  //       setReceptionList(response.data);
-  //       if (response.data) getReceptionPatients(response.data);
-  //       setTimeout(() => {
-  //         setIsLoading(false);
-  //       }, 100);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       ErrorAlert("خطا", "خطا در دریافت اطلاعات");
-  //       setIsLoading(false);
-  //     });
-  // };
-
   const getReceptionList = () => {
     let url = `ClinicReception//FindByClinic/${ClinicID}`;
 
     return new Promise((resolve, reject) => {
-      // Assuming axios is used for making the API call
       axiosClient
         .get(url)
         .then((response) => {
@@ -145,41 +119,13 @@ const CashDesk = ({ ClinicUser }) => {
     return patientsInfo;
   };
 
-  // get all karts
-  const getKartsData = () => {
-    setIsLoading(true);
-    let url = `CashDeskKart/getAll/${ClinicID}`;
-
-    axiosClient
-      .get(url)
-      .then((response) => {
-        let kartOptions = [];
-        for (let i = 0; i < response.data.length; i++) {
-          const item = response.data[i];
-          let obj = {
-            value: item._id,
-            label: item.Name,
-          };
-          kartOptions.push(obj);
-        }
-        setKartsOptionsList(kartOptions);
-        setSelectedKart(
-          kartsOptionList.length > 0 ? kartsOptionList[0].value : null
-        );
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
-
   const applyCashDeskActions = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
+    let CartID = formProps.kartOption;
 
     let url = "ClinicReception/CashDeskAction";
     let data = {
@@ -191,42 +137,45 @@ const CashDesk = ({ ClinicUser }) => {
         ? parseInt(formProps.price.replaceAll(/,/g, ""))
         : 0,
       Return: formProps.returnPaymentSwitch ? true : false,
-      CartID: selectedKart ? selectedKart : null,
+      CartID: selectedKart ? selectedKart : CartID ? CartID : null,
     };
 
     console.log({ data });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        setPaymentData(response.data.CashDesk);
-        // getReceptionList();
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     setPaymentData(response.data.CashDesk);
+    //     setShowPaymentModal(false);
+    //     setSelectedKart(null);applyCa
+    //     CartID = null;
+    //     setPaymentDefaultValue(0);
 
-        // // reset
-        // setShowPaymentModal(false);
-        // setIsLoading(false);
-        // setSelectedKart(null);
-        // setPaymentDefaultValue(0);
+    //     // Reset
+    //     getReceptionList()
+    //       .then(() => {
+    //         setIsLoading(false);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //         setIsLoading(false);
+    //         ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+    //       });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setIsLoading(false);
+    //     ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
+    //   });
+  };
 
-        getReceptionList()
-          .then(() => {
-            // Reset and hide loader
-            setShowPaymentModal(false);
-            setSelectedKart(null);
-            setPaymentDefaultValue(0);
-            setIsLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setIsLoading(false);
-            ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-        ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
-      });
+  const ApplyCashDeskActions = (data) => {
+    console.log({ data });
+    if (data) {
+      setPaymentData(data.CashDesk);
+      setShowPaymentModal(false);
+      getReceptionList();
+    }
   };
 
   // Apply Filter on ReceptionItems
@@ -292,7 +241,6 @@ const CashDesk = ({ ClinicUser }) => {
     if (receptionList) {
       getReceptionPatients(receptionList);
     }
-    getKartsData();
   }, []);
 
   return (
@@ -326,25 +274,26 @@ const CashDesk = ({ ClinicUser }) => {
         )}
 
         <CashDeskActions
-          data={actionModalData}
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActiveReceptionID={ActiveReceptionID}
           show={showActionsModal}
           onHide={handleCloseActionsModal}
-          kartsOptionList={kartsOptionList}
-          selectedKart={selectedKart}
-          setSelectedKart={setSelectedKart}
-          applyCashDeskActions={applyCashDeskActions}
-          setActionModalData={setActionModalData}
+          data={actionModalData}
           paymentData={paymentData}
-          isLoading={isLoading}
           showPaymentModal={showPaymentModal}
           setShowPaymentModal={setShowPaymentModal}
-          ClinicID={ClinicID}
-          price={price}
-          setPrice={setPrice}
-          paymentDefaultValue={paymentDefaultValue}
-          setPaymentDefaultValue={setPaymentDefaultValue}
-          returnPayment={returnPayment}
-          setReturnPayment={setReturnPayment}
+          ApplyCashDeskActions={ApplyCashDeskActions}
+          // price={price}
+          // setPrice={setPrice}
+          // isLoading={isLoading}
+          // setSelectedKart={setSelectedKart}
+          // kartsOptionList={kartsOptionList}
+          // paymentDefaultValue={paymentDefaultValue}
+          // setPaymentDefaultValue={setPaymentDefaultValue}
+          // returnPayment={returnPayment}
+          // setReturnPayment={setReturnPayment}
+          // applyCashDeskActions={applyCashDeskActions}
         />
 
         <ApplyAppointmentModal

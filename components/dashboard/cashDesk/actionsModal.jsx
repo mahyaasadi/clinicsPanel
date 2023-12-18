@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import ApplyCashDeskModal from "./applyCashDeskModal";
@@ -15,33 +15,32 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 
 const CashDeskActions = ({
   ClinicID,
+  ClinicUserID,
+  ActiveReceptionID,
   show,
   onHide,
-  kartsOptionList,
-  selectedKart,
-  setSelectedKart,
-  applyCashDeskActions,
+  ApplyCashDeskActions,
   data,
   paymentData,
-  isLoading,
   showPaymentModal,
   setShowPaymentModal,
-  price,
-  setPrice,
-  paymentDefaultValue,
-  setPaymentDefaultValue,
-  returnPayment,
-  setReturnPayment,
+  // price,
+  // setPrice,
+  // isLoading,
+  // kartsOptionList,
+  // selectedKart,
+  // setSelectedKart,
+  // paymentDefaultValue,
+  // setPaymentDefaultValue,
+  // returnPayment,
+  // setReturnPayment,
+  // applyCashDeskActions,
 }) => {
   const [returnMode, setReturnMode] = useState(false);
   const [cashMode, setCashMode] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
 
   const handleClosePrintModal = () => setShowPrintModal(false);
-  const handleCloseModal = () => {
-    setShowPaymentModal(false);
-    setPrice(0);
-  };
 
   const handlePaymentBtn = () => {
     setReturnMode(false);
@@ -63,38 +62,15 @@ const CashDeskActions = ({
 
   let calculatedTotalPC = 0;
 
-  // const handleCalculateCost = (e) => {
-  //   const { name, value } = e.target;
-  //   let result = 0;
-  //   let _CalCart = parseInt($("#cartPayment").val()) || 0;
-  //   let _CalCash = parseInt($("#cashPayment").val()) || 0;
+  const [newData, setNewData] = useState([]);
 
-  //   if (name === "cartPayment" || name === "cashPayment") {
-  //     if (name === "cartPayment") _CalCart = value;
-  //     if (name === "cashPayment") _CalCash = value;
-  //     let payment = parseInt(_CalCart) + parseInt(_CalCash);
-  //     result = calculatedTotalPC - payment;
-  //     if (result < 0) {
-  //       $("#debt").val("0");
-  //       $("#returnPayment").val(result);
-  //     } else {
-  //       $("#debt").val(result);
-  //       $("#returnPayment").val(0);
-  //     }
-  //   } else {
-  //     let _CalDebt = 0;
-  //     let _CalReturn = 0;
-  //     if (name === "debt") {
-  //       _CalDebt = value;
-  //       result = calculatedTotalPC - _CalDebt;
-  //       if (result < 0) result = 0;
-  //       $("#cartPayment").val(result);
-  //       $("#returnPayment").val(0);
-  //     }
-
-  //     if (name === "returnPayment") _CalReturn = value;
-  //   }
-  // };
+  useEffect(() => {
+    // Add any logic that needs to run when data changes
+    console.log("Data has changed:", data);
+    if (data) {
+      setNewData(data);
+    }
+  }, [data]);
 
   return (
     <>
@@ -108,8 +84,8 @@ const CashDeskActions = ({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
-              نام بیمار : {data?.Patient?.Name} {" | "}
-              تاریخ نسخه : {data?.Date}
+              نام بیمار : {newData?.Patient?.Name} {" | "}
+              تاریخ نسخه : {newData?.Date}
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -202,7 +178,7 @@ const CashDeskActions = ({
               </thead>
 
               <tbody className="font-13 text-secondary">
-                {data?.Items?.map((item, index) => {
+                {newData?.Items?.map((item, index) => {
                   let RowTotalCost = item.Price * item.Qty;
                   let RowOrgCost = item.Qty * item.OC;
                   let RowPatientCost = RowTotalCost - RowOrgCost;
@@ -227,8 +203,8 @@ const CashDeskActions = ({
                   );
                 })}
 
-                {data?.Calculated
-                  ? ((calculatedTotalPC = data?.Calculated?.TotalPC),
+                {newData?.Calculated
+                  ? ((calculatedTotalPC = newData?.Calculated?.TotalPC),
                     (
                       <>
                         <tr>
@@ -236,15 +212,19 @@ const CashDeskActions = ({
                           <td></td>
                           <td>جمع کل </td>
                           <td>
-                            {data?.Calculated?.TotalQty?.toLocaleString()}
+                            {newData?.Calculated?.TotalQty?.toLocaleString()}
                           </td>
                           <td>
-                            {data?.Calculated?.TotalPrice?.toLocaleString()}
+                            {newData?.Calculated?.TotalPrice?.toLocaleString()}
                           </td>
-                          <td>{data?.Calculated?.TotalPC?.toLocaleString()}</td>
-                          <td>{data?.Calculated?.TotalOC?.toLocaleString()}</td>
                           <td>
-                            {data?.Calculated?.TotalDiscount?.toLocaleString()}
+                            {newData?.Calculated?.TotalPC?.toLocaleString()}
+                          </td>
+                          <td>
+                            {newData?.Calculated?.TotalOC?.toLocaleString()}
+                          </td>
+                          <td>
+                            {newData?.Calculated?.TotalDiscount?.toLocaleString()}
                           </td>
                         </tr>
                       </>
@@ -311,27 +291,66 @@ const CashDeskActions = ({
       />
 
       <ApplyCashDeskModal
+        ClinicID={ClinicID}
+        ClinicUserID={ClinicUserID}
+        ActiveReceptionID={ActiveReceptionID}
         show={showPaymentModal}
-        onHide={handleCloseModal}
-        kartsOptionList={kartsOptionList}
-        selectedKart={selectedKart}
-        setSelectedKart={setSelectedKart}
-        applyCashDeskActions={applyCashDeskActions}
-        isLoading={isLoading}
+        setShowPaymentModal={setShowPaymentModal}
+        ApplyCashDeskActions={ApplyCashDeskActions}
         returnMode={returnMode}
         setReturnMode={setReturnMode}
         cashMode={cashMode}
         calculatedTotalPC={calculatedTotalPC}
-        price={price}
-        setPrice={setPrice}
         paymentData={paymentData}
-        paymentDefaultValue={paymentDefaultValue}
-        setPaymentDefaultValue={setPaymentDefaultValue}
-        returnPayment={returnPayment}
-        setReturnPayment={setReturnPayment}
+        // onHide={handleCloseModal}
+        // price={price}
+        // setPrice={setPrice}
+        // isLoading={isLoading}
+        // applyCashDeskActions={applyCashDeskActions}
+        // kartsOptionList={kartsOptionList}
+        // selectedKart={selectedKart}
+        // setSelectedKart={setSelectedKart}
+        // paymentDefaultValue={paymentDefaultValue}
+        // setPaymentDefaultValue={setPaymentDefaultValue}
+        // returnPayment={returnPayment}
+        // setReturnPayment={setReturnPayment}
       />
     </>
   );
 };
 
 export default CashDeskActions;
+
+// calculate functionality
+// const handleCalculateCost = (e) => {
+//   const { name, value } = e.target;
+//   let result = 0;
+//   let _CalCart = parseInt($("#cartPayment").val()) || 0;
+//   let _CalCash = parseInt($("#cashPayment").val()) || 0;
+
+//   if (name === "cartPayment" || name === "cashPayment") {
+//     if (name === "cartPayment") _CalCart = value;
+//     if (name === "cashPayment") _CalCash = value;
+//     let payment = parseInt(_CalCart) + parseInt(_CalCash);
+//     result = calculatedTotalPC - payment;
+//     if (result < 0) {
+//       $("#debt").val("0");
+//       $("#returnPayment").val(result);
+//     } else {
+//       $("#debt").val(result);
+//       $("#returnPayment").val(0);
+//     }
+//   } else {
+//     let _CalDebt = 0;
+//     let _CalReturn = 0;
+//     if (name === "debt") {
+//       _CalDebt = value;
+//       result = calculatedTotalPC - _CalDebt;
+//       if (result < 0) result = 0;
+//       $("#cartPayment").val(result);
+//       $("#returnPayment").val(0);
+//     }
+
+//     if (name === "returnPayment") _CalReturn = value;
+//   }
+// };

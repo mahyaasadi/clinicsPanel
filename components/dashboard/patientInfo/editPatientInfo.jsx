@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import Select from "react-select";
+import SelectField from "components/commonComponents/selectfield";
 import { genderDataClass } from "class/staticDropdownOptions";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
@@ -16,11 +16,20 @@ const EditPatientInfoModal = ({
 
   const handleTabChange = (tab) => setSelectedTab(tab);
   const handleInputChange = (e) =>
-    setValue(e.target ? e.target.value : e.value);
+    setValue(e?.target ? e?.target?.value : e?.value);
 
   const handleSubmit = () => {
     handleChangePatientInfo(selectedTab, value);
     handleClose();
+  };
+
+  const defaultGanderValue = data.Gender;
+  const defaultGanderValueLabel =
+    data.Gender === "M" ? "مرد" : data.Gender === "F" ? "زن" : "دیگر";
+
+  const selectedGender = {
+    value: defaultGanderValue,
+    label: defaultGanderValueLabel,
   };
 
   useEffect(() => handleTabChange("Name"), []);
@@ -114,19 +123,20 @@ const EditPatientInfoModal = ({
           </div>
           <div className="tab-pane" id="solid-rounded-tab3">
             <div className="col-md-12 media-w-100">
-              <label className="lblAbs font-12">
+              <label className="lblDrugIns font-12">
                 جنسیت {""}
                 <span className="text-danger">*</span>
               </label>
-              <Select
+              <SelectField
                 styles={selectfieldColourStyles}
-                className="w-100 font-12 text-center prescForm mt-3"
+                className="w-100 font-12 text-center prescForm"
                 options={genderDataClass}
                 name="genderOption"
                 placeholder="جنسیت بیمار را مشخص کنید"
                 id="addGenderType"
-                instanceId="addGenderType"
+                defaultValue={selectedGender}
                 onChange={handleInputChange}
+                key={data.Gender}
               />
             </div>
           </div>

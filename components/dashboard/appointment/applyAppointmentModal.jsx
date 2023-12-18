@@ -118,7 +118,7 @@ const ApplyAppointmentModal = ({
                 styles={selectfieldColourStyles}
                 options={modalityOptions}
                 label={true}
-                className="text-center"
+                className="text-center font-12"
                 placeholder={"انتخاب کنید"}
                 defaultValue={defDepValue}
                 onChangeValue={(value) => FUSelectDepartment(value?.value)}

@@ -15,7 +15,7 @@ const Day = ({
 
   return (
     <div className="day" onDoubleClick={handleColumnDoubleClick}>
-      <div className="events shadow-sm">
+      <ul className="events shadow-sm p-0">
         {appointment?.map((event) => {
           return (
             <Event
@@ -29,7 +29,7 @@ const Day = ({
             />
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 };

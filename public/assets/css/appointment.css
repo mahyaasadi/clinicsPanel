@@ -69,6 +69,25 @@
   /* max-width: 11rem; */
 }
 
+.events li:nth-child(even) {
+  /* background-color: #706233; */
+  background-color: #164858;
+  /* background-color: #9A3B3B; */
+  /* background-color: #9EB384; */
+  /* background-color: #FF9358; */
+  /* background-color: #218551; */
+  color: white;
+}
+
+.events li:nth-child(even) .eventBtns {
+  color: white;
+}
+
+.events li:nth-child(odd) {
+  background-color: #f8f1df;
+  /* background-color: #faeed8; */
+}
+
 .start-00-00 {
   grid-row-start: 1;
 }

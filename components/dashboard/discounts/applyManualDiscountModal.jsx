@@ -96,9 +96,7 @@ const ApplyDiscountModal = ({
                     </div>
 
                     <div className="col media-w-100 font-12">
-                      <label className="lblDrugIns font-12">
-                        روش محاسبه <span className="text-danger">*</span>
-                      </label>
+                      <label className="lblDrugIns font-12">روش محاسبه</label>
 
                       <SelectField
                         styles={selectfieldColourStyles}
@@ -106,11 +104,11 @@ const ApplyDiscountModal = ({
                         label={true}
                         className="text-center"
                         placeholder={"روش محاسبه را انتخاب کنید"}
-                        required
                         name="receptionDiscountOptions"
                         onChange={(e) =>
                           FUSelectDiscountPercent(srv._id, e?.value)
                         }
+                        // required
                       />
                     </div>
                   </div>

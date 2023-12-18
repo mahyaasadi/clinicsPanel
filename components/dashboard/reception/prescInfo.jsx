@@ -1,4 +1,4 @@
-import AdditionalCostsModal from "@/components/dashboard/reception/additionalCostsModal";
+import AdditionalCostsModal from "components/dashboard/reception/additionalCostsModal";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
   if (srvItem.Discount?.Percent) {

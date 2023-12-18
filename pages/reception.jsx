@@ -9,6 +9,7 @@ import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
+import CashDeskActions from "components/dashboard/cashDesk/actionsModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -45,7 +46,8 @@ let ClinicID,
   ActiveDiscountShare,
   ReceptionObjectID,
   ReceptionID,
-  ActiveEditSrvID = null;
+  ActiveEditSrvID,
+  ActiveReceptionID = null;
 
 const Reception = ({ ClinicUser }) => {
   ClinicUserID = ClinicUser._id;
@@ -107,21 +109,23 @@ const Reception = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
+        $("#patientNID").prop("readonly", true);
+
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
-          $("#patientNID").prop("readonly", true);
         } else {
           ActivePatientID = response.data.user._id;
           ActiveInsuranceType = response.data.user.InsuranceType;
           setPatientInfo(response.data.user);
           $("#patientInfoCard").show("");
-          $("#patientNID").prop("readonly", true);
         }
 
-        setPatientStatIsLoading(false);
-        $("#frmPatientInfoBtnSubmit").hide();
-        $("#getPatientCloseBtn").show();
-        // $("#patientNID").focus();
+        setTimeout(() => {
+          setPatientStatIsLoading(false);
+          $("#frmPatientInfoBtnSubmit").hide();
+          $("#getPatientCloseBtn").show();
+          $("#patientNID").focus();
+        }, 200);
       })
       .catch((error) => {
         console.log(error);
@@ -282,6 +286,9 @@ const Reception = ({ ClinicUser }) => {
     };
 
     applyDiscount(ActiveSrvItemID, manualDiscount);
+
+    // setSelectedDiscount(null);
+    // e.target.reset();
   };
 
   // remove discount from receptionItem
@@ -554,12 +561,19 @@ const Reception = ({ ClinicUser }) => {
       axiosClient
         .post(url, dataToSubmit)
         .then((response) => {
-          SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
-          setTimeout(() => {
-            if (response.data.Register) {
-              router.push("/receptionsList");
-            }
-          }, 300);
+          console.log(response.data);
+
+          if (response.data) {
+            // setTimeout(() => {
+            openActionModal(response.data.ReceptionID, response.data);
+            // }, 3000);
+          }
+          // SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+          // setTimeout(() => {
+          //   if (response.data.Register) {
+          //     router.push("/receptionsList");
+          //   }
+          // }, 300);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -570,6 +584,57 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
+  //-----  cashDesk  -----//
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [actionModalData, setActionModalData] = useState([]);
+  const [paymentData, setPaymentData] = useState([]);
+
+  const getReceptionList = () => {
+    setIsLoading(true);
+    let url = `ClinicReception//FindByClinic/${ClinicID}`;
+
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(url)
+        .then((response) => {
+          console.log(response.data);
+          // setReceptionList(response.data);
+          // if (response.data) getReceptionPatients(response.data);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 100);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات");
+          setIsLoading(false);
+          reject(err);
+        });
+    });
+  };
+
+  const openActionModal = (receptionID, data) => {
+    setShowActionModal(true);
+
+    ActiveReceptionID = receptionID;
+    setActionModalData(data);
+    setPaymentData(data?.CashDesk);
+  };
+
+  const handleCloseActionsModal = () => setShowActionModal(false);
+
+  const ApplyCashDeskActions = (data) => {
+    console.log({ data });
+    if (data) {
+      setPaymentData(data.CashDesk);
+      setShowPaymentModal(false);
+      getReceptionList();
+    }
+  };
+
+  // ---------
   useEffect(() => {
     $("#BtnActiveSearch").hide();
     $("#getPatientCloseBtn").hide();
@@ -663,6 +728,19 @@ const Reception = ({ ClinicUser }) => {
           setBirthYear={setBirthYear}
           showBirthDigitsAlert={showBirthDigitsAlert}
           setShowBirthDigitsAlert={setShowBirthDigitsAlert}
+        />
+
+        <CashDeskActions
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActiveReceptionID={ActiveReceptionID}
+          show={showActionModal}
+          onHide={handleCloseActionsModal}
+          data={actionModalData}
+          paymentData={paymentData}
+          showPaymentModal={showPaymentModal}
+          setShowPaymentModal={setShowPaymentModal}
+          ApplyCashDeskActions={ApplyCashDeskActions}
         />
       </div>
     </>

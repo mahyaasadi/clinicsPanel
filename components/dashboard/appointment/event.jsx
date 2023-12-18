@@ -46,14 +46,14 @@ const Event = ({
 
   return (
     <>
-      <div
+      <li
         onClick={handleDoubleClick}
         className={`event shadow start-${calculatedStartTime.replace(
           ":",
           "-"
         )} end-${calculatedEndTime.replace(":", "-")}`}
       >
-        <div className="d-flex gap-1 justify-between">
+        <div className="d-flex gap-2 justify-between">
           <div>
             <div className="title d-flex flex-wrap align-items-center gap-2">
               <FeatherIcon icon="user" style={{ width: "15px" }} />{" "}
@@ -90,11 +90,10 @@ const Event = ({
             >
               <FeatherIcon icon="trash" style={{ width: "15px" }} />
               <Tooltip target=".trashButton">حذف</Tooltip>
-
             </button>
           </div>
         </div>
-      </div>
+      </li>
     </>
   );
 };
