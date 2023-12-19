@@ -194,7 +194,7 @@ const PrescriptionCard = ({
                 <div className="row">
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-outline-primary"
                       onClick={() => QtyChange("+")}
                     >
                       <i className="fe fe-plus"></i>
@@ -213,7 +213,7 @@ const PrescriptionCard = ({
                   </div>
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-outline-primary"
                       onClick={() => QtyChange("-")}
                     >
                       <i className="fe fe-minus"></i>

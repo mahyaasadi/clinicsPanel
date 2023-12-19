@@ -340,8 +340,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -541,10 +541,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -596,10 +596,13 @@ const Reception = ({ ClinicUser }) => {
   const handleCloseActionsModal = () => {
     setShowActionModal(false);
 
+    const seconds = 5;
+    const timerInMillis = seconds * 1000;
+
     TimerAlert({
       title: "در حال تنظیم مجدد صفحه پذیرش!",
-      html: '<div class="custom-content">این عملیات <b>5000</b> میلی ثانیه طول می‌کشد</div>',
-      timer: 5000,
+      html: `<div class="custom-content">این عملیات <b>${seconds}</b> میلی ثانیه طول می‌کشد</div>`,
+      timer: 3000,
       timerProgressBar: true,
       cancelButton: {
         text: "انصراف",

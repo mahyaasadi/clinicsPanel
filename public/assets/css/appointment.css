@@ -88,7 +88,7 @@
 }
 
 .events li:nth-child(odd) {
-  background-color: rgb(248, 243, 225);
+  background-color: #f7f0e9;
 }
 
 .start-00-00 {
@@ -902,13 +902,13 @@
   overflow: auto;
   margin-top: 5px;
   cursor: pointer;
-  color: #8e3200;
+  color: #cf5615;
   opacity: 1;
 }
 
 .event:hover {
   opacity: 0.9;
-  border: 1px solid #8e3200;
+  border: 1px solid #cf5615;
   transition: ease-in-out all;
   transition-duration: 0.25s;
   z-index: 1;

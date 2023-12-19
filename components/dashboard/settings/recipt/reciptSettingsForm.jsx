@@ -151,7 +151,7 @@ const ReciptSettingsForm = ({
                   )}
                   <button
                     type="button"
-                    className="btn btn-outline-secondary rounded col-md-6 col-12 font-13"
+                    className="btn btn-outline-primary rounded col-md-6 col-12 font-13"
                   >
                     پیش نمایش
                   </button>

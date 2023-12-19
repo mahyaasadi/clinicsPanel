@@ -60,7 +60,7 @@ const PrescInfo = ({
               <div className="d-flex gap-2">
                 <div>
                   <button
-                    className="btn btn-outline-secondary border-radius px-4 font-13 w-100"
+                    className="btn btn-outline-primary border-radius px-4 font-13 w-100"
                     onClick={() => openAdditionalCostsModal(true)}
                   >
                     افزودن هزینه

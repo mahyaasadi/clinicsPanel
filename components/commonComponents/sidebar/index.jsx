@@ -9,7 +9,6 @@ const Sidebar = () => {
   const [receptionSubmenuOpen, setReceptionSubmenuOpen] = useState(false);
   const [prescriptionSubmenuOpen, setPrescriptionSubMenuOpen] = useState(false);
   const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState(false);
-  const [appointmentsubMenuOpen, setAppointmentsubMenuOpen] = useState(false);
 
   useEffect(() => {
     const receptionSubRoutes = [
@@ -30,8 +29,6 @@ const Sidebar = () => {
       "reciptSettings",
     ];
 
-    const appointmentSubRoutes = ["/appointment"];
-
     if (receptionSubRoutes.includes(router.pathname)) {
       setReceptionSubmenuOpen(true);
     }
@@ -40,9 +37,6 @@ const Sidebar = () => {
     }
     if (settingsSubRoutes.includes(router.pathname)) {
       setSettingsSubMenuOpen(true);
-    }
-    if (appointmentSubRoutes.includes(router.pathname)) {
-      setAppointmentsubMenuOpen(true);
     }
   }, [router.pathname]);
 
@@ -123,34 +117,14 @@ const Sidebar = () => {
                 </ul>
               </li>
 
-              <li className="submenu">
-                <a
-                  href="#"
-                  onClick={() =>
-                    setAppointmentsubMenuOpen(!appointmentsubMenuOpen)
-                  }
-                >
+              <li className={router.pathname == "/appointment" ? "active" : ""}>
+                <Link href="/appointment">
                   <FeatherIcon
                     icon="calendar"
                     style={{ width: "15px", height: "15px" }}
                   />
                   <span>نوبت دهی</span>
-                  <span className="menu-arrow"></span>
-                </a>
-                <ul
-                  className={`hiddenSidebar ${appointmentsubMenuOpen ? "d-block" : "hidden"
-                    }`}
-                >
-                  <li
-                    className={
-                      router.pathname == "/appointment" ? "active" : ""
-                    }
-                  >
-                    <Link href="/appointment" className="font-12">
-                      نوبت دهی
-                    </Link>
-                  </li>
-                </ul>
+                </Link>
               </li>
 
               <li className="submenu">

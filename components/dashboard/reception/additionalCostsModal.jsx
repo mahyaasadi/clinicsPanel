@@ -65,7 +65,7 @@ const AdditionalCostsModal = ({
                 <div className="col-auto">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-outline-primary"
                     onClick={(e) => QtyChange("+", e)}
                   >
                     <i className="fe fe-plus"></i>
@@ -84,7 +84,7 @@ const AdditionalCostsModal = ({
                 <div className="col-auto">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-outline-primary"
                     onClick={(e) => QtyChange("-", e)}
                   >
                     <i className="fe fe-minus"></i>
