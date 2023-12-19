@@ -342,8 +342,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -543,10 +543,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -565,7 +565,7 @@ const Reception = ({ ClinicUser }) => {
 
           if (response.data) {
             // setTimeout(() => {
-            openActionModal(response.data.ReceptionID, response.data);
+            openActionModal(response.data[0].ReceptionID, response.data);
             // }, 3000);
           }
           // SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
@@ -618,6 +618,7 @@ const Reception = ({ ClinicUser }) => {
   const openActionModal = (receptionID, data) => {
     setShowActionModal(true);
 
+    console.log({ receptionID });
     ActiveReceptionID = receptionID;
     setActionModalData(data);
     setPaymentData(data?.CashDesk);

@@ -127,7 +127,7 @@ const ReciptSettingsForm = ({
                   </div>
                 </div>
 
-                <div className="row margint-3">
+                <div className="d-flex flex-col-md margint-3 justify-between gap-1">
                   {!isLoading ? (
                     <button
                       type="submit"

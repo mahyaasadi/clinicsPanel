@@ -17,7 +17,10 @@ const DayList = ({
   displayNextFiveDays,
   displayLastFiveDays
 }) => {
-  let currentMonth = jdate.format("MMM YYYY");
+  let currentMonth = jdate.format("MMM YYYY")
+
+  let todaysDate = String(jdate.getDate())
+  console.log({ todaysDate });
 
   return (
     <div className="appointmentTableContainer">
@@ -48,12 +51,13 @@ const DayList = ({
               {Dates.map(
                 (date, index) => (
                   (date = date.split("/")),
+                  console.log(date[2]),
                   (
                     <th key={index}>
                       <div className="date d-flex flex-col">
                         <div className="mb-1">{DatesDays[index]}</div>
                         <div className="d-flex align-items-center">
-                          <p className="date-num DateDayContainer">{date[2]}</p>
+                          <p className={`${date[2] === todaysDate ? "todaysDate" : ""} date-num DateDayContainer`}>{date[2]}</p>
                         </div>
                       </div>
                     </th>

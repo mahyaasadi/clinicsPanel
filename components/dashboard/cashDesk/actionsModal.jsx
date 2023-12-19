@@ -84,8 +84,8 @@ const CashDeskActions = ({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
-              نام بیمار : {newData?.Patient?.Name} {" | "}
-              تاریخ نسخه : {newData?.Date}
+              نام بیمار : {newData[0]?.Patient?.Name} {" | "}
+              تاریخ نسخه : {newData[0]?.Date}
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -178,7 +178,7 @@ const CashDeskActions = ({
               </thead>
 
               <tbody className="font-13 text-secondary">
-                {newData?.Items?.map((item, index) => {
+                {newData[0]?.Items?.map((item, index) => {
                   let RowTotalCost = item.Price * item.Qty;
                   let RowOrgCost = item.Qty * item.OC;
                   let RowPatientCost = RowTotalCost - RowOrgCost;
@@ -203,8 +203,8 @@ const CashDeskActions = ({
                   );
                 })}
 
-                {newData?.Calculated
-                  ? ((calculatedTotalPC = newData?.Calculated?.TotalPC),
+                {newData[0]?.Calculated
+                  ? ((calculatedTotalPC = newData[0]?.Calculated?.TotalPC),
                     (
                       <>
                         <tr>
@@ -212,19 +212,19 @@ const CashDeskActions = ({
                           <td></td>
                           <td>جمع کل </td>
                           <td>
-                            {newData?.Calculated?.TotalQty?.toLocaleString()}
+                            {newData[0]?.Calculated?.TotalQty?.toLocaleString()}
                           </td>
                           <td>
-                            {newData?.Calculated?.TotalPrice?.toLocaleString()}
+                            {newData[0]?.Calculated?.TotalPrice?.toLocaleString()}
                           </td>
                           <td>
-                            {newData?.Calculated?.TotalPC?.toLocaleString()}
+                            {newData[0]?.Calculated?.TotalPC?.toLocaleString()}
                           </td>
                           <td>
-                            {newData?.Calculated?.TotalOC?.toLocaleString()}
+                            {newData[0]?.Calculated?.TotalOC?.toLocaleString()}
                           </td>
                           <td>
-                            {newData?.Calculated?.TotalDiscount?.toLocaleString()}
+                            {newData[0]?.Calculated?.TotalDiscount?.toLocaleString()}
                           </td>
                         </tr>
                       </>
@@ -302,18 +302,6 @@ const CashDeskActions = ({
         cashMode={cashMode}
         calculatedTotalPC={calculatedTotalPC}
         paymentData={paymentData}
-        // onHide={handleCloseModal}
-        // price={price}
-        // setPrice={setPrice}
-        // isLoading={isLoading}
-        // applyCashDeskActions={applyCashDeskActions}
-        // kartsOptionList={kartsOptionList}
-        // selectedKart={selectedKart}
-        // setSelectedKart={setSelectedKart}
-        // paymentDefaultValue={paymentDefaultValue}
-        // setPaymentDefaultValue={setPaymentDefaultValue}
-        // returnPayment={returnPayment}
-        // setReturnPayment={setReturnPayment}
       />
     </>
   );

@@ -85,8 +85,8 @@ const ApplyCashDeskModal = ({
       Price: price
         ? price
         : formProps.price !== 0
-        ? parseInt(formProps.price.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.price.replaceAll(/,/g, ""))
+          : 0,
       Return: formProps.returnPaymentSwitch ? true : false,
       CartID: selectedKart ? selectedKart : CartID ? CartID : null,
     };
@@ -183,10 +183,10 @@ const ApplyCashDeskModal = ({
                     returnMode
                       ? convertToFixedNumber(returnPayment.toLocaleString())
                       : !returnMode && price === 0
-                      ? convertToFixedNumber(
+                        ? convertToFixedNumber(
                           paymentDefaultValue?.toLocaleString()
                         )
-                      : convertToFixedNumber(price.toLocaleString())
+                        : convertToFixedNumber(price.toLocaleString())
                   }
                   onChange={(e) => {
                     if (!returnMode) {

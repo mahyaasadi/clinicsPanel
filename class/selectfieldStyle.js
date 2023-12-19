@@ -7,15 +7,15 @@ const selectfieldColourStyles = {
     border: "1px solid #E6E9F4",
     textAlign: "center",
     '&:hover': {
-      borderColor: '#594b0d',
+      borderColor: '#8E3200',
     },
     // option: (provided, state) => ({
     //   ...styles,
     //   borderBottom: '1px solid #E6E9F4',
-    //   color: state.isSelected ? '#594b0d' : '#333',
+    //   color: state.isSelected ? '#8E3200' : '#333',
     //   backgroundColor: state.isFocused ? '#E6E9F4' : 'white',
     //   '&:hover': {
-    //     backgroundColor: '#594b0d',
+    //     backgroundColor: '#8E3200',
     //   },
     // }),
     // singleValue: (provided) => ({
@@ -29,7 +29,7 @@ const selectfieldColourStyles = {
     // indicatorSeparator: () => ({ display: 'none' }),
     // dropdownIndicator: (provided) => ({
     //   ...styles,
-    //   color: '#594b0d',
+    //   color: '#8E3200',
     // }),
   }),
 };

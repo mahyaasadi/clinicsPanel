@@ -117,7 +117,7 @@ const ReceptionCard = ({
                 <div className="row">
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary btn-rounded"
+                      className="btn btn-primary"
                       onClick={() => QtyChange("+")}
                     >
                       <i className="fe fe-plus"></i>
@@ -135,7 +135,7 @@ const ReceptionCard = ({
                   </div>
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary btn-rounded"
+                      className="btn btn-primary"
                       onClick={() => QtyChange("-")}
                     >
                       <i className="fe fe-minus"></i>

@@ -74,7 +74,7 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-                // onClick={openFavModal}
+              // onClick={openFavModal}
               >
                 نسخه های پرمصرف
               </button>
@@ -113,7 +113,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                  // value={editSrvData?.SrvCode}
+                // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -126,7 +126,7 @@ const PrescriptionCard = ({
                   // onFocus={handleOnFocus}
                   // onBlur={handleOnBlur}
                   onKeyUp={handleSearchKeyUp}
-                  // value={editSrvData?.SrvName}
+                // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
@@ -194,7 +194,7 @@ const PrescriptionCard = ({
                 <div className="row">
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary btn-rounded"
+                      className="btn btn-primary"
                       onClick={() => QtyChange("+")}
                     >
                       <i className="fe fe-plus"></i>
@@ -208,12 +208,12 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
+                    // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
                     <button
-                      className="btn btn-primary btn-rounded"
+                      className="btn btn-primary"
                       onClick={() => QtyChange("-")}
                     >
                       <i className="fe fe-minus"></i>

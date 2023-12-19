@@ -56,7 +56,7 @@
 }
 
 .eventBtns {
-  color: #594b0d;
+  color: #8e3200;
 }
 
 .events {
@@ -71,11 +71,9 @@
 
 .events li:nth-child(even) {
   /* background-color: #706233; */
-  background-color: #164858;
-  /* background-color: #9A3B3B; */
-  /* background-color: #9EB384; */
-  /* background-color: #FF9358; */
-  /* background-color: #218551; */
+  /* background-color: #164858; */
+  background-color: #a73121;
+  /* background-color: #1b4242; */
   color: white;
 }
 
@@ -83,8 +81,16 @@
   color: white;
 }
 
+.events li:nth-child(even) .editButton:hover {
+  color: #d1ae24;
+}
+
+.events li:nth-child(even) .trashButton:hover {
+  color: tomato;
+}
+
 .events li:nth-child(odd) {
-  background-color: #f8f1df;
+  background-color: #f9f1d7;
   /* background-color: #faeed8; */
 }
 
@@ -864,8 +870,8 @@
 .DateDayContainer {
   padding: 12px;
   margin: 0 auto;
-  height: 60px;
-  width: 60px;
+  height: 45px;
+  width: 45px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -902,13 +908,13 @@
   overflow: auto;
   margin-top: 5px;
   cursor: pointer;
-  color: #594b0d;
+  color: #8e3200;
   opacity: 1;
 }
 
 .event:hover {
   opacity: 0.9;
-  border: 1px solid #594b0d;
+  border: 1px solid #8e3200;
   transition: ease-in-out all;
   transition-duration: 0.25s;
   z-index: 1;
@@ -992,7 +998,7 @@
 }
 
 .react-datepicker__header {
-  background-color: #594b0d !important;
+  background-color: #8e3200 !important;
   color: #fff !important;
   border-bottom: none !important;
   font-size: 13px !important;
@@ -1012,7 +1018,7 @@
 .react-datepicker__navigation--next {
   border: 1px solid #fff;
   border-radius: 50%;
-  background-color: #594b0d;
+  background-color: #8e3200;
 }
 
 .react-datepicker__day-names {
@@ -1031,11 +1037,11 @@
   }
 
   &--selected {
-    background-color: #594b0d;
+    background-color: #8e3200;
     color: #fff;
   }
 }
 
 .react-datepicker__time-list-item--selected {
-  background-color: #594b0d !important;
+  background-color: #8e3200 !important;
 }
