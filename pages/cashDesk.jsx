@@ -119,62 +119,22 @@ const CashDesk = ({ ClinicUser }) => {
     return patientsInfo;
   };
 
-  const applyCashDeskActions = (e) => {
-    e.preventDefault();
+  // Apply CashDesk Actions
+  const ApplyCashDeskActions = (data) => {
     setIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-    let CartID = formProps.kartOption;
-
-    let url = "ClinicReception/CashDeskAction";
-    let data = {
-      ReceptionID: ActiveReceptionID,
-      UserID: ClinicUserID,
-      Price: price
-        ? price
-        : formProps.price !== 0
-        ? parseInt(formProps.price.replaceAll(/,/g, ""))
-        : 0,
-      Return: formProps.returnPaymentSwitch ? true : false,
-      CartID: selectedKart ? selectedKart : CartID ? CartID : null,
-    };
-
-    console.log({ data });
-
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     setPaymentData(response.data.CashDesk);
-    //     setShowPaymentModal(false);
-    //     setSelectedKart(null);applyCa
-    //     CartID = null;
-    //     setPaymentDefaultValue(0);
-
-    //     // Reset
-    //     getReceptionList()
-    //       .then(() => {
-    //         setIsLoading(false);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         setIsLoading(false);
-    //         ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-    //       });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //     ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
-    //   });
-  };
-
-  const ApplyCashDeskActions = (data) => {
-    console.log({ data });
     if (data) {
       setPaymentData(data.CashDesk);
       setShowPaymentModal(false);
-      getReceptionList();
+      getReceptionList()
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+        });
     }
   };
 
@@ -284,16 +244,6 @@ const CashDesk = ({ ClinicUser }) => {
           showPaymentModal={showPaymentModal}
           setShowPaymentModal={setShowPaymentModal}
           ApplyCashDeskActions={ApplyCashDeskActions}
-          // price={price}
-          // setPrice={setPrice}
-          // isLoading={isLoading}
-          // setSelectedKart={setSelectedKart}
-          // kartsOptionList={kartsOptionList}
-          // paymentDefaultValue={paymentDefaultValue}
-          // setPaymentDefaultValue={setPaymentDefaultValue}
-          // returnPayment={returnPayment}
-          // setReturnPayment={setReturnPayment}
-          // applyCashDeskActions={applyCashDeskActions}
         />
 
         <ApplyAppointmentModal

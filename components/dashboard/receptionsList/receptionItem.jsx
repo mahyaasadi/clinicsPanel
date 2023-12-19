@@ -60,7 +60,7 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
                 <button
                   type="button"
                   data-pr-position="top"
-                  className="btn btn-outline-secondary editBtn receptBtnPadding"
+                  className="btn btn-outline-primary editBtn receptBtnPadding"
                   onClick={handleEditBtnClick}
                 >
                   <FeatherIcon
@@ -73,8 +73,8 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
 
                 <button
                   type="button"
-                  data-pr-position="top"
-                  className="btn btn-outline-secondary editBtn receptBtnPadding appointment"
+                  data-pr-position="left"
+                  className="btn btn-outline-primary editBtn receptBtnPadding appointment"
                   onClick={() =>
                     openAppointmentModal(srv?.Patient, srv?.Modality)
                   }

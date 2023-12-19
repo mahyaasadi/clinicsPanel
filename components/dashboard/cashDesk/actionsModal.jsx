@@ -24,18 +24,9 @@ const CashDeskActions = ({
   paymentData,
   showPaymentModal,
   setShowPaymentModal,
-  // price,
-  // setPrice,
-  // isLoading,
-  // kartsOptionList,
-  // selectedKart,
-  // setSelectedKart,
-  // paymentDefaultValue,
-  // setPaymentDefaultValue,
-  // returnPayment,
-  // setReturnPayment,
-  // applyCashDeskActions,
 }) => {
+  let calculatedTotalPC = 0;
+
   const [returnMode, setReturnMode] = useState(false);
   const [cashMode, setCashMode] = useState(false);
   const [showPrintModal, setShowPrintModal] = useState(false);
@@ -60,17 +51,7 @@ const CashDeskActions = ({
     setShowPaymentModal(true);
   };
 
-  let calculatedTotalPC = 0;
-
-  const [newData, setNewData] = useState([]);
-
-  useEffect(() => {
-    // Add any logic that needs to run when data changes
-    console.log("Data has changed:", data);
-    if (data) {
-      setNewData(data);
-    }
-  }, [data]);
+  console.log({ data });
 
   return (
     <>
@@ -84,8 +65,8 @@ const CashDeskActions = ({
         <Modal.Header closeButton>
           <Modal.Title>
             <div className="row p-2 text-secondary font-14 fw-bold margin-right-sm">
-              نام بیمار : {newData[0]?.Patient?.Name} {" | "}
-              تاریخ نسخه : {newData[0]?.Date}
+              نام بیمار : {data?.Patient?.Name} {" | "}
+              تاریخ نسخه : {data?.Date}
             </div>
           </Modal.Title>
         </Modal.Header>
@@ -178,7 +159,7 @@ const CashDeskActions = ({
               </thead>
 
               <tbody className="font-13 text-secondary">
-                {newData[0]?.Items?.map((item, index) => {
+                {data?.Items?.map((item, index) => {
                   let RowTotalCost = item.Price * item.Qty;
                   let RowOrgCost = item.Qty * item.OC;
                   let RowPatientCost = RowTotalCost - RowOrgCost;
@@ -203,8 +184,8 @@ const CashDeskActions = ({
                   );
                 })}
 
-                {newData[0]?.Calculated
-                  ? ((calculatedTotalPC = newData[0]?.Calculated?.TotalPC),
+                {data?.Calculated
+                  ? ((calculatedTotalPC = data?.Calculated?.TotalPC),
                     (
                       <>
                         <tr>
@@ -212,19 +193,15 @@ const CashDeskActions = ({
                           <td></td>
                           <td>جمع کل </td>
                           <td>
-                            {newData[0]?.Calculated?.TotalQty?.toLocaleString()}
+                            {data?.Calculated?.TotalQty?.toLocaleString()}
                           </td>
                           <td>
-                            {newData[0]?.Calculated?.TotalPrice?.toLocaleString()}
+                            {data?.Calculated?.TotalPrice?.toLocaleString()}
                           </td>
+                          <td>{data?.Calculated?.TotalPC?.toLocaleString()}</td>
+                          <td>{data?.Calculated?.TotalOC?.toLocaleString()}</td>
                           <td>
-                            {newData[0]?.Calculated?.TotalPC?.toLocaleString()}
-                          </td>
-                          <td>
-                            {newData[0]?.Calculated?.TotalOC?.toLocaleString()}
-                          </td>
-                          <td>
-                            {newData[0]?.Calculated?.TotalDiscount?.toLocaleString()}
+                            {data?.Calculated?.TotalDiscount?.toLocaleString()}
                           </td>
                         </tr>
                       </>

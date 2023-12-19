@@ -48,23 +48,96 @@ const QuestionAlert = async (Title, Text) => {
   return promise.isConfirmed;
 };
 
-const oneInputAlert = async (Title) => {
-  const promise = await Swal.fire({
-    title: Title,
-    icon: "question",
-    input: "text",
-    showCancelButton: true,
-    allowOutsideClick: true,
-    confirmButtonColor: "#1B5A90",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "تایید",
-    cancelButtonText: "انصراف",
+const TimerAlert = (options) => {
+  const {
+    title,
+    html,
+    timer,
+    timerProgressBar,
+    cancelButton,
+    onBeforeOpen,
+    willClose,
+    onConfirm,
+    onCancel,
+  } = options;
+
+  let timerInterval;
+  let timerElement;
+
+  Swal.fire({
+    title,
+    html,
+    timer,
+    timerProgressBar,
+    showCancelButton: cancelButton ? true : false,
+    cancelButtonText: cancelButton ? cancelButton.text : "Cancel",
+    cancelButtonColor: "#c2410c",
+    customClass: {
+      content: "custom-swal-content",
+      actions: "custom-swal-actions",
+      cancelButton: "custom-swal-cancel-button",
+    },
+    didOpen: () => {
+      if (onBeforeOpen) {
+        onBeforeOpen();
+      }
+
+      if (timer) {
+        timerElement = Swal.getPopup().querySelector("b");
+        Swal.showLoading();
+        timerInterval = setInterval(() => {
+          timerElement.textContent = `${Swal.getTimerLeft()}`;
+        }, 300);
+      }
+    },
+    onBeforeOpen: () => {
+      if (onBeforeOpen) {
+        onBeforeOpen();
+      }
+
+      if (cancelButton) {
+        const cancelButtonElement = Swal.getCancelButton();
+        cancelButtonElement.addEventListener("click", () => {
+          clearInterval(timerInterval);
+          if (onCancel) {
+            onCancel();
+          }
+          Swal.close();
+        });
+      }
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+      if (willClose) {
+        willClose();
+      }
+    },
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.timer && onConfirm) {
+      onConfirm();
+    }
   });
-  return promise.value;
 };
 
 module.exports.ErrorAlert = ErrorAlert;
 module.exports.SuccessAlert = SuccessAlert;
 module.exports.WarningAlert = WarningAlert;
 module.exports.QuestionAlert = QuestionAlert;
-module.exports.oneInputAlert = oneInputAlert;
+module.exports.TimerAlert = TimerAlert;
+
+// const oneInputAlert = async (Title) => {
+//   const promise = await Swal.fire({
+//     title: Title,
+//     icon: "question",
+//     input: "text",
+//     showCancelButton: true,
+//     allowOutsideClick: true,
+//     confirmButtonColor: "#1B5A90",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "تایید",
+//     cancelButtonText: "انصراف",
+//   });
+//   return promise.value;
+// };
+
+// module.exports.oneInputAlert = oneInputAlert;

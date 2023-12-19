@@ -15,19 +15,18 @@ const DayList = ({
   depOpeningHour,
   Hours,
   displayNextFiveDays,
-  displayLastFiveDays
+  displayLastFiveDays,
 }) => {
-  let currentMonth = jdate.format("MMM YYYY")
-
-  let todaysDate = String(jdate.getDate())
-  console.log({ todaysDate });
+  let currentMonth = jdate.format("MMM YYYY");
+  let todaysDate = String(jdate.getDate());
 
   return (
     <div className="appointmentTableContainer">
       <div className="d-flex justify-center ">
         <button
-          className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35"
-          onClick={displayNextFiveDays}>
+          className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35"
+          onClick={displayNextFiveDays}
+        >
           <FeatherIcon icon="chevron-right" />
           بعدی
         </button>
@@ -35,7 +34,7 @@ const DayList = ({
           {currentMonth}
         </div>
         <button
-          className="btn btn-outline-secondary font-14 d-flex align-items-center justify-center gap-1 h-35"
+          className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35"
           onClick={displayLastFiveDays}
         >
           قبلی
@@ -51,13 +50,18 @@ const DayList = ({
               {Dates.map(
                 (date, index) => (
                   (date = date.split("/")),
-                  console.log(date[2]),
                   (
                     <th key={index}>
                       <div className="date d-flex flex-col">
                         <div className="mb-1">{DatesDays[index]}</div>
                         <div className="d-flex align-items-center">
-                          <p className={`${date[2] === todaysDate ? "todaysDate" : ""} date-num DateDayContainer`}>{date[2]}</p>
+                          <p
+                            className={`${
+                              date[2] === todaysDate ? "todaysDate" : ""
+                            } date-num DateDayContainer`}
+                          >
+                            {date[2]}
+                          </p>
                         </div>
                       </div>
                     </th>
