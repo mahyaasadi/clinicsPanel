@@ -36,7 +36,7 @@ const AddToListItems = ({ data }) => {
                   <div className="d-flex col-3 gap-1 justify-end">
                     <button
                       type="button"
-                      className="btn btn-sm btn-outline-secondary editBtn"
+                      className="btn btn-sm btn-outline-primary editBtn"
                       data-pr-position="top"
                       //   onClick={() => handleEditPrescItem(srv)}
                     >

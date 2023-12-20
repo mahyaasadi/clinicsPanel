@@ -43,7 +43,7 @@ const DepartmentsListTable = ({ data, deleteInsurance, openEditModal }) => {
             />
           </button>
           <button
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn d-flex align-items-center"
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
             onClick={() => openEditModal(row)}
           >

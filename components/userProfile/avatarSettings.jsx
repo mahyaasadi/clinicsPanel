@@ -143,7 +143,7 @@ const AvatarSettings = ({
                   <button
                     type="button"
                     href="/profileSettings"
-                    className="btn btn-outline-secondary rounded profileSettingsBtn font-13"
+                    className="btn btn-outline-primary rounded profileSettingsBtn font-13"
                     id="cancelAvatarEdit"
                     onClick={handleCancelBtn}
                   >

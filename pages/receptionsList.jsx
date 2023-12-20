@@ -6,7 +6,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
-import ReceptionList from "@/components/dashboard/receptionsList/receptionList";
+import GridReceptionList from "@/components/dashboard/receptionsList/gridReceptionList";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -182,7 +182,7 @@ const ReceptionsList = ({ ClinicUser }) => {
             <div className="row">
               <div className="col-sm-12">
                 <div className="card">
-                  <ReceptionList
+                  <GridReceptionList
                     data={currentItems}
                     ClinicID={ClinicID}
                     deleteReception={deleteReception}

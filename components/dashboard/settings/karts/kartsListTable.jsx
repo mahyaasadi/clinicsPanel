@@ -47,7 +47,7 @@ const KartsListTable = ({ data, openEditModal, deleteKart }) => {
           </button>
           <Link
             href="#"
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn"
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn"
             onClick={() => openEditModal(row)}
             data-pr-position="top"
           >

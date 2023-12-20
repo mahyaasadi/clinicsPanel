@@ -1,3 +1,4 @@
+import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -5,7 +6,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
+const TableReceptionsList = ({ data }) => {
   const columns = [
     {
       name: "نام",
@@ -14,31 +15,10 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
       width: "300px",
     },
     {
-      name: "مشخصات",
-      selector: (row) => row.Des,
+      name: "نام تخصصی",
+      selector: (row) => row.EngName,
       sortable: true,
-      width: "400px",
-    },
-    {
-      name: "درصد/مبلغ تخفیف",
-      selector: (row) => row.Value,
-      sortable: true,
-      width: "200px",
-    },
-    {
-      name: "روش محاسبه",
-      selector: (row) => row.Percent,
-      sortable: true,
-      cell: (row) => (
-        <div>
-          {row.Percent ? (
-            <p>محاسبه بر اساس درصد</p>
-          ) : (
-            <p>محاسبه بر اساس مبلغ</p>
-          )}
-        </div>
-      ),
-      width: "420px",
+      width: "300px",
     },
     {
       name: "عملیات ها",
@@ -47,20 +27,20 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
-            className="btn btn-sm btn-outline-danger reomveBtn"
-            onClick={() => deleteDiscount(row._id)}
+            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center"
+            // onClick={() => deleteDepartment(row._id)}
             data-pr-position="top"
           >
-            <Tooltip target=".reomveBtn">حذف</Tooltip>
+            <Tooltip target=".removeBtn">حذف</Tooltip>
             <FeatherIcon
               icon="trash-2"
               style={{ width: "16px", height: "16px" }}
             />
           </button>
           <button
-            className="btn btn-sm btn-outline-primary btn-border-left editBtn"
-            onClick={() => updateDiscount(row)}
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
+            // onClick={() => openEditModal(row)}
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
             <FeatherIcon
@@ -70,7 +50,7 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
           </button>
         </div>
       ),
-      width: "150px",
+      width: "200px",
     },
   ];
 
@@ -102,4 +82,4 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
   );
 };
 
-export default DiscountsListTable;
+export default TableReceptionsList;

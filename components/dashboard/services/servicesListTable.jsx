@@ -50,7 +50,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
             />
           </button>
           <button
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn"
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn"
             data-pr-position="top"
             onClick={() => openEditModal(row)}
           >

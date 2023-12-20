@@ -11,6 +11,21 @@ const Sidebar = () => {
   const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState(false);
 
   useEffect(() => {
+    const body = $("body");
+    const subMenus = $(".subdrop + ul");
+
+    // remove submenus if mini-sidebar className exists
+    if (body.hasClass("mini-sidebar")) {
+      // body.removeClass("mini-sidebar");
+      // subMenus.slideDown();
+      // subMenus.removeClass("hiddenSidebar");
+      // subMenus.hide();
+      $("#hiddenSidebar").hide();
+      console.log($("#hiddenSidebar"));
+      // subMenus.hide();
+      console.log("object");
+    }
+
     const receptionSubRoutes = [
       "/reception",
       "/discounts",
@@ -78,8 +93,10 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  id="hiddenSidebar"
+                  className={`hiddenSidebar ${
+                    receptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -142,8 +159,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -180,8 +198,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={

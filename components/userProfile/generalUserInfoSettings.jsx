@@ -138,7 +138,7 @@ const GenralUserInfoSettings = ({
 
                 <button
                   type="submit"
-                  className="btn btn-outline-secondary rounded profileSettingsBtn font-13"
+                  className="btn btn-outline-primary rounded profileSettingsBtn font-13"
                   id="cancelGeneralInfoBtn"
                   onClick={handleCancelBtn}
                 >

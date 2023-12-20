@@ -6,11 +6,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const DepartmentsListTable = ({
-  data,
-  openEditModal,
-  deleteDepartment,
-}) => {
+const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
   const columns = [
     {
       name: "نام",
@@ -36,7 +32,7 @@ const DepartmentsListTable = ({
               className="btn removeImgBtn tooltip-button"
               type="button"
               data-pr-position="top"
-            // onClick={}
+              // onClick={}
             >
               <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
             </button>
@@ -64,7 +60,7 @@ const DepartmentsListTable = ({
             />
           </button>
           <button
-            className="btn btn-sm btn-outline-secondary btn-border-left editBtn d-flex align-items-center"
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
             onClick={() => openEditModal(row)}
           >

@@ -1,7 +1,8 @@
 import ReceptionItem from "./receptionItem";
 import FilterReceptionItems from "./filterReceptionItems";
+import FeatherIcon from "feather-icons-react";
 
-const ReceptionList = ({
+const GridReceptionList = ({
   data,
   deleteReception,
   applyFilterOnRecItems,
@@ -28,6 +29,15 @@ const ReceptionList = ({
           />
         </div>
 
+        <div className="d-flex gap-1 justify-end">
+          <button className="btn btn-outline-primary d-flex align-items-center justify-center">
+            <FeatherIcon icon="grid" />
+          </button>
+          <button className="btn btn-outline-primary d-flex align-items-center justify-center">
+            <FeatherIcon icon="list" />
+          </button>
+        </div>
+
         {data.map((item, index) => (
           <ReceptionItem
             key={index}
@@ -41,4 +51,4 @@ const ReceptionList = ({
   );
 };
 
-export default ReceptionList;
+export default GridReceptionList;

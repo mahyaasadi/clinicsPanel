@@ -340,8 +340,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -541,10 +541,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -564,12 +564,28 @@ const Reception = ({ ClinicUser }) => {
           setIsLoading(false);
 
           if (response.data.length === 1) {
+            SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+
             setTimeout(() => {
               openActionModal(response.data[0]._id, response.data[0]);
-            }, 300);
-          }
+            }, 400);
+          } else {
+            const seconds = 3;
+            const timerInMillis = seconds * 1000;
 
-          SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+            TimerAlert({
+              title: "ثبت پذیرش با موفقیت انجام گردید!",
+              html: `<div class="custom-content">در حال انتقال به صفحه صندوق در<b>${seconds}</b> ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/cashDesk");
+              },
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -596,20 +612,19 @@ const Reception = ({ ClinicUser }) => {
   const handleCloseActionsModal = () => {
     setShowActionModal(false);
 
-    const seconds = 5;
+    const seconds = 3;
     const timerInMillis = seconds * 1000;
 
     TimerAlert({
       title: "در حال تنظیم مجدد صفحه پذیرش!",
-      html: `<div class="custom-content">این عملیات <b>${seconds}</b> میلی ثانیه طول می‌کشد</div>`,
-      timer: 3000,
+      html: `<div class="custom-content">این عملیات <b>${seconds}</b> ثانیه طول می‌کشد</div>`,
+      timer: timerInMillis,
       timerProgressBar: true,
       cancelButton: {
         text: "انصراف",
       },
       onConfirm: () => {
         router.reload();
-        // router.push("/reception");
       },
     });
   };

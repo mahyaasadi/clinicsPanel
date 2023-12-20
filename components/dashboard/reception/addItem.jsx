@@ -45,7 +45,7 @@ const AddItem = ({
             <div className="d-flex gap-2 justify-end">
               <button
                 type="button"
-                className="btn btn-sm btn-outline-secondary editBtn height-27"
+                className="btn btn-sm btn-outline-primary editBtn height-27"
                 data-pr-position="top"
                 onClick={() => handleEditService(srv)}
               >
@@ -55,7 +55,7 @@ const AddItem = ({
 
               <button
                 type="button"
-                className="btn btn-sm btn-outline-secondary dicountBtn height-27"
+                className="btn btn-sm btn-outline-primary dicountBtn height-27"
                 onClick={openDiscountModal}
                 data-pr-position="top"
               >

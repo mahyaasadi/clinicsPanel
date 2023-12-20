@@ -51,8 +51,6 @@ const CashDeskActions = ({
     setShowPaymentModal(true);
   };
 
-  console.log({ data });
-
   return (
     <>
       <Modal
@@ -76,7 +74,7 @@ const CashDeskActions = ({
             <div className="col-12 col-xl-3">
               <button
                 type="submit"
-                className="btn btn-outline-secondary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
+                className="btn btn-primary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
                 onClick={handlePaymentBtn}
               >
                 <FeatherIcon icon="credit-card" />
@@ -87,7 +85,7 @@ const CashDeskActions = ({
             <div className="col-12 col-xl-3">
               <button
                 type="submit"
-                className="btn btn-outline-secondary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
+                className="btn btn-primary rounded text-center font-13 d-flex align-items-center gap-2 justify-center w-100"
                 onClick={handleCashPaymentBtn}
               >
                 <svg
@@ -110,7 +108,7 @@ const CashDeskActions = ({
             <div className="col-12 col-xl-3">
               <button
                 type="submit"
-                className="btn btn-outline-secondary text-center rounded font-13 d-flex align-items-center gap-2 justify-center w-100"
+                className="btn btn-primary text-center rounded font-13 d-flex align-items-center gap-2 justify-center w-100"
                 onClick={handleReturnPaymentBtn}
               >
                 <svg
