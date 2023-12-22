@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
+import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Paginator from "components/commonComponents/paginator";
 import Loading from "components/commonComponents/loading/loading";
-import GridReceptionList from "@/components/dashboard/receptionsList/gridReceptionList";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
+import FilterReceptionItems from "@/components/dashboard/receptionsList/filterReceptionItems";
+import ReceptionItem from "@/components/dashboard/receptionsList/receptionItem";
+import ReceptionListTable from "@/components/dashboard/receptionsList/receptionListTable";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -29,15 +31,12 @@ let ClinicID,
   ActivePatientID = null;
 let ActiveModalityData = {};
 
-const jdate = new JDate();
-
 const ReceptionsList = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [defaultDepValue, setDefaultDepValue] = useState();
 
   // appointment modal
@@ -99,54 +98,39 @@ const ReceptionsList = ({ ClinicUser }) => {
   };
 
   // Apply Filter on ReceptionItems
-  let dateFrom,
-    dateTo = null;
 
-  const SetRangeDate = (f, t) => {
-    dateFrom = f;
-    dateTo = t;
-  };
 
-  const FUSelectDepartment = (departmentValue) =>
-    setSelectedDepartment(departmentValue);
+  const ApplyFilterOnRecItems = (data) => {
+    // e.preventDefault();
+    // setSearchIsLoading(true);
 
-  const applyFilterOnRecItems = (e) => {
-    e.preventDefault();
-    setSearchIsLoading(true);
+    // let formData = new FormData(e.target);
+    // const formProps = Object.fromEntries(formData);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
+    // let url = "ClinicReception/Search";
+    // let data = {
+    //   ClinicID,
+    //   ReceptionID: formProps.receptionID ? formProps.receptionID : "",
+    //   ModalityID: selectedDepartment ? selectedDepartment._id : "",
+    //   NID: formProps.patientNID ? formProps.patientNID : "",
+    //   PatientName: formProps.patientName ? formProps.patientName : "",
+    //   DateFrom: dateFrom ? dateFrom : "",
+    //   DateTo: dateTo ? dateTo : "",
+    // };
 
-    let url = "ClinicReception/Search";
-    let data = {
-      ClinicID,
-      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
-      ModalityID: selectedDepartment ? selectedDepartment._id : "",
-      NID: formProps.patientNID ? formProps.patientNID : "",
-      PatientName: formProps.patientName ? formProps.patientName : "",
-      DateFrom: dateFrom ? dateFrom : "",
-      DateTo: dateTo ? dateTo : "",
-    };
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setReceptionList(response.data);
+    //     setSearchIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setSearchIsLoading(false);
+    //   });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-        setReceptionList(response.data);
-        setSearchIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setSearchIsLoading(false);
-      });
-  };
-
-  const handleResetFilterFields = () => {
-    setSearchIsLoading(false);
-    setSelectedDepartment(null);
-    $("#receptionID").val("");
-    $("#patientNID").val("");
-    $("#patientName").val("");
+    console.log({ data });
   };
 
   const openAppointmentModal = (patientData, modality) => {
@@ -181,27 +165,73 @@ const ReceptionsList = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card">
-                  <GridReceptionList
-                    data={currentItems}
-                    ClinicID={ClinicID}
-                    deleteReception={deleteReception}
-                    applyFilterOnRecItems={applyFilterOnRecItems}
-                    handleResetFilterFields={handleResetFilterFields}
-                    SetRangeDate={SetRangeDate}
-                    selectedDepartment={selectedDepartment}
-                    FUSelectDepartment={FUSelectDepartment}
-                    searchIsLoading={searchIsLoading}
-                    openAppointmentModal={openAppointmentModal}
-                  />
-
-                  {currentItems.length > 0 && (
-                    <Paginator
-                      nPages={nPages}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
+                <div className="card row p-4">
+                  <div>
+                    <FilterReceptionItems
+                      ClinicID={ClinicID}
+                      // SetRangeDate={SetRangeDate}
+                      // applyFilterOnRecItems={applyFilterOnRecItems}
+                      // handleResetFilterFields={handleResetFilterFields}
+                      // selectedDepartment={selectedDepartment}
+                      // FUSelectDepartment={FUSelectDepartment}
+                      ApplyFilterOnRecItems={ApplyFilterOnRecItems}
+                      searchIsLoading={searchIsLoading}
                     />
-                  )}
+                  </div>
+
+                  <div className="d-flex justify-end">
+                    <ul className="nav nav-tabs nav-tabs-solid justify-end">
+                      <li className="nav-item">
+                        <a
+                          className="nav-link active"
+                          href="#solid-rounded-tab1"
+                          data-bs-toggle="tab"
+                        >
+                          <FeatherIcon icon="grid" />
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          href="#solid-rounded-tab2"
+                          data-bs-toggle="tab"
+                        >
+                          <FeatherIcon icon="list" />
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="tab-content pt-1">
+                    <div className="tab-pane show active" id="solid-rounded-tab1">
+                      <div className="row">
+                        {currentItems.map((item, index) => (
+                          <ReceptionItem
+                            key={index}
+                            srv={item}
+                            deleteReception={deleteReception}
+                            openAppointmentModal={openAppointmentModal}
+                          />
+                        ))}
+                      </div>
+
+                      {currentItems.length > 0 && (
+                        <Paginator
+                          nPages={nPages}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      )}
+                    </div>
+
+                    <div className="tab-pane" id="solid-rounded-tab2">
+                      <ReceptionListTable
+                        data={receptionList}
+                        deleteReception={deleteReception}
+                        openAppointmentModal={openAppointmentModal}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

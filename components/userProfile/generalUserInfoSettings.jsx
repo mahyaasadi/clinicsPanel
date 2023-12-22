@@ -113,19 +113,19 @@ const GenralUserInfoSettings = ({
                 </div>
               )}
 
-              <div className="settings-btns d-flex gap-1 justify-center media-flex-column margin-top-3">
+              <div className="settings-btns d-flex gap-1 justify-center media-flex-col margin-top-3">
                 {!infoIsLoading ? (
                   <button
                     type="submit"
                     id="submitUserBtn"
-                    className="btn btn-primary rounded btn-save font-13"
+                    className="btn btn-primary rounded col-lg-5 col-12 font-13"
                   >
                     ثبت
                   </button>
                 ) : (
                   <button
                     type="submit"
-                    className="btn btn-primary rounded btn-save font-13"
+                    className="btn btn-primary rounded col-lg-5 col-12 font-13"
                     disabled
                   >
                     <span
@@ -138,7 +138,7 @@ const GenralUserInfoSettings = ({
 
                 <button
                   type="submit"
-                  className="btn btn-outline-primary rounded profileSettingsBtn font-13"
+                  className="btn btn-outline-primary rounded profileSettingsBtn col-lg-5 col-12 font-13"
                   id="cancelGeneralInfoBtn"
                   onClick={handleCancelBtn}
                 >

@@ -37,18 +37,13 @@ const CashDesk = ({ ClinicUser }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [patientsInfo, setPatientsInfo] = useState([]);
   const [receptionList, setReceptionList] = useState([]);
-  // const [selectedKart, setSelectedKart] = useState(null);
   const [showActionsModal, setShowActionsModal] = useState(false);
   const [actionModalData, setActionModalData] = useState([]);
-  const [price, setPrice] = useState(0);
 
   const [paymentData, setPaymentData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-  const handleCloseActionsModal = () => {
-    setShowActionsModal(false);
-    // setSelectedKart(null);
-  };
+  const handleCloseActionsModal = () => setShowActionsModal(false);
 
   // searchBox
   const [searchIsLoading, setSearchIsLoading] = useState(false);
@@ -75,6 +70,13 @@ const CashDesk = ({ ClinicUser }) => {
       Name: modality.Name,
       _id: modality._id,
     });
+  };
+
+  const addAppointment = (data) => {
+    if (data) {
+      setShowAppointmentModal(false);
+      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    }
   };
 
   const getReceptionList = () => {
@@ -186,14 +188,6 @@ const CashDesk = ({ ClinicUser }) => {
     $("#receptionID").val("");
     $("#patientNID").val("");
     $("#patientName").val("");
-  };
-
-  // appointment
-  const addAppointment = (data) => {
-    if (data) {
-      setShowAppointmentModal(false);
-      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
-    }
   };
 
   useEffect(() => {

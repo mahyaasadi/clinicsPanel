@@ -19,6 +19,7 @@ const DayList = ({
 }) => {
   let currentMonth = jdate.format("MMM YYYY");
   let todaysDate = String(jdate.getDate());
+  if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
 
   return (
     <div className="appointmentTableContainer">

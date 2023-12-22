@@ -33,12 +33,8 @@ const SingleDatePicker = ({ setDate, label, defaultDate }) => {
   };
 
   const handleDateChange = (e) => {
-    if (e?.month.toString().length === 1) {
-      e.month = "0" + e.month.toString();
-    }
-    if (e?.day.toString().length === 1) {
-      e.day = "0" + e.day;
-    }
+    if (e?.month.toString().length === 1) e.month = "0" + e.month.toString();
+    if (e?.day.toString().length === 1) e.day = "0" + e.day
 
     const pickedDate = e?.year + "/" + e?.month + "/" + e?.day;
     setDate(pickedDate);

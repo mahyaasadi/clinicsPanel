@@ -149,23 +149,23 @@ const Services = ({ ClinicUser }) => {
       Price: serviceCost
         ? serviceCost
         : formProps.servicePrice !== 0
-        ? formProps.servicePrice.replaceAll(/,/g, "")
-        : 0,
+          ? formProps.servicePrice.replace(/٬/g, ",").replace(/,/g, "")
+          : 0,
       SA: arteshShare
         ? arteshShare
         : formProps.arteshShare !== 0
-        ? formProps.arteshShare.replaceAll(/,/g, "")
-        : 0,
+          ? formProps.arteshShare.replace(/٬/g, ",").replace(/,/g, "")
+          : 0,
       ST: taminShare
         ? taminShare
         : formProps.taminShare !== 0
-        ? formProps.taminShare.replaceAll(/,/g, "")
-        : 0,
+          ? formProps.taminShare.replace(/٬/g, ",").replace(/,/g, "")
+          : 0,
       SS: salamatShare
         ? salamatShare
         : formProps.salamatShare !== 0
-        ? formProps.salamatShare.replaceAll(/,/g, "")
-        : 0,
+          ? formProps.salamatShare.replace(/٬/g, ",").replace(/,/g, "")
+          : 0,
     };
 
     axiosClient

@@ -27,7 +27,7 @@ const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
     };
 
     return (
-        <div className="pagination d-flex flex-wrap items-center justify-center gap-3 mt-4 marginb-3">
+        <div className="pagination d-flex flex-wrap items-center justify-center gap-3 margint-3 marginb-3">
             <button onClick={prevPage} className="paginateBtn">
                 <FeatherIcon
                     icon="arrow-right"

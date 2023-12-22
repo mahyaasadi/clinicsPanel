@@ -76,9 +76,8 @@ const PasswordSettings = ({
                   />
                   <span
                     onClick={onEyeClick}
-                    className={`fa toggle-password-current" ${
-                      eye ? "fa-eye-slash" : "fa-eye"
-                    }`}
+                    className={`fa toggle-password-current" ${eye ? "fa-eye-slash" : "fa-eye"
+                      }`}
                   />
                 </div>
 
@@ -100,9 +99,8 @@ const PasswordSettings = ({
                     />
                     <span
                       onClick={onEyeClick}
-                      className={`fa toggle-password-newPass" ${
-                        eye ? "fa-eye-slash" : "fa-eye"
-                      }`}
+                      className={`fa toggle-password-newPass" ${eye ? "fa-eye-slash" : "fa-eye"
+                        }`}
                     />
                   </div>
                 </div>
@@ -138,9 +136,8 @@ const PasswordSettings = ({
                     />
                     <span
                       onClick={onEyeClick}
-                      className={`fa toggle-password-confPass" ${
-                        eye ? "fa-eye-slash" : "fa-eye"
-                      }`}
+                      className={`fa toggle-password-confPass" ${eye ? "fa-eye-slash" : "fa-eye"
+                        }`}
                     />
                   </div>
                 </div>
@@ -159,19 +156,19 @@ const PasswordSettings = ({
                   </div>
                 )}
 
-                <div className="settings-btns d-flex gap-1 justify-center media-flex-column margin-top-3">
+                <div className="settings-btns d-flex gap-1 justify-center media-flex-col margin-top-3">
                   {!passIsLoading ? (
                     <button
                       type="submit"
                       id="submitNewPasswordBtn"
-                      className="btn btn-primary rounded btn-save font-13"
+                      className="btn btn-primary rounded col-lg-5 col-12 font-13"
                     >
                       ثبت
                     </button>
                   ) : (
                     <button
                       type="submit"
-                      className="btn btn-primary rounded btn-save font-13"
+                      className="btn btn-primary rounded col-lg-5 col-12 font-13"
                       disabled
                     >
                       <span
@@ -184,7 +181,7 @@ const PasswordSettings = ({
 
                   <button
                     type="submit"
-                    className="btn btn-outline-primary rounded profileSettingsBtn font-13"
+                    className="btn btn-outline-primary rounded profileSettingsBtn col-lg-5 col-12 font-13"
                     id="cancelNewPasswordBtn"
                     onClick={handleCancelBtn}
                   >

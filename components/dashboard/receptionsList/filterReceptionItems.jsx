@@ -1,25 +1,83 @@
+import { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import { Tooltip } from "primereact/tooltip";
 
 const FilterReceptionItems = ({
-  applyFilterOnRecItems,
-  handleResetFilterFields,
-  SetRangeDate,
   ClinicID,
-  selectedDepartment,
-  FUSelectDepartment,
-  searchIsLoading,
+  ApplyFilterOnRecItems,
+  // applyFilterOnRecItems,
+  // handleResetFilterFields,
+  // SetRangeDate,
+  // selectedDepartment,
+  // FUSelectDepartment,
+  // searchIsLoading,
 }) => {
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [searchIsLoading, setSearchIsLoading] = useState(false)
+
   // Fetching departments
   const { data: clinicDepartments } = useGetAllClinicDepartmentsQuery(ClinicID);
+
+  let dateFrom,
+    dateTo = null;
+
+  const SetRangeDate = (f, t) => {
+    dateFrom = f;
+    dateTo = t;
+  };
+
+  const FUSelectDepartment = (departmentValue) =>
+    setSelectedDepartment(departmentValue);
+
+  const handleResetFilterFields = () => {
+    setSearchIsLoading(false);
+    setSelectedDepartment(null);
+    $("#receptionID").val("");
+    $("#patientNID").val("");
+    $("#patientName").val("");
+  };
+
+  const _applyFilterOnRecItems = (e) => {
+    e.preventDefault();
+    setSearchIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "ClinicReception/Search";
+    let data = {
+      ClinicID,
+      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
+      ModalityID: selectedDepartment ? selectedDepartment._id : "",
+      NID: formProps.patientNID ? formProps.patientNID : "",
+      PatientName: formProps.patientName ? formProps.patientName : "",
+      DateFrom: dateFrom ? dateFrom : "",
+      DateTo: dateTo ? dateTo : "",
+    };
+
+    console.log({ data });
+
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
+    // ApplyFilterOnRecItems(response.data)
+    //     setReceptionList(response.data);
+    //     setSearchIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setSearchIsLoading(false);
+    //   })
+  }
 
   return (
     <>
       <label className="lblAbs fw-bold font-13">جستجوی لیست پذیرش ها</label>
       <div className="card filterReceptionCard">
-        <form onSubmit={applyFilterOnRecItems}>
+        <form onSubmit={_applyFilterOnRecItems}>
           <div className="card-body row align-items-center mt-3 searchContainerPadding receptionSearch-header">
             <div className="col-lg-2 col-12">
               <label className="lblAbs font-11">شناسه پذیرش</label>
