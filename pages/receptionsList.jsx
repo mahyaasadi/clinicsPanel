@@ -35,7 +35,6 @@ const ReceptionsList = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [receptionList, setReceptionList] = useState([]);
   const [defaultDepValue, setDefaultDepValue] = useState();
 
@@ -98,39 +97,10 @@ const ReceptionsList = ({ ClinicUser }) => {
   };
 
   // Apply Filter on ReceptionItems
-
-
   const ApplyFilterOnRecItems = (data) => {
-    // e.preventDefault();
-    // setSearchIsLoading(true);
-
-    // let formData = new FormData(e.target);
-    // const formProps = Object.fromEntries(formData);
-
-    // let url = "ClinicReception/Search";
-    // let data = {
-    //   ClinicID,
-    //   ReceptionID: formProps.receptionID ? formProps.receptionID : "",
-    //   ModalityID: selectedDepartment ? selectedDepartment._id : "",
-    //   NID: formProps.patientNID ? formProps.patientNID : "",
-    //   PatientName: formProps.patientName ? formProps.patientName : "",
-    //   DateFrom: dateFrom ? dateFrom : "",
-    //   DateTo: dateTo ? dateTo : "",
-    // };
-
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setReceptionList(response.data);
-    //     setSearchIsLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setSearchIsLoading(false);
-    //   });
-
-    console.log({ data });
+    if (data) {
+      setReceptionList(data);
+    }
   };
 
   const openAppointmentModal = (patientData, modality) => {
@@ -169,13 +139,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                   <div>
                     <FilterReceptionItems
                       ClinicID={ClinicID}
-                      // SetRangeDate={SetRangeDate}
-                      // applyFilterOnRecItems={applyFilterOnRecItems}
-                      // handleResetFilterFields={handleResetFilterFields}
-                      // selectedDepartment={selectedDepartment}
-                      // FUSelectDepartment={FUSelectDepartment}
                       ApplyFilterOnRecItems={ApplyFilterOnRecItems}
-                      searchIsLoading={searchIsLoading}
                     />
                   </div>
 
@@ -203,7 +167,10 @@ const ReceptionsList = ({ ClinicUser }) => {
                   </div>
 
                   <div className="tab-content pt-1">
-                    <div className="tab-pane show active" id="solid-rounded-tab1">
+                    <div
+                      className="tab-pane show active"
+                      id="solid-rounded-tab1"
+                    >
                       <div className="row">
                         {currentItems.map((item, index) => (
                           <ReceptionItem

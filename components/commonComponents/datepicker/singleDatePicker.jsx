@@ -10,7 +10,7 @@ const currentDay = jdate.getDate();
 
 let initialDate = null;
 
-const SingleDatePicker = ({ setDate, label, defaultDate }) => {
+const SingleDatePicker = ({ setDate, label, defaultDate, birthDateMode }) => {
   if (defaultDate) {
     defaultDate = defaultDate.replaceAll(/\//g, "");
     initialDate = {
@@ -26,15 +26,22 @@ const SingleDatePicker = ({ setDate, label, defaultDate }) => {
     };
   }
 
-  const minimumDate = {
-    year: currentYear,
-    month: currentMonth,
-    day: currentDay,
-  };
+  let minimumDate = null;
+  if (birthDateMode) {
+    minimumDate = "";
+  } else {
+    minimumDate = {
+      year: currentYear,
+      month: currentMonth,
+      day: currentDay,
+    };
+  }
+
+  console.log({ minimumDate });
 
   const handleDateChange = (e) => {
     if (e?.month.toString().length === 1) e.month = "0" + e.month.toString();
-    if (e?.day.toString().length === 1) e.day = "0" + e.day
+    if (e?.day.toString().length === 1) e.day = "0" + e.day;
 
     const pickedDate = e?.year + "/" + e?.month + "/" + e?.day;
     setDate(pickedDate);

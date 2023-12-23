@@ -7,6 +7,7 @@ import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
 
 const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
+  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals

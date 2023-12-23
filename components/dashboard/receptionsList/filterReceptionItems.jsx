@@ -1,21 +1,14 @@
 import { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
+import { Tooltip } from "primereact/tooltip";
+import { axiosClient } from "class/axiosConfig.js";
+import { ErrorAlert } from "class/AlertManage";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import { Tooltip } from "primereact/tooltip";
 
-const FilterReceptionItems = ({
-  ClinicID,
-  ApplyFilterOnRecItems,
-  // applyFilterOnRecItems,
-  // handleResetFilterFields,
-  // SetRangeDate,
-  // selectedDepartment,
-  // FUSelectDepartment,
-  // searchIsLoading,
-}) => {
+const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems }) => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [searchIsLoading, setSearchIsLoading] = useState(false)
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
 
   // Fetching departments
   const { data: clinicDepartments } = useGetAllClinicDepartmentsQuery(ClinicID);
@@ -57,21 +50,19 @@ const FilterReceptionItems = ({
       DateTo: dateTo ? dateTo : "",
     };
 
-    console.log({ data });
-
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
-    // ApplyFilterOnRecItems(response.data)
-    //     setReceptionList(response.data);
-    //     setSearchIsLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setSearchIsLoading(false);
-    //   })
-  }
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        ApplyFilterOnRecItems(response.data);
+        setSearchIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSearchIsLoading(false);
+        ErrorAlert("خطا", "جستجو با خطا مواجه گردید!");
+      });
+  };
 
   return (
     <>

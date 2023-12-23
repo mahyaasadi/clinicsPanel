@@ -21,6 +21,8 @@ const Header = ({ ClinicUser }) => {
   };
 
   const handlesidebar = () => document.body.classList.toggle("mini-sidebar");
+  const handlesidebarmobilemenu = () =>
+    document.body.classList.toggle("slide-nav");
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
@@ -62,6 +64,16 @@ const Header = ({ ClinicUser }) => {
           </Link>
           <Link href="#" id="toggle_btn" onClick={handlesidebar}>
             <FeatherIcon icon="chevrons-left" />
+          </Link>
+
+          {/* Mobile Menu Toggle */}
+          <Link
+            href="#"
+            className="mobile_btn"
+            id="mobile_btn"
+            onClick={() => handlesidebarmobilemenu()}
+          >
+            <i className="fas fa-bars" />
           </Link>
 
           {/* Search */}

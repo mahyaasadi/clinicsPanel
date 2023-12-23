@@ -140,54 +140,8 @@ const CashDesk = ({ ClinicUser }) => {
     }
   };
 
-  // Apply Filter on ReceptionItems
-  let dateFrom,
-    dateTo = null;
-
-  const SetRangeDate = (f, t) => {
-    dateFrom = f;
-    dateTo = t;
-  };
-
-  const FUSelectDepartment = (departmentValue) =>
-    setSelectedDepartment(departmentValue);
-
-  const applyFilterOnRecItems = (e) => {
-    e.preventDefault();
-    setSearchIsLoading(true);
-
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
-    let url = "ClinicReception/Search";
-    let data = {
-      ClinicID,
-      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
-      ModalityID: selectedDepartment ? selectedDepartment._id : "",
-      NID: formProps.patientNID ? formProps.patientNID : "",
-      PatientName: formProps.patientName ? formProps.patientName : "",
-      DateFrom: dateFrom ? dateFrom : "",
-      DateTo: dateTo ? dateTo : "",
-    };
-
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        getReceptionPatients(response.data);
-        setSearchIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setSearchIsLoading(false);
-      });
-  };
-
-  const handleResetFilterFields = () => {
-    setSearchIsLoading(false);
-    setSelectedDepartment(null);
-    $("#receptionID").val("");
-    $("#patientNID").val("");
-    $("#patientName").val("");
+  const ApplyFilterOnRecItems = (data) => {
+    if (data) getReceptionPatients(data);
   };
 
   useEffect(() => {
@@ -209,12 +163,7 @@ const CashDesk = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <FilterReceptionItems
               ClinicID={ClinicID}
-              SetRangeDate={SetRangeDate}
-              searchIsLoading={searchIsLoading}
-              applyFilterOnRecItems={applyFilterOnRecItems}
-              selectedDepartment={selectedDepartment}
-              FUSelectDepartment={FUSelectDepartment}
-              handleResetFilterFields={handleResetFilterFields}
+              ApplyFilterOnRecItems={ApplyFilterOnRecItems}
             />
 
             <PatientsCategories
