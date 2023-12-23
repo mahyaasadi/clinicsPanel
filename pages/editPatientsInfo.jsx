@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import EditPatientInfoFrm from "components/dashboard/patientsArchives/editPatientInfoFrm";
+import Loading from "@/components/commonComponents/loading/loading";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -28,8 +29,10 @@ const EditPatientsInfo = ({ ClinicUser }) => {
   const router = useRouter();
 
   const [patientData, setPatientData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const getOnePatient = () => {
+    setIsLoading(true)
     let url = `Patient/getOne/${ActivePatientID}`;
 
     axiosClient
@@ -37,9 +40,11 @@ const EditPatientsInfo = ({ ClinicUser }) => {
       .then((response) => {
         console.log(response.data);
         setPatientData(response.data);
+        setIsLoading(false)
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false)
       });
   };
 
@@ -54,14 +59,16 @@ const EditPatientsInfo = ({ ClinicUser }) => {
         <title>تکمیل پرونده بیمار</title>
       </Head>
       <div className="page-wrapper">
-        <div className="content container-fluid">
-          <label className="lblAbs fw-bold font-13">تکمیل پرونده بیمار</label>
-          <div className="card p-2">
-            <div className="card-body">
-              <EditPatientInfoFrm data={patientData} />
+        {isLoading ? <Loading /> : (
+          <div className="content container-fluid">
+            <label className="lblAbs fw-bold font-15">تکمیل پرونده بیمار</label>
+            <div className="card p-2">
+              <div className="card-body">
+                <EditPatientInfoFrm data={patientData} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

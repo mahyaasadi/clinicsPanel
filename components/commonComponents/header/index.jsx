@@ -118,7 +118,7 @@ const Header = ({ ClinicUser }) => {
           <li className="nav-item dropdown has-arrow">
             <a
               href="#"
-              className="dropdown-toggle nav-link"
+              className="dropdown-toggle headerUserNav nav-link"
               data-bs-toggle="dropdown"
             >
               <span className="user-img">

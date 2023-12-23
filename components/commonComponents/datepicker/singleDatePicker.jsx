@@ -37,8 +37,6 @@ const SingleDatePicker = ({ setDate, label, defaultDate, birthDateMode }) => {
     };
   }
 
-  console.log({ minimumDate });
-
   const handleDateChange = (e) => {
     if (e?.month.toString().length === 1) e.month = "0" + e.month.toString();
     if (e?.day.toString().length === 1) e.day = "0" + e.day;
