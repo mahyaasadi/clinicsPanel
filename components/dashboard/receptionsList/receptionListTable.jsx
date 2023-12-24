@@ -11,7 +11,7 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
 }) => {
-  console.log({ data });
+  console.log("hiiiiiiiiiiii");
 
   const router = useRouter();
 
