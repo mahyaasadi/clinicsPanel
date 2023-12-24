@@ -119,8 +119,12 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
                     height: "35px",
                     borderRadius: "10px",
                   }}
-                  onError={({ currentTarget }) => {
-                    currentTarget.src = "assets/img/NotFoundAvatar.jpeg";
+                  onError={({
+                    currentTarget,
+                  }) => {
+                    srv.Patient?.Gender
+                      ? (currentTarget.src = `assets/img/avatar-${srv.Patient?.Gender}-pic.png`)
+                      : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                   }}
                 />
                 <div className="font-13 fw-bold mb-2">{srv.ReceptionID}</div>

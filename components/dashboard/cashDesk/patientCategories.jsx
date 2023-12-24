@@ -12,6 +12,7 @@ const PatientCategories = ({
   isLoading,
   openNewAppointmentModal,
 }) => {
+  console.log({ patientsInfo });
   resetServerContext();
 
   const [categories, setCategories] = useState([
@@ -50,9 +51,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-                ...item,
-                category: result.destination.droppableId,
-              }
+              ...item,
+              category: result.destination.droppableId,
+            }
             : item
         )
       );
@@ -190,7 +191,7 @@ const PatientCategories = ({
                                                       className="d-flex justify-start"
                                                     >
                                                       سهم بیمار :{" "}
-                                                      {item.item.Calculated?.TotalPC?.toLocaleString()}{" "}
+                                                      {item.item?.Calculated?.TotalPC?.toLocaleString()}{" "}
                                                       ریال
                                                     </p>
                                                   </div>
@@ -206,8 +207,8 @@ const PatientCategories = ({
                                                         onError={({
                                                           currentTarget,
                                                         }) => {
-                                                          item.Gender
-                                                            ? (currentTarget.src = `assets/img/avatar-${item.Gender}-pic.png`)
+                                                          item?.item?.Patient?.Gender
+                                                            ? (currentTarget.src = `assets/img/avatar-${item?.item?.Patient?.Gender}-pic.png`)
                                                             : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                                                         }}
                                                         style={{

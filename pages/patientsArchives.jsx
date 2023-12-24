@@ -145,7 +145,7 @@ const PatientsArchives = ({ ClinicUser }) => {
               </div>
             </div>
 
-            <PendingPatients data={pendingPatientsData} />
+            <PendingPatients ClinicID={ClinicID} pendingPatientsData={pendingPatientsData} setPendingPatientsData={setPendingPatientsData} />
 
             <div className="col-sm-12">
               <label className="lblAbs fw-bold font-14">

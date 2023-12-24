@@ -17,16 +17,12 @@ const ReceptionListTable = ({
 
   const columns = [
     {
-      name: "شماره پذیرش",
-      selector: (row) => row.ReceptionID,
-      sortable: true,
-      width: "150px",
-    },
-
-    {
       name: "بیمار",
       selector: (row) => row.action,
       sortable: true,
+      style: {
+        justifyContent: "flex-start"
+      },
       cell: (row) => (
         <div className="d-flex justify-center align-items-center gap-3">
           <div>
@@ -51,6 +47,12 @@ const ReceptionListTable = ({
         </div>
       ),
       width: "300px",
+    },
+    {
+      name: "شماره پذیرش",
+      selector: (row) => row.ReceptionID,
+      sortable: true,
+      width: "150px",
     },
     {
       name: "کد ملی",
