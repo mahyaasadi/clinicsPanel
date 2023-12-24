@@ -9,7 +9,7 @@ import { ErrorAlert, SuccessAlert, QuestionAlert } from "class/AlertManage";
 import DayList from "components/dashboard/appointment/dayList";
 import Loading from "components/commonComponents/loading/loading";
 import AppointmentModal from "components/dashboard/appointment/appointmentModal";
-import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
+import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 import DelayAppointmentModal from "components/dashboard/appointment/delayAppointmentModal";
 import DuplicateAppointmentModal from "components/dashboard/appointment/duplicateAppointmentModal";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
@@ -45,9 +45,11 @@ const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [loadingState, setLoadingState] = useState(false);
+  const [delayIsLoading, setDelayIsLoading] = useState(false);
+  const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
+
   const [dateMode, setDateMode] = useState("current");
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
-  const [delayIsLoading, setDelayIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
 
   // modalitiesHeader
@@ -220,6 +222,8 @@ const Appointment = ({ ClinicUser }) => {
   };
 
   const addNewPatient = (props) => {
+    setAddPatientIsLoading(true);
+
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
@@ -227,26 +231,32 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        setPatientInfo(response.data);
-        $("#newPatientModal").modal("hide");
-        $("#patientInfoCard").show("");
         if (response.data === false) {
           ErrorAlert(
             "خطا",
             "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
           );
+          setAddPatientIsLoading(false);
+
           return false;
         } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+          setAddPatientIsLoading(false);
+
           return false;
         } else {
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+          setPatientInfo(response.data);
+          $("#newPatientModal").modal("hide");
+          $("#patientInfoCard").show("");
         }
+        setAddPatientIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
       });
+    setAddPatientIsLoading(false);
   };
 
   // Add New Appointment
@@ -624,10 +634,11 @@ const Appointment = ({ ClinicUser }) => {
           endHoursOptions={endHoursOptions}
         />
 
-        <AddNewPatient
+        <NewPatient
           addNewPatient={addNewPatient}
           ClinicID={ClinicID}
           ActivePatientNID={ActivePatientNID}
+          addPatientIsLoading={addPatientIsLoading}
         />
 
         <DelayAppointmentModal

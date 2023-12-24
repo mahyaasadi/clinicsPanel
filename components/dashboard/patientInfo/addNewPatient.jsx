@@ -18,6 +18,7 @@ const NewPatient = ({
   setBirthYear,
   showBirthDigitsAlert,
   setShowBirthDigitsAlert,
+  addPatientIsLoading,
 }) => {
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
 
@@ -157,10 +158,7 @@ const NewPatient = ({
                   </div>
 
                   <div className="col-md-12 media-w-100 mt-3">
-                    <label
-                      id="addPatientIDLbl"
-                      className="lblAbs  font-12"
-                    >
+                    <label id="addPatientIDLbl" className="lblAbs  font-12">
                       کد ملی بیمار <span className="text-danger">*</span>
                     </label>
                     <input
@@ -188,9 +186,7 @@ const NewPatient = ({
                   </div>
 
                   <div className="col-md-12 media-w-100 mt-3">
-                    <p className="lblDrugIns font-12">
-                      انتخاب نوع بیمه
-                    </p>
+                    <p className="lblDrugIns font-12">انتخاب نوع بیمه</p>
                     <SelectField
                       styles={selectfieldColourStyles}
                       options={insuranceOptionsList}
@@ -201,7 +197,6 @@ const NewPatient = ({
                       id="addInsuranceType"
                       required
                       isClearable
-
                     />
                   </div>
 
@@ -216,7 +211,7 @@ const NewPatient = ({
                         className="form-control rounded padding-right-2"
                         id="addPatientName"
                         name="PatientName"
-                      // required
+                        // required
                       />
                     </div>
 
@@ -234,7 +229,7 @@ const NewPatient = ({
                         id="addGenderType"
                         instanceId="addGenderType"
                         isClearable
-                      // required
+                        // required
                       />
                     </div>
 
@@ -254,7 +249,7 @@ const NewPatient = ({
                             onBlur={handleBlur}
                             maxLength={4}
                             minLength={4}
-                          // required
+                            // required
                           />
 
                           {showBirthDigitsAlert && (
@@ -284,7 +279,7 @@ const NewPatient = ({
                           name="Age"
                           onChange={handleInputChange}
                           onBlur={handleBlur}
-                        // required
+                          // required
                         />
                       </div>
                     </div>
@@ -292,13 +287,27 @@ const NewPatient = ({
                 </div>
 
                 <div className="submit-section">
-                  <button
-                    id="submitNewPatient"
-                    type="submit"
-                    className="btn btn-primary btn-save rounded font-14"
-                  >
-                    ثبت
-                  </button>
+                  {!addPatientIsLoading ? (
+                    <button
+                      id="submitNewPatient"
+                      type="submit"
+                      className="btn btn-primary btn-save rounded font-14"
+                    >
+                      ثبت
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="btn btn-primary rounded font-13"
+                      disabled
+                    >
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                      ></span>
+                      در حال ثبت
+                    </button>
+                  )}
                 </div>
               </form>
             </div>

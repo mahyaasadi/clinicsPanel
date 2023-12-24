@@ -12,8 +12,17 @@ const PatientsListTable = ({ data }) => {
       name: "بیمار",
       selector: (row) => row.Name,
       sortable: true,
+      style: {
+        justifyContent: "flex-start",
+      },
       cell: (row) => (
-        <div className="d-flex justify-center align-items-center gap-3">
+        <Link
+          href={{
+            pathname: "/patientFile",
+            query: { id: row._id },
+          }}
+          className="d-flex justify-center align-items-center gap-3"
+        >
           <div>
             <img
               src={"https://irannobat.ir/images/" + row.Avatar}
@@ -24,7 +33,9 @@ const PatientsListTable = ({ data }) => {
                 borderRadius: "10px",
               }}
               onError={({ currentTarget }) => {
-                currentTarget.src = "assets/img/NotFoundAvatar.jpeg";
+                row.Gender
+                  ? (currentTarget.src = `assets/img/avatar-${row.Gender}-pic.png`)
+                  : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}
             />
           </div>
@@ -32,36 +43,36 @@ const PatientsListTable = ({ data }) => {
             <p className="mb-0">{row.Name}</p>
             <p className="">{row.NationalID}</p>
           </div>
-        </div>
+        </Link>
       ),
-      width: "300px",
+      width: "auto",
     },
     {
       name: "سن",
       selector: (row) => (row.Age ? row.Age : "-"),
       sortable: true,
-      width: "150px",
+      width: "auto",
     },
     {
       name: "نوع بیمه",
       selector: (row) => row.InsuranceName,
       sortable: true,
-      width: "250px",
+      width: "auto",
     },
     {
       name: "شماره همراه",
       selector: (row) => row.Tel,
       sortable: true,
-      width: "600px",
+      width: "auto",
     },
     {
       name: "عملیات ها",
       selector: (row) => row.action,
       sortable: true,
       cell: (row) => (
-        <div className="actions d-flex gap-1">
+        <div className="actions d-flex w-100 ">
           <button
-            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center"
+            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center float-end m-1"
             // onClick={() => deleteDepartment(row._id)}
             data-pr-position="top"
           >
@@ -76,30 +87,33 @@ const PatientsListTable = ({ data }) => {
               pathname: "/editPatientsInfo",
               query: { id: row._id },
             }}
-            className="btn btn-sm btn-outline-primary  editBtn d-flex align-items-center"
+            className="btn btn-sm btn-outline-primary editBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
             // onClick={() => openEditModal(row)}
           >
-            <Tooltip target=".editBtn">ویرایش</Tooltip>
+            <Tooltip target=".editBtn">تکمیل پرونده</Tooltip>
             <FeatherIcon
               icon="edit-3"
               style={{ width: "15px", height: "16px" }}
             />
           </Link>
-          <button
-            className="btn btn-sm btn-outline-primary filesBtn d-flex align-items-center"
+          <Link
+            className="btn btn-sm btn-outline-primary btn-border-l filesBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
-            // onClick={() => openEditModal(row)}
+            href={{
+              pathname: "/patientFile",
+              query: { id: row._id },
+            }}
           >
             <Tooltip target=".filesBtn">نمایش پرونده</Tooltip>
             <FeatherIcon
               icon="folder"
               style={{ width: "15px", height: "16px" }}
             />
-          </button>
+          </Link>
         </div>
       ),
-      width: "150px",
+      width: "auto",
     },
   ];
 

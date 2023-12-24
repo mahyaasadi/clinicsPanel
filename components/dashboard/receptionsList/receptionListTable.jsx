@@ -11,6 +11,8 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
 }) => {
+  console.log({ data });
+
   const router = useRouter();
 
   const columns = [
@@ -37,7 +39,9 @@ const ReceptionListTable = ({
                 borderRadius: "10px",
               }}
               onError={({ currentTarget }) => {
-                currentTarget.src = "assets/img/NotFoundAvatar.jpeg";
+                row.Patient.Gender
+                  ? (currentTarget.src = `assets/img/avatar-${row.Patient.Gender}-pic.png`)
+                  : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}
             />
           </div>

@@ -206,8 +206,9 @@ const PatientCategories = ({
                                                         onError={({
                                                           currentTarget,
                                                         }) => {
-                                                          currentTarget.src =
-                                                            "assets/img/NotFoundAvatar.jpeg";
+                                                          item.Gender
+                                                            ? (currentTarget.src = `assets/img/avatar-${item.Gender}-pic.png`)
+                                                            : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                                                         }}
                                                         style={{
                                                           width: "30px",

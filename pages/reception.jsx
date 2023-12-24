@@ -56,6 +56,8 @@ const Reception = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+  const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
+
   const [patientInfo, setPatientInfo] = useState([]);
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
@@ -146,6 +148,8 @@ const Reception = ({ ClinicUser }) => {
   };
 
   const addNewPatient = (props) => {
+    setAddPatientIsLoading(true);
+
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
@@ -155,24 +159,31 @@ const Reception = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        setPatientInfo(response.data);
-        $("#newPatientModal").modal("hide");
-        $("#patientInfoCard").show("");
         if (response.data === false) {
           ErrorAlert(
             "خطا",
             "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
           );
+          setAddPatientIsLoading(false);
+
           return false;
         } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+          setAddPatientIsLoading(false);
+
           return false;
         } else {
+          setPatientInfo(response.data);
+          $("#newPatientModal").modal("hide");
+          $("#patientInfoCard").show("");
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
+        setAddPatientIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setAddPatientIsLoading(false);
+
         ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
       });
   };
@@ -730,6 +741,7 @@ const Reception = ({ ClinicUser }) => {
           setBirthYear={setBirthYear}
           showBirthDigitsAlert={showBirthDigitsAlert}
           setShowBirthDigitsAlert={setShowBirthDigitsAlert}
+          addPatientIsLoading={addPatientIsLoading}
         />
 
         <CashDeskActions

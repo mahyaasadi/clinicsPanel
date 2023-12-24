@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { axiosClient } from "class/axiosConfig";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
@@ -9,14 +12,17 @@ import {
   educationStatus,
 } from "class/staticDropdownOptions";
 
-const EditPatientInfoFrm = ({ data }) => {
-  console.log({ data });
+const EditPatientInfoFrm = ({ data, EditPatient }) => {
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showEmailAlertTxt, setShowEmailAlertTxt] = useState(false)
+  const [showEmailAlertTxt, setShowEmailAlertTxt] = useState(false);
   const [birthDate, setBirthDate] = useState(null);
   const [email, setEmail] = useState(data.Email);
 
+  const handleEmailChange = (e) => setEmail(e.target.value);
+
+  // Validate email format
   const isValidEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
@@ -26,18 +32,13 @@ const EditPatientInfoFrm = ({ data }) => {
     const inputValue = e.target.value;
     setEmail(inputValue);
 
-    // Validate email format
     if (!isValidEmail(inputValue)) {
-      setShowEmailAlertTxt(true)
+      setShowEmailAlertTxt(true);
       $("#submitEditPatient").attr("disabled", true);
     } else {
-      setShowEmailAlertTxt(false)
+      setShowEmailAlertTxt(false);
       $("#submitEditPatient").attr("disabled", false);
     }
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
   };
 
   let patientGender = "";
@@ -47,8 +48,8 @@ const EditPatientInfoFrm = ({ data }) => {
   const FUSelectMaritalStatus = (maritalStatus) =>
     (MaritalStatus = maritalStatus);
 
-  let education = ""
-  const FUSelectEducationStatus = (education) => education = education;
+  let education = "";
+  const FUSelectEducationStatus = (education) => (education = education);
 
   const defaultGenderValue = data.Gender;
   const defaultGenderValueLabel =
@@ -69,15 +70,17 @@ const EditPatientInfoFrm = ({ data }) => {
     label: data.Education,
   };
 
-  const submitEditPatientInfo = (e) => {
+  const _editPatientInfo = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    let url = "";
+    let url = "Patient/editPatient";
     let data = {
+      PatientID: formProps.patientID,
+      NationalID: formProps.patientNID,
       Name: formProps.patientName,
       FatherName: formProps.fathersName,
       Representative: formProps.representative,
@@ -99,26 +102,33 @@ const EditPatientInfoFrm = ({ data }) => {
 
     console.log({ data });
 
-    // axiosClient
-    //   .put(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //   });
+    axiosClient
+      .put(url, data)
+      .then((response) => {
+        console.log(response.data);
+        EditPatient(response.data);
+        setTimeout(() => {
+          SuccessAlert("موفق", "ویرایش اطلاعات با موفقیت انجام گردید!");
+        }, 200);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
+        setIsLoading(false);
+      });
   };
+
+  const handleCancelBtn = () => router.push("/patientsArchives");
 
   useEffect(() => {
     setShowEmailAlertTxt(false);
-  }, [])
+  }, []);
 
   return (
     <>
-      <form onSubmit={submitEditPatientInfo}>
-        <div className="mt-4 row align-items-center marginb-1">
+      <form onSubmit={_editPatientInfo}>
+        <div className="mt-4 row align-items-center">
           <p
             className="text-secondary fw-bold font-14"
             style={{
@@ -126,14 +136,16 @@ const EditPatientInfoFrm = ({ data }) => {
               top: "1.75rem",
               backgroundColor: "white",
               width: "100px",
-              zIndex: "400"
+              zIndex: "400",
             }}
           >
             اطلاعات پایه
           </p>
 
           <hr style={{ position: "relative" }} />
-          <div className="form-group col-md-3 col-sm-6 col-12 margint-frmGrp">
+          <div className="form-group col-md-4 col-sm-6 col-12 margint-frmGrp">
+            <input type="hidden" value={data._id} name="patientID" />
+
             <label className="lblAbs font-12">
               نام کامل <span className="text-danger">*</span>
             </label>
@@ -146,7 +158,39 @@ const EditPatientInfoFrm = ({ data }) => {
             />
           </div>
 
-          <div className="form-group col-md-3 col-sm-6 col-12 margint-frmGrp">
+          <div className="form-group col-md-4 col-sm-6 col-12 margint-frmGrp">
+            <label className="lblAbs font-12">
+              کد ملی <span className="text-danger">*</span>
+            </label>
+            <input
+              dir="ltr"
+              className="form-control floating inputPadding rounded"
+              name="patientNID"
+              defaultValue={data.NationalID ? data.NationalID : ""}
+              key={data.NationalID}
+              required
+            />
+          </div>
+
+          <div className="col-md-4 col-12">
+            <label className="lblDrugIns font-12">جنسیت</label>
+            <SelectField
+              styles={selectfieldColourStyles}
+              options={genderDataClass}
+              label={true}
+              name="patientGender"
+              className="text-center font-12"
+              placeholder={"انتخاب کنید"}
+              defaultValue={selectedGender}
+              onChangeValue={(value) => FUSelectGender(value?.value)}
+              key={data.Gender}
+              isClearable
+            />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="form-group col-md-6 col-12 margint-frmGrp">
             <label className="lblAbs font-12">
               تلفن همراه <span className="text-danger">*</span>
             </label>
@@ -160,30 +204,14 @@ const EditPatientInfoFrm = ({ data }) => {
             />
           </div>
 
-          <div className="form-group col-md-3 col-sm-6 col-12  margint-frmGrp">
+          <div className="form-group col-md-6 col-12  margint-frmGrp">
             <label className="lblAbs font-12">تلفن ثابت</label>
             <input
               type="tel"
               className="form-control floating inputPadding rounded"
               name="patientLandlinePhone"
-            //   defaultValue={mode == "edit" ? data.Des : ""}
-            //   key={data.Des}
-            />
-          </div>
-
-          <div className="col-md-3 col-sm-6 col-12 ">
-            <label className="lblDrugIns font-12">جنسیت</label>
-            <SelectField
-              styles={selectfieldColourStyles}
-              options={genderDataClass}
-              label={true}
-              name="patientGender"
-              className="text-center font-12"
-              placeholder={"انتخاب کنید"}
-              defaultValue={selectedGender}
-              onChangeValue={(value) => FUSelectGender(value?.value)}
-              key={data.Gender}
-              isClearable
+              defaultValue={data.Landline ? data.Landline : ""}
+              key={data.Landline}
             />
           </div>
         </div>
@@ -206,7 +234,7 @@ const EditPatientInfoFrm = ({ data }) => {
             />
           </div>
 
-          <div className="form-group col-md-3 col-sm-6 col-12  margint-frmGrp">
+          <div className="form-group col-md-3 col-sm-6 col-12 margint-frmGrp">
             <label className="lblAbs font-12">سن</label>
             <input
               dir="ltr"
@@ -277,8 +305,8 @@ const EditPatientInfoFrm = ({ data }) => {
               name="Education"
               className="text-center font-12"
               placeholder={"انتخاب کنید"}
-              defaultValue={selectedEducationStatus}
               onChangeValue={(value) => FUSelectEducationStatus(value?.value)}
+              defaultValue={selectedEducationStatus}
               key={data.Education}
               isClearable
             />
@@ -333,7 +361,6 @@ const EditPatientInfoFrm = ({ data }) => {
             />
           </div>
 
-
           <div className="form-group col-md-3 col-sm-6 col-12 margint-frmGrp">
             <label className="lblAbs font-12">ایمیل</label>
             <input
@@ -362,13 +389,10 @@ const EditPatientInfoFrm = ({ data }) => {
               </div>
             )}
           </div>
-
         </div>
 
-        <div className="form-group">
-          <label className="lblAbs font-12">
-            آدرس
-          </label>
+        <div className="form-group mt-2">
+          <label className="lblAbs font-12">آدرس</label>
           <textarea
             type="text"
             className="form-control floating inputPadding rounded"
@@ -378,19 +402,19 @@ const EditPatientInfoFrm = ({ data }) => {
           ></textarea>
         </div>
 
-        <div className="submit-section d-flex gap-1 justify-center flex-col-md  margin-top-3">
+        <div className="submit-section d-flex gap-1 justify-center flex-col-md margin-top-3">
           {!isLoading ? (
             <button
               type="submit"
               id="submitEditPatient"
-              className="btn btn-primary rounded col-md-4 col-12 font-13"
+              className="btn btn-primary rounded col-md-2 col-12 font-13"
             >
               ثبت
             </button>
           ) : (
             <button
               type="submit"
-              className="btn btn-primary rounded col-md-4 col-12 font-13"
+              className="btn btn-primary rounded col-md-2 col-12 font-13"
               disabled
             >
               <span
@@ -403,9 +427,9 @@ const EditPatientInfoFrm = ({ data }) => {
 
           <button
             type="submit"
-            className="btn btn-outline-primary rounded profileSettingsBtn col-md-4 col-12 font-13"
+            className="btn btn-outline-primary rounded profileSettingsBtn col-md-2 col-12 font-13"
             id="cancelEditPatientInfoBtn"
-          // onClick={handleCancelBtn}
+            onClick={handleCancelBtn}
           >
             انصراف
           </button>

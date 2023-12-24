@@ -102,7 +102,7 @@ const DuplicateAppointmentModal = ({
 
         <Modal.Body>
           <form onSubmit={onSubmit}>
-            <div className="margin-right-1 font-12">
+            <div className="margin-right-1 font-13">
               <div className="d-flex gap-2 mb-3">
                 <FeatherIcon icon="user" className="mb-0" />
                 {data?.Patient?.Name}
