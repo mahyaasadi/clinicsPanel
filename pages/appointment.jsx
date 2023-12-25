@@ -196,6 +196,7 @@ const Appointment = ({ ClinicUser }) => {
     let url = "Patient/checkByNid";
     let data = {
       ClinicID,
+      CenterID: ClinicID,
       NID: $("#appointmentNationalCode").val(),
     };
 

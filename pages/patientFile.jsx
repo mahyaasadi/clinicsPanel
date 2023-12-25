@@ -25,13 +25,18 @@ export const getServerSideProps = async ({ req, res }) => {
 let ClinicID = null;
 const PatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+
   return (
     <>
       <Head>
         <title>پرونده بیمار</title>
       </Head>
       <div className="page-wrapper">
-        <div className="content container-fluid">Heyyy</div>
+        <div className="content container-fluid">
+          <div className="card">
+            <div className="card-body"></div>
+          </div>
+        </div>
       </div>
     </>
   );

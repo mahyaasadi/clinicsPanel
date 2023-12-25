@@ -21,7 +21,7 @@ const PatientsListTable = ({ data }) => {
             pathname: "/patientFile",
             query: { id: row._id },
           }}
-          className="d-flex justify-center align-items-center gap-3"
+          className="d-flex justify-center align-items-center gap-3 clinicLink"
         >
           <div>
             <img

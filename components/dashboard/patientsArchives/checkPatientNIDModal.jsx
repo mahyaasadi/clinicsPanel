@@ -13,6 +13,7 @@ const CheckPatientNID = ({ show, onHide, ClinicID, GetPatientInfo }) => {
     let url = "Patient/checkByNid";
     let data = {
       ClinicID,
+      CenterID: ClinicID,
       NID: $("#patientNationalCode").val(),
     };
 

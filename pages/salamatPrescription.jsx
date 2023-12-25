@@ -65,6 +65,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     let url = "Patient/checkByNid";
     let data = {
       ClinicID,
+      CenterID: ClinicID,
       NID: formProps.nationalCode,
     };
 

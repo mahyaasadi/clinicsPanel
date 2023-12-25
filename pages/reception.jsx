@@ -104,13 +104,14 @@ const Reception = ({ ClinicUser }) => {
     let url = "Patient/checkByNid";
     let data = {
       ClinicID,
+      CenterID: ClinicID,
       NID: formProps.nationalCode,
     };
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         $("#patientNID").prop("readonly", true);
 
         if (response.data.error == "1") {
@@ -120,6 +121,7 @@ const Reception = ({ ClinicUser }) => {
           ActiveInsuranceType = response.data.user.InsuranceType;
           setPatientInfo(response.data.user);
           $("#patientInfoCard").show("");
+          $(".pendingPaitentContainer").hide();
         }
 
         setTimeout(() => {
@@ -147,6 +149,26 @@ const Reception = ({ ClinicUser }) => {
     ActivePatientNID = null;
   };
 
+  const handleShowPendingPatients = () => {
+    if (!ActivePatientNID) {
+      $(".pendingPaitentContainer").toggle();
+    }
+  };
+
+  const handlePendingPatientClick = (patient) => {
+    ActivePatientID = patient._id;
+    ActivePatientNID = patient.NationalID;
+    ActiveInsuranceType = patient.InsuranceType;
+
+    $("#patientNID").val(ActivePatientNID);
+    $("#patientNID").prop("readonly", true);
+    $("#frmPatientInfoBtnSubmit").hide();
+    $("#getPatientCloseBtn").show();
+    $("#patientInfoCard").show("");
+    $(".pendingPaitentContainer").hide();
+    setPatientInfo(patient);
+  };
+
   const addNewPatient = (props) => {
     setAddPatientIsLoading(true);
 
@@ -158,7 +180,7 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         if (response.data === false) {
           ErrorAlert(
             "خطا",
@@ -183,7 +205,6 @@ const Reception = ({ ClinicUser }) => {
       .catch((err) => {
         console.log(err);
         setAddPatientIsLoading(false);
-
         ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
       });
   };
@@ -641,7 +662,6 @@ const Reception = ({ ClinicUser }) => {
   };
 
   const ApplyCashDeskActions = (data) => {
-    console.log({ data });
     if (data) {
       setPaymentData(data.CashDesk);
       setShowPaymentModal(false);
@@ -658,6 +678,9 @@ const Reception = ({ ClinicUser }) => {
     ReceptionObjectID = router.query.id;
     ReceptionID = router.query.receptionID;
     if (ReceptionObjectID) getOneReception();
+    ActivePatientID = null;
+    ActivePatientNID = null;
+    $("#patientNID").val("");
   }, [router.query.id]);
 
   return (
@@ -678,6 +701,8 @@ const Reception = ({ ClinicUser }) => {
                   ClinicID={ClinicID}
                   patientStatIsLoading={patientStatIsLoading}
                   getPatientActiveSearch={getPatientActiveSearch}
+                  handlePendingPatientClick={handlePendingPatientClick}
+                  handleShowPendingPatients={handleShowPendingPatients}
                 />
               </div>
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">

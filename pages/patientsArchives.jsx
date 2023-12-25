@@ -9,6 +9,7 @@ import PatientsListTable from "components/dashboard/patientsArchives/patientsLis
 import CheckPatientNIDModal from "components/dashboard/patientsArchives/checkPatientNIDModal";
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PendingPatients from "components/dashboard/patientsArchives/pendingPatients";
+import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -78,7 +79,7 @@ const PatientsArchives = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data === false) {
           ErrorAlert(
@@ -111,6 +112,11 @@ const PatientsArchives = ({ ClinicUser }) => {
       });
   };
 
+  const DeletePendingPatient = (id) => {
+    setPendingPatientsData(pendingPatientsData.filter((a) => a._id !== id));
+    getAllClinicsPatients();
+  };
+
   useEffect(() => {
     getAllClinicsPatients();
 
@@ -128,24 +134,38 @@ const PatientsArchives = ({ ClinicUser }) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="content container-fluid">
-            <div className="page-header">
-              <div className="row align-items-center">
-                <div className="col-md-12 d-flex justify-content-end">
-                  <button
-                    onClick={openAddModal}
-                    className="btn btn-primary btn-add font-14"
-                  >
-                    <i className="me-1">
-                      <FeatherIcon icon="plus-square" />
-                    </i>{" "}
-                    اضافه کردن
-                  </button>
-                </div>
+          <div className="content container-fluid pt-3">
+            <div className="row align-items-center mb-2">
+              <div className="col-md-12 d-flex justify-content-end">
+                <button
+                  onClick={openAddModal}
+                  className="btn btn-primary btn-add font-14"
+                >
+                  <i className="me-1">
+                    <FeatherIcon icon="plus-square" />
+                  </i>{" "}
+                  اضافه کردن
+                </button>
               </div>
             </div>
 
-            <PendingPatients ClinicID={ClinicID} pendingPatientsData={pendingPatientsData} setPendingPatientsData={setPendingPatientsData} />
+            <label className="lblAbs fw-bold font-14">
+              لیست بیماران در انتظار پذیرش
+            </label>
+            <div className="card">
+              <div className="card-body pendingPatientsCard mt-3">
+                {pendingPatientsData.map((item, index) => (
+                  <PendingPatients
+                    key={index}
+                    item={item}
+                    ClinicID={ClinicID}
+                    pendingPatientsData={pendingPatientsData}
+                    setPendingPatientsData={setPendingPatientsData}
+                    DeletePendingPatient={DeletePendingPatient}
+                  />
+                ))}
+              </div>
+            </div>
 
             <div className="col-sm-12">
               <label className="lblAbs fw-bold font-14">

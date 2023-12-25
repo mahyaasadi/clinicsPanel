@@ -11,8 +11,6 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
 }) => {
-  console.log("hiiiiiiiiiiii");
-
   const router = useRouter();
 
   const columns = [
@@ -21,7 +19,7 @@ const ReceptionListTable = ({
       selector: (row) => row.action,
       sortable: true,
       style: {
-        justifyContent: "flex-start"
+        justifyContent: "flex-start",
       },
       cell: (row) => (
         <div className="d-flex justify-center align-items-center gap-3">
@@ -46,31 +44,31 @@ const ReceptionListTable = ({
           </div>
         </div>
       ),
-      width: "300px",
+      width: "auto",
     },
     {
       name: "شماره پذیرش",
       selector: (row) => row.ReceptionID,
       sortable: true,
-      width: "150px",
+      width: "auto",
     },
     {
       name: "کد ملی",
       selector: (row) => row.Patient.NationalID,
       sortable: true,
-      width: "200px",
+      width: "auto",
     },
     {
       name: "تاریخ پذیرش",
       selector: (row) => row.Date,
       sortable: true,
-      width: "250px",
+      width: "auto",
     },
     {
       name: "بخش",
       selector: (row) => row.Modality.Name,
       sortable: true,
-      width: "500px",
+      width: "auto",
     },
     {
       name: "عملیات ها",
@@ -120,7 +118,7 @@ const ReceptionListTable = ({
           </button>
         </div>
       ),
-      width: "150px",
+      width: "auto",
     },
   ];
 

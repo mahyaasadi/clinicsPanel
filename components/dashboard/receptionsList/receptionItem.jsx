@@ -7,7 +7,6 @@ import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
 
 const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
-  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -89,20 +88,16 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
                 </button>
 
                 <div>
+                  <Tooltip
+                    target=".speeddial-bottom-right .p-speeddial-action"
+                    position="top"
+                  />
                   <SpeedDial
                     model={items}
+                    className="speeddial-bottom-right"
                     direction="left"
                     style={{ top: "15px", left: "50px" }}
                   />
-                  {/* {items.map((item, index) => (
-                    <Tooltip
-                      key={index}
-                      target={`.speed-dial-item-${index}`}
-                      options={tooltipOptions}
-                    >
-                      {item.label}
-                    </Tooltip>
-                  ))} */}
                 </div>
               </div>
             </div>
@@ -119,9 +114,7 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
                     height: "35px",
                     borderRadius: "10px",
                   }}
-                  onError={({
-                    currentTarget,
-                  }) => {
+                  onError={({ currentTarget }) => {
                     srv.Patient?.Gender
                       ? (currentTarget.src = `assets/img/avatar-${srv.Patient?.Gender}-pic.png`)
                       : (currentTarget.src = `assets/img/avatar-O-pic.png`);

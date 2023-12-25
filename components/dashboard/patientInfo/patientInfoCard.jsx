@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -19,6 +19,8 @@ const PatientInfoCard = ({
   setPatientInfo,
   patientStatIsLoading,
   getPatientActiveSearch,
+  handlePendingPatientClick,
+  handleShowPendingPatients,
 }) => {
   const router = useRouter();
 
@@ -28,7 +30,6 @@ const PatientInfoCard = ({
   const handleCloseModal = () => setShowModal(false);
 
   const handleChangePatientInfo = (type, value) => {
-    console.log(`Changing ${type} to ${value}`);
     setIsLoading(true);
 
     let url = "reception/ChangeProfileData";
@@ -42,7 +43,6 @@ const PatientInfoCard = ({
     axiosClient
       .post(url, updatedInfo)
       .then((response) => {
-        console.log(response.data);
         if (type === "Age") {
           data.Age = value;
         } else if (type === "Name") {
@@ -79,8 +79,6 @@ const PatientInfoCard = ({
       IID: parseInt(formProps.insuranceTypeOptions),
       NID: formProps.patientNID,
     };
-
-    console.log({ editData });
 
     axiosClient
       .post(url, editData)
@@ -156,6 +154,36 @@ const PatientInfoCard = ({
     }
   };
 
+  // Pending Patients
+  const [pendingPatients, setPendingPatients] = useState([]);
+  const [showPendingPatients, setShowPendingPatients] = useState(true);
+
+  const getPendingPatients = () => {
+    let url = "Patient/getPenndingPatient";
+    let data = {
+      CenterID: ClinicID,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setPendingPatients(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const _handlePendingPatientClick = (pendingPatient) => {
+    handlePendingPatientClick(pendingPatient);
+  };
+
+  useEffect(() => {
+    getPendingPatients();
+    $(".pendingPaitentContainer").hide();
+  }, []);
+
   return (
     <>
       <div className="card presCard">
@@ -168,8 +196,10 @@ const PatientInfoCard = ({
                 name="nationalCode"
                 id="patientNID"
                 required
+                autoComplete="off"
                 className="form-control rounded-right GetPatientInput w-50"
                 defaultValue={ActivePatientNID}
+                onClick={handleShowPendingPatients}
               />
 
               <button
@@ -209,6 +239,53 @@ const PatientInfoCard = ({
                   ></span>
                 </button>
               )}
+            </div>
+
+            <div className="pendingPaitentContainer">
+              {showPendingPatients &&
+                pendingPatients.map((item, index) => (
+                  <div
+                    className="card shadow-none w-100 mb-2 patientCard"
+                    key={index}
+                    onClick={() => _handlePendingPatientClick(item)}
+                  >
+                    <div className="d-flex justify-between font-13 text-secondary fw-bold p-2">
+                      <div className="d-flex align-items-center gap-3">
+                        <div>
+                          <p className="mb-1">{item?.Name}</p>
+                          <div className="d-flex gap-2 align-items-center">
+                            <div className="w-16 m-0 d-flex">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-100 m-0"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                                />
+                              </svg>
+                            </div>
+
+                            {item?.NationalID}
+                          </div>
+
+                          <div className="d-flex gap-2 align-items-center">
+                            <FeatherIcon
+                              icon="smartphone"
+                              style={{ width: "16px" }}
+                            />
+                            <p id="PatientTel">{item?.Tel}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
             </div>
           </form>
 

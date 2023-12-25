@@ -10202,6 +10202,32 @@ ul li .active {
   left: 82px !important;
 }
 
+.pendingPatientSD {
+  height: 2.5rem !important;
+}
+
+.pendingPatientSD .p-speeddial {
+  left: 0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  top: 6px !important;
+}
+
+.pendingPatientSD .p-speeddial-button {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.pendingPatientSD .p-speeddial-action {
+  width: 1.5rem !important;
+  height: 1.75rem !important;
+}
+
+.pendingPatientSD .feather {
+  width: 14px !important;
+  height: 14px !important;
+}
+
 .p-speeddial-button {
   background-color: #b45309 !important;
   border: 1px solid transparent;
@@ -10301,6 +10327,8 @@ ul li .active {
 
 .patientCard {
   border-right: 3px solid #b45309;
+  cursor: pointer;
+  direction: rtl;
 }
 
 .prescript-header {
@@ -10517,9 +10545,28 @@ thead {
 }
 
 .pendingPatientsCard {
-  height: 7.5rem;
+  /* height: 7.5rem; */
   overflow-y: auto;
   display: flex;
   gap: 0.25rem;
   flex-wrap: wrap;
+  /* height: ; */
+}
+
+.pendingPaitentContainer {
+  direction: ltr;
+  overflow-y: auto;
+  position: absolute;
+  background-color: white;
+  width: 90%;
+  height: 30vh;
+  padding-right: 5px;
+}
+
+.clinicLink {
+  color: black;
+}
+
+.clinicLink:hover {
+  color: #b45309;
 }
