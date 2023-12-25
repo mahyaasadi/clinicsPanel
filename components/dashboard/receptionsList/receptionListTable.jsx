@@ -106,7 +106,7 @@ const ReceptionListTable = ({
           <button
             type="button"
             data-pr-position="right"
-            className="btn btn-outline-primary editBtn receptBtnPadding appointment"
+            className="btn btn-sm btn-outline-primary editBtn appointment"
             onClick={() => openAppointmentModal(row?.Patient, row?.Modality)}
           >
             <FeatherIcon

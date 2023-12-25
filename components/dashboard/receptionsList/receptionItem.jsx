@@ -43,8 +43,8 @@ const ReceptionItem = ({ srv, deleteReception, openAppointmentModal }) => {
   return (
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
-        <div className="card h-100 patientCard">
-          <div className="card-header align-items-center">
+        <div className="card h-100 patientCard receptionHeader">
+          <div className=" card-header align-items-center">
             <div className="d-flex justify-between">
               <img
                 src={srv.Modality.Icon}
