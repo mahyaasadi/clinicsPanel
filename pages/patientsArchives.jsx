@@ -64,10 +64,6 @@ const PatientsArchives = ({ ClinicUser }) => {
       });
   };
 
-  const GetPatientInfo = (data) => {
-    ActivePatientNID = $("#patientNationalCode").val();
-  };
-
   const addNewPatient = (props) => {
     setAddPatientIsLoading(true);
 
@@ -79,8 +75,6 @@ const PatientsArchives = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
-
         if (response.data === false) {
           ErrorAlert(
             "خطا",
@@ -188,7 +182,7 @@ const PatientsArchives = ({ ClinicUser }) => {
           show={showModal}
           onHide={handleCloseModal}
           ClinicID={ClinicID}
-          GetPatientInfo={GetPatientInfo}
+          getAllClinicsPatients={getAllClinicsPatients}
         />
 
         <NewPatient

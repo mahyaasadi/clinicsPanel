@@ -14,6 +14,7 @@ import DelayAppointmentModal from "components/dashboard/appointment/delayAppoint
 import DuplicateAppointmentModal from "components/dashboard/appointment/duplicateAppointmentModal";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
+import { convertToFixedNumber } from "utils/convertToFixedNumber";
 import "/public/assets/css/appointment.css";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -86,45 +87,144 @@ const Appointment = ({ ClinicUser }) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
 
+  // const addDayToDate = (day) => {
+  //   if (dateMode === "current") {
+  //     let h = day * 24;
+  //     return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+  //   } else if (dateMode === "nextFiveDays") {
+  //     day = day + 5;
+  //     let h = day * 24;
+  //     return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+  //   } else {
+  //     day = day - 5;
+  //     let h = day * 24;
+  //     return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+  //   }
+  // };
+
+  // const displayNextFiveDays = () => {
+  //   setDateMode("nextFiveDays");
+  // };
+
+  // const displayLastFiveDays = () => {
+  //   setDateMode("lastFiveDays");
+  // };
+
+  ////////////////
+  const [currentDate, setCurrentDate] = useState();
+
+  useEffect(() => {
+    setCurrentDate(new Date());
+  }, []);
+
   const addDayToDate = (day) => {
-    if (dateMode === "current") {
-      let h = day * 24;
-      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
-    } else if (dateMode === "nextFiveDays") {
-      day = day + 5;
-      let h = day * 24;
-      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
-    } else {
-      day = day - 5;
-      let h = day * 24;
-      return new Date(new Date().getTime() + h * 60 * 60 * 1000);
+    let newDate;
+
+    if (currentDate) {
+      newDate = new Date(currentDate.getTime() + day * 24 * 60 * 60 * 1000);
+      // console.log(
+      //   newDate.toLocaleDateString("fa-IR", {
+      //     year: "numeric",
+      //     month: "2-digit",
+      //     day: "2-digit",
+      //   })
+      // );
+      setCurrentDate(newDate);
     }
   };
 
+  // Define the first 5 days of the week outside the component
+  // const today = new Date(currentDate);
+  // const plus1 = new Date(currentDate?.getTime() + 1 * 24 * 60 * 60 * 1000);
+  // const plus2 = new Date(currentDate?.getTime() + 2 * 24 * 60 * 60 * 1000);
+  // const plus3 = new Date(currentDate?.getTime() + 3 * 24 * 60 * 60 * 1000);
+  // const plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
+
+  let today,
+    plus1,
+    plus2,
+    plus3,
+    plus4 = null;
+  if (currentDate) {
+    today = new Date(currentDate);
+    plus1 = new Date(currentDate?.getTime() + 1 * 24 * 60 * 60 * 1000);
+    plus2 = new Date(currentDate?.getTime() + 2 * 24 * 60 * 60 * 1000);
+    plus3 = new Date(currentDate?.getTime() + 3 * 24 * 60 * 60 * 1000);
+    plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
+  }
+
+  // You can log or use these variables as needed
+  // console.log(
+  //   plus1?.toLocaleDateString("fa-IR", {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //   })
+  // );
+
   const displayNextFiveDays = () => {
     setDateMode("nextFiveDays");
+    addDayToDate(5);
   };
 
   const displayLastFiveDays = () => {
-    setDateMode("lastFiveDays");
+    setDateMode("previousFiveDays");
+    addDayToDate(-5);
   };
 
-  let today = new JDate(addDayToDate(0)).format("YYYY/MM/DD");
-  let plus1 = new JDate(addDayToDate(1)).format("YYYY/MM/DD");
-  let plus2 = new JDate(addDayToDate(2)).format("YYYY/MM/DD");
-  let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
-  let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
+  // console.log({ currentDate });
 
-  let todayDay = new JDate(addDayToDate(0)).format("dddd");
-  let plus1Day = new JDate(addDayToDate(1)).format("dddd");
-  let plus2Day = new JDate(addDayToDate(2)).format("dddd");
-  let plus3Day = new JDate(addDayToDate(3)).format("dddd");
-  let plus4Day = new JDate(addDayToDate(4)).format("dddd");
+  // let today = new JDate(addDayToDate(0)).format("YYYY/MM/DD");
+  // let plus1 = new Date(addDayToDate(1)).toLocaleDateString("fa-IR", {
+  //   year: "numeric",
+  //   month: "2-digit",
+  //   day: "2-digit",
+  // });
+  // let plus2 = addDayToDate(2);
+  // console.log({ plus2 });
+  // let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
+  // let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
 
-  let Dates = [today, plus1, plus2, plus3, plus4];
-  let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
+  // let todayDay = new JDate(addDayToDate(0)).format("dddd");
+  // let plus1Day = new JDate(addDayToDate(1)).format("dddd");
+  // let plus2Day = new JDate(addDayToDate(2)).format("dddd");
+  // let plus3Day = new JDate(addDayToDate(3)).format("dddd");
+  // let plus4Day = new JDate(addDayToDate(4)).format("dddd");
+
+  let Dates = [];
+  if (currentDate) {
+    Dates = [
+      today?.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      plus1?.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      plus2?.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      plus3?.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      plus4?.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+    ];
+  }
+  // let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
   let Hours = [];
 
+  ////////////
   for (let i = depOpeningHour; i < depClosingHour; i++) {
     for (let j = 0; j < 60; j = j + 15) {
       const hours = i < 10 ? "0" + i : i;
@@ -158,15 +258,31 @@ const Appointment = ({ ClinicUser }) => {
     let url = "Appointment/getByDateClinic";
     let data = {
       ClinicID,
-      DateFrom: today,
-      DateTo: plus4,
+      DateFrom: convertToFixedNumber(
+        today?.toLocaleDateString("fa-IR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+      ),
+      DateTo: convertToFixedNumber(
+        plus4?.toLocaleDateString("fa-IR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
+      ),
       ModalityID: ActiveModalityID,
+      // ModalityID: "6538f8c82353a83107be316d",
       // PatientID: ActivePatientID,
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         setAppointmentEvents(response.data);
         setLoadingState(false);
       })
@@ -531,7 +647,7 @@ const Appointment = ({ ClinicUser }) => {
     var root = document.querySelector(":root");
     let set = 96 - 4 * depOpeningHour;
     root.style.setProperty("--numHours", set);
-  }, [ActiveModalityID]);
+  }, [ActiveModalityID, currentDate]);
 
   return (
     <>
@@ -574,7 +690,7 @@ const Appointment = ({ ClinicUser }) => {
                           </button>
 
                           <button
-                            onClick={() => openNewAppointmentModal(todaysDate)}
+                            // onClick={() => openNewAppointmentModal(todaysDate)}
                             className="btn btn-primary appointmentBtn font-14 float-end"
                           >
                             <FeatherIcon icon="plus-square" />
@@ -595,7 +711,7 @@ const Appointment = ({ ClinicUser }) => {
                         <DayList
                           data={appointmentEvents}
                           Dates={Dates}
-                          DatesDays={DatesDays}
+                          // DatesDays={DatesDays}
                           depOpeningHour={depOpeningHour}
                           openEditAppointmentModal={openEditAppointmentModal}
                           deleteAppointment={deleteAppointment}
@@ -676,23 +792,3 @@ const Appointment = ({ ClinicUser }) => {
 };
 
 export default Appointment;
-
-// {loadingState ? <Loading /> : (
-//   <div className="card-body appointmentCard">
-//     <div className="calendar">
-//       <div className="timeline">
-//         <div className="spacer"></div>
-//         {Hours}
-//       </div>
-
-//       <div className="days">
-//         <DayList
-//           data={appointmentEvents}
-//           Dates={Dates}
-//           openEditAppointmentModal={openEditAppointmentModal}
-//           deleteAppointment={deleteAppointment}
-//         />
-//       </div>
-//     </div>
-//   </div>
-// )}

@@ -1,6 +1,7 @@
 import Day from "./day";
 import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
+import { convertToFixedNumber } from "utils/convertToFixedNumber";
 
 const jdate = new JDate();
 
@@ -17,6 +18,8 @@ const DayList = ({
   displayNextFiveDays,
   displayLastFiveDays,
 }) => {
+  // console.log({ Dates });
+
   let currentMonth = jdate.format("MMM YYYY");
   let todaysDate = String(jdate.getDate());
   if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
@@ -52,15 +55,17 @@ const DayList = ({
                 (date, index) => (
                   (date = date.split("/")),
                   (
+                    // console.log(convertToFixedNumber(date[2])),
                     <th key={index}>
                       <div className="date d-flex flex-col">
-                        <div className="mb-1">{DatesDays[index]}</div>
+                        {/* <div className="mb-1">{DatesDays[index]}</div> */}
                         <div className="d-flex align-items-center">
                           <p
-                            className={`${date[2] === todaysDate ? "todaysDate" : ""
-                              } date-num DateDayContainer`}
+                            className={`${
+                              date[2] === todaysDate ? "todaysDate" : ""
+                            } date-num DateDayContainer`}
                           >
-                            {date[2]}
+                            {convertToFixedNumber(date[2])}
                           </p>
                         </div>
                       </div>
@@ -77,11 +82,12 @@ const DayList = ({
                 <div className="timeline text-secondary font-13">{Hours}</div>
               </td>
               {Dates.map((date, index) => {
+                const formattedDate = convertToFixedNumber(date);
                 return (
                   <td key={index} className="p-0">
                     <Day
-                      date={date}
-                      appointment={data[date]}
+                      date={formattedDate}
+                      appointment={data[formattedDate]}
                       openNewAppointmentModal={openNewAppointmentModal}
                       openEditAppointmentModal={openEditAppointmentModal}
                       openDuplicateModal={openDuplicateModal}

@@ -3,7 +3,7 @@ import { axiosClient } from "class/axiosConfig";
 import { Modal } from "react-bootstrap";
 import { WarningAlert, ErrorAlert } from "class/AlertManage";
 
-const CheckPatientNID = ({ show, onHide, ClinicID, GetPatientInfo }) => {
+const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
 
   const _getPatientInfo = (e) => {
@@ -20,16 +20,13 @@ const CheckPatientNID = ({ show, onHide, ClinicID, GetPatientInfo }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
-          onHide();
         } else {
-          WarningAlert(
-            "هشدار",
-            `اطلاعات بیمار با کد ملی ${response.data.user.NationalID} قبلا ثبت شده است!`
-          );
+          getAllClinicsPatients();
         }
-        GetPatientInfo();
+        onHide();
         setPatientStatIsLoading(false);
       })
       .catch((error) => {

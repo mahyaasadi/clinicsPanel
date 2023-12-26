@@ -59,6 +59,7 @@ const Reception = ({ ClinicUser }) => {
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
 
   const [patientInfo, setPatientInfo] = useState([]);
+  const [ActivePatientNID, setActivePatientNID] = useState("");
   const [searchedServices, setSearchedServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
@@ -99,7 +100,7 @@ const Reception = ({ ClinicUser }) => {
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    ActivePatientNID = formProps.nationalCode;
+    setActivePatientNID(formProps.nationalCode);
 
     let url = "Patient/checkByNid";
     let data = {
@@ -146,7 +147,7 @@ const Reception = ({ ClinicUser }) => {
     $("#patientInfoCard").hide();
 
     ActivePatientID = null;
-    ActivePatientNID = null;
+    setActivePatientNID(null);
   };
 
   const handleShowPendingPatients = () => {
@@ -157,7 +158,7 @@ const Reception = ({ ClinicUser }) => {
 
   const handlePendingPatientClick = (patient) => {
     ActivePatientID = patient._id;
-    ActivePatientNID = patient.NationalID;
+    setActivePatientNID(patient.NationalID);
     ActiveInsuranceType = patient.InsuranceType;
 
     $("#patientNID").val(ActivePatientNID);
@@ -368,7 +369,6 @@ const Reception = ({ ClinicUser }) => {
       Code: formProps.additionalSrvCode,
       Name: formProps.additionalSrvName,
       Qty: formProps.additionalSrvQty,
-      // Price: additionalCost ? additionalCost : formProps.additionalSrvCost,
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
@@ -410,12 +410,15 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
         setPatientInfo(response.data.Patient);
         setAddedSrvItems(response.data.Items);
 
         ActivePatientID = response.data.Patient._id;
         ActiveInsuranceType = response.data.Patient.InsuranceType;
-        ActivePatientNID = response.data.Patient.NationalID;
+
+        const newActivePatientNID = response.data.Patient.NationalID;
+        setActivePatientNID(newActivePatientNID);
         $("#patientInfoCard").show("");
       })
       .catch((err) => {
@@ -635,7 +638,6 @@ const Reception = ({ ClinicUser }) => {
 
   const openActionModal = (receptionID, data) => {
     setShowActionModal(true);
-
     ActiveReceptionID = receptionID;
     setActionModalData(data);
     setPaymentData(data?.CashDesk);
@@ -678,10 +680,16 @@ const Reception = ({ ClinicUser }) => {
     ReceptionObjectID = router.query.id;
     ReceptionID = router.query.receptionID;
     if (ReceptionObjectID) getOneReception();
+
+    // reset
     ActivePatientID = null;
-    ActivePatientNID = null;
+    setActivePatientNID(null);
     $("#patientNID").val("");
   }, [router.query.id]);
+
+  useEffect(() => {
+    $("#patientNID").val(ActivePatientNID);
+  }, [ActivePatientNID]);
 
   return (
     <>
