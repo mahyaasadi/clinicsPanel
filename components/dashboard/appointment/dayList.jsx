@@ -17,6 +17,7 @@ const DayList = ({
   Hours,
   displayNextFiveDays,
   displayLastFiveDays,
+  monthName
 }) => {
   // console.log({ Dates });
 
@@ -35,7 +36,7 @@ const DayList = ({
           <p className="mb-1">بعدی</p>
         </button>
         <div className="col currentMonthContainer text-secondary fw-bold text-center">
-          {currentMonth}
+          {monthName}
         </div>
         <button
           className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 prevDaysBtn"
@@ -61,9 +62,8 @@ const DayList = ({
                         {/* <div className="mb-1">{DatesDays[index]}</div> */}
                         <div className="d-flex align-items-center">
                           <p
-                            className={`${
-                              date[2] === todaysDate ? "todaysDate" : ""
-                            } date-num DateDayContainer`}
+                            className={`${date[2] === todaysDate ? "todaysDate" : ""
+                              } date-num DateDayContainer`}
                           >
                             {convertToFixedNumber(date[2])}
                           </p>

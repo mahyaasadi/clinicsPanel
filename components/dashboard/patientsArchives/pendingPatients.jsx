@@ -63,7 +63,7 @@ const PendingPatients = ({ ClinicID, DeletePendingPatient, item }) => {
 
   return (
     <>
-      <div className="card col-12 mb-2 patientCard">
+      <div className="card col-12 mb-2 pendPatientCard">
         <div className="pendingPatientSD card-header d-flex gap-1">
           <div>
             <Tooltip

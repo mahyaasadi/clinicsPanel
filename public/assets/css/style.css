@@ -10330,6 +10330,10 @@ ul li .active {
 
 .patientCard {
   border-right: 3px solid #b45309;
+}
+
+.pendPatientCard {
+  border-right: 3px solid #b45309;
   cursor: pointer;
   direction: rtl;
 }

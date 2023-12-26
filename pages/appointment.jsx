@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import FeatherIcon from "feather-icons-react";
@@ -43,6 +44,7 @@ const jdate = new JDate();
 const todaysDate = jdate.format("YYYY/MM/DD");
 
 const Appointment = ({ ClinicUser }) => {
+  const router = useRouter()
   ClinicID = ClinicUser.ClinicID;
 
   const [loadingState, setLoadingState] = useState(false);
@@ -110,29 +112,6 @@ const Appointment = ({ ClinicUser }) => {
   //   setDateMode("lastFiveDays");
   // };
 
-  ////////////////
-  const [currentDate, setCurrentDate] = useState();
-
-  useEffect(() => {
-    setCurrentDate(new Date());
-  }, []);
-
-  const addDayToDate = (day) => {
-    let newDate;
-
-    if (currentDate) {
-      newDate = new Date(currentDate.getTime() + day * 24 * 60 * 60 * 1000);
-      // console.log(
-      //   newDate.toLocaleDateString("fa-IR", {
-      //     year: "numeric",
-      //     month: "2-digit",
-      //     day: "2-digit",
-      //   })
-      // );
-      setCurrentDate(newDate);
-    }
-  };
-
   // Define the first 5 days of the week outside the component
   // const today = new Date(currentDate);
   // const plus1 = new Date(currentDate?.getTime() + 1 * 24 * 60 * 60 * 1000);
@@ -140,48 +119,7 @@ const Appointment = ({ ClinicUser }) => {
   // const plus3 = new Date(currentDate?.getTime() + 3 * 24 * 60 * 60 * 1000);
   // const plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
 
-  let today,
-    plus1,
-    plus2,
-    plus3,
-    plus4 = null;
-  if (currentDate) {
-    today = new Date(currentDate);
-    plus1 = new Date(currentDate?.getTime() + 1 * 24 * 60 * 60 * 1000);
-    plus2 = new Date(currentDate?.getTime() + 2 * 24 * 60 * 60 * 1000);
-    plus3 = new Date(currentDate?.getTime() + 3 * 24 * 60 * 60 * 1000);
-    plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
-  }
-
-  // You can log or use these variables as needed
-  // console.log(
-  //   plus1?.toLocaleDateString("fa-IR", {
-  //     year: "numeric",
-  //     month: "2-digit",
-  //     day: "2-digit",
-  //   })
-  // );
-
-  const displayNextFiveDays = () => {
-    setDateMode("nextFiveDays");
-    addDayToDate(5);
-  };
-
-  const displayLastFiveDays = () => {
-    setDateMode("previousFiveDays");
-    addDayToDate(-5);
-  };
-
-  // console.log({ currentDate });
-
   // let today = new JDate(addDayToDate(0)).format("YYYY/MM/DD");
-  // let plus1 = new Date(addDayToDate(1)).toLocaleDateString("fa-IR", {
-  //   year: "numeric",
-  //   month: "2-digit",
-  //   day: "2-digit",
-  // });
-  // let plus2 = addDayToDate(2);
-  // console.log({ plus2 });
   // let plus3 = new JDate(addDayToDate(3)).format("YYYY/MM/DD");
   // let plus4 = new JDate(addDayToDate(4)).format("YYYY/MM/DD");
 
@@ -190,6 +128,76 @@ const Appointment = ({ ClinicUser }) => {
   // let plus2Day = new JDate(addDayToDate(2)).format("dddd");
   // let plus3Day = new JDate(addDayToDate(3)).format("dddd");
   // let plus4Day = new JDate(addDayToDate(4)).format("dddd");
+
+  ////////////////
+  const [currentDate, setCurrentDate] = useState();
+  const [count, setCount] = useState(1); // Initialize count
+
+
+
+  useEffect(() => {
+    setCurrentDate(new Date());
+    setCount(1)
+  }, []);
+
+  const addDayToDate = (day) => {
+    let newDate;
+
+    if (currentDate) {
+      newDate = new Date(currentDate.getTime() + day * 24 * 60 * 60 * 1000);
+      setCurrentDate(newDate);
+    }
+  };
+
+  let today,
+    plus1,
+    plus2,
+    plus3,
+    plus4 = null;
+
+  if (currentDate) {
+    today = new Date(currentDate);
+    plus1 = new Date(currentDate?.getTime() + 1 * 24 * 60 * 60 * 1000);
+    plus2 = new Date(currentDate?.getTime() + 2 * 24 * 60 * 60 * 1000);
+    plus3 = new Date(currentDate?.getTime() + 3 * 24 * 60 * 60 * 1000);
+    plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
+  }
+
+  const monthName = plus4?.toLocaleString('fa-IR', { month: 'long' });
+
+  console.log(monthName, plus4?.toLocaleDateString("fa-IR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }))
+
+  const DateDay = currentDate?.toLocaleDateString('fa-IR', { weekday: 'long' })
+
+  console.log({ DateDay });
+
+  const displayNextFiveDays = () => {
+    setDateMode("nextFiveDays");
+    addDayToDate(5);
+
+    setCount((prevCount) => prevCount + 1);
+    router.push({
+      pathname: "/appointment",
+      query: "next" + count
+    });
+  };
+
+  const displayLastFiveDays = () => {
+    setDateMode("previousFiveDays");
+    addDayToDate(-5);
+
+    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount));
+    router.push({
+      pathname: "/appointment",
+      query: "last" + count
+    });
+  };
+
+
 
   let Dates = [];
   if (currentDate) {
@@ -435,16 +443,26 @@ const Appointment = ({ ClinicUser }) => {
 
   // Edit Appointment
   const openEditAppointmentModal = (data, appointmentID) => {
-    setModalMode("edit");
-    setShowAppointmentModal(true);
-    setEditAppointmentData(data);
-    ActivePatientID = data.Patient._id;
-    ActiveAppointmentID = data._id;
 
-    setTimeout(() => {
-      $("#appointmentPatientInfoCard").show("");
-      $("#additionalAppointmentInfo").show("");
-    }, 100);
+    const formattedDefDate = data.Date.replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3');
+    const formattedCurrentDate = new JDate().format("YYYY/MM/DD")
+
+    console.log({ formattedDefDate, formattedCurrentDate });
+    if (formattedDefDate < formattedCurrentDate) {
+      console.log("object");
+      setModalMode("disable edit")
+    } else {
+      setModalMode("edit");
+      setShowAppointmentModal(true);
+      setEditAppointmentData(data);
+      ActivePatientID = data.Patient._id;
+      ActiveAppointmentID = data._id;
+
+      setTimeout(() => {
+        $("#appointmentPatientInfoCard").show("");
+        $("#additionalAppointmentInfo").show("");
+      }, 100);
+    }
   };
 
   const editAppointment = (e) => {
@@ -627,20 +645,37 @@ const Appointment = ({ ClinicUser }) => {
 
   // DuplicateAppointment modal
   const openDuplicateModal = (data) => {
-    setShowDuplicateModal(true);
-    setDuplicateData(data);
+    if (data.Date < currentDate.toLocaleDateString("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })) {
+      console.log(currentDate.toLocaleDateString("fa-IR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }));
+      setShowDuplicateModal(false);
+    } else {
+      setShowDuplicateModal(true);
+      setDuplicateData(data);
 
-    ActiveDate = data.Date;
-    setAppointmentDate(ActiveDate?.replace(/""/g, ""));
+      ActiveDate = data.Date;
+      setAppointmentDate(ActiveDate?.replace(/""/g, ""));
 
-    ActivePatientID = data.Patient._id;
-    ActiveAppointmentID = data._id;
+      ActivePatientID = data.Patient._id;
+      ActiveAppointmentID = data._id;
+    }
   };
 
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
       setSelectedDepartment(ActiveModalityID);
+    }
+
+    if (currentDate === new Date()) {
+      setCount(1)
     }
 
     // columns dynamic height
@@ -720,6 +755,7 @@ const Appointment = ({ ClinicUser }) => {
                           Hours={Hours}
                           displayNextFiveDays={displayNextFiveDays}
                           displayLastFiveDays={displayLastFiveDays}
+                          monthName={monthName}
                         />
                       </div>
                     </div>
