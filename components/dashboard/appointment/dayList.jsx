@@ -17,10 +17,10 @@ const DayList = ({
   Hours,
   displayNextFiveDays,
   displayLastFiveDays,
-  monthName
+  monthName,
+  yearValue,
+  formattedCurrentDate,
 }) => {
-  // console.log({ Dates });
-
   let currentMonth = jdate.format("MMM YYYY");
   let todaysDate = String(jdate.getDate());
   if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
@@ -36,15 +36,24 @@ const DayList = ({
           <p className="mb-1">بعدی</p>
         </button>
         <div className="col currentMonthContainer text-secondary fw-bold text-center">
-          {monthName}
+          {monthName} {yearValue}
         </div>
-        <button
-          className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 prevDaysBtn"
-          onClick={displayLastFiveDays}
-        >
-          <p className="mb-1">قبلی</p>
-          <FeatherIcon icon="chevron-left" />
-        </button>
+
+        <div className="d-flex gap-1">
+          <button className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35">
+            <p className="mb-0">امروز</p>
+          </button>
+          <button
+            className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 prevDaysBtn"
+            onClick={displayLastFiveDays}
+          >
+            <p className="mb-1">قبلی</p>
+            <FeatherIcon
+              icon="chevron-left"
+              style={{ height: "19px !important" }}
+            />
+          </button>
+        </div>
       </div>
 
       <div className="tContainer">
@@ -56,14 +65,16 @@ const DayList = ({
                 (date, index) => (
                   (date = date.split("/")),
                   (
-                    // console.log(convertToFixedNumber(date[2])),
                     <th key={index}>
                       <div className="date d-flex flex-col">
-                        {/* <div className="mb-1">{DatesDays[index]}</div> */}
+                        <div className="mb-1">{DatesDays[index]}</div>
                         <div className="d-flex align-items-center">
                           <p
-                            className={`${date[2] === todaysDate ? "todaysDate" : ""
-                              } date-num DateDayContainer`}
+                            className={`${
+                              convertToFixedNumber(date[2]) === todaysDate
+                                ? "todaysDate"
+                                : ""
+                            } date-num DateDayContainer`}
                           >
                             {convertToFixedNumber(date[2])}
                           </p>
@@ -87,6 +98,7 @@ const DayList = ({
                   <td key={index} className="p-0">
                     <Day
                       date={formattedDate}
+                      formattedCurrentDate={formattedCurrentDate}
                       appointment={data[formattedDate]}
                       openNewAppointmentModal={openNewAppointmentModal}
                       openEditAppointmentModal={openEditAppointmentModal}
@@ -106,71 +118,3 @@ const DayList = ({
 };
 
 export default DayList;
-
-// import Day from "./day";
-// let month = {
-//   "01": "فروردین",
-//   "02": "اردیبهشت",
-//   "03": "خرداد",
-//   "04": "تیر",
-//   "05": "مرداد",
-//   "06": "شهریور",
-//   "07": "مهر",
-//   "08": "آبان",
-//   "09": "آذر",
-//   10: "دی",
-//   11: "بهمن",
-//   12: "اسفند",
-// };
-
-// const DayList = ({
-//   data,
-//   Dates,
-//   openNewAppointmentModal,
-//   openEditAppointmentModal,
-//   deleteAppointment,
-//   depOpeningHour,
-// }) => {
-//   return (
-//     <>
-//       <table className="table w-auto">
-//         <thead className="bg-light sticky-top">
-//           <tr>
-//             {Dates.map((date, index) => {
-//               date = date.split("/");
-//               return (
-//                 <th key={index}>
-//                   <div className="date">
-//                     <p className="date-num">{date[2]}</p>
-//                     <p className="date-day">{month[date[1]]}</p>
-//                   </div>
-//                 </th>
-//               );
-//             })}
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             {Dates.map((date, index) => {
-//               return (
-//                 <td key={index} className="p-0">
-//                   <Day
-//                     date={date}
-//                     key={date}
-//                     appointment={data[date]}
-//                     openNewAppointmentModal={openNewAppointmentModal}
-//                     openEditAppointmentModal={openEditAppointmentModal}
-//                     deleteAppointment={deleteAppointment}
-//                     depOpeningHour={depOpeningHour}
-//                   />
-//                 </td>
-//               );
-//             })}
-//           </tr>
-//         </tbody>
-//       </table>
-//     </>
-//   );
-// };
-
-// export default DayList;

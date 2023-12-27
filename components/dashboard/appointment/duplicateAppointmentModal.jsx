@@ -16,12 +16,12 @@ const DuplicateAppointmentModal = ({
   ClinicID,
   selectedDepartment,
   FUSelectDepartment,
-  setAppointmentDate,
   FUSelectStartTime,
   FUSelectEndTime,
   hoursOptions,
   appointmentIsLoading,
   appointmentDate,
+  setAppointmentDate,
   endHoursOptions,
 }) => {
   const { data: clinicDepartments, isLoading } =

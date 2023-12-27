@@ -8,8 +8,15 @@ const Day = ({
   openDuplicateModal,
   deleteAppointment,
   depOpeningHour,
+  formattedCurrentDate,
 }) => {
+  const formattedDefDate = date.replace(/(\d+)\/(\d+)\/(\d+)/, "$1/$2/$3");
+
   const handleColumnDoubleClick = () => {
+    if (formattedDefDate < formattedCurrentDate) {
+      return; // Do nothing if the condition is met
+    }
+
     openNewAppointmentModal(date);
   };
 
