@@ -119,7 +119,6 @@ const Appointment = ({ ClinicUser }) => {
     plus4 = new Date(currentDate?.getTime() + 4 * 24 * 60 * 60 * 1000);
   }
 
-  const DateDay = currentDate?.toLocaleDateString("fa-IR", { weekday: "long" });
   const monthName = plus4?.toLocaleString("fa-IR", { month: "long" });
   const yearValue = plus4?.toLocaleDateString("fa-IR", {
     year: "numeric",
@@ -154,6 +153,21 @@ const Appointment = ({ ClinicUser }) => {
       { shallow: true }
     );
   };
+
+  const returnToToday = () => {
+    setCurrentDate(
+      new Date()
+    );
+
+    router.push(
+      {
+        pathname: "/appointment",
+        query: "week=" + 0,
+      },
+      undefined,
+      { shallow: true }
+    );
+  }
 
   let Dates = [];
   if (currentDate) {
@@ -720,6 +734,7 @@ const Appointment = ({ ClinicUser }) => {
                           monthName={monthName}
                           yearValue={yearValue}
                           formattedCurrentDate={formattedCurrentDate}
+                          returnToToday={returnToToday}
                         />
                       </div>
                     </div>

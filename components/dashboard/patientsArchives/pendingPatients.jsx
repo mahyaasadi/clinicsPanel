@@ -6,7 +6,7 @@ import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 
-const PendingPatients = ({ ClinicID, DeletePendingPatient, item }) => {
+const PendingPatients = ({ ClinicID, DeletePendingPatient, item, openAppointmentModal }) => {
   const router = useRouter();
 
   const handleEditPendingPatient = (item) => {
@@ -30,7 +30,7 @@ const PendingPatients = ({ ClinicID, DeletePendingPatient, item }) => {
     {
       label: "نوبت دهی",
       icon: <FeatherIcon icon="calendar" size="20" />,
-      // command: () => deleteReception(srv._id),
+      command: () => openAppointmentModal(item._id),
     },
     {
       label: "حذف",

@@ -28,7 +28,7 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
-  ActivePatientNID = null;
+  ActivePatientNID, ActivePatientID = null;
 const PatientsArchives = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
@@ -111,6 +111,23 @@ const PatientsArchives = ({ ClinicUser }) => {
     getAllClinicsPatients();
   };
 
+  //--- AppointmentModal ---//
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  // const [defaultDepValue, setDefaultDepValue] = useState(null)
+  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
+
+  const openAppointmentModal = (patientID) => {
+    ActivePatientID = patientID
+    setShowAppointmentModal(true)
+  }
+
+  const addAppointment = (data) => {
+    if (data) {
+      setShowAppointmentModal(false);
+      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    }
+  };
+
   useEffect(() => {
     getAllClinicsPatients();
 
@@ -156,6 +173,7 @@ const PatientsArchives = ({ ClinicUser }) => {
                     pendingPatientsData={pendingPatientsData}
                     setPendingPatientsData={setPendingPatientsData}
                     DeletePendingPatient={DeletePendingPatient}
+                    openAppointmentModal={openAppointmentModal}
                   />
                 ))}
               </div>
@@ -194,6 +212,16 @@ const PatientsArchives = ({ ClinicUser }) => {
           showBirthDigitsAlert={showBirthDigitsAlert}
           setShowBirthDigitsAlert={setShowBirthDigitsAlert}
           addPatientIsLoading={addPatientIsLoading}
+        />
+
+        <ApplyAppointmentModal
+          ClinicID={ClinicID}
+          show={showAppointmentModal}
+          onHide={handleCloseAppointmentModal}
+          addAppointment={addAppointment}
+          ActivePatientID={ActivePatientID}
+          defaultDepValue={null}
+          ActiveModalityData={null}
         />
       </div>
     </>

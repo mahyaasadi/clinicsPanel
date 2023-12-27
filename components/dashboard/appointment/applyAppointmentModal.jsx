@@ -23,8 +23,8 @@ const ApplyAppointmentModal = ({
   const [pureEndTime, setPureEndTime] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
-  const depOpeningHour = parseInt(ActiveModalityData.OpeningHours);
-  const depClosingHour = parseInt(ActiveModalityData.ClosingHours);
+  const depOpeningHour = parseInt(ActiveModalityData?.OpeningHours);
+  const depClosingHour = parseInt(ActiveModalityData?.ClosingHours);
 
   const hoursOptions = [];
   for (let i = depOpeningHour; i < depClosingHour; i++) {
