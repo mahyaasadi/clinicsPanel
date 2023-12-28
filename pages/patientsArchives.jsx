@@ -10,6 +10,7 @@ import CheckPatientNIDModal from "components/dashboard/patientsArchives/checkPat
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PendingPatients from "components/dashboard/patientsArchives/pendingPatients";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -28,7 +29,8 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
-  ActivePatientNID, ActivePatientID = null;
+  ActivePatientNID,
+  ActivePatientID = null;
 const PatientsArchives = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
@@ -113,13 +115,34 @@ const PatientsArchives = ({ ClinicUser }) => {
 
   //--- AppointmentModal ---//
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-  // const [defaultDepValue, setDefaultDepValue] = useState(null)
+  const [defaultDepValue, setDefaultDepValue] = useState(null);
+  const [ActiveModalityData, setActiveModalityData] = useState(null);
+
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
 
-  const openAppointmentModal = (patientID) => {
-    ActivePatientID = patientID
-    setShowAppointmentModal(true)
+  const { data: clinicDepartments, isLoading: itIsLoading } =
+    useGetAllClinicDepartmentsQuery(ClinicID);
+
+  let modalityOptions = [];
+  for (let i = 0; i < clinicDepartments?.length; i++) {
+    const item = clinicDepartments[i];
+    let obj = {
+      value: item._id,
+      label: item.Name,
+    };
+    modalityOptions.push(obj);
   }
+
+  const openAppointmentModal = (patientID) => {
+    ActivePatientID = patientID;
+    setShowAppointmentModal(true);
+    setActiveModalityData(clinicDepartments[0]);
+
+    setDefaultDepValue({
+      Name: modalityOptions[0].label,
+      _id: modalityOptions[0].value,
+    });
+  };
 
   const addAppointment = (data) => {
     if (data) {
@@ -190,7 +213,10 @@ const PatientsArchives = ({ ClinicUser }) => {
                   </div>
                 </div>
 
-                <PatientsListTable data={patientsData} />
+                <PatientsListTable
+                  data={patientsData}
+                  openAppointmentModal={openAppointmentModal}
+                />
               </div>
             </div>
           </div>
@@ -220,8 +246,9 @@ const PatientsArchives = ({ ClinicUser }) => {
           onHide={handleCloseAppointmentModal}
           addAppointment={addAppointment}
           ActivePatientID={ActivePatientID}
-          defaultDepValue={null}
-          ActiveModalityData={null}
+          defaultDepValue={defaultDepValue}
+          ActiveModalityData={ActiveModalityData}
+          setActiveModalityData={setActiveModalityData}
         />
       </div>
     </>

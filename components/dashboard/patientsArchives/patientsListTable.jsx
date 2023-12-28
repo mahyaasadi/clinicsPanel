@@ -6,7 +6,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const PatientsListTable = ({ data }) => {
+const PatientsListTable = ({ data, openAppointmentModal }) => {
   const columns = [
     {
       name: "بیمار",
@@ -89,7 +89,6 @@ const PatientsListTable = ({ data }) => {
             }}
             className="btn btn-sm btn-outline-primary editBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
-            // onClick={() => openEditModal(row)}
           >
             <Tooltip target=".editBtn">تکمیل پرونده</Tooltip>
             <FeatherIcon
@@ -111,6 +110,17 @@ const PatientsListTable = ({ data }) => {
               style={{ width: "15px", height: "16px" }}
             />
           </Link>
+          <button
+            className="btn btn-sm btn-outline-primary btn-border-l appointBtn d-flex align-items-center float-end m-1"
+            data-pr-position="top"
+            onClick={() => openAppointmentModal(row._id)}
+          >
+            <Tooltip target=".appointBtn">نوبت دهی</Tooltip>
+            <FeatherIcon
+              icon="calendar"
+              style={{ width: "15px", height: "16px" }}
+            />
+          </button>
         </div>
       ),
       width: "auto",

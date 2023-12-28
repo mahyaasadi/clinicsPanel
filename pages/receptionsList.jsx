@@ -29,17 +29,17 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ActivePatientID = null;
-let ActiveModalityData = {};
 
 const ReceptionsList = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
   const [receptionList, setReceptionList] = useState([]);
-  const [defaultDepValue, setDefaultDepValue] = useState();
 
   // appointment modal
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [defaultDepValue, setDefaultDepValue] = useState();
+  const [ActiveModalityData, setActiveModalityData] = useState(null);
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
 
   // Pagination
@@ -107,7 +107,7 @@ const ReceptionsList = ({ ClinicUser }) => {
     setShowAppointmentModal(true);
 
     ActivePatientID = patientData._id;
-    ActiveModalityData = modality;
+    setActiveModalityData(modality);
     setDefaultDepValue({
       Name: modality.Name,
       _id: modality._id,
@@ -121,21 +121,20 @@ const ReceptionsList = ({ ClinicUser }) => {
     }
   };
 
-
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index) => {
     setActiveTab(index);
-    localStorage.setItem('activeTab', index.toString());
+    localStorage.setItem("activeTab", index.toString());
   };
 
   useEffect(() => {
-    const storedActiveTab = localStorage.getItem('activeTab');
+    const storedActiveTab = localStorage.getItem("activeTab");
     if (storedActiveTab !== null) {
       setActiveTab(parseInt(storedActiveTab, 10));
     }
 
-    getReceptionList()
+    getReceptionList();
   }, []);
 
   return (
@@ -163,7 +162,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link active"
-                          className={`nav-link ${activeTab === 0 ? 'active' : ''}`}
+                          className={`nav-link ${
+                            activeTab === 0 ? "active" : ""
+                          }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)} // Pass the index of the tab
@@ -174,7 +175,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link"
-                          className={`nav-link ${activeTab === 1 ? 'active' : ''}`}
+                          className={`nav-link ${
+                            activeTab === 1 ? "active" : ""
+                          }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
@@ -188,7 +191,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                   <div className="tab-content pt-1">
                     <div
                       // className="tab-pane show active"
-                      className={`tab-pane show ${activeTab === 0 ? 'active' : ''}`}
+                      className={`tab-pane show ${
+                        activeTab === 0 ? "active" : ""
+                      }`}
                       id="solid-rounded-tab1"
                     >
                       <div className="row">
@@ -214,7 +219,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                     <div
                       // className="tab-pane"
                       id="solid-rounded-tab2"
-                      className={`tab-pane ${activeTab === 1 ? 'active' : ''}`}
+                      className={`tab-pane ${activeTab === 1 ? "active" : ""}`}
                     >
                       <ReceptionListTable
                         data={receptionList}
@@ -237,6 +242,7 @@ const ReceptionsList = ({ ClinicUser }) => {
           ActivePatientID={ActivePatientID}
           defaultDepValue={defaultDepValue}
           ActiveModalityData={ActiveModalityData}
+          setActiveModalityData={setActiveModalityData}
         />
       </div>
     </>

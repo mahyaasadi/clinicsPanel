@@ -54,10 +54,10 @@ const Appointment = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [loadingState, setLoadingState] = useState(false);
+  const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [delayIsLoading, setDelayIsLoading] = useState(false);
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
 
-  const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [appointmentEvents, setAppointmentEvents] = useState([]);
 
   // modalitiesHeader
@@ -136,8 +136,6 @@ const Appointment = ({ ClinicUser }) => {
       undefined,
       { shallow: true }
     );
-
-    localStorage.setItem("week", newWeek.toString());
   };
 
   const displayLastFiveDays = () => {
@@ -155,9 +153,7 @@ const Appointment = ({ ClinicUser }) => {
   };
 
   const returnToToday = () => {
-    setCurrentDate(
-      new Date()
-    );
+    setCurrentDate(new Date());
 
     router.push(
       {
@@ -167,7 +163,7 @@ const Appointment = ({ ClinicUser }) => {
       undefined,
       { shallow: true }
     );
-  }
+  };
 
   let Dates = [];
   if (currentDate) {
@@ -207,7 +203,7 @@ const Appointment = ({ ClinicUser }) => {
 
   let DatesDays = [todayDay, plus1Day, plus2Day, plus3Day, plus4Day];
 
-  //---- Clinics WorkinhHours -----//
+  //---- Clinics WorkingHours -----//
   let Hours = [];
 
   for (let i = depOpeningHour; i < depClosingHour; i++) {
@@ -258,7 +254,6 @@ const Appointment = ({ ClinicUser }) => {
         })
       ),
       ModalityID: ActiveModalityID,
-      // PatientID: ActivePatientID,
     };
 
     axiosClient

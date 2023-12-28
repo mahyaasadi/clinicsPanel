@@ -29,7 +29,6 @@ let ClinicID,
   ClinicUserID,
   ActiveReceptionID,
   ActivePatientID = null;
-let ActiveModalityData = {};
 const CashDesk = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
@@ -59,13 +58,14 @@ const CashDesk = ({ ClinicUser }) => {
   // appointmentModal
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
   const [defaultDepValue, setDefaultDepValue] = useState();
+  const [ActiveModalityData, setActiveModalityData] = useState(null);
   const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
 
   const openNewAppointmentModal = (patientData, modality) => {
     setShowAppointmentModal(true);
 
     ActivePatientID = patientData._id;
-    ActiveModalityData = modality;
+    setActiveModalityData(modality);
     setDefaultDepValue({
       Name: modality.Name,
       _id: modality._id,
@@ -197,6 +197,7 @@ const CashDesk = ({ ClinicUser }) => {
           ActivePatientID={ActivePatientID}
           defaultDepValue={defaultDepValue}
           ActiveModalityData={ActiveModalityData}
+          setActiveModalityData={setActiveModalityData}
         />
       </div>
     </>

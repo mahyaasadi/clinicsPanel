@@ -16,6 +16,7 @@ const ApplyAppointmentModal = ({
   ActivePatientID,
   defaultDepValue,
   ActiveModalityData,
+  setActiveModalityData,
 }) => {
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState(null);
@@ -47,9 +48,6 @@ const ApplyAppointmentModal = ({
   const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
   const FUSelectEndTime = (endTime) => setPureEndTime(endTime);
 
-  const FUSelectDepartment = (departmentValue) =>
-    setSelectedDepartment(departmentValue);
-
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
@@ -62,6 +60,15 @@ const ApplyAppointmentModal = ({
     };
     modalityOptions.push(obj);
   }
+
+  const FUSelectDepartment = (departmentValue) => {
+    setSelectedDepartment(departmentValue);
+    console.log({ departmentValue });
+    let findActiveModality = clinicDepartments.find(
+      (x) => x._id === departmentValue
+    );
+    setActiveModalityData(findActiveModality);
+  };
 
   const defDepValue = defaultDepValue
     ? { value: defaultDepValue._id, label: defaultDepValue.Name }
@@ -76,7 +83,7 @@ const ApplyAppointmentModal = ({
       ClinicID,
       PatientID: ActivePatientID,
       ModalityID: selectedDepartment
-        ? selectedDepartment._id
+        ? selectedDepartment
         : ActiveModalityData._id,
       Date: appointmentDate,
       ST: pureStartTime,
@@ -121,7 +128,7 @@ const ApplyAppointmentModal = ({
                 className="text-center font-12"
                 placeholder={"انتخاب کنید"}
                 defaultValue={defDepValue}
-                onChangeValue={(value) => FUSelectDepartment(value?.value)}
+                onChange={(value) => FUSelectDepartment(value?.value)}
                 isClearable
                 required
               />

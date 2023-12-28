@@ -6,7 +6,12 @@ import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 
-const PendingPatients = ({ ClinicID, DeletePendingPatient, item, openAppointmentModal }) => {
+const PendingPatients = ({
+  ClinicID,
+  item,
+  DeletePendingPatient,
+  openAppointmentModal,
+}) => {
   const router = useRouter();
 
   const handleEditPendingPatient = (item) => {
@@ -97,7 +102,7 @@ const PendingPatients = ({ ClinicID, DeletePendingPatient, item, openAppointment
                     borderRadius: "10px",
                   }}
                   onError={({ currentTarget }) => {
-                    item?.Gender
+                    item?.Gender === "F" || item?.Gender === "M"
                       ? (currentTarget.src = `assets/img/avatar-${item?.Gender}-pic.png`)
                       : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                   }}
