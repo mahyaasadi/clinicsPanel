@@ -8,7 +8,7 @@ const KartModal = ({
   show,
   onHide,
 }) => {
-  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن پایانه";
+  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "افزودن پایانه";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -46,7 +46,7 @@ const KartModal = ({
               name="kartBank"
               defaultValue={mode == "edit" ? data.Bank : ""}
               key={data.Bank}
-              // required
+            // required
             />
           </div>
 
@@ -59,7 +59,7 @@ const KartModal = ({
               name="kartNumber"
               defaultValue={mode == "edit" ? data.Number : ""}
               key={data.Number}
-              // required
+            // required
             />
           </div>
 

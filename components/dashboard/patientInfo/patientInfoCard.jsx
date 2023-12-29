@@ -212,11 +212,10 @@ const PatientInfoCard = ({
 
               {!patientStatIsLoading ? (
                 <button
-                  className={`${
-                    router.pathname === "/salamatPrescription"
-                      ? "btn-secondary"
-                      : "btn-primary"
-                  } btn w-10 rounded-left font-12`}
+                  className={`${router.pathname === "/salamatPrescription"
+                    ? "btn-secondary"
+                    : "btn-primary"
+                    } btn w-10 rounded-left font-12`}
                   id="frmPatientInfoBtnSubmit"
                 >
                   استعلام
@@ -225,11 +224,10 @@ const PatientInfoCard = ({
                 <button
                   type="submit"
                   id="frmPatientInfoBtnSubmit"
-                  className={`${
-                    router.pathname === "/salamatPrescription"
-                      ? "btn-secondary"
-                      : "btn-primary"
-                  } btn rounded-left`}
+                  className={`${router.pathname === "/salamatPrescription"
+                    ? "btn-secondary"
+                    : "btn-primary"
+                    } btn rounded-left`}
                   disabled
                 >
                   <span
@@ -240,9 +238,10 @@ const PatientInfoCard = ({
               )}
             </div>
 
-            {pendingPatients.length !== 0 ? (
-              <div className="pendingPaitentContainer">
-                {pendingPatients.map((item, index) => (
+            <div className="pendingPaitentContainer">
+              {pendingPatients.length !== 0 ? (
+
+                pendingPatients.map((item, index) => (
                   <div
                     className="card shadow-none w-100 mb-2 pendPatientCard"
                     key={index}
@@ -284,11 +283,12 @@ const PatientInfoCard = ({
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              ""
-            )}
+                ))
+
+              ) : (
+                ""
+              )}
+            </div>
           </form>
 
           <div className="font-13 mt-3" id="patientInfoCard">
@@ -325,8 +325,8 @@ const PatientInfoCard = ({
                   ? data.Gender === "M"
                     ? "مرد"
                     : data.Gender === "F"
-                    ? "زن"
-                    : "دیگر"
+                      ? "زن"
+                      : "دیگر"
                   : "-"}
               </div>
 

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
-import { useRouter } from "next/router";
 import { ErrorAlert, SuccessAlert, TimerAlert } from "class/AlertManage";
-import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
+import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
@@ -34,7 +34,6 @@ let ClinicID,
   ActiveSrvID,
   ActiveModalityID,
   ActivePatientID,
-  ActivePatientNID,
   ActiveInsuranceType,
   ActiveSrvName,
   ActiveSrvEngName,
@@ -372,8 +371,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -576,10 +575,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });

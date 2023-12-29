@@ -11,26 +11,26 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
       name: "کد داخلی",
       selector: (row) => row.Code,
       sortable: true,
-      width: "100px",
+      width: "auto",
     },
     {
       name: "نام خدمت",
       selector: (row) => row.Name,
       sortable: true,
-      width: "270px",
+      width: "auto",
     },
     {
       name: "نام تخصصی خدمت",
       selector: (row) => row.EngName,
       sortable: true,
-      width: "270px",
+      width: "auto",
     },
     {
       name: "هزینه خدمت",
       selector: (row) =>
         row.Price ? row.Price.toLocaleString() + " ریال" : "-",
       sortable: true,
-      width: "500px",
+      width: "auto",
     },
     {
       name: "عملیات ها",
@@ -62,7 +62,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
           </button>
         </div>
       ),
-      width: "200px",
+      width: "auto",
     },
   ];
 

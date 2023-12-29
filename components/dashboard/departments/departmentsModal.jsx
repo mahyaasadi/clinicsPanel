@@ -9,7 +9,7 @@ const DepartmentsModal = ({
   show,
   onHide,
 }) => {
-  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن بخش";
+  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "افزودن بخش";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
   const displayPreview = (e) => {

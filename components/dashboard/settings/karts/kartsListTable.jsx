@@ -59,7 +59,7 @@ const KartsListTable = ({ data, openEditModal, deleteKart }) => {
           </Link>
         </div>
       ),
-      width: "200px",
+      width: "auto",
     },
   ];
 

@@ -12,13 +12,13 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
       name: "نام",
       selector: (row) => row.Name,
       sortable: true,
-      width: "300px",
+      width: "auto",
     },
     {
       name: "نام تخصصی",
       selector: (row) => row.EngName,
       sortable: true,
-      width: "300px",
+      width: "auto",
     },
     {
       name: "آیکون",
@@ -32,7 +32,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
               className="btn removeImgBtn tooltip-button"
               type="button"
               data-pr-position="top"
-              // onClick={}
+            // onClick={}
             >
               <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
             </button>
@@ -40,7 +40,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
         ) : (
           ""
         ),
-      width: "550px",
+      width: "auto",
     },
     {
       name: "عملیات ها",
@@ -88,7 +88,7 @@ const DepartmentsListTable = ({ data, openEditModal, deleteDepartment }) => {
           </Link>
         </div>
       ),
-      width: "200px",
+      width: "auto",
     },
   ];
 

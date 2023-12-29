@@ -12,7 +12,7 @@ const DiscountModal = ({
   show,
   onHide,
 }) => {
-  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن تخفیف";
+  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "افزودن تخفیف";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
   const defaultPercentValue = data.Percent ? 1 : 0;
@@ -65,6 +65,7 @@ const DiscountModal = ({
               مبلغ / درصد تخفیف <span className="text-danger">*</span>
             </label>
             <input
+              dir="ltr"
               className="form-control floating inputPadding rounded"
               name={mode == "edit" ? "EditDiscountValue" : "discountValue"}
               defaultValue={mode == "edit" ? data.Value : ""}

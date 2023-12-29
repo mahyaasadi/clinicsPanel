@@ -55,7 +55,7 @@ const DepartmentsListTable = ({ data, deleteInsurance, openEditModal }) => {
           </button>
         </div>
       ),
-      width: "200px",
+      width: "auto",
     },
   ];
 

@@ -19,7 +19,7 @@ const DepartmentsModal = ({
   arteshShare,
   setArteshShare,
 }) => {
-  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "اضافه کردن سرویس";
+  const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "افزودن سرویس";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
 
   return (

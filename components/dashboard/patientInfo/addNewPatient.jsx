@@ -127,7 +127,7 @@ const NewPatient = ({
           <div className="modal-content">
             <div className="modal-header">
               <p className="mb-0 text-secondary font-14 fw-bold">
-                اضافه کردن بیمار
+                افزودن بیمار
               </p>
               <button
                 type="button"
@@ -211,7 +211,7 @@ const NewPatient = ({
                         className="form-control rounded padding-right-2"
                         id="addPatientName"
                         name="PatientName"
-                        // required
+                      // required
                       />
                     </div>
 
@@ -229,7 +229,7 @@ const NewPatient = ({
                         id="addGenderType"
                         instanceId="addGenderType"
                         isClearable
-                        // required
+                      // required
                       />
                     </div>
 
@@ -249,7 +249,7 @@ const NewPatient = ({
                             onBlur={handleBlur}
                             maxLength={4}
                             minLength={4}
-                            // required
+                          // required
                           />
 
                           {showBirthDigitsAlert && (
@@ -279,7 +279,7 @@ const NewPatient = ({
                           name="Age"
                           onChange={handleInputChange}
                           onBlur={handleBlur}
-                          // required
+                        // required
                         />
                       </div>
                     </div>

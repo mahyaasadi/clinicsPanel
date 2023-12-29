@@ -178,7 +178,7 @@ const PatientsArchives = ({ ClinicUser }) => {
                   <i className="me-1">
                     <FeatherIcon icon="plus-square" />
                   </i>{" "}
-                  اضافه کردن
+                  افزودن
                 </button>
               </div>
             </div>

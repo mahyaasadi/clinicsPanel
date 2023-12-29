@@ -20,6 +20,7 @@ const ReceptionListTable = ({
       sortable: true,
       style: {
         justifyContent: "flex-start",
+        width: "180px"
       },
       cell: (row) => (
         <div className="d-flex justify-center align-items-center gap-3">

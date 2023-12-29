@@ -85,7 +85,7 @@ const CashDeskKarts = ({ ClinicUser }) => {
       })
       .catch((error) => {
         console.log(error);
-        ErrorAlert("خطا", "اضافه کردن پایانه با خطا مواجه گردید!");
+        ErrorAlert("خطا", "افزودن پایانه با خطا مواجه گردید!");
         setIsLoading(false);
       });
   };
@@ -192,7 +192,7 @@ const CashDeskKarts = ({ ClinicUser }) => {
                     <i className="me-1">
                       <FeatherIcon icon="plus-square" />
                     </i>{" "}
-                    اضافه کردن
+                    افزودن
                   </button>
                 </div>
               </div>
@@ -208,14 +208,6 @@ const CashDeskKarts = ({ ClinicUser }) => {
                           پایانه های بانک
                         </p>
                       </div>
-                      <div className="col-auto d-flex flex-wrap">
-                        <div className="form-custom me-2">
-                          <div
-                            id="tableSearch"
-                            className="dataTables_wrapper"
-                          ></div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -225,8 +217,6 @@ const CashDeskKarts = ({ ClinicUser }) => {
                     deleteKart={deleteKart}
                   />
                 </div>
-
-                <div id="tablepagination" className="dataTables_wrapper"></div>
               </div>
             </div>
           </div>

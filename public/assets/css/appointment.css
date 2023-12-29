@@ -68,10 +68,7 @@
 }
 
 .events li:nth-child(even) {
-  /* background-color: #706233; */
-  /* background-color: #164858; */
   background-color: #cf5615;
-  /* background-color: #1b4242; */
   color: white;
 }
 

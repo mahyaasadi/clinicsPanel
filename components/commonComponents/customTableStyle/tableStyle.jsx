@@ -8,8 +8,6 @@ const tableCustomStyles = {
   },
   headCells: {
     style: {
-      // paddingLeft: "8px",
-      // paddingRight: "8px",
       display: "flex",
       justifyContent: "center",
     },
