@@ -110,6 +110,20 @@ const PatientsListTable = ({ data, openAppointmentModal }) => {
               style={{ width: "15px", height: "16px" }}
             />
           </Link>
+          <Link
+            className="btn btn-sm btn-outline-primary btn-border-l receptionBtn d-flex align-items-center float-end m-1"
+            data-pr-position="top"
+            href={{
+              pathname: "/reception",
+              query: { PNID: row.NationalID },
+            }}
+          >
+            <Tooltip target=".receptionBtn">پذیرش</Tooltip>
+            <FeatherIcon
+              icon="clipboard"
+              style={{ width: "15px", height: "16px" }}
+            />
+          </Link>
           <button
             className="btn btn-sm btn-outline-primary btn-border-l appointBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"

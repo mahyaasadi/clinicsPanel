@@ -20,7 +20,8 @@ const DayList = ({
   monthName,
   yearValue,
   formattedCurrentDate,
-  returnToToday
+  returnToToday,
+  loadingState
 }) => {
   let todaysDate = String(jdate.getDate());
   if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
@@ -107,6 +108,7 @@ const DayList = ({
                       openDuplicateModal={openDuplicateModal}
                       deleteAppointment={deleteAppointment}
                       depOpeningHour={depOpeningHour}
+                      loadingState={loadingState}
                     />
                   </td>
                 );

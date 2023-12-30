@@ -4561,9 +4561,15 @@ html.menu-opened body {
   color: #b45309 !important;
 }
 
+.duplicateModalBody {
+  height: 52vh;
+  overflow-y: auto;
+}
+
 .defaultDateCheckboxTile {
   width: 5rem !important;
   min-height: 2.5rem !important;
+  border-radius: 6px !important;
 }
 
 .defaultDateCheckboxWrapper {
@@ -9823,6 +9829,23 @@ ul li .active {
 
   .additionalInfoLine {
     top: 21.5rem !important;
+  }
+
+  .defaultDateCheckbox {
+    width: 100%;
+  }
+
+  .defaultDateOptions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .defaultDateCheckboxWrapper {
+    width: 100%;
+  }
+
+  .defaultDateCheckboxTile {
+    width: 100% !important;
   }
 }
 

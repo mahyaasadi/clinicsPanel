@@ -256,10 +256,12 @@ const Appointment = ({ ClinicUser }) => {
       ModalityID: ActiveModalityID,
     };
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setAppointmentEvents(response.data);
         setLoadingState(false);
       })
@@ -631,15 +633,15 @@ const Appointment = ({ ClinicUser }) => {
     }, 100);
   };
 
-  useEffect(() => {
-    const storedWeek = router.query.week * 5;
+  // useEffect(() => {
+  //   const storedWeek = router.query.week * 5;
 
-    if (storedWeek && storedWeek != 0)
-      setCurrentDate(
-        new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
-      );
-    else setCurrentDate(new Date());
-  }, [router.isReady]);
+  //   if (storedWeek && storedWeek != 0)
+  //     setCurrentDate(
+  //       new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
+  //     );
+  //   else setCurrentDate(new Date());
+  // }, [router.isReady]);
 
   useEffect(() => {
     if (ActiveModalityID !== null) {
@@ -652,6 +654,21 @@ const Appointment = ({ ClinicUser }) => {
     let set = 96 - 4 * depOpeningHour;
     root.style.setProperty("--numHours", set);
   }, [ActiveModalityID, currentDate]);
+
+  useEffect(() => {
+    const storedWeek = router.query.week * 5;
+
+    if (storedWeek && storedWeek != 0) {
+      setCurrentDate(
+        new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
+      );
+    } else {
+      setCurrentDate(
+        new Date()
+      );
+    }
+    getClinicAppointments()
+  }, [router.query])
 
   return (
     <>
@@ -730,6 +747,7 @@ const Appointment = ({ ClinicUser }) => {
                           yearValue={yearValue}
                           formattedCurrentDate={formattedCurrentDate}
                           returnToToday={returnToToday}
+                          loadingState={loadingState}
                         />
                       </div>
                     </div>

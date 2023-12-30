@@ -1,4 +1,3 @@
-import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import { useRouter } from "next/router";
 import { axiosClient } from "class/axiosConfig";
@@ -21,6 +20,13 @@ const PendingPatients = ({
     });
   };
 
+  const handleReceptionBtn = (PNID) => {
+    router.push({
+      pathname: "/reception",
+      query: { PNID: PNID },
+    });
+  }
+
   const btnItems = [
     {
       label: "تکمیل پرونده",
@@ -30,7 +36,7 @@ const PendingPatients = ({
     {
       label: "ثبت پذیرش",
       icon: <FeatherIcon icon="clipboard" size="20" />,
-      // command: () => setShowInfoModal(true),
+      command: () => handleReceptionBtn(item.NationalID),
     },
     {
       label: "نوبت دهی",

@@ -1,4 +1,5 @@
 import Event from "./event";
+import { Skeleton } from "primereact/skeleton";
 
 const Day = ({
   date,
@@ -9,6 +10,7 @@ const Day = ({
   deleteAppointment,
   depOpeningHour,
   formattedCurrentDate,
+  loadingState
 }) => {
   const formattedDefDate = date.replace(/(\d+)\/(\d+)\/(\d+)/, "$1/$2/$3");
 
@@ -16,26 +18,32 @@ const Day = ({
     if (formattedDefDate < formattedCurrentDate) {
       return; // Do nothing if the condition is met
     }
-
     openNewAppointmentModal(date);
   };
 
   return (
     <div className="day" onDoubleClick={handleColumnDoubleClick}>
       <ul className="events shadow-sm p-0">
-        {appointment?.map((event) => {
-          return (
-            <Event
-              key={event._id}
-              data={event}
-              depOpeningHour={depOpeningHour}
-              openEditAppointmentModal={openEditAppointmentModal}
-              openDuplicateModal={openDuplicateModal}
-              deleteAppointment={deleteAppointment}
-              onDoubleClick={() => openEditAppointmentModal(event)}
-            />
-          );
-        })}
+        {loadingState ? (
+          <Skeleton>
+            <div className=""></div>
+          </Skeleton>
+        ) : (
+          appointment?.map((event) => {
+            return (
+              <Event
+                key={event._id}
+                data={event}
+                depOpeningHour={depOpeningHour}
+                openEditAppointmentModal={openEditAppointmentModal}
+                openDuplicateModal={openDuplicateModal}
+                deleteAppointment={deleteAppointment}
+                onDoubleClick={() => openEditAppointmentModal(event)}
+              />
+            );
+
+          })
+        )}
       </ul>
     </div>
   );

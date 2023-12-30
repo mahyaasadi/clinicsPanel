@@ -46,10 +46,10 @@ const AppointmentModal = ({
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   const selectedModalityValue = data?.Modality;
   const selectedModalityType = modalityOptions.find(
@@ -117,8 +117,8 @@ const AppointmentModal = ({
           </form>
 
           <form onSubmit={onSubmit}>
-            <div className="font-13 mt-3" id="appointmentPatientInfoCard">
-              <div className="margin-right-1 font-12 mt-3">
+            <div className="font-13" id="appointmentPatientInfoCard">
+              <div className="margin-right-1 font-12">
                 <div className="d-flex gap-2 mb-3">
                   <FeatherIcon icon="user" className="mb-0" />
                   {mode === "edit" ? data?.Patient?.Name : patientInfo?.Name}

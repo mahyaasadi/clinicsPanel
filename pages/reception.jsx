@@ -680,11 +680,20 @@ const Reception = ({ ClinicUser }) => {
     ReceptionID = router.query.receptionID;
     if (ReceptionObjectID) getOneReception();
 
-    // reset
-    ActivePatientID = null;
-    setActivePatientNID(null);
-    $("#patientNID").val("");
-  }, [router.query.id]);
+    if (router.query.PNID) {
+      setActivePatientNID(router.query.PNID)
+      setTimeout(() => {
+        $("#patientNID").val(router.query.PNID);
+        $("#frmPatientInfoBtnSubmit").click();
+      }, 300);
+    } else {
+      // reset
+      ActivePatientID = null;
+      setActivePatientNID(null);
+      $("#patientNID").val("");
+    }
+
+  }, [router.isReady]);
 
   useEffect(() => {
     $("#patientNID").val(ActivePatientNID);
