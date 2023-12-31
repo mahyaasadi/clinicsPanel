@@ -655,8 +655,6 @@ const Appointment = ({ ClinicUser }) => {
         new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
       );
     else setCurrentDate(new Date());
-
-    // getClinicAppointments();
   }, [router.query]);
 
   return (

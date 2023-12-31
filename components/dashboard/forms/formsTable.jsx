@@ -7,8 +7,9 @@ import "react-data-table-component-extensions/dist/index.css";
 import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 
-const FormsTable = ({ data, deleteKart }) => {
+const FormsTable = ({ data, deleteForm }) => {
   console.log({ data });
+
   const columns = [
     {
       name: "نام فرم",
@@ -24,7 +25,7 @@ const FormsTable = ({ data, deleteKart }) => {
     },
     {
       name: "تاریخ ثبت",
-      selector: (row) => row.RegisterDate + " " + row.RegisterTime,
+      selector: (row) => row.RegisterDate,
       sortable: true,
       width: "auto",
     },
@@ -36,7 +37,7 @@ const FormsTable = ({ data, deleteKart }) => {
         <div className="actions d-flex gap-1">
           <button
             className="btn btn-sm btn-outline-danger removeBtn"
-            onClick={() => deleteKart(row._id)}
+            onClick={() => deleteForm(row._id)}
             data-pr-position="top"
           >
             <Tooltip target=".removeBtn">حذف</Tooltip>

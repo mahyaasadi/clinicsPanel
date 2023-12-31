@@ -9,6 +9,7 @@ import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import "/public/assets/css/formBuilder.css";
+import ModalitiesNavLink from "@/components/dashboard/forms/modalitiesNavLink";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -28,16 +29,14 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   UserID,
-  ActiveFormID = null;
+  ActiveFormID, ModalityID = null;
 
-let modalityOptions = [];
-const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
+const FormBuilder = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   UserID = ClinicUser._id;
 
   var fb = null;
-  let ModalityID,
-    formData = null;
+  let formData = null;
 
   const router = useRouter();
 
@@ -48,7 +47,7 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
   const { data: clinicDepartments, isLoading } =
     useGetAllClinicDepartmentsQuery(ClinicID);
 
-  modalityOptions = [];
+  let modalityOptions = [];
   for (let i = 0; i < clinicDepartments?.length; i++) {
     const item = clinicDepartments[i];
     let obj = {
@@ -58,10 +57,12 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
     modalityOptions.push(obj);
   }
 
-  const FUSelectDepartment = (departmentValue) => {
-    setSelectedDepartment(departmentValue);
-    $("#ModaltyIDHide").val(departmentValue);
-  };
+  // console.log({ modalityOptions });
+
+  // const FUSelectDepartment = (departmentValue) => {
+  //   setSelectedDepartment(departmentValue);
+  //   $("#ModaltyIDHide").val(departmentValue);
+  // };
 
   const getOneFormData = () => {
     setFrmIsLoading(true);
@@ -73,10 +74,12 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
         console.log(response.data);
         setEditFormData(response.data);
         formData = response.data.formData[0];
+
         setTimeout(() => {
           document.getElementById("setData").click();
-          setModalityDefValue(response.data.Modality);
+          // setModalityDefValue(response.data.Modality);
         }, 500);
+
         setFrmIsLoading(false);
       })
       .catch((err) => {
@@ -85,13 +88,20 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
       });
   };
 
-  const [selectedModalityType, setSelectedModalityType] = useState({});
-  const setModalityDefValue = (value) => {
-    console.log({ modalityOptions });
-    const defModalityType = modalityOptions?.find((x) => x.value == value);
-    setSelectedModalityType(defModalityType);
-    console.log({ defModalityType });
-  };
+  // const [selectedModalityType, setSelectedModalityType] = useState(null);
+  // const setModalityDefValue = (value) => {
+  //   // console.log({ modalityOptions });
+  //   // console.log({ value });
+  //   const defModalityType = modalityOptions?.find((x) => x.value == value);
+  //   setSelectedModalityType(defModalityType);
+  //   console.log({ defModalityType });
+  // };
+
+  const handleDepClick = (value) => {
+    // console.log({ value });
+    // setSelectedModalityType(value)
+    ModalityID = value
+  }
 
   useEffect(() => {
     ActiveFormID = router.query.id;
@@ -105,9 +115,29 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="row">
-            <div className="col-md-4">
-              <label className="lblDrugIns font-12">
+          <div className="d-flex flex-col gap-2 marginb-3">
+            <div className="row align-items-center">
+              <div className="col-md-3 d-flex">
+                <br />
+                <input
+                  type="hidden"
+                  className="form-control"
+                  id="ModaltyIDHide"
+                />
+                <label className="lblAbs font-12">
+                  نام فرم<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="FormName"
+                  defaultValue={editFormData ? editFormData.Name : ""}
+                  required
+                />
+              </div>
+
+              <div className="col-md-9">
+                {/* <label className="lblDrugIns font-12">
                 انتخاب بخش <span className="text-danger">*</span>
               </label>
 
@@ -118,36 +148,30 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
                 name="selectedDepartment"
                 className="text-center font-12"
                 onChange={(value) => FUSelectDepartment(value?.value)}
-                defaultValue={selectedModalityType}
+                // defaultValue={selectedModalityType}
                 placeholder={"انتخاب کنید"}
                 isClearable
                 required
-              />
+              /> */}
+
+                <ul className="nav nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-tabs-scroll font-14 flex-nowrap paddingb-0">
+                  {modalityOptions?.map((modality, index) => {
+                    return (
+                      <ModalitiesNavLink
+                        key={index}
+                        data={modality}
+                        activeClass={modality.value === editFormData.Modality ? "active" : ""}
+                        handleDepClick={handleDepClick}
+                      />
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
 
-            <div className="col-md-5">
-              <br />
-              <input
-                type="hidden"
-                className="form-control"
-                id="ModaltyIDHide"
-              />
-              <label className="lblAbs font-12">
-                نام فرم<span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="FormName"
-                defaultValue={editFormData ? editFormData.Name : ""}
-                required
-              />
-            </div>
-
-            <div className="col-md-3 mb-4">
-              <br />
-              <button id="getJSON" className="btn btn-primary">
-                ذخیره
+            <div className="d-flex justify-end">
+              <button id="getJSON" className="btn btn-primary font-14">
+                {ActiveFormID ? "ذخیره تغییرات" : "ذخیره اطلاعات"}
               </button>
 
               <button
@@ -163,6 +187,8 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
               ></button>
             </div>
           </div>
+
+
           <div id="fb-editor"></div>
         </div>
       </div>
@@ -192,7 +218,7 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
                     ClinicID,
                     formData,
                     Name: $("#FormName").val(),
-                    ModalityID: $("#ModaltyIDHide").val(),
+                    ModalityID: ModalityID,
                     UserID,
                   };
 
@@ -200,7 +226,7 @@ const FormBuilder = ({ ClinicUser, selectfieldColourStyles }) => {
                     ? `https://api.irannobat.ir/Form/Edit/${ActiveFormID}`
                     : "https://api.irannobat.ir/Form/add";
 
-                  //   console.log({ url, data });
+                  console.log({ url, data });
                   $.ajax(url, {
                     method: ActiveFormID ? "PUT" : "POST",
                     dataType: "json",

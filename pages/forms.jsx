@@ -29,14 +29,9 @@ const Forms = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const [isLoading, setIsLoading] = useState(true);
-  const [FormsData, setFormsData] = useState([]);
-  const [modalMode, setModalMode] = useState("add");
-  const [showModal, setShowModal] = useState(false);
-  const [editFormsData, setEditFormsData] = useState([]);
+  const [formsData, setFormsData] = useState([]);
 
-  const handleCloseModal = () => setShowModal(false);
-
-  // get all kartsData
+  // get all formsData
   const getAllFormsData = () => {
     setIsLoading(true);
     let url = `Form/getAll/${ClinicID}`;
@@ -53,16 +48,16 @@ const Forms = ({ ClinicUser }) => {
       });
   };
 
-  // delate kart
-  const deleteKart = async (id) => {
+  // delete form
+  const deleteForm = async (id) => {
     let result = await QuestionAlert(
-      "حذف پایانه!",
-      "آیا از حذف پایانه مطمئن هستید؟"
+      "حذف فرم!",
+      "آیا از حذف فرم اطمینان دارید؟"
     );
 
     if (result) {
       setIsLoading(true);
-      let url = `CashDeskKart/delete/${id}`;
+      // let url = `CashDeskKart/delete/${id}`;
       let data = {
         CenterID: ClinicID,
       };
@@ -70,7 +65,7 @@ const Forms = ({ ClinicUser }) => {
       await axiosClient
         .delete(url, { data })
         .then((response) => {
-          setFormsData(FormsData.filter((a) => a._id !== id));
+          setFormsData(formsData.filter((a) => a._id !== id));
           setIsLoading(false);
         })
         .catch(function (error) {
@@ -129,9 +124,9 @@ const Forms = ({ ClinicUser }) => {
                       </div>
                     </div>
                   </div>
-                  <FormsTable data={FormsData} deleteKart={deleteKart} />
+
+                  <FormsTable data={formsData} deleteForm={deleteForm} />
                 </div>
-                <div id="tablepagination" className="dataTables_wrapper"></div>
               </div>
             </div>
           </div>
