@@ -17,6 +17,7 @@
     "date-fns-jalali": "^2.30.0-0",
     "date-fns-tz": "^2.0.0",
     "feather-icons-react": "^0.6.2",
+    "formBuilder": "^3.17.3",
     "jalali-date": "^1.1.4",
     "jalali-moment": "^3.3.11",
     "jquery": "^3.7.1",

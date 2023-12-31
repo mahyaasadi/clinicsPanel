@@ -147,6 +147,10 @@ const Reception = ({ ClinicUser }) => {
 
     ActivePatientID = null;
     setActivePatientNID(null);
+
+    if (router.query.PNID) {
+      router.push("/reception");
+    }
   };
 
   const handleShowPendingPatients = () => {
@@ -371,8 +375,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -575,10 +579,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -681,7 +685,7 @@ const Reception = ({ ClinicUser }) => {
     if (ReceptionObjectID) getOneReception();
 
     if (router.query.PNID) {
-      setActivePatientNID(router.query.PNID)
+      setActivePatientNID(router.query.PNID);
       setTimeout(() => {
         $("#patientNID").val(router.query.PNID);
         $("#frmPatientInfoBtnSubmit").click();
@@ -692,7 +696,6 @@ const Reception = ({ ClinicUser }) => {
       setActivePatientNID(null);
       $("#patientNID").val("");
     }
-
   }, [router.isReady]);
 
   useEffect(() => {

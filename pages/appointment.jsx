@@ -236,39 +236,41 @@ const Appointment = ({ ClinicUser }) => {
   const getClinicAppointments = () => {
     setLoadingState(true);
 
-    let url = "Appointment/getByDateClinic";
-    let data = {
-      ClinicID,
-      DateFrom: convertToFixedNumber(
-        today?.toLocaleDateString("fa-IR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        })
-      ),
-      DateTo: convertToFixedNumber(
-        plus4?.toLocaleDateString("fa-IR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        })
-      ),
-      ModalityID: ActiveModalityID,
-    };
+    if (currentDate) {
+      let url = "Appointment/getByDateClinic";
+      let data = {
+        ClinicID,
+        DateFrom: convertToFixedNumber(
+          today.toLocaleDateString("fa-IR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        ),
+        DateTo: convertToFixedNumber(
+          plus4.toLocaleDateString("fa-IR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          })
+        ),
+        ModalityID: ActiveModalityID,
+      };
 
-    console.log({ data });
+      console.log({ data });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-        setAppointmentEvents(response.data);
-        setLoadingState(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoadingState(false);
-      });
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          console.log(response.data);
+          setAppointmentEvents(response.data);
+          setLoadingState(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoadingState(false);
+        });
+    }
   };
 
   // Modality Header
@@ -633,16 +635,6 @@ const Appointment = ({ ClinicUser }) => {
     }, 100);
   };
 
-  // useEffect(() => {
-  //   const storedWeek = router.query.week * 5;
-
-  //   if (storedWeek && storedWeek != 0)
-  //     setCurrentDate(
-  //       new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
-  //     );
-  //   else setCurrentDate(new Date());
-  // }, [router.isReady]);
-
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
@@ -658,17 +650,14 @@ const Appointment = ({ ClinicUser }) => {
   useEffect(() => {
     const storedWeek = router.query.week * 5;
 
-    if (storedWeek && storedWeek != 0) {
+    if (storedWeek && storedWeek != 0)
       setCurrentDate(
         new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
       );
-    } else {
-      setCurrentDate(
-        new Date()
-      );
-    }
-    getClinicAppointments()
-  }, [router.query])
+    else setCurrentDate(new Date());
+
+    // getClinicAppointments();
+  }, [router.query]);
 
   return (
     <>
