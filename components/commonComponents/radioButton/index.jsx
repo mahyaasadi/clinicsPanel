@@ -1,4 +1,13 @@
-const RadioButton = ({ name, id, value, onChange, checked, text }) => {
+const RadioButton = ({
+  name,
+  id,
+  value,
+  onChange,
+  checked,
+  text,
+  selectedOption,
+}) => {
+  console.log({ name, id, value, onChange, checked, text });
   return (
     <label htmlFor={id} className="radio-label">
       <input

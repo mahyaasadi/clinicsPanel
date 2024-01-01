@@ -10221,6 +10221,10 @@ ul li .active {
   margin-bottom: 0.5rem;
 }
 
+.formBuilderSkeleton .p-skeleton {
+  height: 42px !important;
+}
+
 .p-skeleton {
   background-color: #f1f5f9 !important;
 }
