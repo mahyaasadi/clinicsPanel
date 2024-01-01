@@ -243,7 +243,7 @@ const FormBuilder = ({ ClinicUser }) => {
                       })
                       .catch((err) => {
                         console.log("Caught an error:" + err.statusText);
-                        ErorrAlert(
+                        ErrorAlert(
                           "خطا",
                           "ذخیره اطلاعات فرم با خطا مواجه گردید!"
                         );

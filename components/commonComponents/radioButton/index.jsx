@@ -5,7 +5,6 @@ const RadioButton = ({
   onChange,
   checked,
   text,
-  selectedOption,
 }) => {
   console.log({ name, id, value, onChange, checked, text });
   return (

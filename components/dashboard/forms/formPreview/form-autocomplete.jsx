@@ -1,65 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 const FormAutoComplete = ({ data }) => {
-  //   console.log({ data });
-  const [inputValue, setInputValue] = useState("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  const [activeSuggestion, setActiveSuggestion] = useState(0);
+  console.log({ data });
 
-  //   // event handlers
-  //   const onChangeHandler = (e) => {
-  //     const userInput = e.target.value;
-  //     setInputValue(userInput);
-  //     const filtered = suggestions.filter(
-  //       (suggestion) =>
-  //         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-  //     );
-  //     setFilteredSuggestions(filtered);
-  //   };
+  const [selectedOption, setSelectedOption] = useState(null);
 
-  //   const onClickHandler = (e) => {
-  //     setInputValue(e.target.innerText);
-  //     setFilteredSuggestions([]);
-  //   };
+  let options = []
+  for (let i = 0; i < data?.values.length; i++) {
+    const element = data?.values[i];
+    let obj = {
+      id: element.value,
+      name: element.label,
+      selected: element.selected
+    }
+    options.push(obj)
+  }
 
-  //   const onKeyDownHandler = (e) => {
-  //     if (e.keyCode === 13) {
-  //       setInputValue(filteredSuggestions[activeSuggestion]);
-  //       setFilteredSuggestions([]);
-  //     } else if (e.keyCode === 38) {
-  //       e.preventDefault();
-  //       setActiveSuggestion(
-  //         (activeSuggestion + filteredSuggestions.length - 1) %
-  //           filteredSuggestions.length
-  //       );
-  //     } else if (e.keyCode === 40) {
-  //       e.preventDefault();
-  //       setActiveSuggestion((activeSuggestion + 1) % filteredSuggestions.length);
-  //     }
-  //   };
+  useEffect(() => {
+    const defaultSelectedOption = data?.values.find((option) => option.selected);
+    if (defaultSelectedOption) {
+      setSelectedOption({ id: defaultSelectedOption.value, name: defaultSelectedOption.label, selected: defaultSelectedOption.selected });
+    }
+  }, [data.values]);
 
-  // render method
+  const handleSelect = (selected) => {
+    setSelectedOption(selected);
+  };
+
   return (
-    <div className="autocomplete">
-      <label>{data.label}</label>
-      <input
-        type="text"
-        value={inputValue}
-        className={data.className}
-        // onChange={onChangeHandler}
-        // onKeyDown={onKeyDownHandler}
+    <div className="container mt-5">
+      <label htmlFor="autocompleteInput" className="form-label">React Autocomplete:</label>
+      <Typeahead
+        id="autocompleteInput"
+        labelKey="name"
+        options={options}
+        placeholder="Start typing..."
+        onChange={selected =>
+          handleSelect(selected[0])
+        }
       />
-      {/* <ul>
-        {filteredSuggestions.map((suggestion, index) => (
-          <li
-            key={suggestion}
-            className={index === activeSuggestion ? "active" : ""}
-            onClick={onClickHandler}
-          >
-            {suggestion}
-          </li>
-        ))}
-      </ul> */}
+      <p>Selected Option: {selectedOption?.name ? selectedOption?.name : selectedOption?.label ? selectedOption?.label : 'None'}</p>
     </div>
   );
 };
