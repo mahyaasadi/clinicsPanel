@@ -46,7 +46,7 @@ const FormBuilder = ({ ClinicUser }) => {
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [editFormData, setEditFormData] = useState([]);
-  const [frmIsLoading, setFrmIsLoading] = useState(false);
+  const [frmIsLoading, setFrmIsLoading] = useState(true);
 
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const openPreviewModal = () => setShowPreviewModal(true);
@@ -77,7 +77,7 @@ const FormBuilder = ({ ClinicUser }) => {
         formData = response.data.formData[0];
 
         setTimeout(() => {
-          document.getElementById("setData").click();
+          document?.getElementById("setData")?.click();
         }, 500);
 
         setFrmIsLoading(false);
@@ -90,6 +90,12 @@ const FormBuilder = ({ ClinicUser }) => {
 
   const handleDepClick = (value) => (ModalityID = value);
 
+  // useEffect(() => {
+  //   {
+  //     frmIsLoading && <Loading />;
+  //   }
+  // }, [frmIsLoading]);
+
   useEffect(() => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
@@ -101,6 +107,9 @@ const FormBuilder = ({ ClinicUser }) => {
         <title>فرم ساز</title>
       </Head>
       <div className="page-wrapper">
+        {/* {frmIsLoading ? (
+          <Loading />
+        ) : ( */}
         <div className="content container-fluid">
           <div className="d-flex flex-col gap-2 marginb-3">
             <div className="row align-items-center">
@@ -183,6 +192,7 @@ const FormBuilder = ({ ClinicUser }) => {
             <div id="fb-editor"></div>
           </div>
         </div>
+        {/* )} */}
       </div>
 
       <Script
@@ -194,6 +204,7 @@ const FormBuilder = ({ ClinicUser }) => {
         src="../assets/js/form-builder.min.js"
         strategy="afterInteractive"
         onReady={() => {
+          // setFrmIsLoading(false);
           jQuery(function ($) {
             fb = $(document?.getElementById("fb-editor"))?.formBuilder({
               disabledActionButtons: ["data", "save", "clear"],

@@ -5,8 +5,8 @@ const RadioButton = ({
   onChange,
   checked,
   text,
+  requiredOption,
 }) => {
-  console.log({ name, id, value, onChange, checked, text });
   return (
     <label htmlFor={id} className="radio-label">
       <input
@@ -17,6 +17,7 @@ const RadioButton = ({
         value={value}
         onChange={onChange}
         checked={checked}
+        required={requiredOption ? requiredOption : false}
       />
       <span className="custom-radio" />
       {text}

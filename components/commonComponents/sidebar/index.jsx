@@ -16,16 +16,16 @@ const Sidebar = () => {
     const subMenus = $(".subdrop + ul");
 
     // remove submenus if mini-sidebar className exists
-    if (body.hasClass("mini-sidebar")) {
-      // body.removeClass("mini-sidebar");
-      // subMenus.slideDown();
-      // subMenus.removeClass("hiddenSidebar");
-      // subMenus.hide();
-      $("#hiddenSidebar").hide();
-      console.log($("#hiddenSidebar"));
-      // subMenus.hide();
-      console.log("object");
-    }
+    // if (body.hasClass("mini-sidebar")) {
+    //   // body.removeClass("mini-sidebar");
+    //   // subMenus.slideDown();
+    //   // subMenus.removeClass("hiddenSidebar");
+    //   // subMenus.hide();
+    //   $("#hiddenSidebar").hide();
+    //   console.log($("#hiddenSidebar"));
+    //   // subMenus.hide();
+    //   console.log("object");
+    // }
 
     const receptionSubRoutes = [
       "/reception",

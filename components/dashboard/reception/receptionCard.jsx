@@ -43,7 +43,7 @@ const ReceptionCard = ({
 
   return (
     <>
-      <div className="card presCard">
+      <div className="card shadow-sm presCard">
         <div className="card-body">
           {/* departments header */}
           <div className="card-body">

@@ -33,7 +33,7 @@ const AddItem = ({
 
   return (
     <>
-      <div dir="rtl" key={srv._id} className="card mb-1">
+      <div dir="rtl" key={srv._id} className="card shadow-sm mb-1">
         <div className="card-body font-13 receptionInfoText">
           <div className="d-flex gap-1 align-items-center justify-between">
             <div className="d-flex gap-2">

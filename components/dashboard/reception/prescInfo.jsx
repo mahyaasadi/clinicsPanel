@@ -49,7 +49,7 @@ const PrescInfo = ({
 
   return (
     <>
-      <div className="card mb-0">
+      <div className="card shadow-sm mb-0">
         <div className="card-body">
           <div className="d-flex gap-3 align-items-center justify-between prescDetails">
             <div>

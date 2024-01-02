@@ -20,9 +20,15 @@ const Header = ({ ClinicUser }) => {
     settask1(!task1);
   };
 
-  const handlesidebar = () => document.body.classList.toggle("mini-sidebar");
-  const handlesidebarmobilemenu = () =>
+  const handlesidebar = () => {
+    document.body.classList.toggle("mini-sidebar");
+    $(".hiddenSidebar").removeClass("d-block");
+    $(".hiddenSidebar").attr("style", "display: none");
+  };
+
+  const handlesidebarmobilemenu = () => {
     document.body.classList.toggle("slide-nav");
+  };
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;

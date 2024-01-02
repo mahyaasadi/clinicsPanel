@@ -149,8 +149,8 @@ const ReceptionsList = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card row p-4">
-                  <div>
+                <div className="row p-4">
+                  <div className="">
                     <FilterReceptionItems
                       ClinicID={ClinicID}
                       ApplyFilterOnRecItems={ApplyFilterOnRecItems}

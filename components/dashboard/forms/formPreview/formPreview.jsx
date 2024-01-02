@@ -8,10 +8,10 @@ const FormPreview = ({ data, show, onHide }) => {
 
   arrayOfObjects?.map((x, index) => {
     const MyComponent = dynamic(() =>
-      import("components/dashboard/forms/formPreview/form-" + x.type)
+      import("components/dashboard/forms/formPreview/form-" + x?.type)
     );
 
-    componentsArr.push(<MyComponent data={x} />);
+    componentsArr.push(<MyComponent data={x} index={index} />);
   });
 
   return (
@@ -24,7 +24,9 @@ const FormPreview = ({ data, show, onHide }) => {
         </Modal.Header>
 
         <Modal.Body>
-          {componentsArr.map((component, index) => component)}
+          <div className="row">
+            {componentsArr.map((component, index) => component)}
+          </div>
         </Modal.Body>
       </Modal>
     </>

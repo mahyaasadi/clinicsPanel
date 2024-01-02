@@ -2,6 +2,7 @@ import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
 import DtPicker, { convertToFa } from "react-calendar-datetime-picker";
 import "react-calendar-datetime-picker/dist/index.css";
+import { Tooltip } from "primereact/tooltip";
 
 const jdate = new JDate();
 const currentYear = jdate.getFullYear();
@@ -10,7 +11,15 @@ const currentDay = jdate.getDate();
 
 let initialDate = null;
 
-const SingleDatePicker = ({ setDate, label, defaultDate, birthDateMode }) => {
+const SingleDatePicker = ({
+  setDate,
+  label,
+  defaultDate,
+  birthDateMode,
+  requiredClass,
+  placeholderText,
+  description,
+}) => {
   if (defaultDate) {
     defaultDate = defaultDate.replaceAll(/\//g, "");
     initialDate = {
@@ -48,7 +57,18 @@ const SingleDatePicker = ({ setDate, label, defaultDate, birthDateMode }) => {
   return (
     <>
       <div className="datePickerContainer d-flex align-items-center">
-        <label className="lblAbs datePickerLbl font-12">{label}</label>
+        <label className="lblAbs datePickerLbl font-12">
+          {label} {requiredClass && <span className="text-danger">*</span>}{" "}
+          {description && (
+            <span
+              className="newAppointBtn autocompleteTooltip"
+              data-pr-position="top"
+            >
+              <span className="autocompleteTooltipIcon">?</span>
+              <Tooltip target=".newAppointBtn">{description}</Tooltip>
+            </span>
+          )}
+        </label>
         <DtPicker
           onChange={handleDateChange}
           type="single"
@@ -56,12 +76,13 @@ const SingleDatePicker = ({ setDate, label, defaultDate, birthDateMode }) => {
           inputClass="datePickerInput rounded font-12"
           headerClass="datePickerHeader"
           calenderModalClass="calenderModalContainer"
-          placeholder="&nbsp;"
+          placeholder={placeholderText ? placeholderText : "&nbsp;"}
           daysClass="fullDay"
           inputName="date"
           name="selectedDate"
           initValue={initialDate}
           minDate={minimumDate}
+          required={requiredClass ? requiredClass : false}
         />
 
         <i className="calendarIcon text-secondary">

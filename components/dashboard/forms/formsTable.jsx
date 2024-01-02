@@ -36,7 +36,7 @@ const FormsTable = ({ data, deleteForm }) => {
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
-            className="btn btn-sm btn-outline-danger removeBtn"
+            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center"
             onClick={() => deleteForm(row._id)}
             data-pr-position="top"
           >
@@ -48,7 +48,7 @@ const FormsTable = ({ data, deleteForm }) => {
           </button>
           <Link
             href={"/formBuilder?id=" + row._id}
-            className="btn btn-sm btn-outline-primary btn-border-left editBtn"
+            className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
@@ -78,6 +78,7 @@ const FormsTable = ({ data, deleteForm }) => {
             defaultSortAsc={false}
             pagination
             highlightOnHover
+            paginationPerPage="30"
             customStyles={tableCustomStyles}
             noDataComponent={
               <div style={{ padding: "24px", fontSize: "13px" }}>

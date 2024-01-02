@@ -1,6 +1,4 @@
 const FormParagraph = ({ data }) => {
-  // console.log({ data });
-
   return (
     <>
       {data.subtype === "p" ? (
@@ -10,7 +8,9 @@ const FormParagraph = ({ data }) => {
       ) : data.subtype === "address" ? (
         <address className={data.className}>{data.label}</address>
       ) : data.subtype === "canvas" ? (
-        <canvas>{data.label}</canvas>
+        <canvas className={data.className}>{data.label}</canvas>
+      ) : data.subtype === "output" ? (
+        <output className={data.className}>{data.label}</output>
       ) : (
         ""
       )}

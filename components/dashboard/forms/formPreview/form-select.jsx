@@ -1,4 +1,5 @@
 const FormSelect = ({ data }) => {
+  console.log({ data });
   return (
     <>
       <div className="">
