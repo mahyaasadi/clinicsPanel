@@ -11,7 +11,7 @@ import SelectField from "components/commonComponents/selectfield";
 import Loading from "components/commonComponents/loading/loading";
 import ModalitiesNavLink from "components/dashboard/forms/modalitiesNavLink";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import FormPreview from "components/dashboard/forms/formPreview/formPreview";
+import FormPreview from "components/dashboard/forms/formPreview/formPreviewModal";
 import "/public/assets/css/formBuilder.css";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -33,16 +33,15 @@ export const getServerSideProps = async ({ req, res }) => {
 let ClinicID,
   UserID,
   ActiveFormID,
-  ModalityID = null;
+  ModalityID,
+  formData = null;
 
-let formData = null;
 const FormBuilder = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   UserID = ClinicUser._id;
 
-  var fb = null;
-
   const router = useRouter();
+  var fb = null;
 
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [editFormData, setEditFormData] = useState([]);
@@ -90,12 +89,6 @@ const FormBuilder = ({ ClinicUser }) => {
 
   const handleDepClick = (value) => (ModalityID = value);
 
-  // useEffect(() => {
-  //   {
-  //     frmIsLoading && <Loading />;
-  //   }
-  // }, [frmIsLoading]);
-
   useEffect(() => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
@@ -107,9 +100,6 @@ const FormBuilder = ({ ClinicUser }) => {
         <title>فرم ساز</title>
       </Head>
       <div className="page-wrapper">
-        {/* {frmIsLoading ? (
-          <Loading />
-        ) : ( */}
         <div className="content container-fluid">
           <div className="d-flex flex-col gap-2 marginb-3">
             <div className="row align-items-center">
@@ -192,7 +182,6 @@ const FormBuilder = ({ ClinicUser }) => {
             <div id="fb-editor"></div>
           </div>
         </div>
-        {/* )} */}
       </div>
 
       <Script
@@ -200,6 +189,7 @@ const FormBuilder = ({ ClinicUser }) => {
         strategy="afterInteractive"
       />
       <Script src="../assets/js/jquery-ui.min.js" strategy="afterInteractive" />
+
       <Script
         src="../assets/js/form-builder.min.js"
         strategy="afterInteractive"
@@ -231,7 +221,7 @@ const FormBuilder = ({ ClinicUser }) => {
                     ? `https://api.irannobat.ir/Form/Edit/${ActiveFormID}`
                     : "https://api.irannobat.ir/Form/add";
 
-                  console.log({ url, data });
+                  console.log({ data });
 
                   if ($("#FormName").val() === "") {
                     ErrorAlert("خطا", "فیلد نام فرم را تکمیل نمایید!");

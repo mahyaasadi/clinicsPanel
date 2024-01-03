@@ -2,8 +2,6 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
 const FormFile = ({ data }) => {
-  console.log({ data });
-
   return (
     <>
       <div className="form-group mt-2">

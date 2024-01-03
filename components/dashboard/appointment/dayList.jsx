@@ -29,35 +29,36 @@ const DayList = ({
   return (
     <div className="appointmentTableContainer">
       <div className="d-flex justify-center ">
-        <button
-          className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 nextDaysBtn"
-          onClick={displayNextFiveDays}
-        >
-          <FeatherIcon icon="chevron-right" />
-          <p className="mb-1">بعدی</p>
-        </button>
-        <div className="col currentMonthContainer text-secondary fw-bold text-center">
-          {monthName} {yearValue}
-        </div>
-
         <div className="d-flex gap-1">
+          <button
+            className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 nextDaysBtn"
+            onClick={displayLastFiveDays}
+          >
+            <FeatherIcon icon="chevron-right" />
+            <p className="mb-0">قبلی</p>
+          </button>
           <button
             className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35"
             onClick={returnToToday}
           >
             <p className="mb-0">امروز</p>
           </button>
-          <button
-            className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 prevDaysBtn"
-            onClick={displayLastFiveDays}
-          >
-            <p className="mb-1">قبلی</p>
-            <FeatherIcon
-              icon="chevron-left"
-              style={{ height: "19px !important" }}
-            />
-          </button>
         </div>
+
+        <div className="col currentMonthContainer text-secondary fw-bold text-center">
+          {monthName} {yearValue}
+        </div>
+
+        <button
+          className="btn btn-outline-primary font-14 d-flex align-items-center justify-center gap-1 h-35 prevDaysBtn"
+          onClick={displayNextFiveDays}
+        >
+          <p className="mb-1">بعدی</p>
+          <FeatherIcon
+            icon="chevron-left"
+            style={{ height: "19px !important" }}
+          />
+        </button>
       </div>
 
       <div className="tContainer">

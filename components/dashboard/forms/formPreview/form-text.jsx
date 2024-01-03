@@ -1,7 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormText = ({ data }) => {
-  console.log({ data });
+const FormText = ({ data, defaultValue }) => {
   return (
     <>
       <div className={data.className.replace("form-control", "") + " mt-3"}>
@@ -17,11 +16,12 @@ const FormText = ({ data }) => {
             </span>
           )}
         </label>
+
         <input
           className={data.className}
           name={data.name}
           placeholder={data.placeholder}
-          value={data.value}
+          defaultValue={defaultValue ? defaultValue : data.value}
           required={data.required}
           maxLength={data.maxLength}
           type={data.subtype}

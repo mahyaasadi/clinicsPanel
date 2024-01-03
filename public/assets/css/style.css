@@ -9658,7 +9658,6 @@ ul li .active {
   min-height: 42vh;
   height: 42vh;
   direction: initial;
-  margin-bottom: 2rem;
 }
 
 .pb-0 {
@@ -9806,6 +9805,10 @@ ul li .active {
 
   .defaultDateCheckboxTile {
     width: 100% !important;
+  }
+
+  .prescList {
+    margin-bottom: 2rem;
   }
 }
 

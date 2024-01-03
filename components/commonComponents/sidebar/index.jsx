@@ -15,18 +15,6 @@ const Sidebar = () => {
     const body = $("body");
     const subMenus = $(".subdrop + ul");
 
-    // remove submenus if mini-sidebar className exists
-    // if (body.hasClass("mini-sidebar")) {
-    //   // body.removeClass("mini-sidebar");
-    //   // subMenus.slideDown();
-    //   // subMenus.removeClass("hiddenSidebar");
-    //   // subMenus.hide();
-    //   $("#hiddenSidebar").hide();
-    //   console.log($("#hiddenSidebar"));
-    //   // subMenus.hide();
-    //   console.log("object");
-    // }
-
     const receptionSubRoutes = [
       "/reception",
       "/discounts",
@@ -251,7 +239,7 @@ const Sidebar = () => {
                     }
                   >
                     <Link href="/formBuilder" className="font-12">
-                      فرم ساز
+                      فرم جدید
                     </Link>
                   </li>
                   <li className={router.pathname == "/forms" ? "active" : ""}>

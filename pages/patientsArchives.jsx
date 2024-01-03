@@ -10,6 +10,7 @@ import CheckPatientNIDModal from "components/dashboard/patientsArchives/checkPat
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PendingPatients from "components/dashboard/patientsArchives/pendingPatients";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
+import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -29,10 +30,12 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
+  ClinicUserID,
   ActivePatientNID,
   ActivePatientID = null;
 const PatientsArchives = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  ClinicUserID = ClinicUser._id;
 
   const [isLoading, setIsLoading] = useState(false);
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
@@ -45,6 +48,14 @@ const PatientsArchives = ({ ClinicUser }) => {
 
   const openAddModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  // formOptionsModal
+  const [showFormOptionsModal, setShowFormOptionsModal] = useState(false);
+  const openFrmOptionModal = (patientData) => {
+    ActivePatientID = patientData._id;
+    setShowFormOptionsModal(true);
+  };
+  const handleCloseFrmModal = () => setShowFormOptionsModal(false);
 
   // Get all patients records
   const getAllClinicsPatients = () => {
@@ -216,6 +227,7 @@ const PatientsArchives = ({ ClinicUser }) => {
                 <PatientsListTable
                   data={patientsData}
                   openAppointmentModal={openAppointmentModal}
+                  openFrmOptionModal={openFrmOptionModal}
                 />
               </div>
             </div>
@@ -249,6 +261,14 @@ const PatientsArchives = ({ ClinicUser }) => {
           defaultDepValue={defaultDepValue}
           ActiveModalityData={ActiveModalityData}
           setActiveModalityData={setActiveModalityData}
+        />
+
+        <FormOptionsModal
+          show={showFormOptionsModal}
+          onHide={handleCloseFrmModal}
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActivePatientID={ActivePatientID}
         />
       </div>
     </>
