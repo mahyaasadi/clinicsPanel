@@ -6,8 +6,6 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { Skeleton } from "primereact/skeleton";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import selectfieldColourStyles from "class/selectfieldStyle";
-import SelectField from "components/commonComponents/selectfield";
 import Loading from "components/commonComponents/loading/loading";
 import ModalitiesNavLink from "components/dashboard/forms/modalitiesNavLink";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
@@ -43,7 +41,6 @@ const FormBuilder = ({ ClinicUser }) => {
   const router = useRouter();
   var fb = null;
 
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [editFormData, setEditFormData] = useState([]);
   const [frmIsLoading, setFrmIsLoading] = useState(true);
 

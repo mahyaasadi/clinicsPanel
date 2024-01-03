@@ -5,8 +5,6 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import "react-data-table-component-extensions/dist/index.css";
 
 const PatientsFormsList = ({ data }) => {
-  console.log({ data });
-
   const columns = [
     {
       name: "نام",

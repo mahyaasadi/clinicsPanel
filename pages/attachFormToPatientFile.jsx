@@ -92,6 +92,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
   };
 
   const getOnePatientForm = () => {
+    setIsLoading(true);
     let url = `Form/patientFormGetOne/${ActivePatientFormID}`;
 
     axiosClient
@@ -101,9 +102,12 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
         setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
         setFormValues(response.data.Values);
         setPatientData(response.data.Patient);
+
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 

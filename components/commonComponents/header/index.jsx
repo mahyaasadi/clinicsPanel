@@ -57,7 +57,7 @@ const Header = ({ ClinicUser }) => {
 
   return (
     <>
-      <div className="content-header">
+      <div className="content-header shadow-sm">
         {/* Logo */}
         <div className="header-left">
           <Link href="/dashboard" className="logo">

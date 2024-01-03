@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
 
 const FormPreview = ({ data, show, onHide }) => {

@@ -120,20 +120,20 @@ const PatientFile = ({ ClinicUser }) => {
             <div className="card">
               <div className="card-body p-4">
                 <div className="table-responsive marginb-3 shadow-sm">
-                  <table className="table mt-4 font-13 fw-bold text-secondary table-bordered">
+                  <table className="table mt-4 font-13 fw-bold text-secondary table-bordered table-striped">
                     <tbody>
                       <tr>
-                        <td>نام بیمار</td>
+                        <td style={{ background: '#f0f0f0' }}>نام بیمار</td>
                         <td>نوع بیمه</td>
-                        <td>کد ملی</td>
+                        <td style={{ background: '#f0f0f0' }}>کد ملی</td>
                         <td>سن</td>
-                        <td>جنسیت</td>
+                        <td style={{ background: '#f0f0f0' }}>جنسیت</td>
                       </tr>
                       <tr>
                         <td>{patientData.Name}</td>
-                        <td>{InsuranceType}</td>
+                        <td style={{ background: '#f0f0f0' }}>{InsuranceType}</td>
                         <td>{patientData.NationalID}</td>
-                        <td>{patientData.Age}</td>
+                        <td style={{ background: '#f0f0f0' }}>{patientData.Age}</td>
                         <td>{GenderType}</td>
                       </tr>
                     </tbody>

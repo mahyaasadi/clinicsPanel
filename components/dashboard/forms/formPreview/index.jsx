@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
 
 const FormPreviewInline = ({ data, formValues, patientData }) => {
   console.log({ data, patientData });
