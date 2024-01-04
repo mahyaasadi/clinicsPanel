@@ -100,20 +100,7 @@ const PatientsListTable = ({
               style={{ width: "15px", height: "16px" }}
             />
           </Link>
-          <Link
-            className="btn btn-sm btn-outline-primary btn-border-l filesBtn d-flex align-items-center float-end m-1"
-            data-pr-position="top"
-            href={{
-              pathname: "/patientFile",
-              query: { id: row._id },
-            }}
-          >
-            <Tooltip target=".filesBtn">نمایش پرونده</Tooltip>
-            <FeatherIcon
-              icon="folder"
-              style={{ width: "15px", height: "16px" }}
-            />
-          </Link>
+
           <Link
             className="btn btn-sm btn-outline-primary btn-border-l receptionBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
@@ -139,6 +126,7 @@ const PatientsListTable = ({
               style={{ width: "15px", height: "16px" }}
             />
           </button>
+
           <button
             className="btn btn-sm btn-outline-primary btn-border-l newFormBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
@@ -160,6 +148,20 @@ const PatientsListTable = ({
             </svg>
             <Tooltip target=".newFormBtn">افزودن فرم</Tooltip>
           </button>
+          <Link
+            className="btn btn-sm btn-outline-primary btn-border-l filesBtn d-flex align-items-center float-end m-1"
+            data-pr-position="top"
+            href={{
+              pathname: "/patientFile",
+              query: { id: row._id },
+            }}
+          >
+            <Tooltip target=".filesBtn">نمایش پرونده</Tooltip>
+            <FeatherIcon
+              icon="folder"
+              style={{ width: "15px", height: "16px" }}
+            />
+          </Link>
         </div>
       ),
       width: "auto",

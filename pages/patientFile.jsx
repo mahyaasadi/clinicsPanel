@@ -7,6 +7,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import PatientsFormsList from "components/dashboard/patientFile/patientFormsList";
+import PatientCard from "components/dashboard/patientFile/PatientCard";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -57,7 +58,7 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setPatientForms(response.data);
       })
       .catch((err) => {
@@ -119,29 +120,56 @@ const PatientFile = ({ ClinicUser }) => {
           <div className="content container-fluid">
             <div className="card">
               <div className="card-body p-4">
-                <div className="table-responsive marginb-3 shadow-sm">
-                  <table className="table mt-4 font-13 fw-bold text-secondary table-bordered table-striped">
+                {/* <div className="table-responsive marginb-3 shadow-sm"> */}
+                {/* <table className="table mt-4 font-13 fw-bold text-secondary table-bordered">
                     <tbody>
                       <tr>
-                        <td style={{ background: '#f0f0f0' }}>نام بیمار</td>
+                        <td>نام بیمار</td>
                         <td>نوع بیمه</td>
-                        <td style={{ background: '#f0f0f0' }}>کد ملی</td>
+                        <td>کد ملی</td>
                         <td>سن</td>
-                        <td style={{ background: '#f0f0f0' }}>جنسیت</td>
+                        <td>جنسیت</td>
                       </tr>
                       <tr>
-                        <td>{patientData.Name}</td>
-                        <td style={{ background: '#f0f0f0' }}>{InsuranceType}</td>
+                        <td>
+                          <div className="patientAvatar d-flex justify-center">
+                            <div className="d-flex gap-2 align-items-center">
+                              <img
+                                src={
+                                  "https://irannobat.ir/images/" +
+                                  patientData.avatar
+                                }
+                                alt="patientAvatar"
+                                onError={({ currentTarget }) => {
+                                  patientData?.Gender
+                                    ? (currentTarget.src = `assets/img/avatar-${patientData?.Gender}-pic.png`)
+                                    : (currentTarget.src = `assets/img/avatar-O-pic.png`);
+                                }}
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  borderRadius: "10px",
+                                }}
+                              />
+                              <p className="fw-bold font-13">
+                                {patientData?.Name}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{InsuranceType}</td>
                         <td>{patientData.NationalID}</td>
-                        <td style={{ background: '#f0f0f0' }}>{patientData.Age}</td>
+                        <td>{patientData.Age}</td>
                         <td>{GenderType}</td>
                       </tr>
                     </tbody>
-                  </table>
-                </div>
+                  </table> */}
+                <PatientCard data={patientData} />
+                {/* </div> */}
 
-                <div className="row">
-                  <div className="card col-6">
+                <div className="row p-2 mt-4">
+                  <div className="card col-md-6 col-12 shadow">
+                    <label className="lblAbs font-13">فرم های بیمار</label>
                     <div className="card-body">
                       <PatientsFormsList data={patientForms} />
                     </div>

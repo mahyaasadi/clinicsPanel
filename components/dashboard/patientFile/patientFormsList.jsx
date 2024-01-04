@@ -1,3 +1,4 @@
+import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -5,10 +6,11 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import "react-data-table-component-extensions/dist/index.css";
 
 const PatientsFormsList = ({ data }) => {
+  console.log({ data });
   const columns = [
     {
-      name: "نام",
-      selector: (row) => data.Name,
+      name: "نام فرم",
+      selector: (row) => row.formData.Name,
       sortable: true,
       width: "auto",
     },
@@ -20,7 +22,7 @@ const PatientsFormsList = ({ data }) => {
     // },
     {
       name: "عملیات ها",
-      selector: (row) => data.action,
+      selector: (row) => row.action,
       sortable: true,
       cell: (row) => (
         <div className="actions d-flex gap-1">
@@ -30,7 +32,11 @@ const PatientsFormsList = ({ data }) => {
               style={{ width: "16px", height: "16px" }}
             />
           </button>
-          <button
+          <Link
+            href={{
+              pathname: "/attachFormToPatientFile",
+              query: { PFID: row._id },
+            }}
             className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center"
             data-pr-position="top"
           >
@@ -38,7 +44,7 @@ const PatientsFormsList = ({ data }) => {
               icon="edit-3"
               style={{ width: "16px", height: "16px" }}
             />
-          </button>
+          </Link>
         </div>
       ),
       width: "auto",
@@ -52,7 +58,7 @@ const PatientsFormsList = ({ data }) => {
 
   return (
     <div className="row">
-      <div className="table-responsive">
+      <div className="table-responsive patientFileTbl p-2">
         <DataTableExtensions {...tableData}>
           <DataTable
             noHeader

@@ -1,7 +1,8 @@
 import dynamic from "next/dynamic";
+import PatientCard from "components/dashboard/patientFile/PatientCard";
 
 const FormPreviewInline = ({ data, formValues, patientData }) => {
-  console.log({ data, patientData });
+  // console.log({ data, patientData });
   let componentsArr = [];
 
   data?.map((x, index) => {
@@ -57,7 +58,7 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
     <>
       <div className="row">
         <div className="table-responsive p-2 marginb-3">
-          <table className="table mt-4 font-13 fw-bold text-secondary table-bordered">
+          {/* <table className="table mt-4 font-13 fw-bold text-secondary table-bordered">
             <tbody>
               <tr>
                 <td>نام بیمار</td>
@@ -74,7 +75,8 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
                 <td>{GenderType}</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
+          <PatientCard />
         </div>
 
         <hr className="mb-4" />

@@ -30,7 +30,8 @@ let ClinicID,
   ActiveFormID,
   ActiveReceptionObjID,
   ActivePatientFormID,
-  ActivePatientID = null;
+  ActivePatientID,
+  ActiveFormName = null;
 
 const AttachFormToPatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -44,6 +45,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
   const [formValues, setFormValues] = useState({});
   const [patientData, setPatientData] = useState([]);
 
+  // Get One Form from FormsList
   const getOneFormData = () => {
     setIsLoading(true);
     let url = `Form/getOne/${ActiveFormID}`;
@@ -51,8 +53,10 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setSelectedFormData(JSON.parse(response.data.formData[0]));
+
+        ActiveFormName = response.data.Name;
         setIsLoading(false);
       })
       .catch((err) => {
@@ -61,7 +65,52 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       });
   };
 
-  const attachForm = (e) => {
+  // Get One PatientForm
+  const getOnePatientForm = () => {
+    setIsLoading(true);
+    let url = `Form/patientFormGetOne/${ActivePatientFormID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        // console.log(response.data);
+        setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
+        setFormValues(response.data.Values);
+        setPatientData(response.data.Patient);
+
+        ActiveFormName = response.data.formData.Name;
+        ActivePatientID = response.data.Patient._id;
+        ActiveFormID = response.data.formData._id;
+
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "دریافت اطلاعات فرم با خطا مواجه گردید!");
+        setIsLoading(false);
+      });
+  };
+
+  // Get One Patient
+  const getOnePatient = () => {
+    setIsLoading(true);
+    let url = `Patient/getOne/${ActivePatientID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        // console.log(response.data);
+        setPatientData(response.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  // Attach Form To Patient's File
+  const attachFormToPatientFile = (e) => {
     e.preventDefault();
     setFrmIsLoading(true);
 
@@ -82,6 +131,18 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
+
+        SuccessAlert(
+          "موفق",
+          `فرم ${ActiveFormName} با موفقیت به پرونده بیمار اضافه گردید!`
+        );
+
+        setTimeout(() => {
+          router.push({
+            pathname: "/patientFile",
+            query: { id: ActivePatientID },
+          });
+        }, 200);
         setFrmIsLoading(false);
       })
       .catch((err) => {
@@ -91,23 +152,47 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       });
   };
 
-  const getOnePatientForm = () => {
-    setIsLoading(true);
-    let url = `Form/patientFormGetOne/${ActivePatientFormID}`;
+  // Edit Patient's Form
+  const editAttachedForm = (e) => {
+    e.preventDefault();
+    setFrmIsLoading(false);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = `Form/editPatientForm/${ActivePatientFormID}`;
+    let data = {
+      ClinicID,
+      UserID: ClinicUserID,
+      ReceptionObjID: ActiveReceptionObjID ? ActiveReceptionObjID : null,
+      PatientID: ActivePatientID,
+      FormID: ActiveFormID,
+      Values: formProps,
+    };
 
     axiosClient
-      .get(url)
+      .put(url, data)
       .then((response) => {
         console.log(response.data);
-        setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
-        setFormValues(response.data.Values);
-        setPatientData(response.data.Patient);
+        // setFormValues(response.data.Values);
 
-        setIsLoading(false);
+        SuccessAlert(
+          "موفق",
+          `ویرایش اطلاعات ${ActiveFormName} با موفقیت انجام گردید!`
+        );
+
+        setTimeout(() => {
+          router.push({
+            pathname: "/patientFile",
+            query: { id: ActivePatientID },
+          });
+        }, 200);
+        setFrmIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setIsLoading(false);
+        ErrorAlert("خطا", "ویرایش اطلاعات فرم با خطا مواجه گردید!");
+        setFrmIsLoading(false);
       });
   };
 
@@ -116,6 +201,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     ActivePatientID = router.query.PID;
     ActivePatientFormID = router.query.PFID;
 
+    if (ActivePatientID) getOnePatient();
     if (ActiveFormID) getOneFormData();
     if (ActivePatientFormID) getOnePatientForm();
   }, [router.isReady]);
@@ -130,7 +216,11 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <form onSubmit={attachForm}>
+            <form
+              onSubmit={
+                ActivePatientFormID ? editAttachedForm : attachFormToPatientFile
+              }
+            >
               <div className="card p-4">
                 <FormPreviewInline
                   data={selectedFormData}
