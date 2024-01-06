@@ -38,7 +38,6 @@ const EditPatientsInfo = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setPatientData(response.data);
         setIsLoading(false);
       })

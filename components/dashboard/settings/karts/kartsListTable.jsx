@@ -8,7 +8,6 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import { Tooltip } from "primereact/tooltip";
 
 const KartsListTable = ({ data, openEditModal, deleteKart }) => {
-  // console.log({ data });
   const columns = [
     {
       name: "عنوان",

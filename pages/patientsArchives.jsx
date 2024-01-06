@@ -65,7 +65,6 @@ const PatientsArchives = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setPatientsData(response.data.Patient);
         setPendingPatientsData(response.data.Pending);
         setIsLoading(false);

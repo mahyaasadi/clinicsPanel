@@ -4,7 +4,6 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 
 const AddToListItems = ({ data }) => {
-  // console.log({ data });
   return (
     <>
       <div dir="rtl">
@@ -38,7 +37,7 @@ const AddToListItems = ({ data }) => {
                       type="button"
                       className="btn btn-sm btn-outline-primary editBtn"
                       data-pr-position="top"
-                      //   onClick={() => handleEditPrescItem(srv)}
+                    //   onClick={() => handleEditPrescItem(srv)}
                     >
                       <Tooltip target=".editBtn">ویرایش</Tooltip>
                       <FeatherIcon icon="edit-2" className="prescItembtns" />
@@ -48,7 +47,7 @@ const AddToListItems = ({ data }) => {
                       type="button"
                       className="btn btn-sm btn-outline-primary favItem"
                       data-pr-position="top"
-                      //   onClick={() => selectFavEprescItem(srv)}
+                    //   onClick={() => selectFavEprescItem(srv)}
                     >
                       <Tooltip target=".favItem">نسخه پرمصرف</Tooltip>
                       <FeatherIcon icon="star" className="prescItembtns" />

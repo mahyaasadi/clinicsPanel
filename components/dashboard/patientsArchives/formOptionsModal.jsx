@@ -24,7 +24,6 @@ const FormOptionsModal = ({
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setFormsData(response.data);
       })
       .catch((err) => {

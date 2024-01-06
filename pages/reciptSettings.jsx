@@ -69,8 +69,6 @@ const ReciptSettings = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
-
         setReciptSettingsData(response.data);
         setOrientention({
           portrait: response.data.Portrait,
@@ -110,7 +108,6 @@ const ReciptSettings = ({ ClinicUser }) => {
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
         setReciptSettingsData(response.data);
         SuccessAlert("موفق", "اطلاعات با موفقیت ذخیره گردید!");
         setIsLoading(false);

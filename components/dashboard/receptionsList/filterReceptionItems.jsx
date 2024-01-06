@@ -53,7 +53,6 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         ApplyFilterOnRecItems(response.data);
         setSearchIsLoading(false);
       })

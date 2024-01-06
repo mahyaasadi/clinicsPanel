@@ -44,7 +44,6 @@ const CashDeskKarts = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setKartData(response.data);
         setIsLoading(false);
       })

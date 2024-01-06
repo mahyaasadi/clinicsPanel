@@ -1,10 +1,9 @@
 const FormButton = ({ data }) => {
-  // console.log({ data });
   return (
     <>
       <button
         type={data.subtype}
-        className={data.className}
+        className={data.className + " w-50"}
         value={data.value}
         name={data.name}
       >

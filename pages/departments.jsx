@@ -78,11 +78,8 @@ const Departments = ({ ClinicUser }) => {
       Icon: clinicIcon,
     };
 
-    console.log({ newDepartment });
-
     try {
       const response = await addClinicDepartment(newDepartment).unwrap();
-      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);
@@ -118,11 +115,8 @@ const Departments = ({ ClinicUser }) => {
       Icon: newClinicIcon ? newClinicIcon : formProps.currentIcon,
     };
 
-    console.log({ updatedDepartment });
-
     try {
       const response = await editClinicDepartment(updatedDepartment).unwrap();
-      console.log({ response });
       setShowModal(false);
     } catch (error) {
       console.log(error);

@@ -54,7 +54,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setSelectedFormData(JSON.parse(response.data.formData[0]));
 
         ActiveFormName = response.data.Name;
@@ -74,7 +73,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
         setFormValues(response.data.Values);
         setPatientData(response.data.Patient);
@@ -94,19 +92,18 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
 
   // Get One Patient
   const getOnePatient = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
     let url = `Patient/getOne/${ActivePatientID}`;
 
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setPatientData(response.data);
-        // setIsLoading(false);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        // setIsLoading(false);
+        setIsLoading(false);
       });
   };
 
@@ -131,8 +128,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         SuccessAlert(
           "موفق",
           `فرم ${ActiveFormName} با موفقیت به پرونده بیمار اضافه گردید!`
@@ -174,8 +169,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
-
         SuccessAlert(
           "موفق",
           `ویرایش اطلاعات ${ActiveFormName} با موفقیت انجام گردید!`

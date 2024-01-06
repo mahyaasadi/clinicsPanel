@@ -1,7 +1,6 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
 const PatientCard = ({ data }) => {
-  // console.log({ data });
 
   let InsuranceType,
     GenderType = null;

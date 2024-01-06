@@ -1,12 +1,6 @@
 import { Modal } from "react-bootstrap";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
-  console.log({ data, formValues });
-  //   let arrayOfFormData = [];
-
-  //   if (data) arrayOfFormData = JSON.parse(data.formData.formData[0]);
-
-  //   console.log({ arrayOfFormData });
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">
@@ -23,7 +17,6 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
           <div className="row">
             {data?.map(
               (formComponent, index) => (
-                console.log({ formComponent }),
                 (
                   <div
                     className={formComponent?.className?.replace(

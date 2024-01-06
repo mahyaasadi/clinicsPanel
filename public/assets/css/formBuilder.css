@@ -1,13 +1,18 @@
-.halftScreen{
+.halftScreen {
   width: 45% !important;
   float: right !important;
 }
-.form-wrap.form-builder .frmb-control li{
+.form-wrap.form-builder .frmb-control li {
   text-align: left !important;
 }
-.form-wrap.form-builder .frmb-control li span{
+.form-wrap.form-builder .frmb-control li span {
   float: right !important;
 }
-.form-wrap.form-builder .frmb .prev-holder label{
+.form-wrap.form-builder .frmb .prev-holder label {
   margin-right: 5px;
+}
+
+.form-wrap.form-builder .frmb .form-field .form-group {
+  display: flex !important ;
+  flex-direction: column !important;
 }

@@ -134,7 +134,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
       })
       .catch((err) => {
         console.log(err);

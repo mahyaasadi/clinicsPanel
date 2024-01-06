@@ -157,14 +157,13 @@ const ReceptionsList = ({ ClinicUser }) => {
                     />
                   </div>
 
-                  <div className="d-flex justify-end">
+                  <div className="d-flex justify-end mb-2">
                     <ul className="nav nav-tabs nav-tabs-solid justify-end">
                       <li className="nav-item">
                         <a
                           // className="nav-link active"
-                          className={`nav-link ${
-                            activeTab === 0 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 0 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)} // Pass the index of the tab
@@ -175,9 +174,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link"
-                          className={`nav-link ${
-                            activeTab === 1 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 1 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
@@ -191,9 +189,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                   <div className="tab-content pt-1">
                     <div
                       // className="tab-pane show active"
-                      className={`tab-pane show ${
-                        activeTab === 0 ? "active" : ""
-                      }`}
+                      className={`tab-pane show ${activeTab === 0 ? "active" : ""
+                        }`}
                       id="solid-rounded-tab1"
                     >
                       <div className="row">
@@ -221,11 +218,14 @@ const ReceptionsList = ({ ClinicUser }) => {
                       id="solid-rounded-tab2"
                       className={`tab-pane ${activeTab === 1 ? "active" : ""}`}
                     >
-                      <ReceptionListTable
-                        data={receptionList}
-                        deleteReception={deleteReception}
-                        openAppointmentModal={openAppointmentModal}
-                      />
+                      <div className="card">
+
+                        <ReceptionListTable
+                          data={receptionList}
+                          deleteReception={deleteReception}
+                          openAppointmentModal={openAppointmentModal}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -88,14 +88,13 @@ const Sidebar = () => {
                 </a>
                 <ul
                   id="hiddenSidebar"
-                  className={`hiddenSidebar ${
-                    receptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
                   >
-                    <Link href="/reception" className="font-13">
+                    <Link href="/reception" className="font-12">
                       پذیرش
                     </Link>
                   </li>
@@ -105,7 +104,7 @@ const Sidebar = () => {
                       router.pathname == "/receptionsList" ? "active" : ""
                     }
                   >
-                    <Link href="/receptionsList" className="font-13">
+                    <Link href="/receptionsList" className="font-12">
                       لیست پذیرش ها
                     </Link>
                   </li>
@@ -113,7 +112,7 @@ const Sidebar = () => {
                   <li
                     className={router.pathname == "/cashDesk" ? "active" : ""}
                   >
-                    <Link href="/cashDesk" className="font-13">
+                    <Link href="/cashDesk" className="font-12">
                       صندوق
                     </Link>
                   </li>
@@ -121,7 +120,7 @@ const Sidebar = () => {
                   <li
                     className={router.pathname == "/discounts" ? "active" : ""}
                   >
-                    <Link href="/discounts" className="font-13">
+                    <Link href="/discounts" className="font-12">
                       تخفیفات
                     </Link>
                   </li>
@@ -147,22 +146,21 @@ const Sidebar = () => {
                 >
                   <FeatherIcon
                     icon="file-text"
-                    style={{ width: "17px", height: "17px" }}
+                    style={{ width: "18px", height: "18px" }}
                   />
                   <span>نسخه نویسی</span>
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
                       router.pathname == "/taminPrescription" ? "active" : ""
                     }
                   >
-                    <Link href="/taminPrescription" className="font-13">
+                    <Link href="/taminPrescription" className="font-12">
                       تامین اجتماعی
                     </Link>
                   </li>
@@ -172,7 +170,7 @@ const Sidebar = () => {
                       router.pathname == "/salamatPrescription" ? "active" : ""
                     }
                   >
-                    <Link href="/salamatPrescription" className="font-13">
+                    <Link href="/salamatPrescription" className="font-12">
                       خدمات درمانی
                     </Link>
                   </li>
@@ -191,7 +189,7 @@ const Sidebar = () => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="w-21"
+                    className="w-19"
                   >
                     <path
                       strokeLinecap="round"
@@ -229,21 +227,20 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${
-                    formBuilderSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
                       router.pathname == "/formBuilder" ? "active" : ""
                     }
                   >
-                    <Link href="/formBuilder" className="font-13">
+                    <Link href="/formBuilder" className="font-12">
                       فرم جدید
                     </Link>
                   </li>
                   <li className={router.pathname == "/forms" ? "active" : ""}>
-                    <Link href="/forms" className="font-13">
+                    <Link href="/forms" className="font-12">
                       فرم ها
                     </Link>
                   </li>
@@ -257,27 +254,26 @@ const Sidebar = () => {
                 >
                   <FeatherIcon
                     icon="settings"
-                    style={{ width: "17px", height: "17px" }}
+                    style={{ width: "18px", height: "18px" }}
                   />
                   <span>تنظیمات</span>
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
                       router.pathname == "/insuranceSettings" ? "active" : ""
                     }
                   >
-                    <Link href="/insuranceSettings" className="font-13">
+                    <Link href="/insuranceSettings" className="font-12">
                       بیمه ها
                     </Link>
                   </li>
                   <li className={router.pathname == "/karts" ? "active" : ""}>
-                    <Link href="/karts" className="font-13">
+                    <Link href="/karts" className="font-12">
                       کارت ها
                     </Link>
                   </li>
@@ -286,7 +282,7 @@ const Sidebar = () => {
                       router.pathname == "/reciptSettings" ? "active" : ""
                     }
                   >
-                    <Link href="/reciptSettings" className="font-13">
+                    <Link href="/reciptSettings" className="font-12">
                       تنظیمات چاپ قبض
                     </Link>
                   </li>

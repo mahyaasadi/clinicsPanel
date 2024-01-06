@@ -18,7 +18,7 @@ const FormPreview = ({ data, show, onHide }) => {
       <Modal show={show} onHide={onHide} centered size="xl">
         <Modal.Header closeButton>
           <Modal.Title>
-            <p className="mb-0 text-secondary font-14 fw-bold">Preview</p>
+            <p className="mb-0 text-secondary font-14 fw-bold">پیش نمایش فرم</p>
           </Modal.Title>
         </Modal.Header>
 

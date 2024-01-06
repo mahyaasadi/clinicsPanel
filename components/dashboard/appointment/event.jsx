@@ -32,7 +32,6 @@ const Event = ({
   const handleOpenEditModal = (event) => {
     event.stopPropagation();
     openEditAppointmentModal(data);
-    console.log({ data });
   };
 
   const handleOpenDuplicateModal = (event) => {

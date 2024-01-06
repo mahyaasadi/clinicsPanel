@@ -49,7 +49,6 @@ const PatientFile = ({ ClinicUser }) => {
 
   const closePatientFrmPreviewModal = () => setShowPrevModal(false);
   const openPatientFrmPreviewModal = (PFData) => {
-    console.log({ PFData });
     setShowPrevModal(true);
     setPatientFormData(JSON.parse(PFData.formData.formData[0]));
     setPatientFormValues(PFData.Values);
@@ -62,7 +61,6 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setPatientData(response.data);
         setIsLoading(false);
       })
@@ -78,7 +76,6 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setPatientForms(response.data);
       })
       .catch((err) => {

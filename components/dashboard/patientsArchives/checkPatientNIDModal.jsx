@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { axiosClient } from "class/axiosConfig";
 import { Modal } from "react-bootstrap";
-import { WarningAlert, ErrorAlert } from "class/AlertManage";
+import { ErrorAlert } from "class/AlertManage";
 
 const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
@@ -20,7 +20,6 @@ const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
         } else {

@@ -11,10 +11,8 @@ const InsuranceModal = ({
   isLoading,
   onSubmit,
   insuranceOptions,
-  selectedInsurance,
   FUSelectInsurance,
 }) => {
-  console.log({ data });
   const [eye, setEye] = useState(true);
   const modalTitle = mode === "edit" ? "ویرایش اطلاعات" : "افزودن بیمه";
   const submitText = mode === "edit" ? "ثبت تغییرات" : "ثبت";
@@ -78,9 +76,8 @@ const InsuranceModal = ({
             />
             <span
               onClick={onEyeClick}
-              className={`fa toggle-password" ${
-                eye ? "fa-eye-slash" : "fa-eye"
-              }`}
+              className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                }`}
             />
           </div>
 

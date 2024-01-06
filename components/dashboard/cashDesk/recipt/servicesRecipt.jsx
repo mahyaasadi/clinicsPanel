@@ -1,14 +1,13 @@
 const ServicesRecipt = ({ clinicData, data, paymentData }) => {
-  console.log({ data, clinicData });
 
   const insuranceType =
     data?.Patient?.Insurance === "1"
       ? "سلامت ایرانیان"
       : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+        ? "تامین اجتماعی"
+        : data?.Patient?.Insurance === "3"
+          ? "نیروهای مسلح"
+          : "آزاد";
 
   return (
     <>

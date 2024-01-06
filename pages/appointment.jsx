@@ -257,12 +257,9 @@ const Appointment = ({ ClinicUser }) => {
         ModalityID: ActiveModalityID,
       };
 
-      console.log({ data });
-
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
           setAppointmentEvents(response.data);
           setLoadingState(false);
         })
@@ -300,7 +297,6 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
           setShowAppointmentModal(false);
@@ -392,8 +388,6 @@ const Appointment = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         if (appointmentEvents.hasOwnProperty(response.data.Date)) {
           // If it exists, directly push the new appointment to the existing array
           appointmentEvents[response.data.Date].push(response.data);

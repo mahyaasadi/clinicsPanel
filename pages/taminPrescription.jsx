@@ -397,8 +397,6 @@ const TaminPrescription = ({
       activeSearch();
     }
 
-    // console.log({ prescData });
-
     // Reset
     $("#QtyInput").val("1");
     setSelectedAmount(null);

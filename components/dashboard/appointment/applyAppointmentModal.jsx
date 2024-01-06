@@ -63,7 +63,6 @@ const ApplyAppointmentModal = ({
 
   const FUSelectDepartment = (departmentValue) => {
     setSelectedDepartment(departmentValue);
-    console.log({ departmentValue });
     let findActiveModality = clinicDepartments.find(
       (x) => x._id === departmentValue
     );
@@ -89,8 +88,6 @@ const ApplyAppointmentModal = ({
       ST: pureStartTime,
       ET: pureEndTime,
     };
-
-    console.log({ data });
 
     axiosClient
       .post(url, data)

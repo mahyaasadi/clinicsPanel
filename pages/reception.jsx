@@ -111,7 +111,6 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
         $("#patientNID").prop("readonly", true);
 
         if (response.data.error == "1") {
@@ -184,7 +183,6 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
         if (response.data === false) {
           ErrorAlert(
             "خطا",
@@ -375,8 +373,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -413,7 +411,6 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setPatientInfo(response.data.Patient);
         setAddedSrvItems(response.data.Items);
 
@@ -579,10 +576,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });

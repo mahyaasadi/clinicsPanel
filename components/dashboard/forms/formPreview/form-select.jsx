@@ -3,7 +3,6 @@ import SelectField from "components/commonComponents/selectfield";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
 const FormSelect = ({ data }) => {
-  // console.log({ data });
 
   let selectedOption = null;
   const FUSelectOption = (value) => (selectedOption = value);

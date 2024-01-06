@@ -100,13 +100,11 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
       Address: formProps.Address,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
         EditPatient(response.data);
+
         setTimeout(() => {
           SuccessAlert("موفق", "ویرایش اطلاعات با موفقیت انجام گردید!");
         }, 200);
@@ -135,7 +133,7 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
               position: "absolute",
               top: "1.75rem",
               backgroundColor: "white",
-              width: "100px",
+              width: "115px",
               zIndex: "400",
             }}
           >

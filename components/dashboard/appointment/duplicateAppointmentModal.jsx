@@ -81,7 +81,6 @@ const DuplicateAppointmentModal = ({
         break;
       case "reset":
         newDate = currentDate.format("YYYY/MM/DD");
-        console.log("reset");
         break;
       default:
         newDate = currentDate;

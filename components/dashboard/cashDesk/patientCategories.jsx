@@ -12,7 +12,6 @@ const PatientCategories = ({
   isLoading,
   openNewAppointmentModal,
 }) => {
-  console.log({ patientsInfo });
   resetServerContext();
 
   const [categories, setCategories] = useState([
@@ -42,10 +41,7 @@ const PatientCategories = ({
         (patient) => patient.id.toString() === result.draggableId
       );
 
-      if (draggedPatient) {
-        console.log({ draggedPatient });
-        openActionModal(draggedPatient.id, draggedPatient.item);
-      }
+      if (draggedPatient) openActionModal(draggedPatient.id, draggedPatient.item);
 
       setPatientsInfo((patientsInfo) =>
         patientsInfo.map((item) =>

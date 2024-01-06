@@ -7,7 +7,6 @@ import "react-data-table-component-extensions/dist/index.css";
 import { Tooltip } from "primereact/tooltip";
 
 const FoodAllergyRecordsList = ({ data }) => {
-  //   console.log({ data });
   const columns = [
     {
       name: "نام آلرژی",

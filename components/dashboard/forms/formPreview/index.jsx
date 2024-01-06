@@ -2,8 +2,6 @@ import dynamic from "next/dynamic";
 import PatientCard from "components/dashboard/patientFile/PatientCard";
 
 const FormPreviewInline = ({ data, formValues, patientData }) => {
-  console.log({ data });
-
   let componentsArr = [];
 
   data?.map((x, index) => {
@@ -20,40 +18,6 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
       />
     );
   });
-
-  let InsuranceType,
-    GenderType = null;
-  if (patientData) {
-    switch (patientData.Insurance) {
-      case "1":
-        InsuranceType = "سلامت ایرانیان";
-        break;
-      case "2":
-        InsuranceType = "تامین اجتماعی";
-        break;
-      case "3":
-        InsuranceType = "نیروهای مسلح";
-        break;
-      case "4":
-        InsuranceType = "آزاد";
-      default:
-        break;
-    }
-
-    switch (patientData.Gender) {
-      case "M":
-        GenderType = "مرد";
-        break;
-      case "F":
-        GenderType = "زن";
-        break;
-      case "O":
-        GenderType = "دیگر";
-        break;
-      default:
-        break;
-    }
-  }
 
   return (
     <>

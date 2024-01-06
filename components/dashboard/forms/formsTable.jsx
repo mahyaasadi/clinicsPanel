@@ -8,7 +8,6 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 
 const FormsTable = ({ data, deleteForm }) => {
-  // console.log({ data });
 
   const columns = [
     {

@@ -33,7 +33,6 @@ const Profile = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setUserInfo(response.data);
       })
       .catch((err) => {
