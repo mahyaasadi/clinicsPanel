@@ -1,5 +1,5 @@
 export { default as headerLogo } from "public/assets/img/irannobatLogo.svg";
-export { default as logo } from "public/assets/img/clinicMockupLogo.jpg";
+export { default as logo } from "public/assets/img/clinicLogo2.jpg";
 export { default as logoSmall } from "public/assets/img/logo-small.png";
 export { default as avatar01 } from "public/assets/img/profiles/avatar-01.jpg";
 export { default as avatar07 } from "public/assets/img/profiles/avatar-07.jpg";
