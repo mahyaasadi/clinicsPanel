@@ -180,25 +180,30 @@ const PatientsArchives = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid pt-3">
-            <div className="row align-items-center mb-2">
-              <div className="col-md-12 d-flex justify-content-end">
-                <button
-                  onClick={openAddModal}
-                  className="btn btn-primary btn-add font-14"
-                >
-                  <i className="me-1">
-                    <FeatherIcon icon="plus-square" />
-                  </i>{" "}
-                  افزودن
-                </button>
-              </div>
-            </div>
+            <div className="card p-1">
+              <div className="row align-items-center p-3">
+                <div className="col">
+                  <p className="card-title font-14 text-secondary">
+                    لیست بیماران در انتظار پذیرش
+                  </p>
+                </div>
 
-            <label className="lblAbs fw-bold font-14">
-              لیست بیماران در انتظار پذیرش
-            </label>
-            <div className="card">
-              <div className="card-body pendingPatientsCard mt-3">
+                <div className="col d-flex justify-content-end">
+                  <button
+                    onClick={openAddModal}
+                    className="btn btn-outline-primary btn-add font-13 d-flex aling-items-center"
+                  >
+                    <i className="me-1">
+                      <FeatherIcon icon="plus" />
+                    </i>{" "}
+                    بیمار جدید
+                  </button>
+                </div>
+              </div>
+
+              <hr className="mt-0 mb-1" />
+
+              <div className="card-body pendingPatientsCard">
                 {pendingPatientsData.map((item, index) => (
                   <PendingPatients
                     key={index}
@@ -214,13 +219,12 @@ const PatientsArchives = ({ ClinicUser }) => {
             </div>
 
             <div className="col-sm-12">
-              <label className="lblAbs fw-bold font-14">
-                لیست پرونده های بیماران
-              </label>
               <div className="card">
-                <div className="card-header border-bottom-0">
-                  <div className="row align-items-center">
-                    <div className="col-auto d-flex flex-wrap"></div>
+                <div className="row align-items-center p-3">
+                  <div className="col">
+                    <p className="card-title font-14 text-secondary">
+                      لیست بیماران
+                    </p>
                   </div>
                 </div>
 

@@ -6,8 +6,15 @@ import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
-import PatientsFormsList from "components/dashboard/patientFile/patientFormsList";
+import FormsList from "components/dashboard/patientFile/formsList";
 import PatientCard from "components/dashboard/patientFile/PatientCard";
+import DiseaseRecordsList from "components/dashboard/patientFile/diseaseRecordsList";
+import SurguryRecordsList from "components/dashboard/patientFile/surguryRecordsList";
+import FamilyRecordsList from "components/dashboard/patientFile/familyRecordsList";
+import AddictionRecordsList from "components/dashboard/patientFile/addictionRecordsList";
+import FoodAllergyRecordsList from "components/dashboard/patientFile/foodAllergyRecordsList";
+import MedicalAllergyRecordsList from "components/dashboard/patientFile/medicalAllergyRecordsList";
+import PatientFormPreviewModal from "components/dashboard/patientFile/patientFormPreviewModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -35,6 +42,19 @@ const PatientFile = ({ ClinicUser }) => {
   const [patientData, setPatientData] = useState([]);
   const [patientForms, setPatientForms] = useState([]);
 
+  // Patient Form Preview Modal
+  const [showPrevModal, setShowPrevModal] = useState(false);
+  const [patientFormData, setPatientFormData] = useState([]);
+  const [patientFormValues, setPatientFormValues] = useState({});
+
+  const closePatientFrmPreviewModal = () => setShowPrevModal(false);
+  const openPatientFrmPreviewModal = (PFData) => {
+    console.log({ PFData });
+    setShowPrevModal(true);
+    setPatientFormData(JSON.parse(PFData.formData.formData[0]));
+    setPatientFormValues(PFData.Values);
+  };
+
   const getOnePatient = () => {
     setIsLoading(true);
     let url = `Patient/getOne/${ActivePatientID}`;
@@ -42,7 +62,7 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setPatientData(response.data);
         setIsLoading(false);
       })
@@ -65,6 +85,32 @@ const PatientFile = ({ ClinicUser }) => {
         console.log(err);
       });
   };
+
+  // // Get One PatientForm
+  // const getOnePatientForm = () => {
+  //   setIsLoading(true);
+  //   let url = `Form/patientFormGetOne/${ActivePatientID}`;
+
+  //   axiosClient
+  //     .get(url)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       // setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
+  //       // setFormValues(response.data.Values);
+  //       // setPatientData(response.data.Patient);
+
+  //       // ActiveFormName = response.data.formData.Name;
+  //       // ActivePatientID = response.data.Patient._id;
+  //       // ActiveFormID = response.data.formData._id;
+
+  //       setIsLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       ErrorAlert("خطا", "دریافت اطلاعات فرم با خطا مواجه گردید!");
+  //       setIsLoading(false);
+  //     });
+  // };
 
   let InsuranceType,
     GenderType = null;
@@ -118,67 +164,52 @@ const PatientFile = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="card">
-              <div className="card-body p-4">
-                {/* <div className="table-responsive marginb-3 shadow-sm"> */}
-                {/* <table className="table mt-4 font-13 fw-bold text-secondary table-bordered">
-                    <tbody>
-                      <tr>
-                        <td>نام بیمار</td>
-                        <td>نوع بیمه</td>
-                        <td>کد ملی</td>
-                        <td>سن</td>
-                        <td>جنسیت</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="patientAvatar d-flex justify-center">
-                            <div className="d-flex gap-2 align-items-center">
-                              <img
-                                src={
-                                  "https://irannobat.ir/images/" +
-                                  patientData.avatar
-                                }
-                                alt="patientAvatar"
-                                onError={({ currentTarget }) => {
-                                  patientData?.Gender
-                                    ? (currentTarget.src = `assets/img/avatar-${patientData?.Gender}-pic.png`)
-                                    : (currentTarget.src = `assets/img/avatar-O-pic.png`);
-                                }}
-                                style={{
-                                  width: "30px",
-                                  height: "30px",
-                                  borderRadius: "10px",
-                                }}
-                              />
-                              <p className="fw-bold font-13">
-                                {patientData?.Name}
-                              </p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>{InsuranceType}</td>
-                        <td>{patientData.NationalID}</td>
-                        <td>{patientData.Age}</td>
-                        <td>{GenderType}</td>
-                      </tr>
-                    </tbody>
-                  </table> */}
-                <PatientCard data={patientData} />
-                {/* </div> */}
+            <div className="card-body p-4">
+              <PatientCard data={patientData} />
 
-                <div className="row p-2 mt-4">
-                  <div className="card col-md-6 col-12 shadow">
-                    <label className="lblAbs font-13">فرم های بیمار</label>
-                    <div className="card-body">
-                      <PatientsFormsList data={patientForms} />
-                    </div>
-                  </div>
+              <div className="mt-5 mb-2">
+                <FormsList
+                  data={patientForms}
+                  openPatientFrmPreviewModal={openPatientFrmPreviewModal}
+                />
+              </div>
+
+              <div className="row mb-2">
+                <div className="col-md-6 col-12">
+                  <DiseaseRecordsList />
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <SurguryRecordsList />
+                </div>
+              </div>
+
+              <div className="row mb-2">
+                <div className="col-md-6 col-12">
+                  <FamilyRecordsList />
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <AddictionRecordsList />
+                </div>
+              </div>
+
+              <div className="row mb-2">
+                <div className="col-md-6 col-12">
+                  <FoodAllergyRecordsList />
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <MedicalAllergyRecordsList />
                 </div>
               </div>
             </div>
           </div>
         )}
+
+        <PatientFormPreviewModal
+          show={showPrevModal}
+          onHide={closePatientFrmPreviewModal}
+          data={patientFormData}
+          formValues={patientFormValues}
+        />
       </div>
     </>
   );

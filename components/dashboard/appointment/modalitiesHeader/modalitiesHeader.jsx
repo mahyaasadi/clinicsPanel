@@ -3,7 +3,7 @@ import NavLink from "./navLink";
 const ModalitiesHeader = ({ data, handleDepClick }) => {
   return (
     <>
-      <ul className="nav nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-tabs-scroll font-14 flex-nowrap paddingb-0">
+      <ul className="nav nav nav-tabs appointmentHeader nav-tabs-solid nav-tabs-rounded nav-tabs-scroll font-14 flex-nowrap paddingb-0">
         {data?.map((nav, index) => {
           return (
             <NavLink

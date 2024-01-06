@@ -61,14 +61,20 @@ const Header = ({ ClinicUser }) => {
         {/* Logo */}
         <div className="header-left">
           <Link href="/dashboard" className="logo">
-            <Image
+            {/* <Image
               src={headerLogo}
               alt="Logo"
               unoptimized={true}
               priority={true}
-            />
+            /> */}
+            ایران نوبت
           </Link>
-          <Link href="#" id="toggle_btn" onClick={handlesidebar}>
+          <Link
+            href="#"
+            id="toggle_btn"
+            onClick={handlesidebar}
+            className="toggle_btn"
+          >
             <FeatherIcon icon="chevrons-left" />
           </Link>
 

@@ -8,6 +8,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import FormPreviewInline from "components/dashboard/forms/formPreview";
+import PatientCard from "components/dashboard/patientFile/PatientCard";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -93,7 +94,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
 
   // Get One Patient
   const getOnePatient = () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     let url = `Patient/getOne/${ActivePatientID}`;
 
     axiosClient
@@ -101,11 +102,11 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       .then((response) => {
         // console.log(response.data);
         setPatientData(response.data);
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setIsLoading(false);
+        // setIsLoading(false);
       });
   };
 
@@ -174,7 +175,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       .put(url, data)
       .then((response) => {
         console.log(response.data);
-        // setFormValues(response.data.Values);
 
         SuccessAlert(
           "موفق",

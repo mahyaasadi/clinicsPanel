@@ -58,6 +58,10 @@
   color: #cf5615;
 }
 
+.eventBtns:hover {
+  color: #B45309
+}
+
 .events {
   display: grid;
   grid-template-rows: repeat(var(--numHours), var(--timeHeight));

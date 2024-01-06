@@ -1,5 +1,5 @@
-export { default as headerLogo } from "public/assets/img/irannobatLogo.png";
-export { default as logo } from "public/assets/img/clinicLogo2.jpg";
+export { default as headerLogo } from "public/assets/img/irannobatLogo.svg";
+export { default as logo } from "public/assets/img/clinicMockupLogo.jpg";
 export { default as logoSmall } from "public/assets/img/logo-small.png";
 export { default as avatar01 } from "public/assets/img/profiles/avatar-01.jpg";
 export { default as avatar07 } from "public/assets/img/profiles/avatar-07.jpg";
@@ -58,3 +58,4 @@ export { default as insurance } from "public/assets/img/insurance-30.png";
 export { default as returnPayment } from "public/assets/img/return-40.png";
 export { default as returnedCash } from "public/assets/img/cash-40.png";
 export { default as imgNotFound } from "public/assets/img/NotFoundAvatar.jpeg";
+
