@@ -6,7 +6,11 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import "react-data-table-component-extensions/dist/index.css";
 import { Tooltip } from "primereact/tooltip";
 
-const FormsList = ({ data, openPatientFrmPreviewModal }) => {
+const FormsList = ({
+  data,
+  openPatientFrmPreviewModal,
+  openAddFrmToPatientModal,
+}) => {
   const columns = [
     {
       name: "نام فرم",
@@ -87,7 +91,7 @@ const FormsList = ({ data, openPatientFrmPreviewModal }) => {
 
               <div className="col d-flex justify-content-end">
                 <button
-                  // onClick={openAddModal}
+                  onClick={() => openAddFrmToPatientModal(data)}
                   className="btn font-12 text-secondary d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />

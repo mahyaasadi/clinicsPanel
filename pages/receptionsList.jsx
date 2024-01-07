@@ -10,6 +10,7 @@ import ApplyAppointmentModal from "components/dashboard/appointment/applyAppoint
 import FilterReceptionItems from "@/components/dashboard/receptionsList/filterReceptionItems";
 import ReceptionItem from "@/components/dashboard/receptionsList/receptionItem";
 import ReceptionListTable from "@/components/dashboard/receptionsList/receptionListTable";
+import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -28,10 +29,13 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
-  ActivePatientID = null;
+  ClinicUserID,
+  ActivePatientID,
+  ActiveReceptionObjID = null;
 
 const ReceptionsList = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  ClinicUserID = ClinicUser._id;
 
   const [isLoading, setIsLoading] = useState(true);
   const [receptionList, setReceptionList] = useState([]);
@@ -121,6 +125,7 @@ const ReceptionsList = ({ ClinicUser }) => {
     }
   };
 
+  // save the reception table ui in localeStorage
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index) => {
@@ -136,6 +141,16 @@ const ReceptionsList = ({ ClinicUser }) => {
 
     getReceptionList();
   }, []);
+
+  // add new form to patient
+  const [showFrmOptionsModal, setShowFormOptionsModal] = useState(false);
+
+  const closePatientFrmOptionsModal = () => setShowFormOptionsModal(false);
+  const openFrmOptionsModal = (srv) => {
+    ActiveReceptionObjID = srv._id;
+    ActivePatientID = srv.Patient._id;
+    setShowFormOptionsModal(true);
+  };
 
   return (
     <>
@@ -162,8 +177,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link active"
-                          className={`nav-link ${activeTab === 0 ? "active" : ""
-                            }`}
+                          className={`nav-link ${
+                            activeTab === 0 ? "active" : ""
+                          }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)} // Pass the index of the tab
@@ -174,8 +190,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link"
-                          className={`nav-link ${activeTab === 1 ? "active" : ""
-                            }`}
+                          className={`nav-link ${
+                            activeTab === 1 ? "active" : ""
+                          }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
@@ -189,8 +206,9 @@ const ReceptionsList = ({ ClinicUser }) => {
                   <div className="tab-content pt-1">
                     <div
                       // className="tab-pane show active"
-                      className={`tab-pane show ${activeTab === 0 ? "active" : ""
-                        }`}
+                      className={`tab-pane show ${
+                        activeTab === 0 ? "active" : ""
+                      }`}
                       id="solid-rounded-tab1"
                     >
                       <div className="row">
@@ -200,6 +218,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                             srv={item}
                             deleteReception={deleteReception}
                             openAppointmentModal={openAppointmentModal}
+                            openFrmOptionsModal={openFrmOptionsModal}
                           />
                         ))}
                       </div>
@@ -219,7 +238,6 @@ const ReceptionsList = ({ ClinicUser }) => {
                       className={`tab-pane ${activeTab === 1 ? "active" : ""}`}
                     >
                       <div className="card">
-
                         <ReceptionListTable
                           data={receptionList}
                           deleteReception={deleteReception}
@@ -243,6 +261,15 @@ const ReceptionsList = ({ ClinicUser }) => {
           defaultDepValue={defaultDepValue}
           ActiveModalityData={ActiveModalityData}
           setActiveModalityData={setActiveModalityData}
+        />
+
+        <FormOptionsModal
+          show={showFrmOptionsModal}
+          onHide={closePatientFrmOptionsModal}
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActivePatientID={ActivePatientID}
+          ActiveReceptionObjID={ActiveReceptionObjID}
         />
       </div>
     </>

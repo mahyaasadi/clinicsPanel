@@ -1,16 +1,22 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
+import { Tooltip } from "primereact/tooltip";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import "react-data-table-component-extensions/dist/index.css";
-import { Tooltip } from "primereact/tooltip";
 
-const SurguryRecordsList = ({ data }) => {
+const SurgeryRecordsList = ({
+  data,
+  openSurgeryModal,
+  openEditSurgeryModal,
+}) => {
   const columns = [
     {
       name: "جراحی",
-      selector: (row) => row.formData.Name,
+      selector: (row) => row.Name,
       sortable: true,
       width: "auto",
     },
@@ -43,10 +49,7 @@ const SurguryRecordsList = ({ data }) => {
             <Tooltip target=".removeBtn">حذف</Tooltip>
           </button>
           <Link
-            href={{
-              pathname: "/attachFormToPatientFile",
-              query: { PFID: row._id },
-            }}
+            onClick={() => openEditSurgeryModal()}
             className="btn editBtn d-flex eventBtns align-items-center p-2"
             data-pr-position="right"
           >
@@ -79,7 +82,7 @@ const SurguryRecordsList = ({ data }) => {
 
               <div className="col d-flex justify-end">
                 <button
-                  // onClick={openAddModal}
+                  onClick={() => openSurgeryModal()}
                   className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />
@@ -114,4 +117,4 @@ const SurguryRecordsList = ({ data }) => {
   );
 };
 
-export default SurguryRecordsList;
+export default SurgeryRecordsList;

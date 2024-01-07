@@ -21,6 +21,7 @@ import DelayAppointmentModal from "components/dashboard/appointment/delayAppoint
 import DuplicateAppointmentModal from "components/dashboard/appointment/duplicateAppointmentModal";
 import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/modalitiesHeader";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
+import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 import "/public/assets/css/appointment.css";
 
 export const getServerSideProps = async ({ req, res }) => {
@@ -40,6 +41,7 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
+  ClinicUserID,
   ActivePatientNID,
   ActivePatientID,
   ActiveAppointmentID,
@@ -52,6 +54,7 @@ const Appointment = ({ ClinicUser }) => {
   const router = useRouter();
 
   ClinicID = ClinicUser.ClinicID;
+  ClinicUserID = ClinicUser._id;
 
   const [loadingState, setLoadingState] = useState(false);
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
@@ -629,6 +632,16 @@ const Appointment = ({ ClinicUser }) => {
     }, 100);
   };
 
+  // Add New Form To Patient
+  const [showFormOptionsModal, setShowFormOptionsModal] = useState(false);
+  const closeFrmOptionsModal = () => setShowFormOptionsModal(false);
+
+  const openFrmOptionsModal = (eventData) => {
+    ActivePatientID = eventData.Patient._id;
+    console.log({ ActivePatientID });
+    setShowFormOptionsModal(true);
+  };
+
   useEffect(() => {
     if (ActiveModalityID !== null) {
       getClinicAppointments();
@@ -729,6 +742,7 @@ const Appointment = ({ ClinicUser }) => {
                           formattedCurrentDate={formattedCurrentDate}
                           returnToToday={returnToToday}
                           loadingState={loadingState}
+                          openFrmOptionsModal={openFrmOptionsModal}
                         />
                       </div>
                     </div>
@@ -794,6 +808,14 @@ const Appointment = ({ ClinicUser }) => {
           FUSelectStartTime={FUSelectStartTime}
           FUSelectEndTime={FUSelectEndTime}
           endHoursOptions={endHoursOptions}
+        />
+
+        <FormOptionsModal
+          show={showFormOptionsModal}
+          onHide={closeFrmOptionsModal}
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActivePatientID={ActivePatientID}
         />
       </div>
     </>

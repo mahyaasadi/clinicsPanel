@@ -7,9 +7,11 @@ import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import FormsList from "components/dashboard/patientFile/formsList";
+import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 import PatientCard from "components/dashboard/patientFile/PatientCard";
 import DiseaseRecordsList from "components/dashboard/patientFile/diseaseRecordsList";
-import SurguryRecordsList from "components/dashboard/patientFile/surguryRecordsList";
+import SurgeryRecordsList from "components/dashboard/patientFile/surgeryRecords/surgeryRecordsList";
+import SurgeryRecordModal from "components/dashboard/patientFile/surgeryRecords/surgeryRecordModal";
 import FamilyRecordsList from "components/dashboard/patientFile/familyRecordsList";
 import AddictionRecordsList from "components/dashboard/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "components/dashboard/patientFile/foodAllergyRecordsList";
@@ -33,9 +35,12 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID,
-  ActivePatientID = null;
+  ActivePatientID,
+  ClinicUserID = null;
 const PatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  ClinicUserID = ClinicUser._id;
+
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +59,12 @@ const PatientFile = ({ ClinicUser }) => {
     setPatientFormValues(PFData.Values);
   };
 
+  // Patient Add New Form
+  const [showFormOptionsModal, setShowFormOptionsModal] = useState(false);
+  const handleCloseFrmOptionsModal = () => setShowFormOptionsModal(false);
+  const openAddFrmToPatientModal = (data) => setShowFormOptionsModal(true);
+
+  // Get One Patient Data
   const getOnePatient = () => {
     setIsLoading(true);
     let url = `Patient/getOne/${ActivePatientID}`;
@@ -67,9 +78,11 @@ const PatientFile = ({ ClinicUser }) => {
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
       });
   };
 
+  // Get One Patient's Forms
   const getPatientForms = () => {
     let url = `Form/patientFormGetByUserID/${ActivePatientID}`;
 
@@ -80,68 +93,17 @@ const PatientFile = ({ ClinicUser }) => {
       })
       .catch((err) => {
         console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
       });
   };
 
-  // // Get One PatientForm
-  // const getOnePatientForm = () => {
-  //   setIsLoading(true);
-  //   let url = `Form/patientFormGetOne/${ActivePatientID}`;
-
-  //   axiosClient
-  //     .get(url)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       // setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
-  //       // setFormValues(response.data.Values);
-  //       // setPatientData(response.data.Patient);
-
-  //       // ActiveFormName = response.data.formData.Name;
-  //       // ActivePatientID = response.data.Patient._id;
-  //       // ActiveFormID = response.data.formData._id;
-
-  //       setIsLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       ErrorAlert("خطا", "دریافت اطلاعات فرم با خطا مواجه گردید!");
-  //       setIsLoading(false);
-  //     });
-  // };
-
-  let InsuranceType,
-    GenderType = null;
-  if (patientData) {
-    switch (patientData.Insurance) {
-      case "1":
-        InsuranceType = "سلامت ایرانیان";
-        break;
-      case "2":
-        InsuranceType = "تامین اجتماعی";
-        break;
-      case "3":
-        InsuranceType = "نیروهای مسلح";
-        break;
-      case "4":
-        InsuranceType = "آزاد";
-      default:
-        break;
-    }
-
-    switch (patientData.Gender) {
-      case "M":
-        GenderType = "مرد";
-        break;
-      case "F":
-        GenderType = "زن";
-        break;
-      case "O":
-        GenderType = "دیگر";
-        break;
-      default:
-        break;
-    }
-  }
+  // Surgery Records
+  const [surguryList, setSurgeryList] = useState([]);
+  const [showSurgeryModal, setShowSurgeryModal] = useState(false);
+  const [surgeryModalMode, setSurgeryModalMode] = useState("add");
+  const closeSurgeryModal = () => setShowSurgeryModal(false);
+  const openSurgeryModal = () => setShowSurgeryModal(true);
+  const openEditSurgeryModal = () => setSurgeryModalMode("edit");
 
   useEffect(() => {
     ActivePatientID = router.query.id;
@@ -168,6 +130,7 @@ const PatientFile = ({ ClinicUser }) => {
                 <FormsList
                   data={patientForms}
                   openPatientFrmPreviewModal={openPatientFrmPreviewModal}
+                  openAddFrmToPatientModal={openAddFrmToPatientModal}
                 />
               </div>
 
@@ -176,7 +139,11 @@ const PatientFile = ({ ClinicUser }) => {
                   <DiseaseRecordsList />
                 </div>
                 <div className="col-md-6 col-12 mb-2">
-                  <SurguryRecordsList />
+                  <SurgeryRecordsList
+                    // data={}
+                    openSurgeryModal={openSurgeryModal}
+                    openEditSurgeryModal={openEditSurgeryModal}
+                  />
                 </div>
               </div>
 
@@ -206,6 +173,20 @@ const PatientFile = ({ ClinicUser }) => {
           onHide={closePatientFrmPreviewModal}
           data={patientFormData}
           formValues={patientFormValues}
+        />
+
+        <FormOptionsModal
+          show={showFormOptionsModal}
+          onHide={handleCloseFrmOptionsModal}
+          ClinicID={ClinicID}
+          ClinicUserID={ClinicUserID}
+          ActivePatientID={ActivePatientID}
+        />
+
+        <SurgeryRecordModal
+          mode={surgeryModalMode}
+          show={showSurgeryModal}
+          onHide={closeSurgeryModal}
         />
       </div>
     </>

@@ -10,7 +10,8 @@ const Day = ({
   deleteAppointment,
   depOpeningHour,
   formattedCurrentDate,
-  loadingState
+  loadingState,
+  openFrmOptionsModal,
 }) => {
   const formattedDefDate = date.replace(/(\d+)\/(\d+)\/(\d+)/, "$1/$2/$3");
 
@@ -39,9 +40,9 @@ const Day = ({
                 openDuplicateModal={openDuplicateModal}
                 deleteAppointment={deleteAppointment}
                 onDoubleClick={() => openEditAppointmentModal(event)}
+                openFrmOptionsModal={openFrmOptionsModal}
               />
             );
-
           })
         )}
       </ul>

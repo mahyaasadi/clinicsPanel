@@ -125,6 +125,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -193,6 +195,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     ActiveFormID = router.query.FID;
     ActivePatientID = router.query.PID;
     ActivePatientFormID = router.query.PFID;
+    ActiveReceptionObjID = router.query.RID;
 
     if (ActivePatientID) getOnePatient();
     if (ActiveFormID) getOneFormData();

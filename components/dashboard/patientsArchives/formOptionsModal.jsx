@@ -11,6 +11,7 @@ const FormOptionsModal = ({
   ClinicID,
   ClinicUserID,
   ActivePatientID,
+  ActiveReceptionObjID,
 }) => {
   const router = useRouter();
 
@@ -46,7 +47,7 @@ const FormOptionsModal = ({
     selectedForm = value;
     router.push({
       pathname: "/attachFormToPatientFile",
-      query: { FID: value, PID: ActivePatientID },
+      query: { FID: value, PID: ActivePatientID, RID: ActiveReceptionObjID },
     });
   };
 

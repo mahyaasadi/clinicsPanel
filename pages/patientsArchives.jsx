@@ -55,6 +55,7 @@ const PatientsArchives = ({ ClinicUser }) => {
     ActivePatientID = patientData._id;
     setShowFormOptionsModal(true);
   };
+
   const handleCloseFrmModal = () => setShowFormOptionsModal(false);
 
   // Get all patients records

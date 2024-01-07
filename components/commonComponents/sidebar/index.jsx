@@ -12,9 +12,6 @@ const Sidebar = () => {
   const [formBuilderSubMenuOpen, setFormBuilderSubMenuOpen] = useState(false);
 
   useEffect(() => {
-    const body = $("body");
-    const subMenus = $(".subdrop + ul");
-
     const receptionSubRoutes = [
       "/reception",
       "/discounts",
@@ -37,17 +34,42 @@ const Sidebar = () => {
 
     if (receptionSubRoutes.includes(router.pathname)) {
       setReceptionSubmenuOpen(true);
+    } else {
+      setReceptionSubmenuOpen(false);
     }
+
     if (prescriptionSubRoutes.includes(router.pathname)) {
       setPrescriptionSubMenuOpen(true);
+    } else {
+      setPrescriptionSubMenuOpen(false);
     }
+
     if (settingsSubRoutes.includes(router.pathname)) {
       setSettingsSubMenuOpen(true);
+    } else {
+      setSettingsSubMenuOpen(false);
     }
+
     if (formBuildersRoutes.includes(router.pathname)) {
       setFormBuilderSubMenuOpen(true);
+    } else {
+      setFormBuilderSubMenuOpen(false);
     }
   }, [router.pathname]);
+
+  // useEffect(() => {
+  //   console.log({
+  //     receptionSubmenuOpen,
+  //     prescriptionSubmenuOpen,
+  //     settingsSubMenuOpen,
+  //     formBuilderSubMenuOpen,
+  //   });
+  // }, [
+  //   receptionSubmenuOpen,
+  //   prescriptionSubmenuOpen,
+  //   settingsSubMenuOpen,
+  //   formBuilderSubMenuOpen,
+  // ]);
 
   return (
     <>
@@ -88,8 +110,9 @@ const Sidebar = () => {
                 </a>
                 <ul
                   id="hiddenSidebar"
-                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    receptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -152,8 +175,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -227,8 +251,9 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    formBuilderSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -260,8 +285,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -297,4 +323,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

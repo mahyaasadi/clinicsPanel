@@ -22,6 +22,7 @@ const DayList = ({
   formattedCurrentDate,
   returnToToday,
   loadingState,
+  openFrmOptionsModal
 }) => {
   let todaysDate = String(jdate.getDate());
   if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
@@ -111,6 +112,7 @@ const DayList = ({
                       deleteAppointment={deleteAppointment}
                       depOpeningHour={depOpeningHour}
                       loadingState={loadingState}
+                      openFrmOptionsModal={openFrmOptionsModal}
                     />
                   </td>
                 );
