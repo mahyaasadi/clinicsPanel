@@ -10,6 +10,7 @@ const FormsList = ({
   data,
   openPatientFrmPreviewModal,
   openAddFrmToPatientModal,
+  deletePatientForm
 }) => {
   const columns = [
     {
@@ -39,6 +40,7 @@ const FormsList = ({
           <button
             data-pr-position="left"
             className="btn removeBtn trashButton eventBtns d-flex align-items-center p-2"
+            onClick={() => deletePatientForm(row._id)}
           >
             <FeatherIcon
               icon="trash-2"
@@ -83,7 +85,7 @@ const FormsList = ({
     <>
       <div className="card border-gray col-12">
         <div className="card-body">
-          <div className="card-header p-2 mb-2">
+          <div className="card-header p-2 pt-0 mb-2">
             <div className="row align-items-center">
               <div className="col">
                 <p className="fw-bold text-secondary font-13">فرم های بیمار</p>

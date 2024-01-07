@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import DataTable from "react-data-table-component";
@@ -13,6 +11,7 @@ const SurgeryRecordsList = ({
   openSurgeryModal,
   openEditSurgeryModal,
 }) => {
+  // console.log({ data });
   const columns = [
     {
       name: "جراحی",
@@ -20,18 +19,12 @@ const SurgeryRecordsList = ({
       sortable: true,
       width: "auto",
     },
-    // {
-    //   name: "تاریخ ثبت",
-    //   selector: (row) => (row.EditDate ? row.EditDate : "-"),
-    //   sortable: true,
-    //   width: "auto",
-    // },
-    // {
-    //   name: "زمان ثبت",
-    //   selector: (row) => (row.EditTime ? row.EditTime : "-"),
-    //   sortable: true,
-    //   width: "auto",
-    // },
+    {
+      name: "تاریخ جراحی",
+      selector: (row) => (row.EditDate ? row.Date : "-"),
+      sortable: true,
+      width: "auto",
+    },
     {
       name: "عملیات ها",
       selector: (row) => row.action,
@@ -49,7 +42,7 @@ const SurgeryRecordsList = ({
             <Tooltip target=".removeBtn">حذف</Tooltip>
           </button>
           <Link
-            onClick={() => openEditSurgeryModal()}
+            onClick={() => openEditSurgeryModal(row)}
             className="btn editBtn d-flex eventBtns align-items-center p-2"
             data-pr-position="right"
           >
@@ -74,7 +67,7 @@ const SurgeryRecordsList = ({
     <>
       <div className="card border-gray mb-2">
         <div className="card-body">
-          <div className="card-header p-2 mb-2">
+          <div className="card-header p-2 pt-0 mb-2">
             <div className="row align-items-center justify-evenly">
               <div className="col">
                 <p className="fw-bold text-secondary font-13">سوابق جراحی</p>
@@ -82,7 +75,7 @@ const SurgeryRecordsList = ({
 
               <div className="col d-flex justify-end">
                 <button
-                  onClick={() => openSurgeryModal()}
+                  onClick={() => openSurgeryModal(data)}
                   className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />

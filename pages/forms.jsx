@@ -57,9 +57,10 @@ const Forms = ({ ClinicUser }) => {
 
     if (result) {
       setIsLoading(true);
-      // let url = `CashDeskKart/delete/${id}`;
+      let url = `Form/Delete/${id}`;
       let data = {
         CenterID: ClinicID,
+        UserID: ClinicUser._id
       };
 
       await axiosClient

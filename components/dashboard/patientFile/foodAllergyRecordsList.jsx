@@ -71,7 +71,7 @@ const FoodAllergyRecordsList = ({ data }) => {
     <>
       <div className="card border-gray">
         <div className="card-body">
-          <div className="card-header p-2 mb-2">
+          <div className="card-header p-2 pt-0 mb-2">
             <div className="row align-items-center justify-evenly">
               <div className="col">
                 <p className="fw-bold text-secondary font-13">آلرژی غذایی</p>
