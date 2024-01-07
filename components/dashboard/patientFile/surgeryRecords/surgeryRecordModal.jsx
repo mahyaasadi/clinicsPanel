@@ -7,9 +7,8 @@ import SingleDatePicker from "components/commonComponents/datepicker/singleDateP
 
 let surgeryOptions = [];
 const SurgeryRecordModal = ({ show, onHide, mode }) => {
-  console.log({ mode });
-
   const [surgeryDate, setSurgeryDate] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const _getAllSurguryRecords = () => {
     let url = "Patient/getSurgeryList";
@@ -41,6 +40,7 @@ const SurgeryRecordModal = ({ show, onHide, mode }) => {
 
   const _attachSurgeryRecordToPatient = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -64,9 +64,11 @@ const SurgeryRecordModal = ({ show, onHide, mode }) => {
     //   .post(url, data)
     //   .then((response) => {
     //     console.log(response.data);
+    // setIsLoading(false)
     //   })
     //   .catch((err) => {
     //     console.log(err);
+    // setIsLoading(false)
     //   });
   };
 
@@ -83,6 +85,8 @@ const SurgeryRecordModal = ({ show, onHide, mode }) => {
       // SurgeryID:
     };
 
+    console.log({ data });
+
     axiosClient
       .put((url, data))
       .then((response) => {
@@ -96,6 +100,13 @@ const SurgeryRecordModal = ({ show, onHide, mode }) => {
   // const updateItem = (newArr, id) => {
 
   // }
+
+  // const _deleteAttachedSurgery = (id) => {
+  //   let url = "Patient/deleteSurgery"
+  //   let data = {
+  //     // SurgeryID:
+  //   }
+  // };
 
   useEffect(() => _getAllSurguryRecords(), []);
 
@@ -139,7 +150,6 @@ const SurgeryRecordModal = ({ show, onHide, mode }) => {
           <div className="form-group col-12 margint-frmGrp">
             <SingleDatePicker
               // defaultDate={data.BD}
-              // birthDateMode={true}
               setDate={setSurgeryDate}
               label="تاریخ جراحی"
             />
