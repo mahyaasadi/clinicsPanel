@@ -9841,6 +9841,39 @@ ul li .active {
   .prescList {
     margin-bottom: 2rem;
   }
+
+  .Cardmain {
+    flex-direction: column !important;
+    height: 400px !important;
+    overflow-y: auto !important;
+    direction: ltr !important;
+  }
+
+  .profile {
+    height: 200px;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .viwer {
+    width: 100% !important;
+  }
+
+  .boxall {
+    height: 70px !important;
+  }
+
+  .boxall2 {
+    height: 70px !important;
+    border-bottom: 2px solid #fff !important;
+  }
+}
+
+.Cardmain {
+  flex-direction: row;
 }
 
 @media (max-width: 576px) {
@@ -10735,18 +10768,10 @@ thead {
   border-radius: 4px;
 }
 
-.profile {
-  width: 40%;
-  height: 200px;
-  background: #fafafa;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
+
 
 .viwer {
-  width: 25%;
+  width: 20%;
   /* width: 200px; */
   /* 		height: 400px; */
 }
@@ -10839,7 +10864,7 @@ thead {
   flex-direction: column;
   align-items: center;
   color: #b45309;
-  /* margin-top: 20px; */
+  margin-top: 20px;
 }
 
 .alltion {
@@ -10868,6 +10893,11 @@ thead {
 }
 
 .boxall:hover {
+  background: #e1cfc2;
+  cursor: pointer;
+}
+
+.boxall2:hover {
   background: #e1cfc2;
   cursor: pointer;
 }

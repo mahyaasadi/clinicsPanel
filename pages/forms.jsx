@@ -59,8 +59,7 @@ const Forms = ({ ClinicUser }) => {
       setIsLoading(true);
       let url = `Form/Delete/${id}`;
       let data = {
-        CenterID: ClinicID,
-        UserID: ClinicUser._id
+        UserID: ClinicUser._id,
       };
 
       await axiosClient

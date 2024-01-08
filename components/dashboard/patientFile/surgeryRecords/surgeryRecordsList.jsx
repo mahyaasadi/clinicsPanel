@@ -1,6 +1,8 @@
 import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
+import { axiosClient } from "class/axiosConfig.js";
+import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
@@ -8,10 +10,38 @@ import "react-data-table-component-extensions/dist/index.css";
 
 const SurgeryRecordsList = ({
   data,
-  openSurgeryModal,
   openEditSurgeryModal,
+  removeAttachedSurgeryRecord,
+  ActivePatientID,
+  ClinicUserID,
 }) => {
-  // console.log({ data });
+  // remove patient's surgeryRecord
+  const _removeAttachedSurgeryRecord = async (id) => {
+    let result = await QuestionAlert(
+      "حذف سابقه جراحی!",
+      "آیا از حذف اطمینان دارید؟"
+    );
+
+    let url = "Patient/deleteSurgery";
+    let data = {
+      SurgeryID: id,
+      UserID: ClinicUserID,
+      PatientID: ActivePatientID,
+    };
+
+    if (result) {
+      await axiosClient
+        .delete(url, { data })
+        .then((response) => {
+          removeAttachedSurgeryRecord(id);
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("خطا", "حذف با خطا مواجه گردید!");
+        });
+    }
+  };
+
   const columns = [
     {
       name: "جراحی",
@@ -21,7 +51,7 @@ const SurgeryRecordsList = ({
     },
     {
       name: "تاریخ جراحی",
-      selector: (row) => (row.EditDate ? row.Date : "-"),
+      selector: (row) => (row.Date ? row.Date : "-"),
       sortable: true,
       width: "auto",
     },
@@ -34,6 +64,7 @@ const SurgeryRecordsList = ({
           <button
             data-pr-position="left"
             className="btn removeBtn trashButton eventBtns d-flex align-items-center p-2"
+            onClick={() => _removeAttachedSurgeryRecord(row._id)}
           >
             <FeatherIcon
               icon="trash-2"
@@ -41,7 +72,7 @@ const SurgeryRecordsList = ({
             />
             <Tooltip target=".removeBtn">حذف</Tooltip>
           </button>
-          <Link
+          <button
             onClick={() => openEditSurgeryModal(row)}
             className="btn editBtn d-flex eventBtns align-items-center p-2"
             data-pr-position="right"
@@ -51,7 +82,7 @@ const SurgeryRecordsList = ({
               style={{ width: "15px", height: "15px" }}
             />
             <Tooltip target=".editBtn">ویرایش</Tooltip>
-          </Link>
+          </button>
         </div>
       ),
       width: "auto",
@@ -65,9 +96,9 @@ const SurgeryRecordsList = ({
 
   return (
     <>
-      <div className="card border-gray mb-2">
-        <div className="card-body">
-          <div className="card-header p-2 pt-0 mb-2">
+      {/* <div className="card border-gray mb-2">
+        <div className="card-body"> */}
+      {/* <div className="card-header p-2 pt-0 mb-2">
             <div className="row align-items-center justify-evenly">
               <div className="col">
                 <p className="fw-bold text-secondary font-13">سوابق جراحی</p>
@@ -83,29 +114,29 @@ const SurgeryRecordsList = ({
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="row">
-            <div className="table-responsive patientFileTbl p-2">
-              <DataTableExtensions {...tableData}>
-                <DataTable
-                  noHeader
-                  defaultSortField="id"
-                  defaultSortAsc={false}
-                  pagination
-                  highlightOnHover
-                  noDataComponent={
-                    <div style={{ padding: "24px", fontSize: "13px" }}>
-                      اطلاعاتی ثبت نشده است.
-                    </div>
-                  }
-                  customStyles={tableCustomStyles}
-                />
-              </DataTableExtensions>
-            </div>
-          </div>
+      <div className="row">
+        <div className="table-responsive patientFileTbl p-2">
+          <DataTableExtensions {...tableData}>
+            <DataTable
+              noHeader
+              defaultSortField="id"
+              defaultSortAsc={false}
+              pagination
+              highlightOnHover
+              noDataComponent={
+                <div style={{ padding: "24px", fontSize: "13px" }}>
+                  اطلاعاتی ثبت نشده است.
+                </div>
+              }
+              customStyles={tableCustomStyles}
+            />
+          </DataTableExtensions>
         </div>
       </div>
+      {/* </div>
+      </div> */}
     </>
   );
 };

@@ -7,6 +7,7 @@ const FormRadioGroup = ({ data }) => {
 
   const onChangeRadio = (e) => {
     setSelectedOption(e.target.value);
+    console.log(e.target.value);
   };
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const FormRadioGroup = ({ data }) => {
           )}{" "}
         </label>
       </div>
+
       <div className={data.inline ? "d-inline-flex" : "d-flex flex-col"}>
         {data.values.map((option, index) => (
           <RadioButton

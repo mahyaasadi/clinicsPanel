@@ -10,7 +10,7 @@ const FormsList = ({
   data,
   openPatientFrmPreviewModal,
   openAddFrmToPatientModal,
-  deletePatientForm
+  deletePatientForm,
 }) => {
   const columns = [
     {
@@ -65,7 +65,7 @@ const FormsList = ({
           <button
             onClick={() => openPatientFrmPreviewModal(row)}
             data-pr-position="right"
-            className="btn removeBtn trashButton eventBtns d-flex align-items-center prevform p-2"
+            className="btn  eventBtns d-flex align-items-center prevform p-2"
           >
             <FeatherIcon icon="eye" style={{ width: "16px", height: "16px" }} />
             <Tooltip target=".prevform">مشاهده فرم</Tooltip>

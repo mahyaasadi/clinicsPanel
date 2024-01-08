@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
 import { axiosClient } from "class/axiosConfig";
+import { ErrorAlert } from "class/AlertManage";
 import { Modal } from "react-bootstrap";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 let surgeryOptions = [];
-let selectedSurgeryLbl = "";
-const SurgeryRecordModal = ({ show, onHide, mode, attachSurgeryRecordToPatient }) => {
-
+const SurgeryRecordModal = ({
+  data,
+  show,
+  onHide,
+  mode,
+  attachSurgeryRecordToPatient,
+  ActivePatientID,
+  editAttachedSurgeryRecord,
+  showOtherSurgeryType,
+  setShowOtherSurgeryType,
+}) => {
   const [surgeryDate, setSurgeryDate] = useState(null);
+  const [selectedSurgeryLbl, setSelectedSurgeryLbl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const _getAllSurguryRecords = () => {
@@ -26,13 +36,29 @@ const SurgeryRecordModal = ({ show, onHide, mode, attachSurgeryRecordToPatient }
           };
           surgeryOptions.push(obj);
         }
+        const otherOption = { value: 11, label: "سایر" };
+        surgeryOptions.push(otherOption);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const FUSelectSurgery = (value) => selectedSurgeryLbl = surgeryOptions.find((x) => parseInt(x.value) === value);
+  const defaultSurgeryType = surgeryOptions.find((x) => x.label === data.Name);
+
+  const FUSelectSurgery = (value) => {
+    const findSelected = surgeryOptions.find(
+      (x) => parseInt(x.value) === value
+    );
+    setSelectedSurgeryLbl(findSelected);
+
+    if (value === 11) {
+      setShowOtherSurgeryType(true);
+      setSelectedSurgeryLbl(findSelected);
+    } else {
+      setShowOtherSurgeryType(false);
+    }
+  };
 
   // attach surgeryRecord to patient
   const _attachSurgeryRecordToPatient = (e) => {
@@ -41,74 +67,56 @@ const SurgeryRecordModal = ({ show, onHide, mode, attachSurgeryRecordToPatient }
 
     let url = "Patient/addSurgery";
     let data = {
-      Name: selectedSurgeryLbl.label,
+      PatientID: ActivePatientID,
+      Name:
+        selectedSurgeryLbl.value === 11
+          ? $("#otherSurgeryName").val()
+          : selectedSurgeryLbl.label,
       Date: surgeryDate,
     };
-
-    // console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-        attachSurgeryRecordToPatient(response.data)
-
-        setIsLoading(false)
+        attachSurgeryRecordToPatient(response.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setIsLoading(false)
+        ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
+        setIsLoading(false);
       });
   };
 
   // edit patient's surgeryRecord
-  // const _editAttachedSurgeryRecord = (e) => {
-  //   e.preventDefault();
+  const _editAttachedSurgeryRecord = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
 
-  //   let formData = new FormData(e.target);
-  //   const formProps = Object.fromEntries(formData);
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
 
-  //   let url = "Patient/editSurgery";
-  //   let data = {
-  //     // Name,
-  //     // Date,
-  //     // SurgeryID:
-  //   };
+    let url = "Patient/editSurgery";
+    let data = {
+      PatientID: ActivePatientID,
+      Name: selectedSurgeryLbl
+        ? selectedSurgeryLbl.label
+        : defaultSurgeryType.label,
+      Date: surgeryDate,
+      SurgeryID: formProps.surgeryID,
+    };
 
-  //   console.log({ data });
-
-  //   axiosClient
-  //     .put((url, data))
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const updateItem = (newArr, id) => {
-  //   let index = discountsList.findIndex((x) => x._id === id);
-  //   let g = discountsList[index];
-  //   g = newArr;
-
-  //   if (index === -1) {
-  //     console.log("no match");
-  //   } else
-  //     setDiscountsList([
-  //       ...discountsList.slice(0, index),
-  //       g,
-  //       ...discountsList.slice(index + 1),
-  //     ]);
-  // }
-
-  // remove patient's surgeryRecord
-  // const removeAttachedSurgeryRecord = async (id) => {
-  //   let url = "Patient/deleteSurgery"
-  //   let data = {
-  //     // SurgeryID:
-  //   }
-  // }
+    axiosClient
+      .put(url, data)
+      .then((response) => {
+        editAttachedSurgeryRecord(response.data, formProps.surgeryID);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => _getAllSurguryRecords(), []);
 
@@ -131,6 +139,8 @@ const SurgeryRecordModal = ({ show, onHide, mode, attachSurgeryRecordToPatient }
           }
         >
           <div>
+            <input type="hidden" name="surgeryID" value={data._id} />
+
             <label className="lblDrugIns font-12">
               نوع جراحی <span className="text-danger">*</span>
             </label>
@@ -142,16 +152,29 @@ const SurgeryRecordModal = ({ show, onHide, mode, attachSurgeryRecordToPatient }
               className="text-center font-12"
               placeholder={"انتخاب کنید"}
               name="surgeryName"
-              // defaultValue={mode === "edit" ? defDepValue : ""}
+              defaultValue={mode === "edit" ? defaultSurgeryType : ""}
               onChange={(value) => FUSelectSurgery(value?.value)}
               isClearable
               required
             />
           </div>
 
+          {showOtherSurgeryType && (
+            <div className="input-group mb-2">
+              <input
+                type="text"
+                id="otherSurgeryName"
+                placeholder="نوع جراحی را وارد نمایید"
+                required
+                className="form-control rounded-right font-12"
+              />
+            </div>
+          )}
+
           <div className="form-group col-12 margint-frmGrp">
             <SingleDatePicker
-              // defaultDate={data.BD}
+              defaultDate={data.Date}
+              birthDateMode={true}
               setDate={setSurgeryDate}
               label="تاریخ جراحی"
             />

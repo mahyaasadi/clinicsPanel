@@ -43,6 +43,7 @@ const FormBuilder = ({ ClinicUser }) => {
 
   const [editFormData, setEditFormData] = useState([]);
   const [frmIsLoading, setFrmIsLoading] = useState(true);
+  const [prevData, setPrevData] = useState([]);
 
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const openPreviewModal = () => setShowPreviewModal(true);
@@ -90,6 +91,10 @@ const FormBuilder = ({ ClinicUser }) => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
   }, [router.isReady]);
+
+  useEffect(() => {
+    console.log({ prevData });
+  }, [prevData]);
 
   return (
     <>
@@ -151,7 +156,8 @@ const FormBuilder = ({ ClinicUser }) => {
 
             <div className="d-flex justify-end gap-2 marginb-3 mt-2">
               <button
-                onClick={() => openPreviewModal()}
+                id="prevBtn"
+                onClick={() => openPreviewModal(prevData)}
                 className="btn btn-outline-primary font-14"
               >
                 پیش نمایش
@@ -215,10 +221,10 @@ const FormBuilder = ({ ClinicUser }) => {
                   };
 
                   let url = ActiveFormID
-                    ? `https://api.irannobat.ir/Form/Edit/${ActiveFormID}`
+                    ? `https://api.irannobat.ir/Form/Update/${ActiveFormID}`
                     : "https://api.irannobat.ir/Form/add";
 
-                  console.log({ data });
+                  console.log({ data, url });
 
                   if ($("#FormName").val() === "") {
                     ErrorAlert("خطا", "فیلد نام فرم را تکمیل نمایید!");
@@ -255,11 +261,18 @@ const FormBuilder = ({ ClinicUser }) => {
               ?.addEventListener("click", function () {
                 fb?.actions?.setData(formData);
               });
+
+            document
+              .getElementById("prevBtn")
+              .addEventListener("click", function () {
+                let jsData = fb.actions.getData();
+                setPrevData(jsData);
+              });
           });
         }}
       />
 
-      <FormPreview data={formData} show={showPreviewModal} onHide={onHide} />
+      <FormPreview data={prevData} show={showPreviewModal} onHide={onHide} />
     </>
   );
 };

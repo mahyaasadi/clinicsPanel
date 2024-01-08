@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
+import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
@@ -72,9 +73,7 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
-        setPatientSurgeryList(response.data.SurgeryList)
-        // console.log({ patientSurgeryList });
+        setPatientSurgeryList(response.data.SurgeryList);
         setPatientData(response.data);
         setIsLoading(false);
       })
@@ -111,14 +110,14 @@ const PatientFile = ({ ClinicUser }) => {
       setIsLoading(true);
       let url = `Form/deletePatientForm/${id}`;
       let data = {
-        CenterID: ClinicID,
-        UserID: ClinicUserID
+        UserID: ClinicUserID,
       };
 
       await axiosClient
         .delete(url, { data })
         .then((response) => {
           setPatientForms(patientFormData.filter((a) => a._id !== id));
+          getPatientForms();
           setIsLoading(false);
         })
         .catch(function (error) {
@@ -130,25 +129,62 @@ const PatientFile = ({ ClinicUser }) => {
   };
 
   // Surgery Records
-  const [editPatientSurguryData, setEditPatientSurguryData] = useState([])
+  const [editPatientSurguryData, setEditPatientSurguryData] = useState([]);
   const [showSurgeryModal, setShowSurgeryModal] = useState(false);
   const [surgeryModalMode, setSurgeryModalMode] = useState("add");
+  // other option for surgeryType
+  const [showOtherSurgeryType, setShowOtherSurgeryType] = useState(false);
+
   const closeSurgeryModal = () => setShowSurgeryModal(false);
+
   const openSurgeryModal = (data) => {
-    // console.log({ data });
-    setPatientSurgeryList(data.SurgeryList)
     setShowSurgeryModal(true);
-  }
-  const openEditSurgeryModal = () => {
+    setSurgeryModalMode("add");
+    setShowOtherSurgeryType(false);
+  };
+
+  const openEditSurgeryModal = (data) => {
+    setShowSurgeryModal(true);
     setSurgeryModalMode("edit");
-    setEditPatientSurguryData(data)
-  }
+    setEditPatientSurguryData(data);
+  };
 
   const attachSurgeryRecordToPatient = (addedSurgeryRecord) => {
-    setPatientSurgeryList([...patientSurgeryList, addedSurgeryRecord]);
-    getOnePatient()
-    // console.log({ patientSurgeryList });
-  }
+    if (addedSurgeryRecord) {
+      setPatientSurgeryList([...patientSurgeryList, addedSurgeryRecord]);
+      setShowSurgeryModal(false);
+      getOnePatient();
+    }
+  };
+
+  const removeAttachedSurgeryRecord = (SurgeryID) => {
+    setIsLoading(true);
+    if (SurgeryID) {
+      setPatientSurgeryList(
+        patientSurgeryList.filter((a) => a._id !== SurgeryID)
+      );
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  const editAttachedSurgeryRecord = (newArr, id) => {
+    let index = patientSurgeryList.findIndex((x) => x._id === id);
+    let g = patientSurgeryList[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else
+      setPatientSurgeryList([
+        ...patientSurgeryList.slice(0, index),
+        g,
+        ...patientSurgeryList.slice(index + 1),
+      ]);
+
+    setShowSurgeryModal(false);
+  };
 
   useEffect(() => {
     ActivePatientID = router.query.id;
@@ -156,6 +192,7 @@ const PatientFile = ({ ClinicUser }) => {
       getOnePatient();
       getPatientForms();
     }
+    setShowOtherSurgeryType(false);
   }, [router.isReady]);
 
   return (
@@ -181,32 +218,62 @@ const PatientFile = ({ ClinicUser }) => {
               </div>
 
               <div className="row mb-2">
-                <div className="col-md-6 col-12">
+                <div className="col-lg-6 col-12">
                   <DiseaseRecordsList />
                 </div>
-                <div className="col-md-6 col-12 mb-2">
-                  <SurgeryRecordsList
-                    data={patientData.SurgeryList}
-                    openSurgeryModal={openSurgeryModal}
-                    openEditSurgeryModal={openEditSurgeryModal}
-                  />
+
+                <div className="col-lg-6 col-12 mb-2">
+                  <div className="card border-gray mb-2">
+                    <div className="card-body">
+                      <div className="card-header p-2 pt-0 mb-2">
+                        <div className="row align-items-center justify-evenly">
+                          <div className="col">
+                            <p className="fw-bold text-secondary font-13">
+                              سوابق جراحی
+                            </p>
+                          </div>
+
+                          <div className="col d-flex justify-end">
+                            <button
+                              onClick={() => openSurgeryModal(patientData)}
+                              className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
+                            >
+                              <FeatherIcon icon="plus" />
+                              سابقه جدید
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <SurgeryRecordsList
+                        ClinicID={ClinicID}
+                        data={patientSurgeryList}
+                        openEditSurgeryModal={openEditSurgeryModal}
+                        removeAttachedSurgeryRecord={
+                          removeAttachedSurgeryRecord
+                        }
+                        ActivePatientID={ActivePatientID}
+                        ClinicUserID={ClinicUserID}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div className="row mb-2">
-                <div className="col-md-6 col-12">
+                <div className="col-lg-6 col-12">
                   <FamilyRecordsList />
                 </div>
-                <div className="col-md-6 col-12 mb-2">
+                <div className="col-lg-6 col-12 mb-2">
                   <AddictionRecordsList />
                 </div>
               </div>
 
               <div className="row mb-2">
-                <div className="col-md-6 col-12">
+                <div className="col-lg-6 col-12">
                   <FoodAllergyRecordsList />
                 </div>
-                <div className="col-md-6 col-12 mb-2">
+                <div className="col-lg-6 col-12 mb-2">
                   <MedicalAllergyRecordsList />
                 </div>
               </div>
@@ -233,10 +300,12 @@ const PatientFile = ({ ClinicUser }) => {
           mode={surgeryModalMode}
           show={showSurgeryModal}
           onHide={closeSurgeryModal}
-          patientData={patientData}
-          getOnePatient={getOnePatient}
+          ActivePatientID={ActivePatientID}
           data={editPatientSurguryData}
           attachSurgeryRecordToPatient={attachSurgeryRecordToPatient}
+          editAttachedSurgeryRecord={editAttachedSurgeryRecord}
+          showOtherSurgeryType={showOtherSurgeryType}
+          setShowOtherSurgeryType={setShowOtherSurgeryType}
         />
       </div>
     </>

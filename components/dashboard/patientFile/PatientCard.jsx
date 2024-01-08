@@ -1,7 +1,6 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
 const PatientCard = ({ data }) => {
-
   let InsuranceType,
     GenderType = null;
   if (data) {
@@ -40,7 +39,7 @@ const PatientCard = ({ data }) => {
   return (
     <div className="cantainer">
       <div className="Cardmain">
-        <div className="profile">
+        <div className="profile col-md-5 col-12">
           <div className="pro-im-na">
             <div className="Cardimg">
               {data.Avatar ? (
@@ -72,7 +71,9 @@ const PatientCard = ({ data }) => {
         <div className="viwer">
           <div className="boxall">
             <span className="value">سن</span>
-            <span className="parameter">{data?.Age ? data.Age : "-"} ساله</span>
+            <span className="parameter">
+              {data?.Age ? data.Age + " ساله" : "-"}{" "}
+            </span>
           </div>
           <div className="boxall2">
             <span className="value">تاریخ تولد</span>

@@ -1,27 +1,32 @@
 import { Modal } from "react-bootstrap";
+import FeatherIcon from "feather-icons-react";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
+  const handlePrint = () => window.print();
   return (
     <>
-      <Modal show={show} onHide={onHide} centered size="xl">
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <p className="mb-0 text-secondary font-14 fw-bold">
-              مشاهده فرم
-              {/* {} */}
-            </p>
-          </Modal.Title>
+      <Modal show={show} onHide={onHide} centered fullscreen={true}>
+        <Modal.Header closeButton className="modalHeader">
+          <div className="col-lg-4">
+            <button
+              type="button"
+              className="btn btn-outline-primary d-flex justify-center"
+              onClick={() => handlePrint()}
+            >
+              <FeatherIcon icon="printer" />
+            </button>
+          </div>
         </Modal.Header>
 
         <Modal.Body>
           <div className="row">
             {data?.map((formComponent, index) => (
               <div
+                key={index}
                 className={formComponent?.className?.replace(
                   "form-control",
                   "mb-4"
                 )}
-                key={index}
               >
                 {formComponent.type === "header" ? (
                   <formComponent.subtype
