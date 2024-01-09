@@ -40,7 +40,6 @@ let ClinicID,
 const PatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
-
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +53,7 @@ const PatientFile = ({ ClinicUser }) => {
   const [patientFormValues, setPatientFormValues] = useState({});
 
   const closePatientFrmPreviewModal = () => setShowPrevModal(false);
+
   const openPatientFrmPreviewModal = (PFData) => {
     setShowPrevModal(true);
     setPatientFormData(JSON.parse(PFData.formData.formData[0]));
@@ -63,7 +63,7 @@ const PatientFile = ({ ClinicUser }) => {
   // Patient Add New Form
   const [showFormOptionsModal, setShowFormOptionsModal] = useState(false);
   const handleCloseFrmOptionsModal = () => setShowFormOptionsModal(false);
-  const openAddFrmToPatientModal = (data) => setShowFormOptionsModal(true);
+  const openAddFrmToPatientModal = () => setShowFormOptionsModal(true);
 
   // Get One Patient Data
   const getOnePatient = () => {
@@ -99,7 +99,7 @@ const PatientFile = ({ ClinicUser }) => {
       });
   };
 
-  // delete patient's form
+  // Delete Patient's Form
   const deletePatientForm = async (id) => {
     let result = await QuestionAlert(
       "حذف فرم!",
@@ -132,21 +132,21 @@ const PatientFile = ({ ClinicUser }) => {
   const [editPatientSurguryData, setEditPatientSurguryData] = useState([]);
   const [showSurgeryModal, setShowSurgeryModal] = useState(false);
   const [surgeryModalMode, setSurgeryModalMode] = useState("add");
-  // other option for surgeryType
+  // other options for surgeryType
   const [showOtherSurgeryType, setShowOtherSurgeryType] = useState(false);
+  const [newDefaultSurgery, setNewDefaultSurgery] = useState("");
 
-  const closeSurgeryModal = () => setShowSurgeryModal(false);
+  const closeSurgeryModal = () => {
+    setShowSurgeryModal(false);
+    setNewDefaultSurgery("");
+  };
 
+  // Attach Surgery Record
   const openSurgeryModal = (data) => {
     setShowSurgeryModal(true);
     setSurgeryModalMode("add");
     setShowOtherSurgeryType(false);
-  };
-
-  const openEditSurgeryModal = (data) => {
-    setShowSurgeryModal(true);
-    setSurgeryModalMode("edit");
-    setEditPatientSurguryData(data);
+    setNewDefaultSurgery("");
   };
 
   const attachSurgeryRecordToPatient = (addedSurgeryRecord) => {
@@ -157,16 +157,12 @@ const PatientFile = ({ ClinicUser }) => {
     }
   };
 
-  const removeAttachedSurgeryRecord = (SurgeryID) => {
-    setIsLoading(true);
-    if (SurgeryID) {
-      setPatientSurgeryList(
-        patientSurgeryList.filter((a) => a._id !== SurgeryID)
-      );
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
+  // Edit Attached Surgery Record
+  const openEditSurgeryModal = (data) => {
+    setShowSurgeryModal(true);
+    setSurgeryModalMode("edit");
+    setEditPatientSurguryData(data);
+    setShowOtherSurgeryType(false);
   };
 
   const editAttachedSurgeryRecord = (newArr, id) => {
@@ -184,6 +180,19 @@ const PatientFile = ({ ClinicUser }) => {
       ]);
 
     setShowSurgeryModal(false);
+  };
+
+  // Remove Attach Surgery Record
+  const removeAttachedSurgeryRecord = (SurgeryID) => {
+    setIsLoading(true);
+    if (SurgeryID) {
+      setPatientSurgeryList(
+        patientSurgeryList.filter((a) => a._id !== SurgeryID)
+      );
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -223,40 +232,16 @@ const PatientFile = ({ ClinicUser }) => {
                 </div>
 
                 <div className="col-lg-6 col-12 mb-2">
-                  <div className="card border-gray mb-2">
-                    <div className="card-body">
-                      <div className="card-header p-2 pt-0 mb-2">
-                        <div className="row align-items-center justify-evenly">
-                          <div className="col">
-                            <p className="fw-bold text-secondary font-13">
-                              سوابق جراحی
-                            </p>
-                          </div>
-
-                          <div className="col d-flex justify-end">
-                            <button
-                              onClick={() => openSurgeryModal(patientData)}
-                              className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
-                            >
-                              <FeatherIcon icon="plus" />
-                              سابقه جدید
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      <SurgeryRecordsList
-                        ClinicID={ClinicID}
-                        data={patientSurgeryList}
-                        openEditSurgeryModal={openEditSurgeryModal}
-                        removeAttachedSurgeryRecord={
-                          removeAttachedSurgeryRecord
-                        }
-                        ActivePatientID={ActivePatientID}
-                        ClinicUserID={ClinicUserID}
-                      />
-                    </div>
-                  </div>
+                  <SurgeryRecordsList
+                    ClinicID={ClinicID}
+                    ClinicUserID={ClinicUserID}
+                    ActivePatientID={ActivePatientID}
+                    data={patientSurgeryList}
+                    patientData={patientData}
+                    openSurgeryModal={openSurgeryModal}
+                    openEditSurgeryModal={openEditSurgeryModal}
+                    removeAttachedSurgeryRecord={removeAttachedSurgeryRecord}
+                  />
                 </div>
               </div>
 
@@ -306,6 +291,8 @@ const PatientFile = ({ ClinicUser }) => {
           editAttachedSurgeryRecord={editAttachedSurgeryRecord}
           showOtherSurgeryType={showOtherSurgeryType}
           setShowOtherSurgeryType={setShowOtherSurgeryType}
+          newDefaultSurgery={newDefaultSurgery}
+          setNewDefaultSurgery={setNewDefaultSurgery}
         />
       </div>
     </>

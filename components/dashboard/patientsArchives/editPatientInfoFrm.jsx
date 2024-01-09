@@ -147,10 +147,9 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
                   ></path>
                 </svg>
               )}
-
             </div>
             <div className="changeAvatarIcon">
-              <FeatherIcon icon="edit-2" style={{ width: "15px !important", height: "15px !important" }} />
+              <FeatherIcon icon="edit-2" />
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 let surgeryOptions = [];
+let newDefaultSurgery = "";
 const SurgeryRecordModal = ({
   data,
   show,
@@ -17,6 +18,8 @@ const SurgeryRecordModal = ({
   editAttachedSurgeryRecord,
   showOtherSurgeryType,
   setShowOtherSurgeryType,
+  newDefaultSurgery,
+  setNewDefaultSurgery,
 }) => {
   const [surgeryDate, setSurgeryDate] = useState(null);
   const [selectedSurgeryLbl, setSelectedSurgeryLbl] = useState("");
@@ -44,7 +47,7 @@ const SurgeryRecordModal = ({
       });
   };
 
-  const defaultSurgeryType = surgeryOptions.find((x) => x.label === data.Name);
+  let defaultSurgeryType = surgeryOptions.find((x) => x.label === data.Name);
 
   const FUSelectSurgery = (value) => {
     const findSelected = surgeryOptions.find(
@@ -52,10 +55,18 @@ const SurgeryRecordModal = ({
     );
     setSelectedSurgeryLbl(findSelected);
 
+    // others options
     if (value === 11) {
       setShowOtherSurgeryType(true);
-      setSelectedSurgeryLbl(findSelected);
+      // setSelectedSurgeryLbl({ value: 11, label: "سایر" });
+      // newDefaultSurgery = surgeryOptions.find((x) => x.value === value);
+      setNewDefaultSurgery("");
+    } else if (selectedSurgeryLbl.value !== 11 || value !== 11) {
+      setShowOtherSurgeryType(false);
+      setNewDefaultSurgery(surgeryOptions.find((x) => x.value === value));
+      // setSelectedSurgeryLbl({ value: 11, label: "سایر" });
     } else {
+      setNewDefaultSurgery("");
       setShowOtherSurgeryType(false);
     }
   };
@@ -75,11 +86,15 @@ const SurgeryRecordModal = ({
       Date: surgeryDate,
     };
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
         attachSurgeryRecordToPatient(response.data);
         setIsLoading(false);
+        e.target.reset();
+        setSelectedSurgeryLbl("");
       })
       .catch((err) => {
         console.log(err);
@@ -97,20 +112,26 @@ const SurgeryRecordModal = ({
     const formProps = Object.fromEntries(formData);
 
     let url = "Patient/editSurgery";
-    let data = {
+    let editData = {
       PatientID: ActivePatientID,
-      Name: selectedSurgeryLbl
-        ? selectedSurgeryLbl.label
-        : defaultSurgeryType.label,
+      Name:
+        selectedSurgeryLbl.label === "سایر"
+          ? $("#otherSurgeryName").val()
+          : selectedSurgeryLbl
+          ? selectedSurgeryLbl.label
+          : !defaultSurgeryType
+          ? $("#otherSurgeryName").val()
+          : data.Name,
       Date: surgeryDate,
       SurgeryID: formProps.surgeryID,
     };
 
     axiosClient
-      .put(url, data)
+      .put(url, editData)
       .then((response) => {
         editAttachedSurgeryRecord(response.data, formProps.surgeryID);
         setIsLoading(false);
+        setSelectedSurgeryLbl("");
       })
       .catch((err) => {
         console.log(err);
@@ -141,9 +162,7 @@ const SurgeryRecordModal = ({
           <div>
             <input type="hidden" name="surgeryID" value={data._id} />
 
-            <label className="lblDrugIns font-12">
-              نوع جراحی <span className="text-danger">*</span>
-            </label>
+            <label className="lblDrugIns font-12">نوع جراحی</label>
 
             <SelectField
               styles={selectfieldColourStyles}
@@ -155,17 +174,23 @@ const SurgeryRecordModal = ({
               defaultValue={mode === "edit" ? defaultSurgeryType : ""}
               onChange={(value) => FUSelectSurgery(value?.value)}
               isClearable
-              required
+              // required
             />
           </div>
 
-          {showOtherSurgeryType && (
+          {(showOtherSurgeryType ||
+            (newDefaultSurgery === "" &&
+              !defaultSurgeryType &&
+              mode == "edit")) && (
             <div className="input-group mb-2">
               <input
                 type="text"
                 id="otherSurgeryName"
                 placeholder="نوع جراحی را وارد نمایید"
                 required
+                defaultValue={
+                  mode === "edit" && !defaultSurgeryType ? data.Name : ""
+                }
                 className="form-control rounded-right font-12"
               />
             </div>
@@ -173,7 +198,7 @@ const SurgeryRecordModal = ({
 
           <div className="form-group col-12 margint-frmGrp">
             <SingleDatePicker
-              defaultDate={data.Date}
+              defaultDate={mode === "edit" ? data.Date : ""}
               birthDateMode={true}
               setDate={setSurgeryDate}
               label="تاریخ جراحی"

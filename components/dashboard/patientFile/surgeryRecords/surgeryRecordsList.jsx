@@ -14,6 +14,8 @@ const SurgeryRecordsList = ({
   removeAttachedSurgeryRecord,
   ActivePatientID,
   ClinicUserID,
+  openSurgeryModal,
+  patientData,
 }) => {
   // remove patient's surgeryRecord
   const _removeAttachedSurgeryRecord = async (id) => {
@@ -96,9 +98,9 @@ const SurgeryRecordsList = ({
 
   return (
     <>
-      {/* <div className="card border-gray mb-2">
-        <div className="card-body"> */}
-      {/* <div className="card-header p-2 pt-0 mb-2">
+      <div className="card border-gray mb-2">
+        <div className="card-body">
+          <div className="card-header p-2 pt-0 mb-2">
             <div className="row align-items-center justify-evenly">
               <div className="col">
                 <p className="fw-bold text-secondary font-13">سوابق جراحی</p>
@@ -106,7 +108,7 @@ const SurgeryRecordsList = ({
 
               <div className="col d-flex justify-end">
                 <button
-                  onClick={() => openSurgeryModal(data)}
+                  onClick={() => openSurgeryModal()}
                   className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />
@@ -114,29 +116,29 @@ const SurgeryRecordsList = ({
                 </button>
               </div>
             </div>
-          </div> */}
+          </div>
 
-      <div className="row">
-        <div className="table-responsive patientFileTbl p-2">
-          <DataTableExtensions {...tableData}>
-            <DataTable
-              noHeader
-              defaultSortField="id"
-              defaultSortAsc={false}
-              pagination
-              highlightOnHover
-              noDataComponent={
-                <div style={{ padding: "24px", fontSize: "13px" }}>
-                  اطلاعاتی ثبت نشده است.
-                </div>
-              }
-              customStyles={tableCustomStyles}
-            />
-          </DataTableExtensions>
+          <div className="row">
+            <div className="table-responsive patientFileTbl p-2">
+              <DataTableExtensions {...tableData}>
+                <DataTable
+                  noHeader
+                  defaultSortField="id"
+                  defaultSortAsc={false}
+                  pagination
+                  highlightOnHover
+                  noDataComponent={
+                    <div style={{ padding: "24px", fontSize: "13px" }}>
+                      اطلاعاتی ثبت نشده است.
+                    </div>
+                  }
+                  customStyles={tableCustomStyles}
+                />
+              </DataTableExtensions>
+            </div>
+          </div>
         </div>
       </div>
-      {/* </div>
-      </div> */}
     </>
   );
 };

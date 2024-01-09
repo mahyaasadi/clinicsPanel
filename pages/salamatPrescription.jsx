@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
@@ -7,6 +7,8 @@ import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard"
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { SalamatPrescType } from "class/salamatPrescriptionData";
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -49,6 +51,8 @@ let ActiveSrvTypeID = 1;
 const SalamatPrescription = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
+  const toast = useRef(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
@@ -62,24 +66,33 @@ const SalamatPrescription = ({ ClinicUser }) => {
     const formProps = Object.fromEntries(formData);
     ActivePatientNID = formProps.nationalCode;
 
-    let url = "Patient/checkByNid";
+    let url = "BimehSalamat/GetPatientSession";
     let data = {
-      ClinicID,
+      // ClinicID,
       CenterID: ClinicID,
       NID: formProps.nationalCode,
+      SavePresc: 1,
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        if (response.data.error == "1") {
-          $("#newPatientModal").modal("show");
-        } else {
-          ActivePatientID = response.data.user._id;
-          ActiveInsuranceType = response.data.user.InsuranceType;
-          ActiveInsuranceID = response.data.user.Insurance;
-          setPatientInfo(response.data.user);
-          $("#patientInfoCard").show("");
+        console.log(response.data);
+        // if (response.data.error == "1") {
+        //   $("#newPatientModal").modal("show");
+        // } else {
+        //   ActivePatientID = response.data.user._id;
+        //   ActiveInsuranceType = response.data.user.InsuranceType;
+        //   ActiveInsuranceID = response.data.user.Insurance;
+        // setPatientInfo(response.data.user);
+        // $("#patientInfoCard").show("");
+        // }
+        if (response.data.res.info) {
+          setTimeout(() => {
+            showPatientMessages(response.data.res.info.message.snackMessage);
+          }, 1000);
         }
         setPatientStatIsLoading(false);
       })
@@ -133,11 +146,40 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     axiosClient
       .get(url)
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  let patientToastMessages = [];
+  const showPatientMessages = (patientMessages) => {
+    for (let i = 0; i < patientMessages.length; i++) {
+      const element = patientMessages[i];
+      let obj = {
+        severity:
+          element.type === "S"
+            ? "Success"
+            : element.type === "I"
+            ? "Info"
+            : element.type === "E"
+            ? "Error"
+            : "Warning",
+        summary:
+          element.type === "S"
+            ? "موفق"
+            : element.type === "I"
+            ? "اطلاعات"
+            : element.type === "E"
+            ? "خطا"
+            : "هشدار",
+        detail: element.text,
+        life: 10000,
+      };
+      patientToastMessages.push(obj);
+    }
+
+    toast.current.show(patientToastMessages);
   };
 
   useEffect(() => getSalamatPrescTypeID(), []);
@@ -147,8 +189,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
       <Head>
         <title>نسخه نویسی خدمات درمانی</title>
       </Head>
-      <div className="page-wrapper">
+      <div className="page-wrapper" ref={toast}>
         <div className="content container-fluid">
+          <Toast ref={toast} />
           <div className="row">
             <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
               <PatientInfoCard
@@ -157,8 +200,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setPatientInfo={setPatientInfo}
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
+                toast={toast}
                 patientStatIsLoading={patientStatIsLoading}
               />
+
+              {/* getPatientActiveSearch={getPatientActiveSearch}
+                  handlePendingPatientClick={handlePendingPatientClick}
+                  handleShowPendingPatients={handleShowPendingPatients} */}
             </div>
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
