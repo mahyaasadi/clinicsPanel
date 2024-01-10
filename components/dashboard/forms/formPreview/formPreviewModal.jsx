@@ -7,7 +7,7 @@ const FormPreview = ({ data, show, onHide }) => {
 
   data?.map((x, index) => {
     const MyComponent = dynamic(() =>
-      import("components/dashboard/forms/formPreview/form-" + x?.type)
+      import("components/dashboard/forms/formComponents/form-" + x?.type)
     );
 
     componentsArr.push(<MyComponent data={x} index={index} />);

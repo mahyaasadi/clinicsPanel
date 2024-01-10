@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 
-const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
+const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
   //   const handleSearchDivs = () => {
   //     $("#unsuccessfullSearch").hide();
   //     $("#searchDiv").hide();
@@ -32,6 +32,15 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(2, item.img, item.name, 2);
+        // handleSearchDivs();
+        break;
+      case 3:
+        $("#ServiceSearchSelect").val("3");
+        $("#ServiceSearchSelect").hide();
+        $("#drugInstruction").hide();
+        $("#drugAmount").hide();
+
+        changePrescTypeTab(3, item.img, item.name, 3);
         // handleSearchDivs();
         break;
       case 4:
@@ -70,30 +79,22 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
         changePrescTypeTab(7, item.img, item.name, 7);
         // handleSearchDivs();
         break;
-      case 8:
-        $("#ServiceSearchSelect").val("8");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(8, item.img, item.name, 8);
-        // handleSearchDivs();
-        break;
       default:
         break;
     }
   };
 
   useEffect(() => {
-    if (item.Active === "active" && item.id === 1)
-      changePrescTypeTab("01", item.img, item.name, 1);
+    if (index === 0) changePrescTypeTab(1, item.img, item.name, 1);
   }, []);
 
   return (
     <>
       <li className="nav-item">
         <a
-          className={"nav-link media-nav-link " + item.Active}
+          className={`nav-link media-nav-link ${
+            index === 0 ? "active" : item.Active
+          }`}
           href={"#bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"

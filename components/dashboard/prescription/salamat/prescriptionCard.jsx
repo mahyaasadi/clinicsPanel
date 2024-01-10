@@ -1,11 +1,21 @@
 import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
+import { Skeleton } from "primereact/skeleton";
 // import ParaServicesDropdown from "./paraServicesDropdown";
-// import TaminSearchedServices from "components/dashboard/prescription/tamin/taminSearchedServices";
+import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
 const PrescriptionCard = ({
   setIsLoading,
-  //   searchIsLoading,
+  searchIsLoading,
+  salamatDataIsLoading,
+  salamatHeaderList,
+  changePrescTypeTab,
+  activeSearch,
+  prescSearchMode,
+  searchInDrugsCategory,
+  searchInGeneralCategories,
+  salamatSrvSearchList,
+  selectSearchedService,
   //   drugInstructionList,
   //   drugAmountList,
   //   SelectedInstruction,
@@ -14,13 +24,8 @@ const PrescriptionCard = ({
   //   setSelectedAmount,
   //   FUSelectInstruction,
   //   FUSelectDrugAmount,
-  SalamatHeaderList,
   //   taminParaServicesList,
-  //   taminSrvSearchList,
-  changePrescTypeTab,
   //   selectParaSrvType,
-  //   selectSearchedService,
-  //   activeSearch,
   //   searchTaminSrv,
   //   FuAddToListItem,
   //   registerEpresc,
@@ -48,47 +53,47 @@ const PrescriptionCard = ({
   //     FUSelectInstruction(e.value);
   //   };
 
-  //   // Search Recommendation
-  //   const handleSearchKeyUp = () => {
-  //     setIsLoading(true);
-  //     let inputCount = $("#srvSearchInput").val().length;
+  // // Search Recommendation
+  // const handleSearchKeyUp = () => {
+  //   setIsLoading(true);
+  //   let inputCount = $("#srvSearchInput").val().length;
 
-  //     if (inputCount > 2) {
-  //       setTimeout(() => {
-  //         $("#BtnServiceSearch").click();
-  //       }, 100);
-  //       setIsLoading(false);
-  //     } else {
-  //       $("#srvSearchInput").val() == "";
-  //       $(".SearchDiv").hide();
-  //       setIsLoading(false);
-  //     }
-  //   };
+  //   if (inputCount > 2) {
+  //     setTimeout(() => {
+  //       $("#BtnServiceSearch").click();
+  //     }, 100);
+  //     setIsLoading(false);
+  //   } else {
+  //     $("#srvSearchInput").val() == "";
+  //     $(".SearchDiv").hide();
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <>
-      <div className="card presCard">
+      <div className="card presCard shadow">
         <div className="card-body">
           <div className="prescript-header">
             <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
-              <button
+              {/* <button
                 className="btn btn-outline-primary border-radius font-13"
-              // onClick={openFavModal}
+                // onClick={openFavModal}
               >
                 نسخه های پرمصرف
-              </button>
+              </button> */}
 
               <button
                 className="btn border-radius visitBtn font-13"
-              // onClick={() => registerEpresc(1)}
+                // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-              // onClick={() => registerEpresc(0)}
+                // onClick={() => registerEpresc(0)}
               >
                 ثبت نسخه نهایی
               </button>
@@ -96,27 +101,42 @@ const PrescriptionCard = ({
           </div>
 
           <div className="card-body">
-            <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
-              {SalamatHeaderList.map((item, index) => (
-                <PrescriptionTypeHeader
-                  key={index}
-                  item={item}
-                  changePrescTypeTab={changePrescTypeTab}
-                />
-              ))}
-            </ul>
-            <hr />
+            {!salamatDataIsLoading ? (
+              <>
+                <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
+                  {salamatHeaderList?.map((item, index) => (
+                    <PrescriptionTypeHeader
+                      key={index}
+                      index={index}
+                      item={item}
+                      changePrescTypeTab={changePrescTypeTab}
+                    />
+                  ))}
+                </ul>
+                <hr />
+              </>
+            ) : (
+              <div className="SalamatPrscHeader">
+                <Skeleton>
+                  <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll"></ul>
+                </Skeleton>
+              </div>
+            )}
 
             <form
               className="w-100 pt-2"
-            // onSubmit={searchTaminSrv}
+              onSubmit={
+                prescSearchMode === "DrugSearch"
+                  ? searchInDrugsCategory
+                  : searchInGeneralCategories
+              }
             >
               <div className="input-group mb-3 inputServiceContainer">
                 <input
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -126,19 +146,19 @@ const PrescriptionCard = ({
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
-                // onFocus={handleOnFocus}
-                // onBlur={handleOnBlur}
-                //   onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  // onFocus={handleOnFocus}
+                  // onBlur={handleOnBlur}
+                  // onKeyUp={handleSearchKeyUp}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                //   onChange={() =>
-                //     selectParaSrvType($("#ServiceSearchSelect").val())
-                //   }
+                  //   onChange={() =>
+                  //     selectParaSrvType($("#ServiceSearchSelect").val())
+                  //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -152,21 +172,21 @@ const PrescriptionCard = ({
                 <button
                   className="btn btn-primary rounded-left w-10 disNone"
                   id="BtnActiveSearch"
-                  //   onClick={activeSearch}
+                  onClick={activeSearch}
                   type="button"
                 >
                   <i className="fe fe-close"></i>
                 </button>
 
-                {/* {!searchIsLoading ? ( */}
-                <button
-                  className="btn btn-primary rounded-left w-10"
-                  id="BtnServiceSearch"
-                >
-                  <i className="fe fe-search"></i>
-                </button>
-                {/* // ) : ( */}
-                {/* <button
+                {!searchIsLoading ? (
+                  <button
+                    className="btn btn-primary rounded-left w-10"
+                    id="BtnServiceSearch"
+                  >
+                    <i className="fe fe-search"></i>
+                  </button>
+                ) : (
+                  <button
                     type="submit"
                     className="btn btn-primary rounded-left"
                     disabled
@@ -175,15 +195,15 @@ const PrescriptionCard = ({
                       className="spinner-border spinner-border-sm me-2"
                       role="status"
                     ></span>
-                  </button> */}
-                {/* )} */}
+                  </button>
+                )}
 
-                {/* <div className="col-12 SearchDiv" id="searchDiv">
-                  <TaminSearchedServices
-                    data={taminSrvSearchList}
+                <div className="col-12 SearchDiv" id="searchDiv">
+                  <SalamatSearchedServices
+                    data={salamatSrvSearchList}
                     selectSearchedService={selectSearchedService}
                   />
-                </div> */}
+                </div>
               </div>
 
               {/* <div className="unsuccessfullSearch" id="unsuccessfullSearch">
@@ -211,7 +231,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -266,7 +286,7 @@ const PrescriptionCard = ({
                 {/* {!srvEditMode ? ( */}
                 <button
                   className="btn rounded w-100 addToListBtn font-12"
-                //   onClick={FuAddToListItem}
+                  //   onClick={FuAddToListItem}
                 >
                   اضافه به لیست
                 </button>

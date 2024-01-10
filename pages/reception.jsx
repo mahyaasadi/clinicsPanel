@@ -373,8 +373,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -576,10 +576,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -721,6 +721,7 @@ const Reception = ({ ClinicUser }) => {
                   handleShowPendingPatients={handleShowPendingPatients}
                 />
               </div>
+
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
                 <ReceptionCard
                   ClinicID={ClinicID}

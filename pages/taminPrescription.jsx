@@ -4,6 +4,7 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
+import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
@@ -78,8 +79,6 @@ const TaminPrescription = ({
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
-  const [prescCategory, setPrescCategory] = useState("tamin");
-
   const [patientInfo, setPatientInfo] = useState([]);
 
   const [SelectedInstruction, setSelectedInstruction] = useState(null);
@@ -520,9 +519,11 @@ const TaminPrescription = ({
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
                 patientStatIsLoading={patientStatIsLoading}
-                prescCategory={prescCategory}
               />
+
+              {/* <PatientVerticalCard data={patientInfo} mode="taminPresc" /> */}
             </div>
+
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
                 setIsLoading={setIsLoading}

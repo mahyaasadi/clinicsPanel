@@ -1,6 +1,8 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
-const PatientCard = ({ data }) => {
+const PatientHorizontalCard = ({ data }) => {
+  console.log({ data });
+
   let InsuranceType,
     GenderType = null;
   if (data) {
@@ -134,4 +136,4 @@ const PatientCard = ({ data }) => {
   );
 };
 
-export default PatientCard;
+export default PatientHorizontalCard;

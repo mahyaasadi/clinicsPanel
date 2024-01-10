@@ -1,12 +1,14 @@
-import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
-import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
+import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
+import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
+import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
-import { SalamatPrescType } from "class/salamatPrescriptionData";
+import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 
@@ -34,13 +36,6 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
-// patientInfo
-let ClinicID,
-  ActivePatientNID,
-  ActivePatientID,
-  ActiveInsuranceType,
-  ActiveInsuranceID = null;
-
 // PrescTypeHeader
 let ActivePrescTypeID = 1;
 let ActivePrescName = "دارو";
@@ -48,14 +43,29 @@ let ActivePrescImg,
   ActiveSrvTypePrsc = null;
 let ActiveSrvTypeID = 1;
 
+// Services
+let ActiveSrvName = null;
+
+let ClinicID = null;
 const SalamatPrescription = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
   const toast = useRef(null);
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
+  const [salamatDataIsLoading, setSalamatDataIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+
   const [patientInfo, setPatientInfo] = useState([]);
+  const [ActivePatientNID, setActivePatientNID] = useState(null);
+  const [CitizenSessionId, setCitizenSessionId] = useState(null);
+  const [SamadCode, setSamadCode] = useState(null);
+
+  const [salamatHeaderList, setSalamatHeaderList] = useState([]);
+  const [prescSearchMode, setPrescSearchMode] = useState("DrugSearch");
+  const [salamatSrvSearchList, setSalamatSrvSearchList] = useState([]);
 
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
@@ -64,37 +74,37 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    ActivePatientNID = formProps.nationalCode;
+    setActivePatientNID(formProps.nationalCode);
 
     let url = "BimehSalamat/GetPatientSession";
     let data = {
-      // ClinicID,
       CenterID: ClinicID,
       NID: formProps.nationalCode,
       SavePresc: 1,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-        // if (response.data.error == "1") {
-        //   $("#newPatientModal").modal("show");
-        // } else {
-        //   ActivePatientID = response.data.user._id;
-        //   ActiveInsuranceType = response.data.user.InsuranceType;
-        //   ActiveInsuranceID = response.data.user.Insurance;
-        // setPatientInfo(response.data.user);
-        // $("#patientInfoCard").show("");
-        // }
+        // console.log(response.data);
+        $("#patientNID").prop("readonly", true);
+
+        setCitizenSessionId(response.data.res.info.citizenSessionId);
+        setPatientInfo(response.data.res.info);
+        $("#patientInfoCard2").show("");
+
         if (response.data.res.info) {
           setTimeout(() => {
             showPatientMessages(response.data.res.info.message.snackMessage);
           }, 1000);
         }
-        setPatientStatIsLoading(false);
+
+        setTimeout(() => {
+          setPatientStatIsLoading(false);
+          $("#frmPatientInfoBtnSubmit").hide();
+          $("#getPatientCloseBtn").show();
+          $("#patientNID").focus();
+        }, 200);
       })
       .catch((error) => {
         console.log(error);
@@ -103,55 +113,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       });
   };
 
-  const addNewPatient = (props) => {
-    let url = "Patient/addPatient";
-    let data = props;
-    data.CenterID = ClinicID;
-
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        setPatientInfo(response.data);
-        $("#newPatientModal").modal("hide");
-        $("#patientInfoCard").show("");
-        if (response.data === false) {
-          ErrorAlert(
-            "خطا",
-            "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
-          );
-          return false;
-        } else if (response.data.errors) {
-          ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
-          return false;
-        } else {
-          SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
-      });
-  };
-
-  // DepartmentsHeader Tab Change
-  const changePrescTypeTab = (srvTypeID, prescImg, prescName, prescId) => {
-    ActiveSrvTypeID = srvTypeID;
-    ActivePrescImg = prescImg;
-    ActivePrescName = prescName;
-    ActivePrescTypeID = prescId;
-  };
-
-  const getSalamatPrescTypeID = () => {
-    let url = "BimehSalamat/SalamatPrescTypeId";
-
-    axiosClient
-      .get(url)
-      .then((response) => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
+  // Patient Toast Messages
   let patientToastMessages = [];
   const showPatientMessages = (patientMessages) => {
     for (let i = 0; i < patientMessages.length; i++) {
@@ -167,22 +129,159 @@ const SalamatPrescription = ({ ClinicUser }) => {
             : "Warning",
         summary:
           element.type === "S"
-            ? "موفق"
+            ? "موفق!"
             : element.type === "I"
-            ? "اطلاعات"
+            ? "اطلاعات!"
             : element.type === "E"
-            ? "خطا"
-            : "هشدار",
+            ? "خطا!"
+            : "هشدار!",
         detail: element.text,
         life: 10000,
       };
       patientToastMessages.push(obj);
     }
-
     toast.current.show(patientToastMessages);
   };
 
-  useEffect(() => getSalamatPrescTypeID(), []);
+  const getPatientActiveSearch = () => {
+    $("#patientNID").val("");
+    $("#getPatientCloseBtn").hide();
+    $("#frmPatientInfoBtnSubmit").show();
+    $("#patientNID").prop("readonly", false);
+    $("#patientInfoCard2").hide();
+
+    // ActivePatientID = null;
+    setActivePatientNID(null);
+  };
+
+  // PrescTypesHeader Tab Change
+  const changePrescTypeTab = (srvTypeID, prescImg, prescName, prescId) => {
+    ActiveSrvTypeID = srvTypeID;
+    ActivePrescImg = prescImg;
+    ActivePrescName = prescName;
+    ActivePrescTypeID = prescId;
+
+    if (prescId === 1) setPrescSearchMode("DrugSearch");
+    else setPrescSearchMode("otherCategoriesSearch");
+  };
+
+  // Salamat Data Classes
+  const getSalamatDataClasses = () => {
+    setSalamatDataIsLoading(true);
+    let url = "/BimehSalamat/BimehSalamDataClass";
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        console.log(response.data);
+        setSalamatHeaderList(
+          generateSalamatPrescType(response.data.SalamatPrescTypeId)
+        );
+        setSalamatDataIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSalamatDataIsLoading(false);
+      });
+  };
+
+  // Samad Code
+  const generateSamadCode = () => {
+    let url = "BimehSalamat/samadElectronicGenerate";
+
+    let data = {
+      SavePresc: 1,
+      CenterID: ClinicID,
+      CitizenSessionId,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        // console.log(response.data);
+        setSamadCode(response.data.res?.info?.samadCode);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // Active Search
+  const activeSearch = () => {
+    // ActiveSrvCode = null;
+    $("#srvSearchInput").val("");
+    $("#BtnActiveSearch").hide();
+    $("#srvSearchInput").prop("readonly", false);
+    $("#BtnServiceSearch").show();
+    $("#srvSearchInput").focus();
+  };
+
+  // Search in Drugs Category
+  const searchInDrugsCategory = (e) => {
+    e.preventDefault();
+
+    if (SamadCode) {
+      setSearchIsLoading(true);
+      let formData = new FormData(e.target);
+      const formProps = Object.fromEntries(formData);
+
+      let url = "BimehSalamat/DrugSerach";
+      let data = {
+        SavePresc: 1,
+        CenterID: ClinicID,
+        CitizenSessionId,
+        type: "generic",
+        Text: formProps.srvSearchInput,
+      };
+
+      console.log({ data });
+
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          if (response.data.res.code === "ERR_BAD_REQUEST")
+            ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
+          setSalamatSrvSearchList(response.data.res?.info);
+          $(".SearchDiv").show();
+          console.log(response.data);
+          setSearchIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setSearchIsLoading(false);
+        });
+    }
+  };
+
+  const searchInGeneralCategories = (e) => {
+    e.preventDefault();
+
+    console.log("search in general");
+  };
+
+  const selectSearchedService = (srvName) => {
+    ActiveSrvName = srvName;
+
+    $("#srvSearchInput").val(srvName);
+    $("#BtnServiceSearch").hide();
+    $("#BtnActiveSearch").show();
+    $(".SearchDiv").hide();
+    $("#srvSearchInput").prop("readonly", true);
+  };
+
+  useEffect(() => {
+    if (CitizenSessionId) {
+      generateSamadCode();
+    }
+  }, [CitizenSessionId]);
+
+  useEffect(() => {
+    getSalamatDataClasses();
+
+    // reset
+    setActivePatientNID(null);
+    $("#patientNID").val("");
+  }, [router.isReady]);
 
   return (
     <>
@@ -200,22 +299,28 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setPatientInfo={setPatientInfo}
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
-                toast={toast}
+                getPatientActiveSearch={getPatientActiveSearch}
                 patientStatIsLoading={patientStatIsLoading}
               />
 
-              {/* getPatientActiveSearch={getPatientActiveSearch}
-                  handlePendingPatientClick={handlePendingPatientClick}
-                  handleShowPendingPatients={handleShowPendingPatients} */}
+              <PatientVerticalCard data={patientInfo} mode="salamatPresc" />
             </div>
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
-                SalamatHeaderList={SalamatPrescType}
-                changePrescTypeTab={changePrescTypeTab}
-              />
-              {/* <PrescriptionCard
                 setIsLoading={setIsLoading}
                 searchIsLoading={searchIsLoading}
+                isLoading={isLoading}
+                salamatHeaderList={salamatHeaderList}
+                changePrescTypeTab={changePrescTypeTab}
+                activeSearch={activeSearch}
+                salamatDataIsLoading={salamatDataIsLoading}
+                prescSearchMode={prescSearchMode}
+                searchInDrugsCategory={searchInDrugsCategory}
+                searchInGeneralCategories={searchInGeneralCategories}
+                salamatSrvSearchList={salamatSrvSearchList}
+                selectSearchedService={selectSearchedService}
+              />
+              {/* <PrescriptionCard
                 drugAmountList={drugAmountList}
                 drugInstructionList={drugInstructionList}
                 SelectedInstruction={SelectedInstruction}
@@ -229,9 +334,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 changePrescTypeTab={changePrescTypeTab}
                 selectParaSrvType={selectParaSrvType}
                 searchTaminSrv={searchTaminSrv}
-                activeSearch={activeSearch}
-                selectSearchedService={selectSearchedService}
-                taminSrvSearchList={taminSrvSearchList}
                 FuAddToListItem={FuAddToListItem}
                 registerEpresc={registerEpresc}
               /> */}
@@ -242,12 +344,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
-
-        <AddNewPatient
-          addNewPatient={addNewPatient}
-          ClinicID={ClinicID}
-          ActivePatientNID={ActivePatientNID}
-        />
       </div>
     </>
   );

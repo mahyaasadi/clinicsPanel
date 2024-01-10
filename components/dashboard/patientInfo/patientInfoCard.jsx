@@ -21,7 +21,6 @@ const PatientInfoCard = ({
   getPatientActiveSearch,
   handlePendingPatientClick,
   handleShowPendingPatients,
-  toast,
 }) => {
   const router = useRouter();
 
@@ -184,17 +183,17 @@ const PatientInfoCard = ({
 
   return (
     <>
-      <div className="card shadow-sm presCard">
+      <div className="card presCard mb-3 shadow-sm">
         <div className="card-body">
           <form className="w-100" onSubmit={getPatientInfo}>
-            <div className="input-group mb-3">
+            <div className="input-group">
               <label className="lblAbs font-12">کد ملی / کد اتباع بیمار</label>
               <input
                 type="text"
                 name="nationalCode"
                 id="patientNID"
                 required
-                autoComplete="off"
+                // autoComplete="off"
                 className="form-control rounded-right GetPatientInput w-50"
                 defaultValue={ActivePatientNID}
                 onClick={handleShowPendingPatients}
@@ -306,8 +305,19 @@ const PatientInfoCard = ({
             <div className="margin-right-1 font-12 mt-3">
               <div className="d-flex gap-2 mb-3">
                 <FeatherIcon icon="user" className="mb-0" />
-                {data.Name}
-                {data.Age ? <p className="m-0">- {data.Age} ساله</p> : ""}
+                {data.Name
+                  ? data.Name
+                  : data.name
+                  ? data.name + " " + data.lastName
+                  : "-"}{" "}
+                ,
+                {data.Age ? (
+                  <p className="m-0">- {data.Age} ساله</p>
+                ) : data.age ? (
+                  <p className="m-0">{data.age} ساله</p>
+                ) : (
+                  ""
+                )}
               </div>
 
               <div className="d-flex gap-1 align-items-center">

@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import PatientCard from "components/dashboard/patientFile/PatientCard";
+import PatientHorizontalCard from "components/dashboard/patientInfo/patientHorizontalCard";
 
 const FormPreviewInline = ({ data, formValues, patientData }) => {
   let componentsArr = [];
@@ -23,7 +23,7 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
     <>
       <div className="row">
         <div className="table-responsive p-2 marginb-3">
-          <PatientCard data={patientData} />
+          <PatientHorizontalCard data={patientData} />
         </div>
 
         <hr className="mb-4" />

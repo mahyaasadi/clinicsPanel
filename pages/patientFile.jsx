@@ -8,7 +8,7 @@ import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import FormsList from "components/dashboard/patientFile/formsList";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
-import PatientCard from "components/dashboard/patientFile/PatientCard";
+import PatientHorizontalCard from "components/dashboard/patientInfo/patientHorizontalCard";
 import DiseaseRecordsList from "components/dashboard/patientFile/diseaseRecordsList";
 import SurgeryRecordsList from "components/dashboard/patientFile/surgeryRecords/surgeryRecordsList";
 import SurgeryRecordModal from "components/dashboard/patientFile/surgeryRecords/surgeryRecordModal";
@@ -16,7 +16,7 @@ import FamilyRecordsList from "components/dashboard/patientFile/familyRecordsLis
 import AddictionRecordsList from "components/dashboard/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "components/dashboard/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "components/dashboard/patientFile/medicalAllergyRecordsList";
-import PatientFormPreviewModal from "components/dashboard/patientFile/patientFormPreviewModal";
+import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -215,7 +215,7 @@ const PatientFile = ({ ClinicUser }) => {
         ) : (
           <div className="content container-fluid">
             <div className="card-body p-4">
-              <PatientCard data={patientData} />
+              <PatientHorizontalCard data={patientData} />
 
               <div className="mt-5 mb-2">
                 <FormsList

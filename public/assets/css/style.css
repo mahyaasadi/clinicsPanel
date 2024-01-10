@@ -9384,6 +9384,10 @@ ul li .active {
   height: 53vh;
 }
 
+#patientInfoCard2 {
+  display: none;
+}
+
 .themecolor {
   color: #b45309 !important;
 }
@@ -10232,6 +10236,11 @@ ul li .active {
   z-index: 2000 !important;
 }
 
+.p-toast {
+  font-family: iranyekan;
+  font-size: 14px !important;
+}
+
 .p-dropdown-label.p-placeholder {
   font-family: iranyekan;
   font-size: 10px !important;
@@ -10761,20 +10770,15 @@ thead {
   margin-right: 5px;
 }
 
-/*  */
-
+/* Patient Cards */
+/* Horizonatal */
 .cantainer {
-  /* 		height: 500px; */
-  /* 		width: 500px; */
-  /* margin: 20px auto; */
   width: 100%;
   direction: rtl;
 }
 
 .Cardmain {
   width: 100%;
-  /* 		width: 400px; */
-  /* 		height: 400px; */
   background: #fff;
   margin: auto;
   display: flex;
@@ -10786,8 +10790,6 @@ thead {
 
 .viwer {
   width: 20%;
-  /* width: 200px; */
-  /* 		height: 400px; */
 }
 
 .boxall {
@@ -10810,7 +10812,6 @@ thead {
   background: #f7efe9;
   height: 100px;
   width: 100%;
-  /* border-bottom: 2px solid #fff; */
   border-right: 2px solid #fff;
   flex-direction: column;
   align-items: center;
@@ -10894,12 +10895,6 @@ thead {
   margin-top: 20px;
 }
 
-.alltion {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
 .name {
   margin-top: 16px;
   font-weight: 600;
@@ -10929,10 +10924,126 @@ thead {
   cursor: pointer;
 }
 
-h2 {
+/* Vertical */
+
+.PVCardmain {
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0px 7px 10px #eef1fe;
+}
+
+.PVCardprofile {
+  width: 100%;
+  height: 200px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* .PVCardviwer {
+  width: 150px;
+  height: 400px;
+} */
+
+.PVCardboxall {
+  display: flex;
+  background: #F5E8DF;
+  height: 100px;
+  width: 100%;
+  border-bottom: 2px solid #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #b45309;
+  transition: all 0.4s ease-in-out;
+}
+
+.PVCardimg {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+}
+
+.PVCardimg:hover {
+  cursor: pointer;
+}
+
+.PVCardimg:before,
+.PVCardimg:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 1px solid;
+  border-radius: 50%;
+  transition: all 1.5s ease-in-out;
+  border-color: #b45309 transparent #b45309 #b45309;
+}
+
+.PVCardimg:after {
+  rotate: 180deg;
+}
+
+.PVCardimg:before {
+  left: -5px;
+  top: -5px;
+  bottom: -5px;
+  right: -5px;
+}
+
+.PVCardimg:hover:after {
+  transform: rotate(360deg);
+}
+
+.PVCardimg:hover:before {
+  transform: rotate(-360deg);
+}
+
+.PVCardimg {
+  width: 110px;
+  height: 110px;
+}
+
+.PVCardpro-im-na {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #b45309;
+  /* margin-top: 20px; */
+}
+
+.PVCardname {
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.PVCardvalue {
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
-  padding: 10px 0 0;
-  color: #fff;
+  text-wrap: wrap;
+}
+
+.PVCardparameter {
+  font-size: 13px;
+  text-align: center;
+  text-wrap: wrap;
+}
+
+.PVCardboxall:hover {
+  background: #E1CFC2;
+  cursor: pointer;
 }
 
 .patientFileTbl .ixLfOj {
@@ -10979,4 +11090,13 @@ h2 {
 .changeAvatarIcon .feather {
   width: 15px !important;
   height: 15px !important;
+}
+
+/* Salamat Prescription */
+.SalamatPrscHeader {
+  margin-bottom: 1rem;
+}
+
+.SalamatPrscHeader .p-skeleton {
+  height: 2.5rem !important;
 }
