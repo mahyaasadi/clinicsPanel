@@ -12,7 +12,8 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
         onClick={() =>
           selectSearchedService(
             x?.fullName,
-            x?.state?.shape
+            x?.state?.shape,
+            x?.nationalNumber
             // x?.wsSrvCode,
             // x?.srvType?.srvType,
             // x?.parTarefGrp?.parGrpCode

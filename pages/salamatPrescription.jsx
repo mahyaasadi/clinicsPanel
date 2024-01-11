@@ -47,7 +47,8 @@ let ActiveSrvTypeID = 1;
 let ActivePrescEngTitle = null;
 
 // Services
-let ActiveSrvName = null;
+let ActiveSrvName,
+  ActiveSrvNationalNumber = null;
 
 let ClinicID = null;
 const SalamatPrescription = ({ ClinicUser }) => {
@@ -300,8 +301,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
     console.log("search in general");
   };
 
-  const selectSearchedService = (srvName, srvShape) => {
+  const selectSearchedService = (srvName, srvShape, srvNationalNumber) => {
     ActiveSrvName = srvName;
+    ActiveSrvNationalNumber = srvNationalNumber;
+
     setActiveSrvShape(srvShape);
 
     $("#srvSearchInput").val(srvName);
@@ -322,7 +325,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       CitizenSessionId,
       SamadCode,
       PrescType: ActivePrescEngTitle,
-      nationalNumber: ActivePatientNID,
+      nationalNumber: ActiveSrvNationalNumber,
       QTY: $("#QtyInput").val(),
       description: $("#eprscItemDescription").val(),
       SrvShape: ActiveSrvShape,
