@@ -21,7 +21,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").show();
         $("#drugAmount").show();
 
-        changePrescTypeTab(1, item.img, item.name, 1);
+        changePrescTypeTab(1, item.img, item.name, item.title, 1);
         // handleSearchDivs();
         break;
 
@@ -31,7 +31,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(2, item.img, item.name, 2);
+        changePrescTypeTab(2, item.img, item.name, item.title, 2);
         // handleSearchDivs();
         break;
       case 3:
@@ -40,7 +40,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(3, item.img, item.name, 3);
+        changePrescTypeTab(3, item.img, item.name, item.title, 3);
         // handleSearchDivs();
         break;
       case 4:
@@ -49,7 +49,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(4, item.img, item.name, 4);
+        changePrescTypeTab(4, item.img, item.name, item.title, 4);
         // handleSearchDivs();
         break;
       case 5:
@@ -58,7 +58,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(5, item.img, item.name, 5);
+        changePrescTypeTab(5, item.img, item.name, item.title, 5);
         // handleSearchDivs();
         break;
       case 6:
@@ -67,7 +67,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(6, item.img, item.name, 6);
+        changePrescTypeTab(6, item.img, item.name, item.title, 6);
         // handleSearchDivs();
         break;
       case 7:
@@ -76,7 +76,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(7, item.img, item.name, 7);
+        changePrescTypeTab(7, item.img, item.name, item.title, 7);
         // handleSearchDivs();
         break;
       default:
@@ -85,7 +85,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
   };
 
   useEffect(() => {
-    if (index === 0) changePrescTypeTab(1, item.img, item.name, 1);
+    if (index === 0) changePrescTypeTab(1, item.img, item.name, item.title, 1);
   }, []);
 
   return (

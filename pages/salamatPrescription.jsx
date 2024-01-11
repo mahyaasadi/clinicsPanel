@@ -3,12 +3,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert, WarningAlert } from "class/AlertManage";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { generateSalamatPrescType } from "class/salamatPrescriptionData";
+import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
+import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 
@@ -42,6 +44,7 @@ let ActivePrescName = "دارو";
 let ActivePrescImg,
   ActiveSrvTypePrsc = null;
 let ActiveSrvTypeID = 1;
+let ActivePrescEngTitle = null;
 
 // Services
 let ActiveSrvName = null;
@@ -64,8 +67,17 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const [SamadCode, setSamadCode] = useState(null);
 
   const [salamatHeaderList, setSalamatHeaderList] = useState([]);
+  const [ActiveSrvShape, setActiveSrvShape] = useState(null);
+
+  // Drug Tab Search
   const [prescSearchMode, setPrescSearchMode] = useState("DrugSearch");
   const [salamatSrvSearchList, setSalamatSrvSearchList] = useState([]);
+  const [genericCodeOption, setGenericCodeOption] = useState(null);
+  const [consumptionOptions, setConsumptionOptions] = useState([]);
+  const [instructionOptions, setInstructionOptions] = useState([]);
+  const [selectedConsumption, setSelectedConsumption] = useState(null);
+  const [selectedConsumptionInstruction, setSelectedConsumptionInstruction] =
+    useState([]);
 
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
@@ -155,14 +167,26 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   // PrescTypesHeader Tab Change
-  const changePrescTypeTab = (srvTypeID, prescImg, prescName, prescId) => {
+  const changePrescTypeTab = (
+    srvTypeID,
+    prescImg,
+    prescName,
+    prescEngTitle,
+    prescId
+  ) => {
     ActiveSrvTypeID = srvTypeID;
     ActivePrescImg = prescImg;
     ActivePrescName = prescName;
-    ActivePrescTypeID = prescId;
+    (ActivePrescEngTitle = prescEngTitle), (ActivePrescTypeID = prescId);
 
     if (prescId === 1) setPrescSearchMode("DrugSearch");
     else setPrescSearchMode("otherCategoriesSearch");
+
+    $("#srvSearchInput").val("");
+    $("#BtnServiceSearch").show();
+    $("#BtnActiveSearch").hide();
+    // $(".SearchDiv").hide();
+    $("#srvSearchInput").prop("readonly", false);
   };
 
   // Salamat Data Classes
@@ -174,8 +198,16 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .get(url)
       .then((response) => {
         console.log(response.data);
+        setConsumptionOptions(
+          generateSalamatConsumptionOptions(response.data.SalamatConsumption)
+        );
+        setInstructionOptions(
+          generateSalamatInstructionOptions(
+            response.data.SalamatConsumptionInstruction
+          )
+        );
         setSalamatHeaderList(
-          generateSalamatPrescType(response.data.SalamatPrescTypeId)
+          generateSalamatPrescType(response.data.SalamatType)
         );
         setSalamatDataIsLoading(false);
       })
@@ -219,9 +251,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
   // Search in Drugs Category
   const searchInDrugsCategory = (e) => {
     e.preventDefault();
+    setSearchIsLoading(true);
 
-    if (SamadCode) {
-      setSearchIsLoading(true);
+    if (CitizenSessionId) {
       let formData = new FormData(e.target);
       const formProps = Object.fromEntries(formData);
 
@@ -230,7 +262,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         SavePresc: 1,
         CenterID: ClinicID,
         CitizenSessionId,
-        type: "generic",
+        type: genericCodeOption ? "generic" : null,
         Text: formProps.srvSearchInput,
       };
 
@@ -239,28 +271,38 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          if (response.data.res.code === "ERR_BAD_REQUEST")
-            ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
-          setSalamatSrvSearchList(response.data.res?.info);
+          $(".unsuccessfullSearch").hide();
           $(".SearchDiv").show();
-          console.log(response.data);
+
+          if (response.data.res.resMessage === "عملیات با موفقیت انجام شد") {
+            $(".unsuccessfullSearch").hide();
+
+            console.log(response.data);
+            setSalamatSrvSearchList(response.data.res?.info);
+            setSearchIsLoading(false);
+          } else {
+            $(".unsuccessfullSearch").show();
+          }
           setSearchIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
           setSearchIsLoading(false);
         });
+    } else {
+      WarningAlert("هشدار", "استعلام بیمار صورت نگرفته است!");
+      setSearchIsLoading(false);
     }
   };
 
   const searchInGeneralCategories = (e) => {
     e.preventDefault();
-
     console.log("search in general");
   };
 
-  const selectSearchedService = (srvName) => {
+  const selectSearchedService = (srvName, srvShape) => {
     ActiveSrvName = srvName;
+    setActiveSrvShape(srvShape);
 
     $("#srvSearchInput").val(srvName);
     $("#BtnServiceSearch").hide();
@@ -269,10 +311,41 @@ const SalamatPrescription = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", true);
   };
 
+  const FUAddToListItem = (e) => {
+    e.preventDefault();
+
+    let url = "BimehSalamat/SubscriptionCheckOrder";
+    let prescData = {
+      SavePresc: 1,
+      bulkId: 0,
+      CenterID: ClinicID,
+      CitizenSessionId,
+      SamadCode,
+      PrescType: ActivePrescEngTitle,
+      nationalNumber: ActivePatientNID,
+      QTY: $("#QtyInput").val(),
+      description: $("#eprscItemDescription").val(),
+      SrvShape: ActiveSrvShape,
+      consumption: selectedConsumption.toString(),
+      consumptionInstruction: selectedConsumptionInstruction,
+      numberOfPeriod: null,
+      otherServices: [],
+    };
+
+    console.log({ prescData });
+
+    axiosClient
+      .post(url, prescData)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    if (CitizenSessionId) {
-      generateSamadCode();
-    }
+    if (CitizenSessionId) generateSamadCode();
   }, [CitizenSessionId]);
 
   useEffect(() => {
@@ -319,6 +392,17 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 searchInGeneralCategories={searchInGeneralCategories}
                 salamatSrvSearchList={salamatSrvSearchList}
                 selectSearchedService={selectSearchedService}
+                FUAddToListItem={FUAddToListItem}
+                setGenericCodeOption={setGenericCodeOption}
+                consumptionOptions={consumptionOptions}
+                instructionOptions={instructionOptions}
+                selectedConsumption={selectedConsumption}
+                setSelectedConsumption={setSelectedConsumption}
+                selectedConsumptionInstruction={selectedConsumptionInstruction}
+                setSelectedConsumptionInstruction={
+                  setSelectedConsumptionInstruction
+                }
+                ActiveSrvShape={ActiveSrvShape}
               />
               {/* <PrescriptionCard
                 drugAmountList={drugAmountList}
@@ -334,7 +418,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 changePrescTypeTab={changePrescTypeTab}
                 selectParaSrvType={selectParaSrvType}
                 searchTaminSrv={searchTaminSrv}
-                FuAddToListItem={FuAddToListItem}
                 registerEpresc={registerEpresc}
               /> */}
 

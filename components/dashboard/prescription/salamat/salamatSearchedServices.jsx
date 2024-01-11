@@ -11,7 +11,8 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
         className="btn btn-outline-primary border-radius btn-sm w-100 mb-1 right-text bg-white searchSelectBtn"
         onClick={() =>
           selectSearchedService(
-            x?.fullName
+            x?.fullName,
+            x?.state?.shape
             // x?.wsSrvCode,
             // x?.srvType?.srvType,
             // x?.parTarefGrp?.parGrpCode

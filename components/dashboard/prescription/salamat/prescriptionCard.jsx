@@ -16,6 +16,15 @@ const PrescriptionCard = ({
   searchInGeneralCategories,
   salamatSrvSearchList,
   selectSearchedService,
+  FUAddToListItem,
+  setGenericCodeOption,
+  consumptionOptions,
+  instructionOptions,
+  selectedConsumption,
+  setSelectedConsumption,
+  selectedConsumptionInstruction,
+  setSelectedConsumptionInstruction,
+  ActiveSrvShape,
   //   drugInstructionList,
   //   drugAmountList,
   //   SelectedInstruction,
@@ -26,10 +35,10 @@ const PrescriptionCard = ({
   //   FUSelectDrugAmount,
   //   taminParaServicesList,
   //   selectParaSrvType,
-  //   searchTaminSrv,
-  //   FuAddToListItem,
   //   registerEpresc,
 }) => {
+  console.log({ ActiveSrvShape });
+
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -54,21 +63,16 @@ const PrescriptionCard = ({
   //   };
 
   // // Search Recommendation
-  // const handleSearchKeyUp = () => {
-  //   setIsLoading(true);
-  //   let inputCount = $("#srvSearchInput").val().length;
+  const handleSearchKeyUp = () => {
+    setIsLoading(true);
+    let inputCount = $("#srvSearchInput").val().length;
 
-  //   if (inputCount > 2) {
-  //     setTimeout(() => {
-  //       $("#BtnServiceSearch").click();
-  //     }, 100);
-  //     setIsLoading(false);
-  //   } else {
-  //     $("#srvSearchInput").val() == "";
-  //     $(".SearchDiv").hide();
-  //     setIsLoading(false);
-  //   }
-  // };
+    if (inputCount < 2) {
+      $("#srvSearchInput").val() == "";
+      $(".SearchDiv").hide();
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -126,11 +130,33 @@ const PrescriptionCard = ({
             <form
               className="w-100 pt-2"
               onSubmit={
-                prescSearchMode === "DrugSearch"
-                  ? searchInDrugsCategory
-                  : searchInGeneralCategories
+                // prescSearchMode === "DrugSearch"
+                searchInDrugsCategory
+                // : searchInGeneralCategories
               }
             >
+              {prescSearchMode === "DrugSearch" && (
+                <div className="">
+                  <div className="mb-4 d-flex align-items-center">
+                    <label
+                      id="drugGenericOptionLbl"
+                      className="custom_check drugGenericOptionLbl mb-0"
+                    >
+                      جستجو بر اساس کد Generic
+                      <input
+                        type="checkbox"
+                        name="drugGenericOption"
+                        id="drugGenericOption"
+                        value="generic"
+                        className="checkbox-input frmCheckbox"
+                        onChange={(e) => setGenericCodeOption(e.target.checked)}
+                      />
+                      <span className="checkmark" />
+                    </label>
+                  </div>
+                </div>
+              )}
+
               <div className="input-group mb-3 inputServiceContainer">
                 <input
                   type="hidden"
@@ -146,9 +172,7 @@ const PrescriptionCard = ({
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
-                  // onFocus={handleOnFocus}
-                  // onBlur={handleOnBlur}
-                  // onKeyUp={handleSearchKeyUp}
+                  onKeyUp={handleSearchKeyUp}
                   // value={editSrvData?.SrvName}
                 />
 
@@ -206,9 +230,9 @@ const PrescriptionCard = ({
                 </div>
               </div>
 
-              {/* <div className="unsuccessfullSearch" id="unsuccessfullSearch">
+              <div className="unsuccessfullSearch" id="unsuccessfullSearch">
                 <p>موردی یافت نشد!</p>
-              </div> */}
+              </div>
             </form>
 
             <div className="d-flex align-items-center gap-1 media-flex-column flex-wrap row">
@@ -248,9 +272,10 @@ const PrescriptionCard = ({
               <div id="drugInstruction" className="col media-mt-1">
                 <label className="lblAbs font-12">زمان مصرف</label>
                 <Dropdown
-                  // value={SelectedInstruction}
-                  // onChange={handleDrugInstructionSelect}
-                  // options={drugInstructionList}
+                  id="drugConsumption"
+                  value={selectedConsumption}
+                  onChange={(e) => setSelectedConsumption(e.target.value)}
+                  options={consumptionOptions}
                   optionLabel="label"
                   placeholder="انتخاب کنید"
                   filter
@@ -261,9 +286,11 @@ const PrescriptionCard = ({
               <div id="drugAmount" className="col media-mt-1">
                 <label className="lblAbs font-12">تعداد در وعده</label>
                 <Dropdown
-                  // value={SelectedAmount}
-                  // onChange={handleDrugAmountSelect}
-                  // options={drugAmountList}
+                  value={selectedConsumptionInstruction}
+                  onChange={(e) =>
+                    setSelectedConsumptionInstruction(e.target.value)
+                  }
+                  options={instructionOptions}
                   optionLabel="label"
                   placeholder="انتخاب کنید"
                   filter
@@ -286,7 +313,7 @@ const PrescriptionCard = ({
                 {/* {!srvEditMode ? ( */}
                 <button
                   className="btn rounded w-100 addToListBtn font-12"
-                  //   onClick={FuAddToListItem}
+                  onClick={FUAddToListItem}
                 >
                   اضافه به لیست
                 </button>

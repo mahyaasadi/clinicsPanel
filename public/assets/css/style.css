@@ -3574,6 +3574,13 @@ html.menu-opened body {
   color: darkslategray !important;
 }
 
+.drugGenericOptionLbl {
+  color: gray !important;
+  font-size: 13px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
 .custom_check input {
   position: absolute;
   opacity: 0;
@@ -9488,7 +9495,7 @@ ul li .active {
 }
 
 .SearchDiv {
-  max-height: 280px;
+  max-height: 250px;
   overflow: auto;
   direction: ltr;
   position: absolute;
@@ -10635,11 +10642,6 @@ ul li .active {
   .printContent {
     page-break-after: always;
   }
-}
-
-.filterReceptionCard {
-  border: 1px solid #f5f6fc !important;
-  box-shadow: none !important;
 }
 
 .tContainer {
