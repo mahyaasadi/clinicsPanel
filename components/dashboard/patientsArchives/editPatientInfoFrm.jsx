@@ -155,20 +155,14 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
         </div>
 
         <div className="mt-4 row align-items-center">
-          {/* <p
-            className="text-secondary fw-bold font-14"
-            style={{
-              position: "absolute",
-              top: "1.75rem",
-              backgroundColor: "white",
-              width: "115px",
-              zIndex: "400",
-            }}
+          <p
+            className="text-secondary fw-bold font-14 basicInfoLine"
+
           >
             اطلاعات پایه
-          </p> */}
-
+          </p>
           <hr style={{ position: "relative" }} />
+
           <div className="form-group col-md-4 col-sm-6 col-12 margint-frmGrp">
             <input type="hidden" value={data._id} name="patientID" />
 

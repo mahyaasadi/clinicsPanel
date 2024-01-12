@@ -37,7 +37,7 @@ const PatientsListTable = ({
                 borderRadius: "10px",
               }}
               onError={({ currentTarget }) => {
-                row.Gender
+                row.Gender === "M" || row.Gender === "F"
                   ? (currentTarget.src = `assets/img/avatar-${row.Gender}-pic.png`)
                   : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}

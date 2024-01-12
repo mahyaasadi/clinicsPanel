@@ -92,9 +92,8 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
     <>
       <li className="nav-item">
         <a
-          className={`nav-link media-nav-link ${
-            index === 0 ? "active" : item.Active
-          }`}
+          className={`nav-link media-nav-link ${index === 0 ? "active" : item.Active
+            } ${index === 3 || index === 5 || index === 6 || index === 7 ? "w-170" : ""}`}
           href={"#bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
@@ -103,6 +102,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
             width: "fit-content",
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             gap: "0.5rem",
           }}
         >

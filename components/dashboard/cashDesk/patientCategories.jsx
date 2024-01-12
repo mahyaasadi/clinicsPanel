@@ -203,7 +203,7 @@ const PatientCategories = ({
                                                         onError={({
                                                           currentTarget,
                                                         }) => {
-                                                          item?.item?.Patient?.Gender
+                                                          item?.item?.Patient?.Gender === "M" || item?.item?.Patient?.Gender === "F"
                                                             ? (currentTarget.src = `assets/img/avatar-${item?.item?.Patient?.Gender}-pic.png`)
                                                             : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                                                         }}

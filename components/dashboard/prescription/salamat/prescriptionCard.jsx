@@ -1,7 +1,6 @@
 import { Dropdown } from "primereact/dropdown";
-import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import { Skeleton } from "primereact/skeleton";
-// import ParaServicesDropdown from "./paraServicesDropdown";
+import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
 const PrescriptionCard = ({
@@ -24,21 +23,8 @@ const PrescriptionCard = ({
   setSelectedConsumption,
   selectedConsumptionInstruction,
   setSelectedConsumptionInstruction,
-  ActiveSrvShape,
-  //   drugInstructionList,
-  //   drugAmountList,
-  //   SelectedInstruction,
-  //   setSelectedInstruction,
-  //   SelectedAmount,
-  //   setSelectedAmount,
-  //   FUSelectInstruction,
-  //   FUSelectDrugAmount,
-  //   taminParaServicesList,
-  //   selectParaSrvType,
   //   registerEpresc,
 }) => {
-  console.log({ ActiveSrvShape });
-
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -51,16 +37,6 @@ const PrescriptionCard = ({
     }
     $("#QtyInput").val(qty);
   }
-
-  //   const handleDrugAmountSelect = (e) => {
-  //     setSelectedAmount(e.value);
-  //     FUSelectDrugAmount(e.value);
-  //   };
-
-  //   const handleDrugInstructionSelect = (e) => {
-  //     setSelectedInstruction(e.value);
-  //     FUSelectInstruction(e.value);
-  //   };
 
   // // Search Recommendation
   const handleSearchKeyUp = () => {
@@ -90,14 +66,14 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-                // onClick={() => registerEpresc(1)}
+              // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-                // onClick={() => registerEpresc(0)}
+              // onClick={() => registerEpresc(0)}
               >
                 ثبت نسخه نهایی
               </button>
@@ -130,9 +106,9 @@ const PrescriptionCard = ({
             <form
               className="w-100 pt-2"
               onSubmit={
-                // prescSearchMode === "DrugSearch"
-                searchInDrugsCategory
-                // : searchInGeneralCategories
+                prescSearchMode === "DrugSearch"
+                  ? searchInDrugsCategory
+                  : searchInGeneralCategories
               }
             >
               {prescSearchMode === "DrugSearch" && (
@@ -162,7 +138,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                  // value={editSrvData?.SrvCode}
+                // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -173,16 +149,16 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                  // value={editSrvData?.SrvName}
+                // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                  //   onChange={() =>
-                  //     selectParaSrvType($("#ServiceSearchSelect").val())
-                  //   }
+                //   onChange={() =>
+                //     selectParaSrvType($("#ServiceSearchSelect").val())
+                //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -255,7 +231,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
+                    // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">

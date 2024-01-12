@@ -34,7 +34,7 @@ const ReceptionListTable = ({
                 borderRadius: "10px",
               }}
               onError={({ currentTarget }) => {
-                row.Patient.Gender
+                row.Patient.Gender === "F" || row.Patient.Gender === "M"
                   ? (currentTarget.src = `assets/img/avatar-${row.Patient.Gender}-pic.png`)
                   : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}

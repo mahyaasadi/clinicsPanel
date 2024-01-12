@@ -6,26 +6,20 @@ import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, SuccessAlert, WarningAlert } from "class/AlertManage";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
-import AddNewPatient from "components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import { Toast } from "primereact/toast";
-import { Button } from "primereact/button";
+import { convertToFixedNumber } from "utils/convertToFixedNumber";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
-  //   let DrugAmountList = await getDrugAmountList();
-  //   let drugInstructionList = await getDrugInstructionsList();
-
   if (result) {
     const { ClinicUser } = result;
     return {
       props: {
         ClinicUser,
-        // drugAmountList: DrugAmountList.data.res.data,
-        // drugInstructionList: drugInstructionList.data.res.data,
       },
     };
   } else {
@@ -40,11 +34,9 @@ export const getServerSideProps = async ({ req, res }) => {
 
 // PrescTypeHeader
 let ActivePrescTypeID = 1;
-let ActivePrescName = "دارو";
-let ActivePrescImg,
-  ActiveSrvTypePrsc = null;
 let ActiveSrvTypeID = 1;
-let ActivePrescEngTitle = null;
+let ActivePrescName = "دارو";
+let ActivePrescImg, ActivePrescEngTitle = null;
 
 // Services
 let ActiveSrvName,
@@ -92,32 +84,36 @@ const SalamatPrescription = ({ ClinicUser }) => {
     let url = "BimehSalamat/GetPatientSession";
     let data = {
       CenterID: ClinicID,
-      NID: formProps.nationalCode,
+      NID: convertToFixedNumber(formProps.nationalCode),
       SavePresc: 1,
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         $("#patientNID").prop("readonly", true);
 
-        setCitizenSessionId(response.data.res.info.citizenSessionId);
-        setPatientInfo(response.data.res.info);
-        $("#patientInfoCard2").show("");
+        // setCitizenSessionId(response.data.res.info.citizenSessionId);
+        // setPatientInfo(response.data.res.info);
+        // $("#patientInfoCard2").show("");
 
-        if (response.data.res.info) {
-          setTimeout(() => {
-            showPatientMessages(response.data.res.info.message.snackMessage);
-          }, 1000);
-        }
+        // if (response.data.res.info) {
+        //   setTimeout(() => {
+        //     showPatientMessages(response.data.res.info.message.snackMessage);
+        //   }, 1000);
+        // } else {
+        // ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!") 
+        // }
 
-        setTimeout(() => {
-          setPatientStatIsLoading(false);
-          $("#frmPatientInfoBtnSubmit").hide();
-          $("#getPatientCloseBtn").show();
-          $("#patientNID").focus();
-        }, 200);
+        // setTimeout(() => {
+        //   setPatientStatIsLoading(false);
+        //   $("#frmPatientInfoBtnSubmit").hide();
+        //   $("#getPatientCloseBtn").show();
+        //   $("#patientNID").focus();
+        // }, 200);
       })
       .catch((error) => {
         console.log(error);
@@ -136,18 +132,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.type === "S"
             ? "Success"
             : element.type === "I"
-            ? "Info"
-            : element.type === "E"
-            ? "Error"
-            : "Warning",
+              ? "Info"
+              : element.type === "E"
+                ? "Error"
+                : "Warning",
         summary:
           element.type === "S"
             ? "موفق!"
             : element.type === "I"
-            ? "اطلاعات!"
-            : element.type === "E"
-            ? "خطا!"
-            : "هشدار!",
+              ? "اطلاعات!"
+              : element.type === "E"
+                ? "خطا!"
+                : "هشدار!",
         detail: element.text,
         life: 10000,
       };
@@ -231,8 +227,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setSamadCode(response.data.res?.info?.samadCode);
+
+        // toast.current.show(patientToastMessages);
       })
       .catch((err) => {
         console.log(err);
@@ -367,6 +365,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       <div className="page-wrapper" ref={toast}>
         <div className="content container-fluid">
           <Toast ref={toast} />
+
           <div className="row">
             <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
               <PatientInfoCard
@@ -405,7 +404,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setSelectedConsumptionInstruction={
                   setSelectedConsumptionInstruction
                 }
-                ActiveSrvShape={ActiveSrvShape}
               />
               {/* <PrescriptionCard
                 drugAmountList={drugAmountList}

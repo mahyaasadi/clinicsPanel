@@ -140,7 +140,7 @@ const ReceptionItem = ({
                     borderRadius: "10px",
                   }}
                   onError={({ currentTarget }) => {
-                    srv.Patient?.Gender
+                    srv.Patient?.Gender === "F" || srv.Patient.Gender === "M"
                       ? (currentTarget.src = `assets/img/avatar-${srv.Patient?.Gender}-pic.png`)
                       : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                   }}
