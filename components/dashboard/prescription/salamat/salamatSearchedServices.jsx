@@ -1,28 +1,35 @@
+import FeatherIcon from "feather-icons-react";
+
 const SalamatSearchedServices = ({ data, selectSearchedService }) => {
   return data?.map((x, index) => {
-    //   let code = x?.wsSrvCode;
-    //   let ind1 = code.indexOf("-");
-    //   let TaminCode = code;
-    //   if (ind1 !== -1) code = code.substr(0, ind1);
-
     return (
       <button
         key={index}
         className="btn btn-outline-primary border-radius btn-sm w-100 mb-1 right-text bg-white searchSelectBtn"
         onClick={() =>
           selectSearchedService(
-            x?.fullName,
+            x?.interfaceName,
             x?.state?.shape,
+            x?.state?.isCovered,
             x?.nationalNumber
-            // x?.wsSrvCode,
-            // x?.srvType?.srvType,
-            // x?.parTarefGrp?.parGrpCode
           )
         }
       >
         {x.interfaceName}
-        {/* {" | "}
-          {x.wsSrvCode} */}
+
+        <div className="mt-2 d-flex justify-center">
+          {x?.state?.isCovered ? (
+            <button className="btn btn-sm btn-success font-12 w-18 d-flex justify-center align-items-center gap-1">
+              <FeatherIcon icon="check" />
+              تحت پوشش بیمه
+            </button>
+          ) : (
+            <button className="btn btn-sm btn-danger font-12 w-18 d-flex justify-center align-items-center gap-1">
+              <FeatherIcon icon="x" />
+              فاقد پوشش بیمه
+            </button>
+          )}
+        </div>
       </button>
     );
   });

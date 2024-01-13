@@ -71,8 +71,12 @@ export default function Page() {
         <div className="col-lg-6 col-12 login-wrap-bg">
           <div className="login-wrapper">
             <div className="loginbox">
-              <h3 className="loginTitle stretch">ایران نوبت</h3>
-              <p className="account-subtitle">دسترسی به پنل کلینیک ها</p>
+              <h3 className="loginTitle stretch text-center mb-1">
+                ایران نوبت
+              </h3>
+              <p className="account-subtitle text-center marginb-3">
+                دسترسی به پنل کلینیک ها
+              </p>
 
               <form onSubmit={handleSubmit}>
                 <div className="form-group form-focus">
@@ -108,8 +112,9 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                          className={`fa toggle-password" ${
+                            eye ? "fa-eye-slash" : "fa-eye"
+                          }`}
                         />
                       </div>
                     )}

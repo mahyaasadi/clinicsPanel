@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import Image from "next/image";
 
 const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
-  //   const handleSearchDivs = () => {
-  //     $("#unsuccessfullSearch").hide();
-  //     $("#searchDiv").hide();
-  //     $("#srvSearchInput").val("");
-  //     $("#QtyInput").val("1");
-  //   };
+  const handleSearchDivs = () => {
+    $("#unsuccessfullSearch").hide();
+    $("#searchDiv").hide();
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+  };
 
   const selectPrescType = () => {
     $(".prescService").hide();
@@ -22,9 +22,17 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").show();
 
         changePrescTypeTab(1, item.img, item.name, item.title, 1);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
+      case 10:
+        $("#ServiceSearchSelect").val("10");
+        $("#ServiceSearchSelect").hide();
+        $("#drugInstruction").show();
+        $("#drugAmount").show();
 
+        changePrescTypeTab(10, item.img, item.name, item.title, 10);
+        handleSearchDivs();
+        break;
       case 2:
         $("#ServiceSearchSelect").val("2");
         $("#ServiceSearchSelect").hide();
@@ -32,7 +40,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(2, item.img, item.name, item.title, 2);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
       case 3:
         $("#ServiceSearchSelect").val("3");
@@ -41,7 +49,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(3, item.img, item.name, item.title, 3);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
       case 4:
         $("#ServiceSearchSelect").val("4");
@@ -50,7 +58,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(4, item.img, item.name, item.title, 4);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
       case 5:
         $("#ServiceSearchSelect").val("5");
@@ -59,7 +67,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(5, item.img, item.name, item.title, 5);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
       case 6:
         $("#ServiceSearchSelect").val("6");
@@ -68,7 +76,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(6, item.img, item.name, item.title, 6);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
       case 7:
         $("#ServiceSearchSelect").val("7");
@@ -77,8 +85,9 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugAmount").hide();
 
         changePrescTypeTab(7, item.img, item.name, item.title, 7);
-        // handleSearchDivs();
+        handleSearchDivs();
         break;
+
       default:
         break;
     }
@@ -92,8 +101,13 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
     <>
       <li className="nav-item">
         <a
-          className={`nav-link media-nav-link ${index === 0 ? "active" : item.Active
-            } ${index === 3 || index === 5 || index === 6 || index === 7 ? "w-170" : ""}`}
+          className={`nav-link media-nav-link ${
+            index === 0 ? "active" : item.Active
+          } ${
+            index === 1 || index === 3 || index === 6 || index === 7
+              ? "w-170"
+              : ""
+          }`}
           href={"#bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"

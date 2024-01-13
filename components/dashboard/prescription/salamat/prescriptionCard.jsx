@@ -11,8 +11,7 @@ const PrescriptionCard = ({
   changePrescTypeTab,
   activeSearch,
   prescSearchMode,
-  searchInDrugsCategory,
-  searchInGeneralCategories,
+  onSubmit,
   salamatSrvSearchList,
   selectSearchedService,
   FUAddToListItem,
@@ -23,6 +22,7 @@ const PrescriptionCard = ({
   setSelectedConsumption,
   selectedConsumptionInstruction,
   setSelectedConsumptionInstruction,
+  ActiveSrvIsCovered,
   //   registerEpresc,
 }) => {
   function QtyChange(ac) {
@@ -38,14 +38,15 @@ const PrescriptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  // // Search Recommendation
-  const handleSearchKeyUp = () => {
+  // Search Recommendation
+  const handleSearchKeyUp = (e) => {
     setIsLoading(true);
     let inputCount = $("#srvSearchInput").val().length;
 
     if (inputCount < 2) {
       $("#srvSearchInput").val() == "";
       $(".SearchDiv").hide();
+      $(".unsuccessfullSearch").hide();
       setIsLoading(false);
     }
   };
@@ -66,14 +67,14 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-              // onClick={() => registerEpresc(1)}
+                // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-              // onClick={() => registerEpresc(0)}
+                // onClick={() => registerEpresc(0)}
               >
                 ثبت نسخه نهایی
               </button>
@@ -103,14 +104,7 @@ const PrescriptionCard = ({
               </div>
             )}
 
-            <form
-              className="w-100 pt-2"
-              onSubmit={
-                prescSearchMode === "DrugSearch"
-                  ? searchInDrugsCategory
-                  : searchInGeneralCategories
-              }
-            >
+            <form className="w-100 pt-2" onSubmit={onSubmit}>
               {prescSearchMode === "DrugSearch" && (
                 <div className="">
                   <div className="mb-4 d-flex align-items-center">
@@ -138,7 +132,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -149,16 +143,16 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                //   onChange={() =>
-                //     selectParaSrvType($("#ServiceSearchSelect").val())
-                //   }
+                  //   onChange={() =>
+                  //     selectParaSrvType($("#ServiceSearchSelect").val())
+                  //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -231,7 +225,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">

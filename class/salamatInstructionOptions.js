@@ -10,5 +10,6 @@ const generateSalamatInstructionOptions = (data) => {
   }
   return instructionOptions;
 };
+
 module.exports.generateSalamatInstructionOptions =
   generateSalamatInstructionOptions;
