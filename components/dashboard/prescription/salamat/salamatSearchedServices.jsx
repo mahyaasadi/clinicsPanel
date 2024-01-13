@@ -10,7 +10,6 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
           selectSearchedService(
             x?.interfaceName,
             x?.state?.shape,
-            x?.state?.isCovered,
             x?.nationalNumber
           )
         }

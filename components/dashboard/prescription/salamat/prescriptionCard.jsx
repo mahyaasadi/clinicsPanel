@@ -4,7 +4,7 @@ import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
 const PrescriptionCard = ({
-  setIsLoading,
+  isLoading,
   searchIsLoading,
   salamatDataIsLoading,
   salamatHeaderList,
@@ -22,8 +22,10 @@ const PrescriptionCard = ({
   setSelectedConsumption,
   selectedConsumptionInstruction,
   setSelectedConsumptionInstruction,
-  ActiveSrvIsCovered,
-  //   registerEpresc,
+  selectedNOPeriod,
+  setSelectedNOPeriod,
+  ActiveSrvShape,
+  registerSalamatEprsc
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -40,16 +42,19 @@ const PrescriptionCard = ({
 
   // Search Recommendation
   const handleSearchKeyUp = (e) => {
-    setIsLoading(true);
     let inputCount = $("#srvSearchInput").val().length;
 
     if (inputCount < 2) {
       $("#srvSearchInput").val() == "";
       $(".SearchDiv").hide();
       $(".unsuccessfullSearch").hide();
-      setIsLoading(false);
     }
   };
+
+  let defaultConsumptionOptions = [];
+  for (let i = 1; i <= 14; i++) {
+    defaultConsumptionOptions.push({ label: i, value: i });
+  }
 
   return (
     <>
@@ -67,14 +72,14 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-                // onClick={() => registerEpresc(1)}
+              // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
 
               <button
                 className="btn btn-primary border-radius font-13"
-                // onClick={() => registerEpresc(0)}
+                onClick={() => registerSalamatEprsc()}
               >
                 ثبت نسخه نهایی
               </button>
@@ -132,7 +137,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                  // value={editSrvData?.SrvCode}
+                // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -143,16 +148,16 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                  // value={editSrvData?.SrvName}
+                // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                  //   onChange={() =>
-                  //     selectParaSrvType($("#ServiceSearchSelect").val())
-                  //   }
+                //   onChange={() =>
+                //     selectParaSrvType($("#ServiceSearchSelect").val())
+                //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -225,7 +230,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
+                    // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -254,13 +259,16 @@ const PrescriptionCard = ({
               </div>
 
               <div id="drugAmount" className="col media-mt-1">
-                <label className="lblAbs font-12">تعداد در وعده</label>
+                <label className="lblAbs font-12">دستور مصرف</label>
                 <Dropdown
-                  value={selectedConsumptionInstruction}
-                  onChange={(e) =>
-                    setSelectedConsumptionInstruction(e.target.value)
+                  value={selectedNOPeriod ? selectedNOPeriod : selectedConsumptionInstruction}
+                  onChange={(e) => (ActiveSrvShape === "T" || ActiveSrvShape === "C" || ActiveSrvShape === "R")
+                    ? setSelectedNOPeriod(e.target.value)
+                    : setSelectedConsumptionInstruction(e.target.value)
                   }
-                  options={instructionOptions}
+                  options={(ActiveSrvShape === "T" || ActiveSrvShape === "C" || ActiveSrvShape === "R")
+                    ? defaultConsumptionOptions
+                    : instructionOptions}
                   optionLabel="label"
                   placeholder="انتخاب کنید"
                   filter
@@ -281,12 +289,25 @@ const PrescriptionCard = ({
 
               <div className="col-md-3 media-w-100">
                 {/* {!srvEditMode ? ( */}
-                <button
-                  className="btn rounded w-100 addToListBtn font-12"
-                  onClick={FUAddToListItem}
-                >
-                  اضافه به لیست
-                </button>
+                {!isLoading ? (
+                  <button
+                    className="btn rounded w-100 addToListBtn font-12"
+                    onClick={FUAddToListItem}
+                  >
+                    اضافه به لیست
+                  </button>
+                ) : (
+                  <button
+                    className="btn rounded w-100 addToListBtn font-13"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                    ></span>
+                    در حال ثبت
+                  </button>
+                )}
                 {/* // ) : ( */}
                 {/* <div className="d-flex gap-1">
                     <button
