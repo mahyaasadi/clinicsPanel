@@ -141,18 +141,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.type === "S"
             ? "Success"
             : element.type === "I"
-            ? "Info"
-            : element.type === "E"
-            ? "Error"
-            : "Warning",
+              ? "Info"
+              : element.type === "E"
+                ? "Error"
+                : "Warning",
         summary:
           element.type === "S"
             ? "موفق!"
             : element.type === "I"
-            ? "اطلاعات!"
-            : element.type === "E"
-            ? "خطا!"
-            : "هشدار!",
+              ? "اطلاعات!"
+              : element.type === "E"
+                ? "خطا!"
+                : "هشدار!",
         detail: element.text,
         life: 10000,
       };
@@ -274,6 +274,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     // testing
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
+    setSelectedNOPeriod(null)
   };
 
   // Search in Drugs Category
@@ -434,6 +435,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
             $("#eprscItemDescription").val("");
             setSelectedConsumption(null);
             setSelectedConsumptionInstruction(null);
+            setSelectedNOPeriod(null);
             activeSearch();
           } else if (response.data.res.status === 409) {
             WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
