@@ -11,12 +11,10 @@ const SalamatAddToListItems = ({ data }) => {
   return (
     <>
       {data.map((srv, index) => (
-        <div key={index} dir="rtl" className="card shadow mb-1">
-          {/* <Toast ref={toastRefs.current[index]} /> */}
-
-          <div className="card-body font-14 receptionInfoText">
+        <div key={index} dir="rtl" className="card shadow-sm mb-1">
+          <div className="card-body  receptionInfoText">
             <div className="d-flex gap-1 align-items-center justify-between">
-              <div className="d-flex gap-2">
+              <div className="d-flex gap-2 font-13 fw-bold">
                 <p>{srv.name}</p>
               </div>
 
@@ -47,11 +45,15 @@ const SalamatAddToListItems = ({ data }) => {
               <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-12">
                 <div>{srv.QTY} عدد</div>
 
-                <div className="vertical-line"></div>
+                {srv.consumption && <div className="vertical-line"></div>}
                 <div className="d-flex paddingR-5">
-                  {srv.consumption}
+                  {srv.consumption ? srv.consumption : ""}
                   <div className="vertical-line"></div>
-                  <p className="paddingR-5">{srv.consumptionInstruction}</p>
+                  <p className="paddingR-5">
+                    {srv.consumptionInstruction
+                      ? srv.consumptionInstruction
+                      : srv.numberOfPeriod}
+                  </p>
                 </div>
               </div>
             </div>

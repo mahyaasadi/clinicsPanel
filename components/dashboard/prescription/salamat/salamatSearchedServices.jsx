@@ -1,4 +1,6 @@
+import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
+import { salamatLogo } from "components/commonComponents/imagePath";
 
 const SalamatSearchedServices = ({ data, selectSearchedService }) => {
   return data?.map((x, index) => {
@@ -14,20 +16,26 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
           )
         }
       >
-        {x.interfaceName}
-
-        <div className="mt-2 d-flex justify-center">
+        <div dir="rtl" className="d-flex align-items-center gap-2">
           {x?.state?.isCovered ? (
-            <button className="btn btn-sm btn-success font-12 w-18 d-flex justify-center align-items-center gap-1">
-              <FeatherIcon icon="check" />
-              تحت پوشش بیمه
-            </button>
+            <span className="badge ">
+              {/* <FeatherIcon icon="check" /> */}
+              <Image
+                src={salamatLogo}
+                alt="salamatLogo"
+                width="20"
+                height="20"
+              />
+            </span>
           ) : (
-            <button className="btn btn-sm btn-danger font-12 w-18 d-flex justify-center align-items-center gap-1">
-              <FeatherIcon icon="x" />
-              فاقد پوشش بیمه
-            </button>
+            <span className="badge badge-success">
+              <FeatherIcon
+                icon="x"
+                style={{ width: "16px !important", height: "16px !important" }}
+              />
+            </span>
           )}
+          {x.interfaceName}
         </div>
       </button>
     );

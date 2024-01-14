@@ -22,6 +22,7 @@ const Sidebar = () => {
     const prescriptionSubRoutes = [
       "/taminPrescription",
       "/salamatPrescription",
+      "/salamatPrescriptionRecords",
     ];
 
     const settingsSubRoutes = [
@@ -323,3 +324,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

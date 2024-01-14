@@ -87,7 +87,6 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         changePrescTypeTab(7, item.img, item.name, item.title, 7);
         handleSearchDivs();
         break;
-
       default:
         break;
     }

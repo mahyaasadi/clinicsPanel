@@ -10,7 +10,7 @@ const PrescriptionCard = ({
   salamatHeaderList,
   changePrescTypeTab,
   activeSearch,
-  prescSearchMode,
+  ActivePrescTypeID,
   onSubmit,
   salamatSrvSearchList,
   selectSearchedService,
@@ -25,7 +25,7 @@ const PrescriptionCard = ({
   selectedNOPeriod,
   setSelectedNOPeriod,
   ActiveSrvShape,
-  registerSalamatEprsc
+  registerSalamatEprsc,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -72,7 +72,7 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-              // onClick={() => registerEpresc(1)}
+                // onClick={() => registerEpresc(1)}
               >
                 فقط ثبت ویزیت
               </button>
@@ -110,7 +110,7 @@ const PrescriptionCard = ({
             )}
 
             <form className="w-100 pt-2" onSubmit={onSubmit}>
-              {prescSearchMode === "DrugSearch" && (
+              {ActivePrescTypeID === 1 && (
                 <div className="">
                   <div className="mb-4 d-flex align-items-center">
                     <label
@@ -137,27 +137,27 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
                 <input
                   type="text"
-                  autoComplete="off"
+                  // autoComplete="off"
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                //   onChange={() =>
-                //     selectParaSrvType($("#ServiceSearchSelect").val())
-                //   }
+                  //   onChange={() =>
+                  //     selectParaSrvType($("#ServiceSearchSelect").val())
+                  //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -230,7 +230,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -261,14 +261,25 @@ const PrescriptionCard = ({
               <div id="drugAmount" className="col media-mt-1">
                 <label className="lblAbs font-12">دستور مصرف</label>
                 <Dropdown
-                  value={selectedNOPeriod ? selectedNOPeriod : selectedConsumptionInstruction}
-                  onChange={(e) => (ActiveSrvShape === "T" || ActiveSrvShape === "C" || ActiveSrvShape === "R")
-                    ? setSelectedNOPeriod(e.target.value)
-                    : setSelectedConsumptionInstruction(e.target.value)
+                  value={
+                    selectedNOPeriod
+                      ? selectedNOPeriod
+                      : selectedConsumptionInstruction
                   }
-                  options={(ActiveSrvShape === "T" || ActiveSrvShape === "C" || ActiveSrvShape === "R")
-                    ? defaultConsumptionOptions
-                    : instructionOptions}
+                  onChange={(e) =>
+                    ActiveSrvShape === "T" ||
+                    ActiveSrvShape === "C" ||
+                    ActiveSrvShape === "R"
+                      ? setSelectedNOPeriod(e.target.value)
+                      : setSelectedConsumptionInstruction(e.target.value)
+                  }
+                  options={
+                    ActiveSrvShape === "T" ||
+                    ActiveSrvShape === "C" ||
+                    ActiveSrvShape === "R"
+                      ? defaultConsumptionOptions
+                      : instructionOptions
+                  }
                   optionLabel="label"
                   placeholder="انتخاب کنید"
                   filter
