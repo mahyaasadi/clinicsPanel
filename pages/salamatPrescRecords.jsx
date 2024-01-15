@@ -30,87 +30,108 @@ export const getServerSideProps = async ({ req, res }) => {
 let ClinicID = null;
 const SalamatPrescRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+
   const jDate = new JDate();
   let todaysFormattedDate = jDate.format("YYYYMMDD");
-  console.log({ todaysFormattedDate });
 
   const [isLoading, setIsLoading] = useState(false);
   const [prescRecords, setPrescRecords] = useState([]);
-  // const [dateFrom, setDateFrom] = useState("");
-  // const [dateTo, setDateTo] = useState("");
-  const [ActivePatientNID, setActivePatientNID] = useState("");
-
-  let dateFrom,
-    dateTo = null;
-  const SetRangeDate = (F, T) => {
-    // if (dateF && dateT) {
-    // setDateFrom(jDate.format("YYYYMMDD"));
-    // setDateTo(jDate.format("YYYYMMDD"));
-    // } else {
-    dateFrom = F;
-    dateTo = T;
-    // setDateFrom(dateF.replaceAll(/\//g, ""));
-    // setDateTo(dateT.replaceAll(/\//g, ""));
-    console.log({ F, T });
-    // }
-  };
+  // const [ActivePatientNID, setActivePatientNID] = useState("");
 
   // Get All SalamatPrescription Records
   const getAllSalamatPrescRecords = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
 
     let url = "BimehSalamat/SearchSamadCode/ByDate";
     let data = {
       SavePresc: 1,
       Status: "O",
       CenterID: ClinicID,
-      NID: ActivePatientNID,
-      DateFrom: dateFrom ? dateFrom : todaysFormattedDate,
-      DateTo: todaysFormattedDate ? todaysFormattedDate : dateTo,
+      NID: "",
+      DateFrom: todaysFormattedDate,
+      DateTo: todaysFormattedDate,
     };
 
     console.log({ data });
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
 
-    //     if (response.data.res.info) {
-    //       setPrescRecords(response.data.res.info);
-    //       setIsLoading(false);
-    //     } else {
-    //       setIsLoading(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //   });
+        if (response.data.res.info) {
+          setPrescRecords(response.data.res.info);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        setIsLoading(false);
+      });
+  };
+
+  // Filter PrescriptionRecords
+  let dateFrom,
+    dateTo = null;
+  const SetRangeDate = (dateF, dateT) => {
+    dateFrom = dateF?.replaceAll(/\//g, "");
+    dateTo = dateT?.replaceAll(/\//g, "");
+
+    console.log({ dateFrom, dateTo });
   };
 
   const applyFilterOnSalamatPrescs = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    setActivePatientNID(formProps.patientNID);
+    // setActivePatientNID(formProps.patientNID);
 
-    // inja data ro az _function begire then
-    // SavePresc: 1,
-    //   Status: "O",
-    //   CenterID: ClinicID,
+    let url = "BimehSalamat/SearchSamadCode/ByDate";
+    let data = {
+      SavePresc: 1,
+      Status: "O",
+      CenterID: ClinicID,
+      NID: formProps.patientNID,
+      DateFrom: dateFrom,
+      DateTo: dateTo
+    }
 
-    // in 3 ta ro behesh ezafe kone
-    // example FilterOnRecItems
+    console.log({ data });
 
-    // update data then pass it to getAllSalamatPrescRecords();
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+
+        if (response.data.res.info) {
+          setPrescRecords(response.data.res.info);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        setIsLoading(false);
+      });
   };
 
-  useEffect(() => {
-    getAllSalamatPrescRecords();
-  }, []);
+  // const resetFilterOptions = () => {
+  //   getAllSalamatPrescRecords();
+
+  //   set
+  // }
+
+  useEffect(() => getAllSalamatPrescRecords(), []);
 
   return (
     <>
@@ -127,6 +148,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
                 <FilterSalamatPrescs
                   SetRangeDate={SetRangeDate}
                   applyFilterOnSalamatPrescs={applyFilterOnSalamatPrescs}
+                  getAllSalamatPrescRecords={getAllSalamatPrescRecords}
                 />
 
                 <div className="card">
@@ -138,6 +160,15 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
                         </p>
                       </div>
                     </div>
+
+                    {/* <div className="col-auto d-flex flex-wrap"> */}
+                    <div className="form-custom me-2">
+                      <div
+                        id="tableSearch"
+                        className="dataTables_wrapper"
+                      ></div>
+                    </div>
+                    {/* </div> */}
                   </div>
 
                   <SalamatPrescRecordsList data={prescRecords} />

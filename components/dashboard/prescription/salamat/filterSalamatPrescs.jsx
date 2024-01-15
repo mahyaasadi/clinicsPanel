@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 
-const FilterSalamatPrescs = ({ SetRangeDate, applyFilterOnSalamatPrescs }) => {
+const FilterSalamatPrescs = ({ SetRangeDate, applyFilterOnSalamatPrescs, getAllSalamatPrescRecords }) => {
   return (
     <>
       <div>
@@ -44,7 +44,7 @@ const FilterSalamatPrescs = ({ SetRangeDate, applyFilterOnSalamatPrescs }) => {
               </button> */}
                 {/* )} */}
                 <button
-                  // onClick={handleResetFilterFields}
+                  onClick={getAllSalamatPrescRecords}
                   data-pr-position="top"
                   className="btn btn-primary w-48 d-flex align-items-center justify-center refreshBtn"
                 >
