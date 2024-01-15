@@ -22,7 +22,7 @@ const Sidebar = () => {
     const prescriptionSubRoutes = [
       "/taminPrescription",
       "/salamatPrescription",
-      "/salamatPrescriptionRecords",
+      "/salamatPrescRecords",
     ];
 
     const settingsSubRoutes = [
@@ -57,20 +57,6 @@ const Sidebar = () => {
       setFormBuilderSubMenuOpen(false);
     }
   }, [router.pathname]);
-
-  // useEffect(() => {
-  //   console.log({
-  //     receptionSubmenuOpen,
-  //     prescriptionSubmenuOpen,
-  //     settingsSubMenuOpen,
-  //     formBuilderSubMenuOpen,
-  //   });
-  // }, [
-  //   receptionSubmenuOpen,
-  //   prescriptionSubmenuOpen,
-  //   settingsSubMenuOpen,
-  //   formBuilderSubMenuOpen,
-  // ]);
 
   return (
     <>
@@ -197,6 +183,15 @@ const Sidebar = () => {
                   >
                     <Link href="/salamatPrescription" className="font-12">
                       خدمات درمانی
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      router.pathname == "/salamatPrescRecords" ? "active" : ""
+                    }
+                  >
+                    <Link href="/salamatPrescRecords" className="font-12">
+                      نسخ خدمات درمانی
                     </Link>
                   </li>
                 </ul>

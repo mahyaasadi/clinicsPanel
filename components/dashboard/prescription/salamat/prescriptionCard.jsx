@@ -59,12 +59,16 @@ const PrescriptionCard = ({
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
 
-    if (ActiveSrvShape === "T" || ActiveSrvShape === "C" || ActiveSrvShape === "R") {
+    if (
+      ActiveSrvShape === "T" ||
+      ActiveSrvShape === "C" ||
+      ActiveSrvShape === "R"
+    ) {
       setSelectedNOPeriod(selectedValue);
-      setSelectedConsumptionInstruction(null); // Reset the other mode's value
+      setSelectedConsumptionInstruction(null);
     } else {
       setSelectedConsumptionInstruction(selectedValue);
-      setSelectedNOPeriod(null); // Reset the other mode's value
+      setSelectedNOPeriod(null);
     }
   };
 
@@ -84,7 +88,7 @@ const PrescriptionCard = ({
 
               <button
                 className="btn border-radius visitBtn font-13"
-              // onClick={() => registerEpresc(1)}
+                onClick={() => registerSalamatEprsc()}
               >
                 فقط ثبت ویزیت
               </button>
@@ -149,7 +153,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -160,16 +164,16 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
                 <select
                   className="form-select disNone font-14 text-secondary"
                   id="ServiceSearchSelect"
-                //   onChange={() =>
-                //     selectParaSrvType($("#ServiceSearchSelect").val())
-                //   }
+                  //   onChange={() =>
+                  //     selectParaSrvType($("#ServiceSearchSelect").val())
+                  //   }
                 >
                   {/* {taminParaServicesList.map((paraSrvItem, index) => (
                     <ParaServicesDropdown
@@ -242,7 +246,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -271,19 +275,20 @@ const PrescriptionCard = ({
               </div>
 
               <div id="drugAmount" className="col media-mt-1">
-                <label className="lblAbs font-12">دستور مصرف</label>
+                <label className="lblAbs font-12">
+                  دستور مصرف / تعداد در وعده
+                </label>
                 <Dropdown
                   value={
                     selectedNOPeriod
                       ? selectedNOPeriod
                       : selectedConsumptionInstruction
                   }
-                  onChange={handleDropdownChange
-                  }
+                  onChange={handleDropdownChange}
                   options={
                     ActiveSrvShape === "T" ||
-                      ActiveSrvShape === "C" ||
-                      ActiveSrvShape === "R"
+                    ActiveSrvShape === "C" ||
+                    ActiveSrvShape === "R"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }

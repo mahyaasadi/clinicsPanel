@@ -141,18 +141,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.type === "S"
             ? "Success"
             : element.type === "I"
-              ? "Info"
-              : element.type === "E"
-                ? "Error"
-                : "Warning",
+            ? "Info"
+            : element.type === "E"
+            ? "Error"
+            : "Warning",
         summary:
           element.type === "S"
             ? "موفق!"
             : element.type === "I"
-              ? "اطلاعات!"
-              : element.type === "E"
-                ? "خطا!"
-                : "هشدار!",
+            ? "اطلاعات!"
+            : element.type === "E"
+            ? "خطا!"
+            : "هشدار!",
         detail: element.text,
         life: 10000,
       };
@@ -274,7 +274,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     // testing
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
-    setSelectedNOPeriod(null)
+    setSelectedNOPeriod(null);
   };
 
   // Search in Drugs Category
@@ -311,7 +311,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           .then((response) => {
             console.log(response.data);
 
-            if (response.data.res.resMessage === "عملیات با موفقیت انجام شد") {
+            if (response.data.res.info) {
               $(".unsuccessfullSearch").hide();
               $(".SearchDiv").show();
             } else {
@@ -462,17 +462,75 @@ const SalamatPrescription = ({ ClinicUser }) => {
       otherServices: existingCheckCodes,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
         console.log(response.data);
 
-        // if (response.data.) {
-        // toast message for messages;
-        // without lifeTime
-        // }
+        if (response.data.res.info) {
+          let registerMessages = [];
+          const infoMessageArray =
+            response.data.res.info.message.infoMessage || [];
+          const snackMessageArray =
+            response.data.res.info.message.snackMessage || [];
+          const sequenceNumber = response.data.res.info.sequenceNumber || "";
+          const trackingCode = response.data.res.info.trackingCode || "";
+
+          registerMessages.push(
+            ...infoMessageArray.map((message) => ({
+              severity: "Info",
+              summary: "اطلاعات!",
+              detail: message.text,
+              sticky: true,
+            }))
+          );
+
+          registerMessages.push(
+            ...snackMessageArray.map((message) => ({
+              severity:
+                message.type === "I"
+                  ? "Info"
+                  : message.type === "E"
+                  ? "Error"
+                  : message.type === "W"
+                  ? "Warning"
+                  : "Success",
+              summary:
+                message.type === "I"
+                  ? "اطلاعات!"
+                  : message.type === "E"
+                  ? "خطا!"
+                  : message.type === "W"
+                  ? "هشدار!"
+                  : "موفق!",
+              detail: message.text,
+              sticky: true,
+            }))
+          );
+
+          if (trackingCode) {
+            registerMessages.push({
+              severity: "Info",
+              summary: "کد پیگیری نسخه",
+              detail: trackingCode,
+              sticky: true,
+            });
+          }
+
+          if (sequenceNumber) {
+            registerMessages.push({
+              severity: "Info",
+              summary: "کد توالی",
+              detail: sequenceNumber,
+              sticky: true,
+            });
+          }
+          toast.current.show(registerMessages);
+        }
+
+        if (response.data.res.status === 400) {
+          ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -494,10 +552,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   }, [router.isReady]);
 
   useEffect(() => {
-    if (!ActivePatientNID) {
-      $("#patientInfoCard2").hide();
-      // showPatientMessages([]);
-    }
+    if (!ActivePatientNID) $("#patientInfoCard2").hide();
   }, [ActivePatientNID]);
 
   return (
@@ -505,7 +560,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       <Head>
         <title>نسخه نویسی خدمات درمانی</title>
       </Head>
-      <div className="page-wrapper" ref={toast}>
+      <div className="page-wrapper">
         <div className="content container-fluid">
           <Toast ref={toast} />
 

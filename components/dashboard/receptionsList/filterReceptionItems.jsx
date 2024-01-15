@@ -19,6 +19,8 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems }) => {
   const SetRangeDate = (f, t) => {
     dateFrom = f;
     dateTo = t;
+
+    console.log({ f, t });
   };
 
   const FUSelectDepartment = (departmentValue) =>
@@ -49,6 +51,8 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems }) => {
       DateFrom: dateFrom ? dateFrom : "",
       DateTo: dateTo ? dateTo : "",
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)

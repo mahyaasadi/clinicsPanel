@@ -50,9 +50,10 @@ const SalamatAddToListItems = ({ data }) => {
                   {srv.consumption ? srv.consumption : ""}
                   <div className="vertical-line"></div>
                   <p className="paddingR-5">
-                    {srv.consumptionInstruction
-                      ? srv.consumptionInstruction
-                      : srv.numberOfPeriod}
+                    {srv.consumptionInstruction &&
+                      "دستور مصرف : " + srv.consumptionInstruction}
+                    {srv.numberOfPeriod &&
+                      "تعداد در وعده : " + srv.numberOfPeriod}
                   </p>
                 </div>
               </div>

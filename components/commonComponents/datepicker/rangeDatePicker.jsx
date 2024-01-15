@@ -30,12 +30,12 @@ const RangeDatePicker = ({ SetRangeDate }) => {
   return (
     <>
       <div className="datePickerContainer d-flex align-items-center">
-        <label className="lblAbs datePickerLbl font-11">بازه تاریخ</label>
+        <label className="lblAbs datePickerLbl font-12">بازه تاریخ</label>
         <DtPicker
           onChange={setLocalDate}
           type="range"
           local="fa"
-          inputClass="datePickerInput font-11"
+          inputClass="datePickerInput font-12"
           headerClass="datePickerHeader"
           calenderModalClass="calenderModalContainer"
           placeholder="&nbsp;"
