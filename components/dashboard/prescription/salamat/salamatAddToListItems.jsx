@@ -32,10 +32,10 @@ const SalamatAddToListItems = ({
                     ((SrvPrescImage = salamatHeaderList.find(
                       (x) => x.id === srv.typeId
                     )),
-                    console.log())
+                      console.log())
                   }
                   <Image
-                    src={editPrescMode ? SrvPrescImage?.img : srv.prescTypeImg}
+                    src={SrvPrescImage ? SrvPrescImage?.img : srv.prescTypeImg}
                     alt="prescTypeImg"
                     width="24"
                     height="24"
@@ -71,7 +71,7 @@ const SalamatAddToListItems = ({
                   ((consumptionLbl = consumptionOptions.find(
                     (x) => x.title === srv.consumption
                   )),
-                  console.log())
+                    console.log())
                 }
                 <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-12">
                   <div>{srv.numberOfRequest} عدد</div>
@@ -81,8 +81,8 @@ const SalamatAddToListItems = ({
                     {editPrescMode && consumptionLbl
                       ? consumptionLbl.label
                       : srv.consumption
-                      ? srv.consumption
-                      : ""}
+                        ? srv.consumption
+                        : ""}
                     <div className="vertical-line"></div>
                     <p className="paddingR-5">
                       {srv.consumptionInstruction &&
@@ -110,15 +110,14 @@ const SalamatAddToListItems = ({
                   {srv.snackMessages.map((x, index) => (
                     <div
                       key={index}
-                      className={`alert alert-${
-                        x.type === "S"
+                      className={`alert alert-${x.type === "S"
                           ? "success"
                           : x.type === "I"
-                          ? "info"
-                          : x.type === "E"
-                          ? "danger"
-                          : "warning"
-                      } alert-dismissible fade show`}
+                            ? "info"
+                            : x.type === "E"
+                              ? "danger"
+                              : "warning"
+                        } alert-dismissible fade show`}
                       role="alert"
                     >
                       {x.text}
