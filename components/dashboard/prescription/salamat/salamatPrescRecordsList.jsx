@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
@@ -11,9 +12,6 @@ const SalamatPrescRecordsList = ({ data }) => {
       name: "مشخصات بیمار",
       selector: (row) => row.name,
       sortable: true,
-      style: {
-        justifyContent: "center",
-      },
       cell: (row) => (
         <div className="d-flex flex-col gap-1 align-items-center">
           <div className="d-flex align-items-center gap-3">
@@ -86,9 +84,13 @@ const SalamatPrescRecordsList = ({ data }) => {
               style={{ width: "16px", height: "16px" }}
             />
           </button>
-          <button
+          <Link
+            href={{
+              query: { SC: row.samadCode, PID: row.nationalNumber },
+              pathname: "/salamatPrescription",
+            }}
             className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center justify-center"
-            // onClick={() => openEditModal(row)}
+            onClick={() => console.log({ row })}
             data-pr-position="top"
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
@@ -96,7 +98,7 @@ const SalamatPrescRecordsList = ({ data }) => {
               icon="edit-3"
               style={{ width: "16px", height: "16px" }}
             />
-          </button>
+          </Link>
         </div>
       ),
       width: "auto",

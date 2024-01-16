@@ -5,6 +5,7 @@ const generateSalamatConsumptionOptions = (data) => {
     let obj = {
       value: item.Code,
       label: item.Name,
+      title: item.Title,
     };
     consumptionOptions.push(obj);
   }

@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { Tooltip } from "primereact/tooltip";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 
-const FilterSalamatPrescs = ({ SetRangeDate, applyFilterOnSalamatPrescs, getAllSalamatPrescRecords }) => {
+const FilterSalamatPrescs = ({
+  SetRangeDate,
+  applyFilterOnSalamatPrescs,
+  getAllSalamatPrescRecords,
+}) => {
   return (
     <>
       <div>
@@ -50,7 +55,7 @@ const FilterSalamatPrescs = ({ SetRangeDate, applyFilterOnSalamatPrescs, getAllS
                 >
                   <i className="fa fa-refresh"></i>
                 </button>
-                {/* <Tooltip target=".refreshBtn">تنظیم مجدد</Tooltip> */}
+                <Tooltip target=".refreshBtn">تنظیم مجدد</Tooltip>
               </div>
             </div>
           </form>

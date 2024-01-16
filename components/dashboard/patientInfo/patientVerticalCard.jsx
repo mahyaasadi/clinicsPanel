@@ -4,7 +4,7 @@ const PatientVerticalCard = ({ data, mode }) => {
   //   console.log({ data });
 
   let GenderType = "";
-  switch (data.gender) {
+  switch (data?.gender) {
     case "M":
       GenderType = "مرد";
       break;
@@ -19,7 +19,7 @@ const PatientVerticalCard = ({ data, mode }) => {
   }
 
   let RelationType = "";
-  switch (data.relationType) {
+  switch (data?.relationType) {
     case "R":
       RelationType = "سرپرست";
       break;
@@ -55,9 +55,9 @@ const PatientVerticalCard = ({ data, mode }) => {
           <div className="PVCardprofile">
             <div className="PVCardpro-im-na">
               <div className="PVCardimg">
-                {data.memberImage ? (
+                {data?.memberImage ? (
                   <img
-                    src={data.memberImage}
+                    src={data?.memberImage}
                     alt="patientAvatar"
                     style={{
                       width: "75px",
@@ -75,23 +75,23 @@ const PatientVerticalCard = ({ data, mode }) => {
                 )}
               </div>
               <div className="PVCardname">
-                {data.name} {""} {data.lastName}{" "}
-                {data.age ? ", " + data.age + " ساله" : ""}
+                {data?.name} {""} {data?.lastName}{" "}
+                {data?.age ? ", " + data?.age + " ساله" : ""}
               </div>
               <div className="PVCardjob">
-                {data.nationalNumber ? data.nationalNumber : "-"}
+                {data?.nationalNumber ? data?.nationalNumber : "-"}
               </div>
             </div>
           </div>
           <div className="PVCardviwer">
             <div className="PVCardboxall">
               <span className="PVCardvalue">
-                {data.isCovered
+                {data?.isCovered
                   ? "تحت قرارداد بیمه می باشد"
                   : "تحت قرارداد بیمه نمی باشد"}
               </span>
               <span className="PVCardparameter">
-                {data.isReferenceable
+                {data?.isReferenceable
                   ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
                   : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
               </span>
@@ -101,12 +101,12 @@ const PatientVerticalCard = ({ data, mode }) => {
                 جنسیت : {GenderType ? GenderType : "-"}
               </span>
               <span className="PVCardparameter">
-                نوع بیمه : {data.productName}
+                نوع بیمه : {data?.productName}
               </span>
               <span className="PVCardparameter">
                 تاریخ اعتبار تا {""}
-                {data.accountValidto
-                  ? convertDateFormat(data.accountValidto)
+                {data?.accountValidto
+                  ? convertDateFormat(data?.accountValidto)
                   : "-"}
               </span>
             </div>
@@ -116,7 +116,7 @@ const PatientVerticalCard = ({ data, mode }) => {
               </span>
               <span className="PVCardparameter">
                 پزشک خانواده :{" "}
-                {data.familyPhysician ? data.familyPhysician : "-"}
+                {data?.familyPhysician ? data?.familyPhysician : "-"}
               </span>
             </div>
           </div>

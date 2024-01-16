@@ -18,7 +18,7 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
       >
         <div dir="rtl" className="d-flex align-items-center gap-2">
           {x?.state?.isCovered ? (
-            <span className="badge">
+            <span className="badge p-1">
               <Image
                 src={salamatLogo}
                 alt="salamatLogo"
@@ -27,7 +27,7 @@ const SalamatSearchedServices = ({ data, selectSearchedService }) => {
               />
             </span>
           ) : (
-            <span className="badge badge-danger">
+            <span className="badge badge-danger p-1">
               <FeatherIcon
                 icon="x"
                 style={{ width: "15px !important", height: "15px !important" }}

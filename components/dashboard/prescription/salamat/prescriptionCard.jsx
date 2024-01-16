@@ -26,6 +26,10 @@ const PrescriptionCard = ({
   setSelectedNOPeriod,
   ActiveSrvShape,
   registerSalamatEprsc,
+  editPrescSrvMode,
+  setEditPrescSrvMode,
+  editSrvData,
+  setEditSrvData,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -70,6 +74,14 @@ const PrescriptionCard = ({
       setSelectedConsumptionInstruction(selectedValue);
       setSelectedNOPeriod(null);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setEditPrescSrvMode(false);
+    setEditSrvData([]);
+    $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+    $("#eprscItemDescription").val("");
   };
 
   return (
@@ -153,7 +165,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                  // value={editSrvData?.SrvCode}
+                  value={editSrvData?.checkCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -230,7 +242,7 @@ const PrescriptionCard = ({
               <div className="col media-w-100">
                 <label className="lblAbs margin-top-left font-12">تعداد</label>
                 <div className="row">
-                  <div className="col-auto">
+                  <div className="col-auto d-flex align-items-center">
                     <button
                       className="btn btn-outline-primary"
                       onClick={() => QtyChange("+")}
@@ -249,7 +261,7 @@ const PrescriptionCard = ({
                       // value={editSrvData?.Qty}
                     />
                   </div>
-                  <div className="col-auto">
+                  <div className="col-auto d-flex align-items-center">
                     <button
                       className="btn btn-outline-primary"
                       onClick={() => QtyChange("-")}
@@ -311,42 +323,42 @@ const PrescriptionCard = ({
               </div>
 
               <div className="col-md-3 media-w-100">
-                {/* {!srvEditMode ? ( */}
-                {!isLoading ? (
-                  <button
-                    className="btn rounded w-100 addToListBtn font-12"
-                    onClick={FUAddToListItem}
-                  >
-                    اضافه به لیست
-                  </button>
-                ) : (
-                  <button
-                    className="btn rounded w-100 addToListBtn font-13"
-                    disabled
-                  >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                    در حال ثبت
-                  </button>
-                )}
-                {/* // ) : ( */}
-                {/* <div className="d-flex gap-1">
+                {!editPrescSrvMode ? (
+                  !isLoading ? (
                     <button
                       className="btn rounded w-100 addToListBtn font-12"
-                      onClick={FuAddToListItem}
+                      onClick={FUAddToListItem}
+                    >
+                      اضافه به لیست
+                    </button>
+                  ) : (
+                    <button
+                      className="btn rounded w-100 addToListBtn font-13"
+                      disabled
+                    >
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                      ></span>
+                      در حال ثبت
+                    </button>
+                  )
+                ) : (
+                  <div className="d-flex gap-1">
+                    <button
+                      className="btn rounded w-100 addToListBtn font-12"
+                      onClick={FUAddToListItem}
                     >
                       ثبت تغییرات
                     </button>
                     <button
                       className="btn btn-sm btn-outline-dark rounded w-100  font-12"
-                      onClick={handleCancel}
+                      onClick={handleCancelEdit}
                     >
                       انصراف
                     </button>
-                  </div> */}
-                {/* // )} */}
+                  </div>
+                )}
               </div>
             </div>
           </div>

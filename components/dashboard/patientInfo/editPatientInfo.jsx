@@ -23,9 +23,9 @@ const EditPatientInfoModal = ({
     handleClose();
   };
 
-  const defaultGanderValue = data.Gender;
+  const defaultGanderValue = data?.Gender;
   const defaultGanderValueLabel =
-    data.Gender === "M" ? "مرد" : data.Gender === "F" ? "زن" : "دیگر";
+    data?.Gender === "M" ? "مرد" : data?.Gender === "F" ? "زن" : "دیگر";
 
   const selectedGender = {
     value: defaultGanderValue,
@@ -105,7 +105,7 @@ const EditPatientInfoModal = ({
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data.Name}
+                defaultValue={data?.Name}
               />
             </Form.Group>
           </div>
@@ -117,7 +117,7 @@ const EditPatientInfoModal = ({
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data.Age}
+                defaultValue={data?.Age}
               />
             </Form.Group>
           </div>
@@ -136,7 +136,7 @@ const EditPatientInfoModal = ({
                 id="addGenderType"
                 defaultValue={selectedGender}
                 onChange={handleInputChange}
-                key={data.Gender}
+                key={data?.Gender}
               />
             </div>
           </div>
@@ -147,7 +147,7 @@ const EditPatientInfoModal = ({
                 type="tel"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data.Tel}
+                defaultValue={data?.Tel}
               />
             </Form.Group>
           </div>
@@ -159,7 +159,7 @@ const EditPatientInfoModal = ({
                 dir="ltr"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data.NationalID}
+                defaultValue={data?.NationalID}
               />
             </Form.Group>
           </div>
@@ -193,3 +193,4 @@ const EditPatientInfoModal = ({
 };
 
 export default EditPatientInfoModal;
+

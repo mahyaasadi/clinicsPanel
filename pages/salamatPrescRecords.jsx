@@ -36,7 +36,6 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [prescRecords, setPrescRecords] = useState([]);
-  // const [ActivePatientNID, setActivePatientNID] = useState("");
 
   // Get All SalamatPrescription Records
   const getAllSalamatPrescRecords = () => {
@@ -52,36 +51,30 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
       DateTo: todaysFormattedDate,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         if (response.data.res.info) {
           setPrescRecords(response.data.res.info);
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         }
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         setIsLoading(false);
       });
   };
 
   // Filter PrescriptionRecords
-  let dateFrom,
-    dateTo = null;
+  let dateFrom = "";
+  let dateTo = "";
   const SetRangeDate = (dateF, dateT) => {
-    dateFrom = dateF?.replaceAll(/\//g, "");
-    dateTo = dateT?.replaceAll(/\//g, "");
-
-    console.log({ dateFrom, dateTo });
+    dateFrom = dateF;
+    dateTo = dateT;
   };
 
   const applyFilterOnSalamatPrescs = (e) => {
@@ -91,19 +84,19 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    // setActivePatientNID(formProps.patientNID);
-
     let url = "BimehSalamat/SearchSamadCode/ByDate";
     let data = {
       SavePresc: 1,
       Status: "O",
       CenterID: ClinicID,
       NID: formProps.patientNID,
-      DateFrom: dateFrom,
-      DateTo: dateTo
-    }
-
-    console.log({ data });
+      DateFrom:
+        dateFrom.indexOf("undefined") !== -1
+          ? ""
+          : dateFrom.replaceAll(/\//g, ""),
+      DateTo:
+        dateTo.indexOf("undefined") !== -1 ? "" : dateTo.replaceAll(/\//g, ""),
+    };
 
     axiosClient
       .post(url, data)
@@ -115,21 +108,15 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+          ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         }
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("خطا", "خطا در دریافت اطلاعات!")
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         setIsLoading(false);
       });
   };
-
-  // const resetFilterOptions = () => {
-  //   getAllSalamatPrescRecords();
-
-  //   set
-  // }
 
   useEffect(() => getAllSalamatPrescRecords(), []);
 
@@ -161,14 +148,14 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
                       </div>
                     </div>
 
-                    {/* <div className="col-auto d-flex flex-wrap"> */}
-                    <div className="form-custom me-2">
-                      <div
-                        id="tableSearch"
-                        className="dataTables_wrapper"
-                      ></div>
-                    </div>
-                    {/* </div> */}
+                    {/* <div className="col-auto d-flex flex-wrap">
+                      <div className="form-custom me-2">
+                        <div
+                          id="tableSearch"
+                          className="dataTables_wrapper"
+                        ></div>
+                      </div>
+                    </div> */}
                   </div>
 
                   <SalamatPrescRecordsList data={prescRecords} />

@@ -67,7 +67,7 @@ const EditInsuranceTypeModal = ({
                   <input
                     type="hidden"
                     name="patientNID"
-                    value={data.NationalID}
+                    value={data?.NationalID}
                   />
                   <SelectField
                     className="text-center font-12"
