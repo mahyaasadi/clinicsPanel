@@ -1,5 +1,6 @@
 import { Dropdown } from "primereact/dropdown";
 import { Skeleton } from "primereact/skeleton";
+import FeatherIcon from "feather-icons-react";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
@@ -26,10 +27,12 @@ const PrescriptionCard = ({
   setSelectedNOPeriod,
   ActiveSrvShape,
   registerSalamatEprsc,
+  editPrescMode,
   editPrescSrvMode,
   setEditPrescSrvMode,
   editSrvData,
   setEditSrvData,
+  updateSalamatPresc,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -62,6 +65,7 @@ const PrescriptionCard = ({
 
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
+    console.log({ selectedValue });
 
     if (
       ActiveSrvShape === "T" ||
@@ -79,6 +83,9 @@ const PrescriptionCard = ({
   const handleCancelEdit = () => {
     setEditPrescSrvMode(false);
     setEditSrvData([]);
+    setSelectedConsumption(null);
+    setSelectedConsumptionInstruction(null);
+    setSelectedNOPeriod(null);
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
     $("#eprscItemDescription").val("");
@@ -97,7 +104,20 @@ const PrescriptionCard = ({
               >
                 نسخه های پرمصرف
               </button> */}
-
+              {editPrescMode || editPrescSrvMode ? (
+                <button
+                  className="btn btn-outline-primary border-radius font-13 d-flex align-items-center gap-2"
+                  onClick={updateSalamatPresc}
+                >
+                  <FeatherIcon
+                    icon="edit-2"
+                    style={{ width: "15px", height: "15px" }}
+                  />
+                  ثبت نهایی تغییرات
+                </button>
+              ) : (
+                ""
+              )}
               <button
                 className="btn border-radius visitBtn font-13"
                 onClick={() => registerSalamatEprsc()}
@@ -127,7 +147,7 @@ const PrescriptionCard = ({
                     />
                   ))}
                 </ul>
-                <hr />
+                <hr className="mt-1" />
               </>
             ) : (
               <div className="SalamatPrscHeader">
@@ -313,7 +333,7 @@ const PrescriptionCard = ({
             </div>
 
             <div className="d-flex align-items-center media-flex-column media-gap mt-3 justify-between">
-              <div className="w-73 media-w-100">
+              <div className="w-74 media-w-100">
                 <label className="lblAbs font-12">توضیحات</label>
                 <input
                   type="text"

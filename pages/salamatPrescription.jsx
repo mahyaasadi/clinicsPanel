@@ -39,7 +39,6 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 // PrescTypeHeader
-let ActiveSrvTypeID = 1;
 let ActivePrescName = "دارو";
 let ActivePrescImg,
   ActivePrescEngTitle = null;
@@ -47,8 +46,10 @@ let ActivePrescImg,
 // Services
 let ActiveSrvName,
   ActiveSrvNationalNumber,
-  ActiveSamadCode = null;
+  ActiveSamadCode,
+  ActiveCheckCode = null;
 let existingCheckCodes = [];
+let deletedCheckCodes = [];
 
 let ClinicID = null;
 const SalamatPrescription = ({ ClinicUser }) => {
@@ -146,32 +147,34 @@ const SalamatPrescription = ({ ClinicUser }) => {
   // Patient Toast Messages
   let patientToastMessages = [];
   const showPatientMessages = (patientMessages) => {
-    if (patientMessages.length !== 0) {
-      for (let i = 0; i < patientMessages.length; i++) {
-        const element = patientMessages[i];
-        let obj = {
-          severity:
-            element.type === "S"
-              ? "Success"
-              : element.type === "I"
+    if (patientMessages && patientMessages.length !== 0) {
+      if (patientMessages.length !== 0) {
+        for (let i = 0; i < patientMessages.length; i++) {
+          const element = patientMessages[i];
+          let obj = {
+            severity:
+              element.type === "S"
+                ? "Success"
+                : element.type === "I"
                 ? "Info"
                 : element.type === "E"
-                  ? "Error"
-                  : "Warning",
-          summary:
-            element.type === "S"
-              ? "موفق!"
-              : element.type === "I"
+                ? "Error"
+                : "Warning",
+            summary:
+              element.type === "S"
+                ? "موفق!"
+                : element.type === "I"
                 ? "اطلاعات!"
                 : element.type === "E"
-                  ? "خطا!"
-                  : "هشدار!",
-          detail: element.text,
-          life: 10000,
-        };
-        patientToastMessages.push(obj);
+                ? "خطا!"
+                : "هشدار!",
+            detail: element.text,
+            life: 10000,
+          };
+          patientToastMessages.push(obj);
+        }
+        toast.current.show(patientToastMessages);
       }
-      toast.current.show(patientToastMessages);
     }
   };
 
@@ -232,7 +235,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     prescEngTitle,
     prescId
   ) => {
-    ActiveSrvTypeID = srvTypeID;
     ActivePrescImg = prescImg;
     ActivePrescName = prescName;
     ActivePrescEngTitle = prescEngTitle;
@@ -321,15 +323,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
         axiosClient
           .post(url, data)
           .then((response) => {
-            console.log(response.data);
-
             if (response.data.res.info) {
               $(".unsuccessfullSearch").hide();
               $(".SearchDiv").show();
             } else {
               $(".unsuccessfullSearch").show();
             }
-
             setSalamatSrvSearchList(response.data.res?.info);
             setSearchIsLoading(false);
           })
@@ -350,18 +349,44 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const selectSearchedService = (srvName, srvShape, srvNationalNumber) => {
     ActiveSrvName = srvName;
     ActiveSrvNationalNumber = srvNationalNumber;
+    setActiveSrvShape(srvShape);
+    $("#srvSearchInput").val(srvName);
 
     setSearchFromInput(false);
-    setActiveSrvShape(srvShape);
-
-    $("#srvSearchInput").val(srvName);
-    $("#BtnServiceSearch").hide();
     setSearchIsLoading(false);
+
+    $("#BtnServiceSearch").hide();
     $("#BtnActiveSearch").show();
     $(".SearchDiv").hide();
     $("#srvSearchInput").prop("readonly", true);
   };
 
+  const removeAndUpdateService = () => {
+    // if ()
+    const index = existingCheckCodes.filter(
+      (a) => a.checkCode === ActiveCheckCode
+    );
+    existingCheckCodes.splice(index, 1);
+  };
+
+  const updatePrescItem = (id, newArr) => {
+    let index = prescriptionItemsData.findIndex(
+      (x) => x.serviceInterfaceName === id
+    );
+    let g = prescriptionItemsData[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else
+      setPrescriptionItemsData([
+        ...prescriptionItemsData.slice(0, index),
+        g,
+        ...prescriptionItemsData.slice(index + 1),
+      ]);
+  };
+
+  // Add Services To List
   const FUAddToListItem = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -409,6 +434,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       setIsLoading(false);
     } else {
       console.log({ prescData });
+      removeAndUpdateService();
 
       axiosClient
         .post(url, prescData)
@@ -421,25 +447,37 @@ const SalamatPrescription = ({ ClinicUser }) => {
               numberOfRequest: $("#QtyInput").val(),
               description: $("#eprscItemDescription").val(),
               consumption: findConsumptionLbl?.label,
+              consumptionVal: findConsumptionLbl?.value,
               consumptionInstruction: findInstructionLbl?.label,
+              consumptionInstructionVal: findInstructionLbl?.value,
               numberOfPeriod: selectedNOPeriod,
               snackMessages: response.data.res.info?.message?.snackMessage,
               infoMessages: response.data.res.info?.message?.infoMessage,
               checkCode: response.data.res.info?.checkCode,
               prescTypeImg: ActivePrescImg,
               prescTypeID: ActivePrescTypeID,
-              // shape: ActiveSrvShape,
-              // bulkId: ActivePrescTypeID === 10 ? 1 : 0
+              shape: ActiveSrvShape,
+              bulkId: ActivePrescTypeID === 10 ? 1 : 0,
+              serviceNationalNumber: ActiveSrvNationalNumber,
             };
 
             existingCheckCodes.push({
               checkCode: response.data.res.info?.checkCode,
             });
 
-            setPrescriptionItemsData([
-              ...prescriptionItemsData,
-              addedPrescItemData,
-            ]);
+            if (editPrescSrvMode) {
+              updatePrescItem(
+                addedPrescItemData.serviceInterfaceName,
+                addedPrescItemData
+              );
+              changePrescTypeTab();
+              // setEditPrescSrvMode(false);
+            } else {
+              setPrescriptionItemsData([
+                ...prescriptionItemsData,
+                addedPrescItemData,
+              ]);
+            }
 
             // reset
             $("#srvSearchInput").val("");
@@ -460,7 +498,14 @@ const SalamatPrescription = ({ ClinicUser }) => {
         .catch((err) => {
           console.log(err);
           setIsLoading(false);
-          ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+          if (err.response) {
+            ErrorAlert(
+              "ویرایش امکان پذیر نمی باشد!",
+              err.response.data.resMessage
+            );
+          } else {
+            ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+          }
         });
     }
   };
@@ -478,7 +523,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data.res.info) {
           let registerMessages = [];
@@ -504,18 +549,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 message.type === "I"
                   ? "Info"
                   : message.type === "E"
-                    ? "Error"
-                    : message.type === "W"
-                      ? "Warning"
-                      : "Success",
+                  ? "Error"
+                  : message.type === "W"
+                  ? "Warning"
+                  : "Success",
               summary:
                 message.type === "I"
                   ? "اطلاعات!"
                   : message.type === "E"
-                    ? "خطا!"
-                    : message.type === "W"
-                      ? "هشدار!"
-                      : "موفق!",
+                  ? "خطا!"
+                  : message.type === "W"
+                  ? "هشدار!"
+                  : "موفق!",
               detail: message.text,
               sticky: true,
             }))
@@ -562,7 +607,11 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
       if (existingCheckCodes.indexOf(id)) {
         const index = existingCheckCodes.indexOf(id);
+        deletedCheckCodes.push({
+          checkCode: id,
+        });
         existingCheckCodes.splice(index, 1);
+        console.log({ deletedCheckCodes });
       }
     }
   };
@@ -582,8 +631,17 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        setPrescriptionItemsData(response.data.info.subscriptionInfos);
         console.log(response.data);
+        setPrescriptionItemsData(response.data.info.subscriptionInfos);
+
+        response.data.info.subscriptionInfos.map((x, index) => {
+          {
+            index !== 0 &&
+              existingCheckCodes.push({
+                checkCode: x.checkCode,
+              });
+          }
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -594,17 +652,56 @@ const SalamatPrescription = ({ ClinicUser }) => {
     setEditSrvData(srvData);
     setEditPrescSrvMode(true);
     console.log({ srvData });
+    $("#srvSearchInput").prop("readonly", true);
 
+    setActivePrescTypeID(srvData.typeId);
+    setActiveSrvShape(srvData.shape);
+    setSelectedNOPeriod(srvData.numberOfPeriod);
     ActiveSrvName = srvData.serviceInterfaceName;
-    // ActiveSrvCode = srvData.Code;
-    // ActiveEditSrvID = srvData._id;
-    // ActiveSrvPrice = srvData.Price;
-    // ActiveSrvID = srvData._id;
-    // ActiveSrvEngName = srvData.EngName;
-
+    ActiveSrvNationalNumber = srvData.serviceNationalNumber;
+    ActiveCheckCode = srvData.checkCode;
     $("#srvSearchInput").val(srvData.serviceInterfaceName);
     $("#QtyInput").val(srvData.numberOfRequest);
     $("#eprscItemDescription").val(srvData.description);
+
+    // dropdowns
+    setSelectedConsumption(
+      parseInt(
+        srvData.consumptionSNOMEDCode
+          ? srvData.consumptionSNOMEDCode
+          : srvData.consumptionVal
+      )
+    );
+    setSelectedConsumptionInstruction(
+      srvData.consumptionInstruction && editPrescSrvMode
+        ? srvData.consumptionInstruction
+        : srvData.consumptionInstructionVal
+    );
+  };
+
+  const updateSalamatPresc = () => {
+    if (editPrescMode || editPrescSrvMode) {
+      let url = "BimehSalamat/PrescriptionUpdate";
+      let data = {
+        SavePresc: 1,
+        CenterID: ClinicID,
+        CitizenSessionId,
+        SamadCode: SamadCode ? SamadCode : ActiveSamadCode,
+        otherServices: existingCheckCodes,
+        deleteSubscriptions: deletedCheckCodes,
+      };
+
+      console.log({ data });
+
+      // axiosClient
+      //   .post(url, data)
+      //   .then((response) => {
+      //     console.log(response.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    }
   };
 
   useEffect(() => {
@@ -686,10 +783,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setSelectedNOPeriod={setSelectedNOPeriod}
                 ActiveSrvShape={ActiveSrvShape}
                 registerSalamatEprsc={registerSalamatEprsc}
+                editPrescMode={editPrescMode}
                 editPrescSrvMode={editPrescSrvMode}
                 setEditPrescSrvMode={setEditPrescSrvMode}
                 editSrvData={editSrvData}
                 setEditSrvData={setEditSrvData}
+                updateSalamatPresc={updateSalamatPresc}
               />
 
               <div className="prescList">
