@@ -21,7 +21,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").show();
         $("#drugAmount").show();
 
-        changePrescTypeTab(1, item.img, item.name, item.title, 1);
+        changePrescTypeTab(item.img, item.name, item.title, 1);
         handleSearchDivs();
         break;
       case 10:
@@ -30,7 +30,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").show();
         $("#drugAmount").show();
 
-        changePrescTypeTab(10, item.img, item.name, item.title, 10);
+        changePrescTypeTab(item.img, item.name, item.title, 10);
         handleSearchDivs();
         break;
       case 2:
@@ -39,7 +39,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(2, item.img, item.name, item.title, 2);
+        changePrescTypeTab(item.img, item.name, item.title, 2);
         handleSearchDivs();
         break;
       case 3:
@@ -48,7 +48,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(3, item.img, item.name, item.title, 3);
+        changePrescTypeTab(item.img, item.name, item.title, 3);
         handleSearchDivs();
         break;
       case 4:
@@ -57,7 +57,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(4, item.img, item.name, item.title, 4);
+        changePrescTypeTab(item.img, item.name, item.title, 4);
         handleSearchDivs();
         break;
       case 5:
@@ -66,7 +66,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(5, item.img, item.name, item.title, 5);
+        changePrescTypeTab(item.img, item.name, item.title, 5);
         handleSearchDivs();
         break;
       case 6:
@@ -75,7 +75,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(6, item.img, item.name, item.title, 6);
+        changePrescTypeTab(item.img, item.name, item.title, 6);
         handleSearchDivs();
         break;
       case 7:
@@ -84,7 +84,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
         $("#drugInstruction").hide();
         $("#drugAmount").hide();
 
-        changePrescTypeTab(7, item.img, item.name, item.title, 7);
+        changePrescTypeTab(item.img, item.name, item.title, 7);
         handleSearchDivs();
         break;
       default:
@@ -93,20 +93,18 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
   };
 
   useEffect(() => {
-    if (index === 0) changePrescTypeTab(1, item.img, item.name, item.title, 1);
+    if (index === 0) changePrescTypeTab(item.img, item.name, item.title, 1);
   }, []);
 
   return (
     <>
       <li className="nav-item">
         <a
-          className={`nav-link media-nav-link ${
-            index === 0 ? "active" : item.Active
-          } ${
-            index === 1 || index === 3 || index === 6 || index === 7
+          className={`nav-link media-nav-link ${index === 0 ? "active" : item.Active
+            } ${index === 1 || index === 3 || index === 6 || index === 7
               ? "w-170"
               : ""
-          }`}
+            }`}
           href={"#bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
@@ -122,10 +120,10 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
           <Image src={item.img} alt="prescTypeIcon" height="20" width="20" />{" "}
           &nbsp;
           {item.name}{" "}
-          <span
+          {/* <span
             className="badge badge-primary"
             id={"srvItemCountId" + item.id}
-          ></span>
+          ></span> */}
         </a>
       </li>
     </>

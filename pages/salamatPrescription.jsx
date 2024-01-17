@@ -156,18 +156,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
               element.type === "S"
                 ? "Success"
                 : element.type === "I"
-                ? "Info"
-                : element.type === "E"
-                ? "Error"
-                : "Warning",
+                  ? "Info"
+                  : element.type === "E"
+                    ? "Error"
+                    : "Warning",
             summary:
               element.type === "S"
                 ? "موفق!"
                 : element.type === "I"
-                ? "اطلاعات!"
-                : element.type === "E"
-                ? "خطا!"
-                : "هشدار!",
+                  ? "اطلاعات!"
+                  : element.type === "E"
+                    ? "خطا!"
+                    : "هشدار!",
             detail: element.text,
             life: 10000,
           };
@@ -229,7 +229,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
   // PrescTypesHeader Tab Change
   const changePrescTypeTab = (
-    srvTypeID,
     prescImg,
     prescName,
     prescEngTitle,
@@ -238,6 +237,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
     ActivePrescImg = prescImg;
     ActivePrescName = prescName;
     ActivePrescEngTitle = prescEngTitle;
+
+    console.log({ ActivePrescEngTitle });
 
     setActivePrescTypeID(prescId);
     activeSearch();
@@ -252,7 +253,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setConsumptionOptions(
           generateSalamatConsumptionOptions(response.data.SalamatConsumption)
         );
@@ -456,6 +457,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
               checkCode: response.data.res.info?.checkCode,
               prescTypeImg: ActivePrescImg,
               prescTypeID: ActivePrescTypeID,
+              prescTypeEngTitle: ActivePrescEngTitle,
               shape: ActiveSrvShape,
               bulkId: ActivePrescTypeID === 10 ? 1 : 0,
               serviceNationalNumber: ActiveSrvNationalNumber,
@@ -470,7 +472,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 addedPrescItemData.serviceInterfaceName,
                 addedPrescItemData
               );
-              changePrescTypeTab();
+              // changePrescTypeTab();
               // setEditPrescSrvMode(false);
             } else {
               setPrescriptionItemsData([
@@ -549,18 +551,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 message.type === "I"
                   ? "Info"
                   : message.type === "E"
-                  ? "Error"
-                  : message.type === "W"
-                  ? "Warning"
-                  : "Success",
+                    ? "Error"
+                    : message.type === "W"
+                      ? "Warning"
+                      : "Success",
               summary:
                 message.type === "I"
                   ? "اطلاعات!"
                   : message.type === "E"
-                  ? "خطا!"
-                  : message.type === "W"
-                  ? "هشدار!"
-                  : "موفق!",
+                    ? "خطا!"
+                    : message.type === "W"
+                      ? "هشدار!"
+                      : "موفق!",
               detail: message.text,
               sticky: true,
             }))
@@ -649,14 +651,45 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const handleEditService = (srvData) => {
+    console.log({ srvData });
+
     setEditSrvData(srvData);
     setEditPrescSrvMode(true);
-    console.log({ srvData });
     $("#srvSearchInput").prop("readonly", true);
 
     setActivePrescTypeID(srvData.typeId);
     setActiveSrvShape(srvData.shape);
     setSelectedNOPeriod(srvData.numberOfPeriod);
+    switch (srvData.typeId) {
+      case 1:
+        ActivePrescEngTitle = 'drug'
+        break;
+      case 2:
+        ActivePrescEngTitle = 'test'
+        break;
+      case 3:
+        ActivePrescEngTitle = 'imaging'
+        break;
+      case 4:
+        ActivePrescEngTitle = 'physiotherapy'
+        break;
+      case 5:
+        ActivePrescEngTitle = 'doctor'
+        break;
+      case 6:
+        ActivePrescEngTitle = 'reference'
+        break;
+      case 7:
+        ActivePrescEngTitle = 'dentist'
+        break;
+      case 10:
+        ActivePrescEngTitle = 'bulk'
+        break;
+
+      default:
+        break;
+    }
+
     ActiveSrvName = srvData.serviceInterfaceName;
     ActiveSrvNationalNumber = srvData.serviceNationalNumber;
     ActiveCheckCode = srvData.checkCode;
@@ -672,12 +705,15 @@ const SalamatPrescription = ({ ClinicUser }) => {
           : srvData.consumptionVal
       )
     );
+
     setSelectedConsumptionInstruction(
-      srvData.consumptionInstruction && editPrescSrvMode
+      editPrescSrvMode && srvData.selectedConsumptionInstruction
         ? srvData.consumptionInstruction
         : srvData.consumptionInstructionVal
     );
   };
+
+  console.log({ selectedConsumptionInstruction });
 
   const updateSalamatPresc = () => {
     if (editPrescMode || editPrescSrvMode) {
