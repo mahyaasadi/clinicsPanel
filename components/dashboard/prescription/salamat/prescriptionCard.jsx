@@ -5,6 +5,7 @@ import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
 const PrescriptionCard = ({
+  CancelEdit,
   isLoading,
   searchIsLoading,
   salamatDataIsLoading,
@@ -86,9 +87,11 @@ const PrescriptionCard = ({
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
     setSelectedNOPeriod(null);
+    CancelEdit();
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
     $("#eprscItemDescription").val("");
+    $("#srvSearchInput").prop("readonly", false);
   };
 
   return (
@@ -104,20 +107,7 @@ const PrescriptionCard = ({
               >
                 نسخه های پرمصرف
               </button> */}
-              {editPrescMode || editPrescSrvMode ? (
-                <button
-                  className="btn btn-outline-primary border-radius font-13 d-flex align-items-center gap-2"
-                  onClick={updateSalamatPresc}
-                >
-                  <FeatherIcon
-                    icon="edit-2"
-                    style={{ width: "15px", height: "15px" }}
-                  />
-                  ثبت نهایی تغییرات
-                </button>
-              ) : (
-                ""
-              )}
+
               <button
                 className="btn border-radius visitBtn font-13"
                 onClick={() => registerSalamatEprsc()}

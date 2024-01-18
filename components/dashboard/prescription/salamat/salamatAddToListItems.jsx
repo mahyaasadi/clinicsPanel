@@ -32,7 +32,7 @@ const SalamatAddToListItems = ({
                     ((SrvPrescImage = salamatHeaderList.find(
                       (x) => x.id === srv.typeId
                     )),
-                      console.log())
+                    console.log())
                   }
                   <Image
                     src={SrvPrescImage ? SrvPrescImage?.img : srv.prescTypeImg}
@@ -57,7 +57,9 @@ const SalamatAddToListItems = ({
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-danger removeBtn height-27"
-                    onClick={() => deleteService(srv.checkCode)}
+                    onClick={() =>
+                      deleteService(srv.checkCode, srv.salamatPresc)
+                    }
                     data-pr-position="top"
                   >
                     <Tooltip target=".removeBtn">حذف</Tooltip>
@@ -71,7 +73,7 @@ const SalamatAddToListItems = ({
                   ((consumptionLbl = consumptionOptions.find(
                     (x) => x.title === srv.consumption
                   )),
-                    console.log())
+                  console.log())
                 }
                 <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-12">
                   <div>{srv.numberOfRequest} عدد</div>
@@ -81,8 +83,8 @@ const SalamatAddToListItems = ({
                     {editPrescMode && consumptionLbl
                       ? consumptionLbl.label
                       : srv.consumption
-                        ? srv.consumption
-                        : ""}
+                      ? srv.consumption
+                      : ""}
                     <div className="vertical-line"></div>
                     <p className="paddingR-5">
                       {srv.consumptionInstruction &&
@@ -110,14 +112,15 @@ const SalamatAddToListItems = ({
                   {srv.snackMessages.map((x, index) => (
                     <div
                       key={index}
-                      className={`alert alert-${x.type === "S"
+                      className={`alert alert-${
+                        x.type === "S"
                           ? "success"
                           : x.type === "I"
-                            ? "info"
-                            : x.type === "E"
-                              ? "danger"
-                              : "warning"
-                        } alert-dismissible fade show`}
+                          ? "info"
+                          : x.type === "E"
+                          ? "danger"
+                          : "warning"
+                      } alert-dismissible fade show`}
                       role="alert"
                     >
                       {x.text}
