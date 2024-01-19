@@ -64,6 +64,7 @@ export default function Page() {
               alt="login-banner"
               unoptimized={true}
               priority={true}
+              height="800"
             />
           </div>
         </div>
@@ -71,7 +72,7 @@ export default function Page() {
         <div className="col-lg-6 col-12 login-wrap-bg">
           <div className="login-wrapper">
             <div className="loginbox">
-              <h3 className="loginTitle stretch text-center mb-1">
+              <h3 className="loginTitle stretch text-center mb-2">
                 ایران نوبت
               </h3>
               <p className="account-subtitle text-center marginb-3">
@@ -85,7 +86,7 @@ export default function Page() {
                     name="UserName"
                     render={({ field: { value, onChange } }) => (
                       <input
-                        className="form-control floating"
+                        className="form-control floating font-15"
                         type="text"
                         id="UserName"
                         name="UserName"
@@ -103,7 +104,7 @@ export default function Page() {
                     render={({ field: { value, onChange } }) => (
                       <div className="pass-group">
                         <input
-                          className="form-control floating"
+                          className="form-control floating font-15"
                           type={eye ? "password" : "text"}
                           autoComplete="false"
                           placeholder="رمز عبور"
@@ -112,9 +113,8 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${
-                            eye ? "fa-eye-slash" : "fa-eye"
-                          }`}
+                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
                         />
                       </div>
                     )}

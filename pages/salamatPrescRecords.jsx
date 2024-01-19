@@ -3,7 +3,7 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert, WarningAlert } from "class/AlertManage";
+import { ErrorAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import SalamatPrescRecordsList from "components/dashboard/prescription/salamat/salamatPrescRecordsList";
 import FilterSalamatPrescs from "components/dashboard/prescription/salamat/filterSalamatPrescs";

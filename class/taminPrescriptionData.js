@@ -13,7 +13,6 @@ const TaminPrescType = [
     img: "/assets/img/TaminPrescTypeID4.png",
     Active: "",
   },
-  // {name : "ارجاع" , id : 6 , img : "/assets/img/TaminPrescTypeID6.png" , Active : ""},
 ];
 
 const TaminParaServicesTypeList = [

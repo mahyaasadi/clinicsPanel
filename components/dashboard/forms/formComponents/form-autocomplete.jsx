@@ -44,7 +44,7 @@ const FormAutoComplete = ({ data }) => {
         data-pr-position="top"
       >
         <span className="autocompleteTooltipIcon">?</span>
-        <Tooltip target=".newAppointBtn">نوبت جدید</Tooltip>
+        <Tooltip target=".newAppointBtn">{data.description}</Tooltip>
       </span>
 
       <Typeahead

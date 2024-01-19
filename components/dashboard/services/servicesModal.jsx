@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { Modal } from "react-bootstrap";
-import FeatherIcon from "feather-icons-react";
 import { convertToLocaleString } from "utils/convertToLocaleString";
 
 const DepartmentsModal = ({

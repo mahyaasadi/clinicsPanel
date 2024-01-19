@@ -14,4 +14,3 @@ export default function DashboardLayout({ children, ClinicUser }) {
 }
 
 import Footer from "components/commonComponents/footer";
-

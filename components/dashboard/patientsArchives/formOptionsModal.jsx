@@ -9,7 +9,6 @@ const FormOptionsModal = ({
   show,
   onHide,
   ClinicID,
-  ClinicUserID,
   ActivePatientID,
   ActiveReceptionObjID,
 }) => {

@@ -1,4 +1,3 @@
-import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
 const FormFile = ({ data }) => {
@@ -21,7 +20,6 @@ const FormFile = ({ data }) => {
           type="file"
           className={`upload ${data.className}`}
           name={data.name}
-          // onChange={displayNewAvatar}
           required={data.required}
           placeholder={data.label}
           multiple={data.multiple}

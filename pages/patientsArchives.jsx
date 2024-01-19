@@ -3,7 +3,7 @@ import Head from "next/head";
 import { getSession } from "lib/session";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig.js";
-import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import PatientsListTable from "components/dashboard/patientsArchives/patientsListTable";
 import CheckPatientNIDModal from "components/dashboard/patientsArchives/checkPatientNIDModal";

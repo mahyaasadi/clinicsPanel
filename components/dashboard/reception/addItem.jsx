@@ -1,6 +1,5 @@
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
-import { Dropdown } from "primereact/dropdown";
 import ApplyDiscountModal from "components/dashboard/discounts/applyManualDiscountModal";
 
 const AddItem = ({

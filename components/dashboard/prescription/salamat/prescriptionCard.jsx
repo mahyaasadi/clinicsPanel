@@ -1,6 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
 import { Skeleton } from "primereact/skeleton";
-import FeatherIcon from "feather-icons-react";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
@@ -28,12 +27,10 @@ const PrescriptionCard = ({
   setSelectedNOPeriod,
   ActiveSrvShape,
   registerSalamatEprsc,
-  editPrescMode,
   editPrescSrvMode,
   setEditPrescSrvMode,
   editSrvData,
   setEditSrvData,
-  updateSalamatPresc,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -84,10 +81,11 @@ const PrescriptionCard = ({
   const handleCancelEdit = () => {
     setEditPrescSrvMode(false);
     setEditSrvData([]);
+    CancelEdit();
+
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
     setSelectedNOPeriod(null);
-    CancelEdit();
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
     $("#eprscItemDescription").val("");
@@ -186,24 +184,7 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
-                  // value={editSrvData?.SrvName}
                 />
-
-                {/* paraClinic */}
-                <select
-                  className="form-select disNone font-14 text-secondary"
-                  id="ServiceSearchSelect"
-                  //   onChange={() =>
-                  //     selectParaSrvType($("#ServiceSearchSelect").val())
-                  //   }
-                >
-                  {/* {taminParaServicesList.map((paraSrvItem, index) => (
-                    <ParaServicesDropdown
-                      key={index}
-                      paraSrvItem={paraSrvItem}
-                    />
-                  ))} */}
-                </select>
 
                 {/* search buttons */}
                 <button
@@ -268,7 +249,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
+                    // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto d-flex align-items-center">
@@ -309,8 +290,8 @@ const PrescriptionCard = ({
                   onChange={handleDropdownChange}
                   options={
                     ActiveSrvShape === "T" ||
-                    ActiveSrvShape === "C" ||
-                    ActiveSrvShape === "R"
+                      ActiveSrvShape === "C" ||
+                      ActiveSrvShape === "R"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }

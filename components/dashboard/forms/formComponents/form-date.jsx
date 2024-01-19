@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import { Tooltip } from "primereact/tooltip";
 

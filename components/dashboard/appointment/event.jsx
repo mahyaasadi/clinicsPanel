@@ -72,14 +72,6 @@ const Event = ({
             </div>
           </div>
 
-          {/* <hr
-            style={{
-              background: "#B45309",
-              marginTop: "1px",
-              marginBottom: "2px",
-            }}
-          /> */}
-
           <div className="d-flex flex-col gap-1 align-items-center">
             <button
               className="btn btn-sm p-0 eventBtns editButton appointButton editAppointBtn d-flex justify-end"

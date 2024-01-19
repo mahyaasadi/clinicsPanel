@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
-import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";

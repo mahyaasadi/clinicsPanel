@@ -43,4 +43,3 @@ export const educationStatus = [
   { label: "دانشگاهی", value: "دانشگاهی" },
   { label: "دیپلم", value: "دیپلم" },
 ];
-

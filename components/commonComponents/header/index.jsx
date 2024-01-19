@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
-import { headerLogo, imgNotFound } from "components/commonComponents/imagepath";
+import { imgNotFound } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
   let router = useRouter();
@@ -26,9 +26,7 @@ const Header = ({ ClinicUser }) => {
     $(".hiddenSidebar").attr("style", "display: none");
   };
 
-  const handlesidebarmobilemenu = () => {
-    document.body.classList.toggle("slide-nav");
-  };
+  const handlesidebarmobilemenu = () => document.body.classList.toggle("slide-nav");
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;
@@ -58,15 +56,8 @@ const Header = ({ ClinicUser }) => {
   return (
     <>
       <div className="content-header shadow-sm">
-        {/* Logo */}
         <div className="header-left">
           <Link href="/dashboard" className="logo">
-            {/* <Image
-              src={headerLogo}
-              alt="Logo"
-              unoptimized={true}
-              priority={true}
-            /> */}
             ایران نوبت
           </Link>
           <Link

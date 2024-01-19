@@ -7,12 +7,6 @@ import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { Skeleton } from "primereact/skeleton";
 import { convertToFixedNumber } from "utils/convertToFixedNumber";
-import {
-  ErrorAlert,
-  SuccessAlert,
-  QuestionAlert,
-  WarningAlert,
-} from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import DayList from "components/dashboard/appointment/dayList";
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
@@ -23,6 +17,12 @@ import ModalitiesHeader from "components/dashboard/appointment/modalitiesHeader/
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 import "/public/assets/css/appointment.css";
+import {
+  ErrorAlert,
+  SuccessAlert,
+  QuestionAlert,
+  WarningAlert,
+} from "class/AlertManage";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -47,7 +47,6 @@ let ClinicID,
   ActiveAppointmentID,
   ActiveDate = null;
 
-const jdate = new JDate();
 const formattedCurrentDate = new JDate().format("YYYY/MM/DD");
 
 const Appointment = ({ ClinicUser }) => {
@@ -198,6 +197,7 @@ const Appointment = ({ ClinicUser }) => {
       }),
     ];
   }
+
   let todayDay = currentDate?.toLocaleDateString("fa-IR", { weekday: "long" });
   let plus1Day = plus1?.toLocaleDateString("fa-IR", { weekday: "long" });
   let plus2Day = plus2?.toLocaleDateString("fa-IR", { weekday: "long" });
@@ -334,12 +334,10 @@ const Appointment = ({ ClinicUser }) => {
             "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
           );
           setAddPatientIsLoading(false);
-
           return false;
         } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
           setAddPatientIsLoading(false);
-
           return false;
         } else {
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");

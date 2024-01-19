@@ -14,18 +14,6 @@ const FamilyRecordsList = ({ data }) => {
       sortable: true,
       width: "auto",
     },
-    // {
-    //   name: "تاریخ ثبت",
-    //   selector: (row) => (row.EditDate ? row.EditDate : "-"),
-    //   sortable: true,
-    //   width: "auto",
-    // },
-    // {
-    //   name: "زمان ثبت",
-    //   selector: (row) => (row.EditTime ? row.EditTime : "-"),
-    //   sortable: true,
-    //   width: "auto",
-    // },
     {
       name: "عملیات ها",
       selector: (row) => row.action,

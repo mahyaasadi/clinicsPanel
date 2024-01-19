@@ -1,7 +1,6 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
-const PatientVerticalCard = ({ data, mode }) => {
-  //   console.log({ data });
+const PatientVerticalCard = ({ data }) => {
 
   let GenderType = "";
   switch (data?.gender) {

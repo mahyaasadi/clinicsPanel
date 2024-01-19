@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import { Modal } from "react-bootstrap";
 
 const FormPreview = ({ data, show, onHide }) => {
-  // let arrayOfObjects = JSON.parse(data);
   let componentsArr = [];
 
   data?.map((x, index) => {

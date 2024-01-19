@@ -2,7 +2,6 @@ const TaminSearchedServices = ({ data, selectSearchedService }) => {
   return data?.map((x, index) => {
     let code = x?.wsSrvCode;
     let ind1 = code.indexOf("-");
-    let TaminCode = code;
     if (ind1 !== -1) code = code.substr(0, ind1);
 
     return (

@@ -22,6 +22,7 @@ const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
     const nextPage = () => {
         if (currentPage !== nPages) setCurrentPage(currentPage + 1);
     };
+
     const prevPage = () => {
         if (currentPage !== 1) setCurrentPage(currentPage - 1);
     };
