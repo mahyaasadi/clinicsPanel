@@ -7,8 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+    
   },
   "dependencies": {
+    "@nivo/core": "^0.84.0",
+    "@nivo/pie": "^0.84.0",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.5.1",
     "cookie": "^0.5.0",

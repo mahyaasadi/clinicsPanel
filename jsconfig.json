@@ -20,6 +20,8 @@
     },
     "incremental": true,
     "types": []
+    // "type": "module"
+    // "esModuleInterop": true
   },
   "exclude": ["node_modules", ".next", "out", "build"],
   "include": [
@@ -28,6 +30,7 @@
     "**/*.tsx",
     "**/*.jsx",
     "**/*.js",
-    ".eslintrc"
+    ".eslintrc",
+    "components/dashboard/overview/nivoChart.jsx"
   ]
 }

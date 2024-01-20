@@ -7,6 +7,7 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import Loading from "components/commonComponents/loading/loading";
 import OverviewStats from "components/dashboard/overview/overviewStats";
+import NivoChart from "components/dashboard/overview/nivoChart"
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -113,17 +114,110 @@ const Dashboard = ({ ClinicUser }) => {
               <div className="row">
                 <div className="col-md-9">
                   <OverviewStats stats={stats} />
+
+                  <NivoChart />
                 </div>
+
+
+
                 <div className="col-md-3">
+                  {/* <div class="col-md-6"> */}
                   <div class="row">
-                    <div class="col-sm-6 d-flex">
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex justify-center align-items-center flex-column gap-2">
+                          <svg
+                            // width="24"
+                            // height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-credit-card"
+                            style={{ width: "24px", height: "24px" }}
+                          >
+                            <g>
+                              <rect
+                                x="1"
+                                y="4"
+                                width="22"
+                                height="16"
+                                rx="2"
+                                ry="2"
+                              ></rect>
+                              <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </g>
+                          </svg>
+                          صندوق
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex flex-column">
+                          <h5 class="card-title">Porto Timoni Double Beach</h5>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex flex-column">
+                          <h5 class="card-title">Porto Timoni Double Beach</h5>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex flex-column">
+                          <h5 class="card-title">Tritons Fountain</h5>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex flex-column">
+                          <h5 class="card-title">Porto Timoni Double Beach</h5>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex align-items-stretch">
+                      <div class="card w-100 height-8">
+
+                        <div class="card-body d-flex flex-column">
+                          <h5 class="card-title">Tritons Fountain</h5>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* </div> */}
+                  {/* <div class="row">
+
+                    <div class="col-6">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/reviews">
                           <h6>Doctor Ratings</h6>
                         </a>
                       </div>
                     </div>
-                    <div class="col-sm-6 d-flex">
+
+                    <div class="col-6">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/transactions-list">
                           <i>
@@ -155,7 +249,8 @@ const Dashboard = ({ ClinicUser }) => {
                         </a>
                       </div>
                     </div>
-                    <div class="col-sm-6 d-flex">
+
+                    <div class="col-6">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/settings">
                           <i>
@@ -187,7 +282,8 @@ const Dashboard = ({ ClinicUser }) => {
                         </a>
                       </div>
                     </div>
-                    <div class="col-sm-6 d-flex">
+
+                    <div class="">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/appointment-list">
                           <i>
@@ -221,7 +317,8 @@ const Dashboard = ({ ClinicUser }) => {
                         </a>
                       </div>
                     </div>
-                    <div class="col-sm-6 d-flex">
+
+                    <div class="">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/specialities">
                           <i>
@@ -253,7 +350,8 @@ const Dashboard = ({ ClinicUser }) => {
                         </a>
                       </div>
                     </div>
-                    <div class="col-sm-6 d-flex">
+
+                    <div class="">
                       <div class="spl-items flex-fill">
                         <a href="/reactjs/template-rtl/admin/patient-list">
                           <i>
@@ -280,7 +378,7 @@ const Dashboard = ({ ClinicUser }) => {
                         </a>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
