@@ -1,4 +1,22 @@
+// {
+//   "parserOptions": {
+//     "project": "jsconfig.json",
+//     "jsconfigRootDir": "./",
+//     "ecmaFeatures": {
+//       "jsx": true
+//     }
+//   },
+//   "env": {
+//     "browser": true,
+//     "commonjs": true,
+//     "es2021": true,
+//     "jest": true
+//   },
+//   "extends": ["plugin:@next/next/recommended", "next/core-web-vitals"]
+// }
+
 {
+  "root": true,
   "parserOptions": {
     "project": "jsconfig.json",
     "jsconfigRootDir": "./",
@@ -12,5 +30,14 @@
     "es2021": true,
     "jest": true
   },
-  "extends": ["plugin:@next/next/recommended", "next/core-web-vitals"]
+  "extends": [
+    "plugin:@next/next/recommended",
+    "next/core-web-vitals",
+    // "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "rules": {
+    // Your custom rules go here
+  }
 }
+

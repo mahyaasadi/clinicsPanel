@@ -64,7 +64,7 @@ export default function Page() {
               alt="login-banner"
               unoptimized={true}
               priority={true}
-              height="800"
+              // height="800"
             />
           </div>
         </div>
@@ -113,8 +113,9 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                          className={`fa toggle-password" ${
+                            eye ? "fa-eye-slash" : "fa-eye"
+                          }`}
                         />
                       </div>
                     )}

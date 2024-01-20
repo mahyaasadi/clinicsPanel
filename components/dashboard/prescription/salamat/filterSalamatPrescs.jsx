@@ -5,6 +5,7 @@ const FilterSalamatPrescs = ({
   SetRangeDate,
   applyFilterOnSalamatPrescs,
   getAllSalamatPrescRecords,
+  applyIsLoading,
 }) => {
   return (
     <>
@@ -29,24 +30,24 @@ const FilterSalamatPrescs = ({
               </div>
 
               <div className="col-lg-2 col-12 gap-1 d-flex searchReceptionBtn justify-center">
-                {/* {!searchIsLoading ? ( */}
-                <>
-                  <button className="btn btn-primary w-48 d-flex justify-center align-items-center">
-                    <i className="fe fe-search"></i>
+                {!applyIsLoading ? (
+                  <>
+                    <button className="btn btn-primary w-48 d-flex justify-center align-items-center">
+                      <i className="fe fe-search"></i>
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="submit"
+                    className="btn btn-primary w-48 d-flex align-items-center justify-center"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                    ></span>
                   </button>
-                </>
-                {/* ) : ( */}
-                {/* <button
-                type="submit"
-                className="btn btn-primary w-48 d-flex align-items-center justify-center"
-                disabled
-              >
-                <span
-                  className="spinner-border spinner-border-sm"
-                  role="status"
-                ></span>
-              </button> */}
-                {/* )} */}
+                )}
                 <button
                   onClick={getAllSalamatPrescRecords}
                   data-pr-position="top"

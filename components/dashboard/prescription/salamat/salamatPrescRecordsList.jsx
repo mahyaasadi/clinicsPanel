@@ -6,7 +6,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 
-const SalamatPrescRecordsList = ({ data }) => {
+const SalamatPrescRecordsList = ({ data, getPatientInfo, printIsLoading }) => {
   const columns = [
     {
       name: "مشخصات بیمار",
@@ -73,24 +73,36 @@ const SalamatPrescRecordsList = ({ data }) => {
       sortable: true,
       cell: (row) => (
         <div className="actions d-flex gap-1">
-          <button
-            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center justify-center"
-            // onClick={() => deleteKart(row._id)}
-            data-pr-position="top"
-          >
-            <Tooltip target=".removeBtn">حذف</Tooltip>
-            <FeatherIcon
-              icon="trash-2"
-              style={{ width: "16px", height: "16px" }}
-            />
-          </button>
+          {!printIsLoading ? (
+            <button
+              className="btn btn-sm btn-primary printBtn d-flex align-items-center justify-center"
+              onClick={() => getPatientInfo(row)}
+              data-pr-position="top"
+            >
+              <Tooltip target=".printBtn">پرینت نسخه</Tooltip>
+              <FeatherIcon
+                icon="printer"
+                style={{ width: "16px", height: "16px" }}
+              />
+            </button>
+          ) : (
+            <button
+              className="btn btn-sm btn-primary d-flex align-items-center justify-center"
+              disabled
+            >
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+              ></span>
+            </button>
+          )}
+
           <Link
             href={{
               query: { SC: row.samadCode, PID: row.nationalNumber },
               pathname: "/salamatPrescription",
             }}
-            className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center justify-center"
-            onClick={() => console.log({ row })}
+            className="btn btn-sm btn-outline-primary editBtn d-flex align-items-center justify-center"
             data-pr-position="top"
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>

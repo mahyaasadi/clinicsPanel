@@ -1,12 +1,14 @@
 import Image from "next/image";
 import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
 import { returnPayment } from "components/commonComponents/imagepath";
+import FeatherIcon from "feather-icons-react";
 
 const OverviewStats = ({ stats }) => {
+  console.log({ stats });
   return (
     <>
       <div className="row">
-        <div className="col-xl-3 col-sm-6 col-12">
+        <div className="col-md-6">
           <div className="card">
             <div className="card-body">
               <div className="dash-widget-header">
@@ -27,7 +29,7 @@ const OverviewStats = ({ stats }) => {
                   </svg>
                 </span>
                 <div className="dash-count mt-1">
-                  <h5 className="dash-title">تعداد درخواست ها</h5>
+                  <h5 className="dash-title">تعداد کل</h5>
                   <div className="dash-counts">
                     <p>
                       {stats.Total === undefined ? (
@@ -39,11 +41,51 @@ const OverviewStats = ({ stats }) => {
                   </div>
                 </div>
               </div>
+              <p className="trade-level mb-0">بیمار</p>
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6 col-12">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <div className="dash-widget-header">
+                <span className="dash-widget-icon bg-waiting">
+                  {/* <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    style={{ width: "30px" }}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                    />
+                  </svg> */}
+                  <FeatherIcon icon="loader" />
+                </span>
+                <div className="dash-count mt-1">
+                  <h5 className="dash-title">در انتظار پرداخت</h5>
+                  <div className="dash-counts">
+                    <p>
+                      {stats.Detail["در انتظار پرداخت"] === undefined ? (
+                        <ExtraSmallLoader />
+                      ) : (
+                        stats.Detail["در انتظار پرداخت"].toLocaleString()
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <p className="trade-level mb-0">بیمار</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="col">
           <div className="card">
             <div className="card-body">
               <div className="dash-widget-header">
@@ -67,24 +109,25 @@ const OverviewStats = ({ stats }) => {
                   <h5 className="dash-title">تعداد پرداختی کامل</h5>
                   <div className="dash-counts mt-1">
                     <p>
-                      {stats.FullPayment === undefined ? (
+                      {stats.Detail["تایید پرداخت"] === undefined ? (
                         <ExtraSmallLoader />
                       ) : (
-                        stats.FullPayment.toLocaleString()
+                        stats.Detail["تایید پرداخت"].toLocaleString()
                       )}
                     </p>
                   </div>
                 </div>
               </div>
+              <p className="trade-level mb-0">بیمار</p>
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6 col-12">
+        <div className="col">
           <div className="card">
             <div className="card-body">
               <div className="dash-widget-header">
-                <span className="dash-widget-icon bg-waiting">
+                <span className="dash-widget-icon bg-totalDebt">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -101,23 +144,24 @@ const OverviewStats = ({ stats }) => {
                   </svg>
                 </span>
                 <div className="dash-count">
-                  <h5 className="dash-title">تعداد بدهی</h5>
+                  <h5 className="dash-title">تعداد بدهکاران</h5>
                   <div className="dash-counts mt-1">
                     <p>
-                      {stats.DebtCount === undefined ? (
+                      {stats.Detail.بدهکار === undefined ? (
                         <ExtraSmallLoader />
                       ) : (
-                        stats.DebtCount.toLocaleString()
+                        stats.Detail.بدهکار.toLocaleString()
                       )}
                     </p>
                   </div>
                 </div>
               </div>
+              <p className="trade-level mb-0">بیمار</p>
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6 col-12">
+        <div className="col">
           <div className="card">
             <div className="card-body">
               <div className="dash-widget-header">
@@ -130,18 +174,19 @@ const OverviewStats = ({ stats }) => {
                   />
                 </span>
                 <div className="dash-count">
-                  <h5 className="dash-title">تعداد عودتی</h5>
+                  <h5 className="dash-title">تعداد طلبکاران</h5>
                   <div className="dash-counts mt-1">
                     <p>
-                      {stats.ReturnCount === undefined ? (
+                      {stats.Detail.طلبکار === undefined ? (
                         <ExtraSmallLoader />
                       ) : (
-                        stats.ReturnCount.toLocaleString()
+                        stats.Detail.طلبکار.toLocaleString()
                       )}
                     </p>
                   </div>
                 </div>
               </div>
+              <p className="trade-level mb-0">بیمار</p>
             </div>
           </div>
         </div>

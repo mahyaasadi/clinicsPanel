@@ -5,12 +5,9 @@ import { getSession } from "lib/session";
 import { Toast } from "primereact/toast";
 import { axiosClient } from "class/axiosConfig";
 import { convertToFixedNumber } from "utils/convertToFixedNumber";
+import { ErrorAlert, WarningAlert, QuestionAlert } from "class/AlertManage";
+// import Loading from "components/commonComponents/loading/loading";
 import SalamatPresctypes from "class/SalamatPrescType";
-import {
-  ErrorAlert,
-  WarningAlert,
-  QuestionAlert,
-} from "class/AlertManage";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
@@ -61,6 +58,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [salamatDataIsLoading, setSalamatDataIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+  const [registerIsLoading, setRegisterIsLoading] = useState(false);
+  const [prescDataIsLoading, setPrescDataIsLoading] = useState(false);
 
   const [patientInfo, setPatientInfo] = useState([]);
   const [ActivePatientNID, setActivePatientNID] = useState(null);
@@ -90,10 +89,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
-    // {
     e && e.preventDefault();
-    // }
     setPatientStatIsLoading(true);
+
     setActivePatientNID($("#patientNID").val());
 
     let url = "BimehSalamat/GetPatientSession";
@@ -152,18 +150,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
               element.type === "S"
                 ? "Success"
                 : element.type === "I"
-                  ? "Info"
-                  : element.type === "E"
-                    ? "Error"
-                    : "Warning",
+                ? "Info"
+                : element.type === "E"
+                ? "Error"
+                : "Warning",
             summary:
               element.type === "S"
                 ? "موفق!"
                 : element.type === "I"
-                  ? "اطلاعات!"
-                  : element.type === "E"
-                    ? "خطا!"
-                    : "هشدار!",
+                ? "اطلاعات!"
+                : element.type === "E"
+                ? "خطا!"
+                : "هشدار!",
             detail: element.text,
             life: 5000,
           };
@@ -212,15 +210,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       })
       .catch((err) => {
         console.log(err);
-        // convert to ErrorAlert()
-        let msObj = {
-          severity: "Error",
-          summary: "خطا!",
-          detail: "دریافت کد سماد با خطا مواجه گردید.",
-          life: 8000,
-        };
-        samadMessage.push(msObj);
-        toast.current.show(samadMessage);
+        ErrorAlert("خطا", "دریافت کد سماد با خطا مواجه گردید!");
       });
   };
 
@@ -458,7 +448,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
             ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
           }
           setIsLoading(false);
-          setSearchFromInput(true)
+          setSearchFromInput(true);
         })
         .catch((err) => {
           console.log(err);
@@ -496,66 +486,67 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
   };
 
-  console.log({ deletedCheckCodes });
+  // console.log({ deletedCheckCodes, existingCheckCodes, prescriptionItemsData });
 
   // Edit PrescriptionItems
   const getPrescBySamadCode = (CitizenSessionId) => {
     setEditPrescMode(true);
 
-    let url = "BimehSalamat/PrescriptionFetchSamad";
-    let data = {
-      SavePresc: 1,
-      CenterID: ClinicID,
-      SamadCode: ActiveSamadCode,
-      CitizenSessionId,
-    };
+    if (CitizenSessionId) {
+      setPrescDataIsLoading(true);
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        // console.log(response.data);
-        response.data.info.subscriptionInfos.map((x, index) => {
-          {
-            response.data.info.subscriptionInfos[index].salamatPresc = 1;
-            index !== 0 &&
-              existingCheckCodes.push({
-                checkCode: x.checkCode,
-              });
-          }
+      let url = "BimehSalamat/PrescriptionFetchSamad";
+      let data = {
+        SavePresc: 1,
+        CenterID: ClinicID,
+        SamadCode: ActiveSamadCode,
+        CitizenSessionId,
+      };
+
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          // console.log(response.data);
+          response.data.info.subscriptionInfos.map((x, index) => {
+            {
+              response.data.info.subscriptionInfos[index].salamatPresc = 1;
+              index !== 0 &&
+                existingCheckCodes.push({
+                  checkCode: x.checkCode,
+                });
+            }
+          });
+          setPrescriptionItemsData(response.data.info.subscriptionInfos);
+          setPrescDataIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPrescDataIsLoading(false);
         });
-        setPrescriptionItemsData(response.data.info.subscriptionInfos);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else {
+      setPrescDataIsLoading(false);
+    }
   };
 
   const handleEditService = (srvData) => {
     setEditSrvData(srvData);
     setEditPrescSrvMode(true);
-    setSearchFromInput(true)
-
+    setSearchFromInput(true);
     $("#srvSearchInput").prop("readonly", true);
 
     setActivePrescTypeID(srvData.typeId);
     setActiveSrvShape(srvData.shape);
-    setSelectedNOPeriod(srvData.numberOfPeriod);
-
     ActiveSrvName = srvData.serviceInterfaceName;
     ActiveSrvNationalNumber = srvData.serviceNationalNumber;
-    if (srvData?.salamatPresc) {
-      deletedCheckCodes.push({ checkCode: srvData.checkCode });
-    }
-    existingCheckCodes = existingCheckCodes.filter(
-      (a) => a.checkCode !== srvData.checkCode
-    );
     ActiveCheckCode = srvData.checkCode;
+    ActivePrescEngTitle = SalamatPresctypes[srvData.typeId];
     $("#srvSearchInput").val(srvData.serviceInterfaceName);
     $("#QtyInput").val(srvData.numberOfRequest);
     $("#eprscItemDescription").val(srvData.description);
-    ActivePrescEngTitle = SalamatPresctypes[srvData.typeId];
 
     // dropdowns
+    setSelectedNOPeriod(srvData.numberOfPeriod);
+
     setSelectedConsumption(
       parseInt(
         srvData.consumptionSNOMEDCode
@@ -583,10 +574,19 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //       // ? srvData.consumptionInstructionVal
 
     // );
+
+    if (srvData?.salamatPresc) {
+      deletedCheckCodes.push({ checkCode: srvData.checkCode });
+    }
+
+    existingCheckCodes = existingCheckCodes.filter(
+      (a) => a.checkCode !== srvData.checkCode
+    );
   };
 
   const updatePrescItem = (id, newArr) => {
-    setSearchFromInput(true)
+    setSearchFromInput(true);
+
     let index = prescriptionItemsData.findIndex(
       (x) => x.serviceInterfaceName === id
     );
@@ -595,41 +595,21 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     if (index === -1) {
       console.log("no match");
-    } else
+    } else {
       setPrescriptionItemsData([
         ...prescriptionItemsData.slice(0, index),
         g,
         ...prescriptionItemsData.slice(index + 1),
       ]);
+    }
 
     setEditPrescSrvMode(false);
   };
 
-  const updateSalamatPresc = () => {
-    if (editPrescMode || editPrescSrvMode) {
-      let url = "BimehSalamat/PrescriptionUpdate";
-      let data = {
-        SavePresc: 1,
-        CenterID: ClinicID,
-        CitizenSessionId,
-        SamadCode: SamadCode ? SamadCode : ActiveSamadCode,
-        otherServices: existingCheckCodes,
-        deleteSubscriptions: deletedCheckCodes,
-      };
-
-      // axiosClient
-      //   .post(url, data)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-    }
-  };
-
   // Final Register Or Visit
   const registerSalamatEprsc = () => {
+    setRegisterIsLoading(true);
+
     let url = "BimehSalamat";
     let data = {
       CenterID: ClinicID,
@@ -652,82 +632,108 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
-        // if (response.data.res.info) {
-        //   let registerMessages = [];
-        //   const infoMessageArray =
-        //     response.data.res.info.message.infoMessage || [];
-        //   const snackMessageArray =
-        //     response.data.res.info.message.snackMessage || [];
-        //   const sequenceNumber = response.data.res.info.sequenceNumber || "";
-        //   const trackingCode = response.data.res.info.trackingCode || "";
 
-        //   registerMessages.push(
-        //     ...infoMessageArray.map((message) => ({
-        //       severity: "Info",
-        //       summary: "اطلاعات!",
-        //       detail: message.text,
-        //       sticky: true,
-        //     }))
-        //   );
+        if (response.data.res.resCode === -8402) {
+          ErrorAlert("خطا", response.data.res.resMessage);
+          setRegisterIsLoading(false);
+        }
 
-        //   registerMessages.push(
-        //     ...snackMessageArray.map((message) => ({
-        //       severity:
-        //         message.type === "I"
-        //           ? "Info"
-        //           : message.type === "E"
-        //             ? "Error"
-        //             : message.type === "W"
-        //               ? "Warning"
-        //               : "Success",
-        //       summary:
-        //         message.type === "I"
-        //           ? "اطلاعات!"
-        //           : message.type === "E"
-        //             ? "خطا!"
-        //             : message.type === "W"
-        //               ? "هشدار!"
-        //               : "موفق!",
-        //       detail: message.text,
-        //       sticky: true,
-        //     }))
-        //   );
+        if (response.data.res.info) {
+          setRegisterIsLoading(false);
 
-        //   if (trackingCode) {
-        //     registerMessages.push({
-        //       severity: "Info",
-        //       summary: "کد پیگیری نسخه",
-        //       detail: trackingCode,
-        //       sticky: true,
-        //     });
-        //   }
+          //   let registerMessages = [];
+          //   const infoMessageArray =
+          //     response.data.res.info.message.infoMessage || [];
+          //   const snackMessageArray =
+          //     response.data.res.info.message.snackMessage || [];
+          const sequenceNumber = response.data.res.info.sequenceNumber || "";
+          const trackingCode = response.data.res.info.trackingCode || "";
 
-        //   if (sequenceNumber) {
-        //     registerMessages.push({
-        //       severity: "Info",
-        //       summary: "کد توالی",
-        //       detail: sequenceNumber,
-        //       sticky: true,
-        //     });
-        //   }
-        //   toast.current.show(registerMessages);
-        // }
+          //   registerMessages.push(
+          //     ...infoMessageArray.map((message) => ({
+          //       severity: "Info",
+          //       summary: "اطلاعات!",
+          //       detail: message.text,
+          //       sticky: true,
+          //     }))
+          //   );
 
-        // if (response.data.res.status === 400) {
-        //   ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-        // }
+          //   registerMessages.push(
+          //     ...snackMessageArray.map((message) => ({
+          //       severity:
+          //         message.type === "I"
+          //           ? "Info"
+          //           : message.type === "E"
+          //             ? "Error"
+          //             : message.type === "W"
+          //               ? "Warning"
+          //               : "Success",
+          //       summary:
+          //         message.type === "I"
+          //           ? "اطلاعات!"
+          //           : message.type === "E"
+          //             ? "خطا!"
+          //             : message.type === "W"
+          //               ? "هشدار!"
+          //               : "موفق!",
+          //       detail: message.text,
+          //       sticky: true,
+          //     }))
+          //   );
+
+          if (trackingCode || sequenceNumber) {
+            //     registerMessages.push({
+            //       severity: "Info",
+            //       summary: "کد پیگیری نسخه",
+            //       detail: trackingCode,
+            //       sticky: true,
+            //     });
+
+            SuccessAlert(
+              "ثبت نسخه با موفقیت انجام گردید!",
+              `کد پیگیری نسخه : ${trackingCode} \n کد توالی نسخه : ${sequenceNumber}`
+            );
+          }
+
+          // if (sequenceNumber) {
+          //     registerMessages.push({
+          //       severity: "Info",
+          //       summary: "کد توالی",
+          //       detail: sequenceNumber,
+          //       sticky: true,
+          //     });
+          //   }
+          //   toast.current.show(registerMessages);
+          // }
+
+          if (response.data.res.status === 400) {
+            ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+            setRegisterIsLoading(false);
+          }
+        }
       })
       .catch((err) => {
         console.log(err);
         ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+        setRegisterIsLoading(false);
       });
   };
 
-  const CancelEdit = () => {
+  const CancelEdit = (srvData) => {
+    // console.log({ srvData });
+
     deletedCheckCodes = deletedCheckCodes.filter(
       (a) => a.checkCode !== ActiveCheckCode
     );
-    existingCheckCodes.push({ checkCode: ActiveCheckCode });
+
+    // if (srvData.salamatPresc) {
+    // console.log("flag");
+
+    // existingCheckCodes.push({ checkCode: ActiveCheckCode });
+    // deletedCheckCodes = deletedCheckCodes.filter(
+    //   (a) => a.checkCode === ActiveCheckCode
+    // );
+    // }
   };
 
   useEffect(() => {
@@ -788,9 +794,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
                 isLoading={isLoading}
-                CancelEdit={CancelEdit}
+                registerIsLoading={registerIsLoading}
                 searchIsLoading={searchIsLoading}
                 salamatDataIsLoading={salamatDataIsLoading}
+                CancelEdit={CancelEdit}
                 salamatHeaderList={salamatHeaderList}
                 changePrescTypeTab={changePrescTypeTab}
                 activeSearch={activeSearch}
@@ -816,10 +823,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setEditPrescSrvMode={setEditPrescSrvMode}
                 editSrvData={editSrvData}
                 setEditSrvData={setEditSrvData}
+                prescriptionItemsData={prescriptionItemsData}
+                ActiveSamadCode={ActiveSamadCode}
               />
 
               <div className="prescList">
                 <SalamatAddToListItems
+                  prescDataIsLoading={prescDataIsLoading}
                   data={prescriptionItemsData}
                   salamatHeaderList={salamatHeaderList}
                   editPrescMode={editPrescMode}

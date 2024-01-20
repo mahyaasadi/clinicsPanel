@@ -35,6 +35,8 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
   let todaysFormattedDate = jDate.format("YYYYMMDD");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [printIsLoading, setPrintIsLoading] = useState(false);
+  const [applyIsLoading, setApplyIsLoading] = useState(false);
   const [prescRecords, setPrescRecords] = useState([]);
 
   // Get All SalamatPrescription Records
@@ -79,7 +81,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
 
   const applyFilterOnSalamatPrescs = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setApplyIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -105,17 +107,85 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
 
         if (response.data.res.info) {
           setPrescRecords(response.data.res.info);
-          setIsLoading(false);
+          setApplyIsLoading(false);
         } else {
-          setIsLoading(false);
+          setApplyIsLoading(false);
           ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         }
       })
       .catch((err) => {
         console.log(err);
         ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-        setIsLoading(false);
+        setApplyIsLoading(false);
       });
+  };
+
+  // Print Salamat Prescription
+  const getPatientInfo = (prescData) => {
+    let url = "BimehSalamat/GetPatientSession";
+    let data = {
+      CenterID: ClinicID,
+      NID: prescData.nationalNumber,
+      SavePresc: 1,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        if (response.data.res.info) {
+          setTimeout(() => {
+            printSalamatPresc(
+              prescData,
+              response.data.res.info.citizenSessionId
+            );
+          }, 100);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
+      });
+  };
+
+  const printSalamatPresc = (prescData, CitizenSessionId) => {
+    setPrintIsLoading(true);
+    if (CitizenSessionId) {
+      let url = "BimehSalamat/PrintOrder";
+      let data = {
+        CenterID: ClinicID,
+        SavePresc: 1,
+        CitizenSessionId,
+        SamadCode: prescData.samadCode,
+        type: "all",
+      };
+
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          downloadPDF(response.data.res.info.print, prescData);
+          setPrintIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPrintIsLoading(false);
+        });
+    } else {
+      ErrorAlert("خطا", "استعلام اطلاعات بیمار با خطا مواجه گردید!");
+    }
+  };
+
+  const downloadPDF = (pdf, prescData) => {
+    const linkSource = `data:application/pdf;base64,${pdf}`;
+    const downloadLink = document.createElement("a");
+    const fileName =
+      prescData.name +
+      prescData.lastName +
+      "_" +
+      prescData.nationalNumber +
+      ".pdf";
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
   };
 
   useEffect(() => getAllSalamatPrescRecords(), []);
@@ -134,6 +204,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
               <div className="col-sm-12">
                 <FilterSalamatPrescs
                   SetRangeDate={SetRangeDate}
+                  applyIsLoading={applyIsLoading}
                   applyFilterOnSalamatPrescs={applyFilterOnSalamatPrescs}
                   getAllSalamatPrescRecords={getAllSalamatPrescRecords}
                 />
@@ -158,7 +229,11 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
                     </div> */}
                   </div>
 
-                  <SalamatPrescRecordsList data={prescRecords} />
+                  <SalamatPrescRecordsList
+                    printIsLoading={printIsLoading}
+                    data={prescRecords}
+                    getPatientInfo={getPatientInfo}
+                  />
                 </div>
               </div>
             </div>

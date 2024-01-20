@@ -4,10 +4,11 @@ import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import SalamatSearchedServices from "components/dashboard/prescription/salamat/salamatSearchedServices";
 
 const PrescriptionCard = ({
-  CancelEdit,
   isLoading,
   searchIsLoading,
   salamatDataIsLoading,
+  registerIsLoading,
+  CancelEdit,
   salamatHeaderList,
   changePrescTypeTab,
   activeSearch,
@@ -31,6 +32,8 @@ const PrescriptionCard = ({
   setEditPrescSrvMode,
   editSrvData,
   setEditSrvData,
+  prescriptionItemsData,
+  ActiveSamadCode,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -63,7 +66,7 @@ const PrescriptionCard = ({
 
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
-    console.log({ selectedValue });
+    // console.log({ selectedValue });
 
     if (
       ActiveSrvShape === "T" ||
@@ -78,10 +81,10 @@ const PrescriptionCard = ({
     }
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (srvData) => {
     setEditPrescSrvMode(false);
     setEditSrvData([]);
-    CancelEdit();
+    CancelEdit(srvData);
 
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
@@ -106,19 +109,26 @@ const PrescriptionCard = ({
                 نسخه های پرمصرف
               </button> */}
 
-              <button
-                className="btn border-radius visitBtn font-13"
-                onClick={() => registerSalamatEprsc()}
-              >
-                فقط ثبت ویزیت
-              </button>
-
-              <button
-                className="btn btn-primary border-radius font-13"
-                onClick={() => registerSalamatEprsc()}
-              >
-                ثبت نسخه نهایی
-              </button>
+              {!registerIsLoading ? (
+                <button
+                  className="btn btn-primary border-radius font-13"
+                  onClick={() => registerSalamatEprsc()}
+                >
+                  {prescriptionItemsData.length !== 0 || ActiveSamadCode
+                    ? "ثبت نسخه نهایی"
+                    : "ثبت ویزیت"}
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary border-radius px-40"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -249,7 +259,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto d-flex align-items-center">
@@ -290,8 +300,8 @@ const PrescriptionCard = ({
                   onChange={handleDropdownChange}
                   options={
                     ActiveSrvShape === "T" ||
-                      ActiveSrvShape === "C" ||
-                      ActiveSrvShape === "R"
+                    ActiveSrvShape === "C" ||
+                    ActiveSrvShape === "R"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }
@@ -336,15 +346,28 @@ const PrescriptionCard = ({
                   )
                 ) : (
                   <div className="d-flex gap-1">
-                    <button
-                      className="btn rounded w-100 addToListBtn font-12"
-                      onClick={FUAddToListItem}
-                    >
-                      ثبت تغییرات
-                    </button>
+                    {!isLoading ? (
+                      <button
+                        className="btn rounded w-100 addToListBtn font-12"
+                        onClick={FUAddToListItem}
+                      >
+                        ثبت تغییرات
+                      </button>
+                    ) : (
+                      <button
+                        className="btn rounded w-100 addToListBtn font-13"
+                        disabled
+                      >
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                        ></span>
+                        در حال ثبت
+                      </button>
+                    )}
                     <button
                       className="btn btn-sm btn-outline-dark rounded w-100  font-12"
-                      onClick={handleCancelEdit}
+                      onClick={() => handleCancelEdit(editSrvData)}
                     >
                       انصراف
                     </button>

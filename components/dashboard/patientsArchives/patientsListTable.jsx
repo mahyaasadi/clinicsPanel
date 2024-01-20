@@ -75,17 +75,6 @@ const PatientsListTable = ({
       sortable: true,
       cell: (row) => (
         <div className="actions d-flex w-100">
-          <button
-            className="btn btn-sm btn-outline-danger removeBtn d-flex align-items-center float-end m-1"
-            // onClick={() => deleteDepartment(row._id)}
-            data-pr-position="top"
-          >
-            <Tooltip target=".removeBtn">حذف</Tooltip>
-            <FeatherIcon
-              icon="trash-2"
-              style={{ width: "15px", height: "16px" }}
-            />
-          </button>
           <Link
             href={{
               pathname: "/editPatientsInfo",

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
+import { Skeleton } from "primereact/skeleton";
 
 const SalamatAddToListItems = ({
   data,
@@ -10,6 +11,7 @@ const SalamatAddToListItems = ({
   consumptionOptions,
   handleEditService,
   deleteService,
+  prescDataIsLoading,
 }) => {
   useEffect(() => {
     console.log("prescriptionItemsData", data);
@@ -19,11 +21,11 @@ const SalamatAddToListItems = ({
   let SrvPrescImage = "";
 
   return (
-    <>
+    <div className="prescItemBox">
       {data.map((srv, index) =>
         srv.typeId === 5 ? (
           ""
-        ) : (
+        ) : !prescDataIsLoading ? (
           <div key={index} dir="rtl" className="card shadow-sm mb-1">
             <div className="card-body receptionInfoText">
               <div className="d-flex gap-1 align-items-center justify-between">
@@ -32,7 +34,7 @@ const SalamatAddToListItems = ({
                     ((SrvPrescImage = salamatHeaderList.find(
                       (x) => x.id === srv.typeId
                     )),
-                      console.log())
+                    console.log())
                   }
                   <Image
                     src={SrvPrescImage ? SrvPrescImage?.img : srv.prescTypeImg}
@@ -73,7 +75,7 @@ const SalamatAddToListItems = ({
                   ((consumptionLbl = consumptionOptions.find(
                     (x) => x.title === srv.consumption
                   )),
-                    console.log())
+                  console.log())
                 }
                 <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-12">
                   <div>{srv.numberOfRequest} عدد</div>
@@ -83,8 +85,8 @@ const SalamatAddToListItems = ({
                     {editPrescMode && consumptionLbl
                       ? consumptionLbl.label
                       : srv.consumption
-                        ? srv.consumption
-                        : ""}
+                      ? srv.consumption
+                      : ""}
                     <div className="vertical-line"></div>
                     <p className="paddingR-5">
                       {srv.consumptionInstruction &&
@@ -112,14 +114,15 @@ const SalamatAddToListItems = ({
                   {srv.snackMessages.map((x, index) => (
                     <div
                       key={index}
-                      className={`alert alert-${x.type === "S"
+                      className={`alert alert-${
+                        x.type === "S"
                           ? "success"
                           : x.type === "I"
-                            ? "info"
-                            : x.type === "E"
-                              ? "danger"
-                              : "warning"
-                        } alert-dismissible fade show`}
+                          ? "info"
+                          : x.type === "E"
+                          ? "danger"
+                          : "warning"
+                      } alert-dismissible fade show`}
                       role="alert"
                     >
                       {x.text}
@@ -155,9 +158,11 @@ const SalamatAddToListItems = ({
               )}
             </div>
           </div>
+        ) : (
+          <Skeleton className="mb-2"></Skeleton>
         )
       )}
-    </>
+    </div>
   );
 };
 
