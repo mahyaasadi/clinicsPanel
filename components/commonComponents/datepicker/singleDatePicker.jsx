@@ -1,7 +1,7 @@
 import JDate from "jalali-date";
 import FeatherIcon from "feather-icons-react";
-import DtPicker, { convertToFa } from "react-calendar-datetime-picker";
-import "react-calendar-datetime-picker/dist/index.css";
+import { DtPicker } from "react-calendar-datetime-picker";
+import "react-calendar-datetime-picker/dist/style.css";
 import { Tooltip } from "primereact/tooltip";
 
 const jdate = new JDate();
