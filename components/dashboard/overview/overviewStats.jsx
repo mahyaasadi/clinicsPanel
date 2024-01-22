@@ -1,5 +1,4 @@
 import Image from "next/image";
-import ExtraSmallLoader from "components/commonComponents/loading/extraSmallLoader";
 import { returnPayment } from "components/commonComponents/imagepath";
 import FeatherIcon from "feather-icons-react";
 
@@ -7,39 +6,37 @@ const OverviewStats = ({ stats }) => {
   return (
     <>
       <div className="col">
-        {/* <div className="card"> */}
-        <div className="card-body">
-          <div className="dash-widget-header">
-            <span className="dash-widget-icon bg-totalReq">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                style={{ width: "25px" }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                />
-              </svg>
-            </span>
+        <div className="card">
+          <div className="card-body">
+            <div className="dash-widget-header">
+              <span className="dash-widget-icon bg-totalReq">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  style={{ width: "28px", color: "#2d536e" }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                  />
+                </svg>
+              </span>
 
-            <div className="dash-count">
-              <p className="dash-title mb-2 fw-bold">بیماران</p>
-              <div className="dash-counts">
-                <p>
-                  {stats?.Total === undefined ? (
-                    <ExtraSmallLoader />
-                  ) : (
-                    stats?.Total?.toLocaleString()
-                  )}
-                </p>
+              <div className="dash-count">
+                <p className="dash-title mb-2 fw-bold">بیماران</p>
+                <div className="dash-counts">
+                  <p style={{ color: "#6995b5" }}>
+                    {stats?.Total === undefined
+                      ? 0
+                      : stats?.Total?.toLocaleString()}
+                  </p>
+                </div>
               </div>
             </div>
-            {/* </div> */}
           </div>
           {/* <div className="d-flex justify-end align-items-center">
             <i className="fas fa-caret-up" style={{ color: "green" }} />
@@ -59,7 +56,7 @@ const OverviewStats = ({ stats }) => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  style={{ width: "25px" }}
+                  style={{ width: "30px", color: "#2b632b" }}
                 >
                   <path
                     strokeLinecap="round"
@@ -70,7 +67,7 @@ const OverviewStats = ({ stats }) => {
               </span>
               <div className="dash-count">
                 <p className="dash-title mb-2 fw-bold">پرداختی کامل</p>
-                <div className="dash-counts ">
+                <div className="dash-counts" style={{ color: "#64a364" }}>
                   <p>
                     {stats?.Detail["تایید پرداخت"] === undefined
                       ? 0
@@ -92,11 +89,14 @@ const OverviewStats = ({ stats }) => {
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-waiting">
-                <FeatherIcon icon="loader" />
+                <FeatherIcon
+                  icon="loader"
+                  style={{ width: "30px", color: "#6e5c2e" }}
+                />
               </span>
               <div className="dash-count">
                 <p className="dash-title mb-2 fw-bold">در انتظار پرداخت</p>
-                <div className="dash-counts">
+                <div className="dash-counts" style={{ color: "#c4a149" }}>
                   <p>
                     {stats?.Detail["در انتظار پرداخت"] === undefined
                       ? 0
@@ -124,7 +124,7 @@ const OverviewStats = ({ stats }) => {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  style={{ width: "25px" }}
+                  style={{ width: "30px", color: "#ffb3b3" }}
                 >
                   <path
                     strokeLinecap="round"
@@ -135,7 +135,7 @@ const OverviewStats = ({ stats }) => {
               </span>
               <div className="dash-count">
                 <p className="dash-title mb-2 fw-bold">بدهکاران</p>
-                <div className="dash-counts ">
+                <div className="dash-counts" style={{ color: "#9c4d48" }}>
                   <p>
                     {stats?.Detail.بدهکار === undefined
                       ? 0
@@ -158,15 +158,15 @@ const OverviewStats = ({ stats }) => {
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-turnGiven">
                 <Image
-                  src={returnPayment}
+                  src="/assets/img/return2.png"
                   alt="returnPaymentIcon"
-                  width="25"
-                  height="25"
+                  width="32"
+                  height="32"
                 />
               </span>
               <div className="dash-count">
                 <p className="dash-title mb-2 fw-bold">طلبکاران</p>
-                <div className="dash-counts ">
+                <div className="dash-counts" style={{ color: "#90916e" }}>
                   <p>
                     {stats?.Detail.طلبکار === undefined
                       ? 0

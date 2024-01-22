@@ -16,6 +16,7 @@ import AddictionRecordsList from "components/dashboard/patientFile/addictionReco
 import FoodAllergyRecordsList from "components/dashboard/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "components/dashboard/patientFile/medicalAllergyRecordsList";
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
+import NotesList from "components/dashboard/patientFile/notes/notesList";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -223,6 +224,12 @@ const PatientFile = ({ ClinicUser }) => {
                   openAddFrmToPatientModal={openAddFrmToPatientModal}
                   deletePatientForm={deletePatientForm}
                 />
+              </div>
+
+              <div className="row mb-2">
+                <div className="col-12">
+                  <NotesList />
+                </div>
               </div>
 
               <div className="row mb-2">
