@@ -36,6 +36,7 @@ export default function Page() {
     await axiosClient
       .post(url, data)
       .then(async function (response) {
+        // console.log(response.data);
         const loginRes = response.data;
         let in24Hours = 24 * 60 * 60;
 
@@ -64,7 +65,7 @@ export default function Page() {
               alt="login-banner"
               unoptimized={true}
               priority={true}
-              // height="800"
+            // height="800"
             />
           </div>
         </div>
@@ -113,9 +114,8 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${
-                            eye ? "fa-eye-slash" : "fa-eye"
-                          }`}
+                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
                         />
                       </div>
                     )}

@@ -143,7 +143,7 @@ const Dashboard = ({ ClinicUser }) => {
                 <div className="dashboard-header">
                   <div className="col overview-title">
                     <p className="card-title text-secondary font-15">
-                      داشبورد شخصی {ClinicUser.FullName}
+                      میز کار شخصی {ClinicUser.FullName}
                     </p>
                   </div>
 
@@ -171,6 +171,9 @@ const Dashboard = ({ ClinicUser }) => {
                   <div className="h-100">
                     <div className="card h-50 mb-0">
                       <div className="card-body d-flex justify-center align-items-center text-center">
+                        <span className="dash-widget-icon bg-waiting">
+                          <FeatherIcon icon="loader" />
+                        </span>
                         <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold">
                           <p className="mb-1">درآمد کل</p>
                           <p>{paymentTotalStat?.toLocaleString() + " ریال"}</p>
@@ -180,6 +183,9 @@ const Dashboard = ({ ClinicUser }) => {
 
                     <div className="card h-50">
                       <div className="card-body d-flex justify-center align-items-center text-center">
+                        <span className="dash-widget-icon bg-waiting">
+                          <FeatherIcon icon="loader" />
+                        </span>
                         <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold">
                           <p className="mb-1">مبلغ بازگردانده شده</p>
                           <p>
