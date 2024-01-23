@@ -2643,9 +2643,15 @@ button.bg-danger:hover {
   border-color: transparent;
 }
 
+
 .nav-tabs.nav-tabs-solid>li>a:hover,
 .nav-tabs.nav-tabs-solid>li>a:focus {
   background-color: #f5f5f5;
+}
+
+/* nav-tabs.nav-tabs-solid>li>a:hover */
+.appointmentHeader .ServiceNav:hover {
+  background-color: #F8E8DC !important;
 }
 
 .nav-tabs.nav-tabs-solid>.open:not(.active)>a {
@@ -10017,6 +10023,10 @@ ul li .active {
     flex-direction: column;
   }
 
+  .clinicLine {
+    display: none;
+  }
+
   .media-w-100 {
     width: 100% !important;
   }
@@ -10050,6 +10060,10 @@ ul li .active {
     height: 50vh !important;
     overflow-y: auto !important;
     direction: ltr !important;
+  }
+
+  .clinicLine {
+    top: 37rem !important;
   }
 }
 
@@ -11156,6 +11170,18 @@ thead {
   border-radius: 4px;
 }
 
+.CardPayment {
+  height: 173px;
+}
+
+.clinicLine {
+  position: absolute;
+  top: 35.5rem;
+  width: 180px;
+  background-color: #fafaf9;
+  z-index: 400;
+}
+
 .changeAvatarIcon {
   position: absolute;
   display: flex;
@@ -11185,11 +11211,23 @@ thead {
   width: 25px !important;
 }
 
+.easyAccessCard {
+  padding: 20px;
+}
+
+.overViewCard {
+  min-width: 150px;
+}
+
 .easyAccessCard:hover {
-  border: 1px solid #b45309;
+  border-color: 1px solid #b45309;
   color: #b45309;
   transition: all 0.4s ease-in-out;
   scale: 1.05;
+}
+
+.easyAccessCard:hover .accessCardColor {
+  color: ;
 }
 
 .easyAccessCard:hover .accessSvg {

@@ -228,7 +228,7 @@ const PatientFile = ({ ClinicUser }) => {
 
               <div className="row mb-2">
                 <div className="col-12">
-                  <NotesList />
+                  <NotesList ActivePatientID={ActivePatientID} />
                 </div>
               </div>
 

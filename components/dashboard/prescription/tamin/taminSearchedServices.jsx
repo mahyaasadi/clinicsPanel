@@ -1,8 +1,8 @@
 const TaminSearchedServices = ({ data, selectSearchedService }) => {
   return data?.map((x, index) => {
-    let code = x?.wsSrvCode;
-    let ind1 = code.indexOf("-");
-    if (ind1 !== -1) code = code.substr(0, ind1);
+    // let code = x?.wsSrvCode;
+    // let ind1 = code.indexOf("-");
+    // if (ind1 !== -1) code = code.substr(0, ind1);
 
     return (
       <button
@@ -11,6 +11,7 @@ const TaminSearchedServices = ({ data, selectSearchedService }) => {
         onClick={() =>
           selectSearchedService(
             x?.srvName,
+            x?.wsSrvCode,
             x?.wsSrvCode,
             x?.srvType?.srvType,
             x?.parTarefGrp?.parGrpCode

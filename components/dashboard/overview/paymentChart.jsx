@@ -7,13 +7,24 @@ const PaymentChart = ({ data, labels }) => {
 
   useEffect(() => {
     const documentStyle = getComputedStyle(document.documentElement);
+
+    // Check if data array is empty
+    const isEmptyData = data.length === 0;
+    const defaultLabels = ["بدون داده"];
+    const defaultData = [1];
+    const defaultColor = "#999999";
+
     const pieData = {
-      labels: labels,
+      labels: isEmptyData ? defaultLabels : labels,
       datasets: [
         {
-          data: data,
-          backgroundColor: ["#116A7B", "#e3cfb1", "#CD5C08"],
-          hoverBackgroundColor: ["#0d4f5c", "#a19889", "#b45309"],
+          data: isEmptyData ? defaultData : data,
+          backgroundColor: isEmptyData
+            ? [defaultColor]
+            : ["#116A7B", "#e3cfb1", "#CD5C08"],
+          hoverBackgroundColor: isEmptyData
+            ? [defaultColor]
+            : ["#0d4f5c", "#a19889", "#b45309"],
         },
       ],
     };

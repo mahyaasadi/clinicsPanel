@@ -1,6 +1,6 @@
 import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
-import { salamatLogo } from "components/commonComponents/imagePath";
+import { salamatLogo } from "components/commonComponents/imagepath";
 
 const SalamatSearchedServices = ({ data, selectSearchedService }) => {
   return data?.map((x, index) => {

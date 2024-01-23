@@ -5,8 +5,12 @@ import { getSession } from "lib/session";
 import { Toast } from "primereact/toast";
 import { axiosClient } from "class/axiosConfig";
 import { convertToFixedNumber } from "utils/convertToFixedNumber";
-import { ErrorAlert, WarningAlert, QuestionAlert } from "class/AlertManage";
-// import Loading from "components/commonComponents/loading/loading";
+import {
+  ErrorAlert,
+  WarningAlert,
+  QuestionAlert,
+  SuccessAlert,
+} from "class/AlertManage";
 import SalamatPresctypes from "class/SalamatPrescType";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
@@ -394,7 +398,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, prescData)
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
 
           if (response.data.res.info?.checkCode) {
             let addedPrescItemData = {
@@ -510,10 +514,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
           response.data.info.subscriptionInfos.map((x, index) => {
             {
               response.data.info.subscriptionInfos[index].salamatPresc = 1;
-              index !== 0 &&
-                existingCheckCodes.push({
-                  checkCode: x.checkCode,
-                });
+              // index !== 0 &&
+              //   existingCheckCodes.push({
+              //     checkCode: x.checkCode,
+              //   });
             }
           });
           setPrescriptionItemsData(response.data.info.subscriptionInfos);
@@ -628,6 +632,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     console.log({ url, data });
 
+    // let findItem = editSrvData.includes(existingCheckCodes.checkCode);
+    // console.log({ findItem });
+
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -641,70 +648,57 @@ const SalamatPrescription = ({ ClinicUser }) => {
         if (response.data.res.info) {
           setRegisterIsLoading(false);
 
-          //   let registerMessages = [];
-          //   const infoMessageArray =
-          //     response.data.res.info.message.infoMessage || [];
-          //   const snackMessageArray =
-          //     response.data.res.info.message.snackMessage || [];
+          let registerMessages = [];
+          const infoMessageArray =
+            response.data.res.info.message.infoMessage || [];
+          const snackMessageArray =
+            response.data.res.info.message.snackMessage || [];
           const sequenceNumber = response.data.res.info.sequenceNumber || "";
           const trackingCode = response.data.res.info.trackingCode || "";
 
-          //   registerMessages.push(
-          //     ...infoMessageArray.map((message) => ({
-          //       severity: "Info",
-          //       summary: "اطلاعات!",
-          //       detail: message.text,
-          //       sticky: true,
-          //     }))
-          //   );
+          registerMessages.push(
+            ...infoMessageArray.map((message) => ({
+              severity: "Info",
+              summary: "اطلاعات!",
+              detail: message.text,
+              sticky: true,
+            }))
+          );
 
-          //   registerMessages.push(
-          //     ...snackMessageArray.map((message) => ({
-          //       severity:
-          //         message.type === "I"
-          //           ? "Info"
-          //           : message.type === "E"
-          //             ? "Error"
-          //             : message.type === "W"
-          //               ? "Warning"
-          //               : "Success",
-          //       summary:
-          //         message.type === "I"
-          //           ? "اطلاعات!"
-          //           : message.type === "E"
-          //             ? "خطا!"
-          //             : message.type === "W"
-          //               ? "هشدار!"
-          //               : "موفق!",
-          //       detail: message.text,
-          //       sticky: true,
-          //     }))
-          //   );
+          registerMessages.push(
+            ...snackMessageArray.map((message) => ({
+              severity:
+                message.type === "I"
+                  ? "Info"
+                  : message.type === "E"
+                  ? "Error"
+                  : message.type === "W"
+                  ? "Warning"
+                  : "Success",
+              summary:
+                message.type === "I"
+                  ? "اطلاعات!"
+                  : message.type === "E"
+                  ? "خطا!"
+                  : message.type === "W"
+                  ? "هشدار!"
+                  : "موفق!",
+              detail: message.text,
+              sticky: true,
+            }))
+          );
 
           if (trackingCode || sequenceNumber) {
-            //     registerMessages.push({
-            //       severity: "Info",
-            //       summary: "کد پیگیری نسخه",
-            //       detail: trackingCode,
-            //       sticky: true,
-            //     });
-
             SuccessAlert(
               "ثبت نسخه با موفقیت انجام گردید!",
-              `کد پیگیری نسخه : ${trackingCode} \n کد توالی نسخه : ${sequenceNumber}`
+              `${trackingCode ? "کد پیگیری نسخه : " + trackingCode : ""} \n  ${
+                sequenceNumber ? "کد توالی نسخه : " + sequenceNumber : ""
+              }`
             );
+            ActiveSamadCode = null;
+            existingCheckCodes = [];
+            deletedCheckCodes = [];
           }
-
-          // if (sequenceNumber) {
-          //     registerMessages.push({
-          //       severity: "Info",
-          //       summary: "کد توالی",
-          //       detail: sequenceNumber,
-          //       sticky: true,
-          //     });
-          //   }
-          //   toast.current.show(registerMessages);
-          // }
 
           if (response.data.res.status === 400) {
             ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
@@ -757,6 +751,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
 
     existingCheckCodes = [];
+    deletedCheckCodes = [];
   }, [router.isReady]);
 
   useEffect(() => {

@@ -25,6 +25,11 @@ const PrescriptionCard = ({
   FuAddToListItem,
   registerEpresc,
 }) => {
+  // const _DeleteService = (id, prescId) => {
+  //   setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
+  //   DeleteService(id, prescId);
+  // };
+
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -74,7 +79,7 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-              // onClick={openFavModal}
+                // onClick={openFavModal}
               >
                 نسخه های پرمصرف
               </button>
@@ -113,7 +118,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  // value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -126,7 +131,7 @@ const PrescriptionCard = ({
                   // onFocus={handleOnFocus}
                   // onBlur={handleOnBlur}
                   onKeyUp={handleSearchKeyUp}
-                // value={editSrvData?.SrvName}
+                  // value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
@@ -208,7 +213,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">

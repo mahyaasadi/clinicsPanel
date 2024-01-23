@@ -6,20 +6,19 @@ const FastAccessCards = () => {
   const router = useRouter();
   return (
     <>
-      <div className="row height-45">
-        <div className="col d-flex align-items-stretch">
+      <div className="row">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/reception")}
-            className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
+            className="card easyAccessCard  border-gray w-100 h-100 d-flex align-items-center font-14 fw-bold text-secondary accessCardColor"
           >
-            <div className="card-body d-flex justify-center align-items-center flex-column gap-2 easyAccessIcon">
+            <div className=" card-body d-flex justify-center align-items-center flex-column gap-2 easyAccessIcon">
               <FeatherIcon icon="clipboard" />
               پذیرش
             </div>
           </button>
         </div>
-
-        <div className="col d-flex align-items-stretch">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/appointment")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -43,8 +42,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-
-        <div className="col d-flex align-items-stretch">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/cashDesk")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -68,10 +66,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-      </div>
-
-      <div className="row height-45">
-        <div className="col d-flex align-items-stretch">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/taminPrescription")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -152,8 +147,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-
-        <div className="col d-flex align-items-stretch">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/salamatPrescription")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -230,8 +224,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-
-        <div className="col d-flex align-items-stretch">
+        <div className="col-6 col-xl-4 mb-2">
           <button
             onClick={() => router.push("/patientsArchives")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"

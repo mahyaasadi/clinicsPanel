@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { getSession } from "lib/session";
 import NoteCreator from "components/dashboard/patientFile/notes/noteCreator";
@@ -19,19 +20,39 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
-let ClinicID = null;
-const note = ({ ClinicUser }) => {
+let ClinicID,
+  ActivePatientID = null;
+const PatientNotes = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  const router = useRouter();
+
+  const addNote = (noteFile) => {
+    let url = "Patient/addNote";
+    let data = {
+      CenterID: ClinicID,
+      PatientID: ActivePatientID,
+      Note: noteFile,
+      private: true,
+    };
+
+    console.log({ data });
+  };
+
+  useEffect(() => {
+    if (router.query.PID) {
+      ActivePatientID = router.query.PID;
+    }
+  }, [router.isReady]);
 
   return (
     <>
       <div className="page-wrapper">
-        <div className="content container-flui">
-          <NoteCreator />
+        <div className="content content-fluid">
+          <NoteCreator addNote={addNote} />
         </div>
       </div>
     </>
   );
 };
 
-export default note;
+export default PatientNotes;

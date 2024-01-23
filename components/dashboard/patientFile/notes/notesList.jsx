@@ -1,8 +1,10 @@
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
 
-const NotesList = () => {
+const NotesList = ({ ActivePatientID }) => {
   const router = useRouter();
+
+  // a new ui
   return (
     <>
       <div className="card border-gray mb-2">
@@ -15,7 +17,12 @@ const NotesList = () => {
 
               <div className="col d-flex justify-content-end">
                 <button
-                  onClick={() => router.push("/patientNotes")}
+                  onClick={() =>
+                    router.push({
+                      query: { PID: ActivePatientID },
+                      pathname: "/patientNotes",
+                    })
+                  }
                   className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />

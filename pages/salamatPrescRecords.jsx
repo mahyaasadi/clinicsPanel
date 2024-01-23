@@ -162,12 +162,18 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          downloadPDF(response.data.res.info.print, prescData);
+          console.log(response.data);
+          if (response.data.res.info.print) {
+            downloadPDF(response.data.res.info.print, prescData);
+          } else {
+            ErrorAlert("خطا", "نسخه ای برای پرینت موجود نمی باشد");
+          }
           setPrintIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
           setPrintIsLoading(false);
+          ErrorAlert("خطا", "نسخه ای برای پرینت موجود نمی باشد");
         });
     } else {
       ErrorAlert("خطا", "استعلام اطلاعات بیمار با خطا مواجه گردید!");
@@ -183,6 +189,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
       "_" +
       prescData.nationalNumber +
       ".pdf";
+
     downloadLink.href = linkSource;
     downloadLink.download = fileName;
     downloadLink.click();

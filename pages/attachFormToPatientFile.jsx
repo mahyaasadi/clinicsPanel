@@ -70,6 +70,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
         setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
         setFormValues(response.data.Values);
         setPatientData(response.data.Patient);

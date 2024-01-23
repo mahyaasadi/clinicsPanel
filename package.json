@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
@@ -48,3 +48,4 @@
     "eslint-config-next": "^13.5.6"
   }
 }
+

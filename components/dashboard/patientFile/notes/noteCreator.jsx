@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "public/assets/css/note.css";
 
-const noteCreator = () => {
+const noteCreator = ({ addNote }) => {
   var isMouseDown = false;
   var linesArray = [];
   let currentSize = 5;
@@ -15,7 +15,7 @@ const noteCreator = () => {
   useEffect(() => {
     // INITIAL LAUNCH
     var canvas = document.createElement("canvas");
-    var body = document.getElementsByClassName("content ")[0];
+    var body = document.getElementsByClassName("content")[0];
     var ctx = canvas.getContext("2d");
 
     createCanvas();
@@ -27,6 +27,10 @@ const noteCreator = () => {
         var jpegUrl = canvas.toDataURL("image/jpeg");
 
         console.log(jpegUrl);
+
+        addNote(jpegUrl);
+
+        // name of the file that gets downloaded
         // downloadCanvas(this, 'canvas', 'masterpiece.png');
       },
       false
@@ -43,6 +47,14 @@ const noteCreator = () => {
       mousemove(canvas, event);
     });
     canvas.addEventListener("mouseup", mouseup);
+
+    // document
+    //   .getElementById("textAlignBtn")
+    //   .addEventListener("click", AlignCenter);
+
+    // document
+    //   .getElementById("InsertTextBtn")
+    //   .addEventListener("click", InsertText);
 
     // CREATE CANVAS
     function createCanvas() {
@@ -69,6 +81,17 @@ const noteCreator = () => {
       currentColor = ctx.fillStyle;
     }
 
+    // function AlignCenter() {
+    //   ctx.textAlign = "center";
+    //   // console.log("object");
+    // }
+
+    // function InsertText() {
+    //   console.log("object");
+    //   ctx.font = "30px Comic Sans MS";
+    //   ctx.fillText("Hello World", canvas.width / 2, canvas.height / 2);
+    // }
+
     // GET MOUSE POSITION
     function getMousePos(canvas, evt) {
       var rect = canvas.getBoundingClientRect();
@@ -88,6 +111,7 @@ const noteCreator = () => {
       ctx.lineWidth = currentSize;
       ctx.lineCap = "round";
       ctx.strokeStyle = currentColor;
+      console.log({ currentColor });
     }
 
     // ON MOUSE MOVE
@@ -126,7 +150,7 @@ const noteCreator = () => {
           <input
             type="color"
             id="colorpicker"
-            value="#000000"
+            defaultValue="#000000"
             className="colorpicker"
             onChange={colorChangeHandle}
           />
@@ -136,6 +160,12 @@ const noteCreator = () => {
           <button id="eraser" className="btn btn-primary w-100">
             پاک کن
           </button>
+          {/* <button id="textAlignBtn" className="btn btn-primary w-100">
+            textAlign
+          </button>
+          <button id="InsertTextBtn" className="btn btn-primary w-100">
+            InsertText
+          </button> */}
           <button id="clear" className="btn btn-danger w-100">
             {" "}
             رفرش
@@ -150,7 +180,7 @@ const noteCreator = () => {
             type="range"
             min="1"
             max="50"
-            value="5"
+            defaultValue="5"
             step="1"
             id="controlSize"
           />

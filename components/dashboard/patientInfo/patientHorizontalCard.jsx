@@ -1,10 +1,9 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
 const PatientHorizontalCard = ({ data }) => {
-  console.log({ data });
-
   let InsuranceType,
     GenderType = null;
+
   if (data) {
     switch (data.Insurance) {
       case "1":
