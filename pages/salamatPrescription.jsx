@@ -371,8 +371,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       otherServices: existingCheckCodes.length !== 0 ? existingCheckCodes : [],
     };
 
-    console.log({ prescData });
-
     let findConsumptionLbl = consumptionOptions.find(
       (x) => x.value === selectedConsumption
     );
@@ -398,8 +396,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, prescData)
         .then((response) => {
-          console.log(response.data);
-
           if (response.data.res.info?.checkCode) {
             let addedPrescItemData = {
               serviceInterfaceName: $("#srvSearchInput").val(),
@@ -632,9 +628,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     console.log({ url, data });
 
-    // let findItem = editSrvData.includes(existingCheckCodes.checkCode);
-    // console.log({ findItem });
-
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -714,20 +707,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const CancelEdit = (srvData) => {
-    // console.log({ srvData });
-
     deletedCheckCodes = deletedCheckCodes.filter(
       (a) => a.checkCode !== ActiveCheckCode
     );
-
-    // if (srvData.salamatPresc) {
-    // console.log("flag");
-
-    // existingCheckCodes.push({ checkCode: ActiveCheckCode });
-    // deletedCheckCodes = deletedCheckCodes.filter(
-    //   (a) => a.checkCode === ActiveCheckCode
-    // );
-    // }
   };
 
   useEffect(() => {

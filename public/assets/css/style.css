@@ -4899,11 +4899,19 @@ html.menu-opened body {
   position: relative;
 }
 
+.removeNoteBtn {
+  color: red;
+  fill: white;
+  position: absolute;
+  top: -22px;
+  left: -20px;
+}
+
 .removeImgBtn {
   color: red;
   fill: white;
   position: absolute;
-  top: -20px;
+  top: -15px;
   left: 40%;
 }
 
@@ -4914,8 +4922,8 @@ html.menu-opened body {
 }
 
 .removeLogoBtnIcon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 .login-wrapper .loginbox .img-logo {
@@ -10412,6 +10420,7 @@ ul li .active {
   font-size: 10px !important;
   box-shadow: none !important;
   font-family: iranyekan;
+  z-index: 1;
 }
 
 .cashDeskSkeleton .p-skeleton {
@@ -10707,6 +10716,11 @@ ul li .active {
 .recHistoryModal {
   height: 65vh;
   direction: ltr;
+  overflow-y: auto;
+}
+
+.notesContainer {
+  height: 12rem;
   overflow-y: auto;
 }
 
@@ -11247,4 +11261,70 @@ thead {
 
 .SalamatPrscHeader .p-skeleton {
   height: 2.5rem !important;
+}
+
+/* patientNote */
+.colorButtons {
+  display: flex;
+  align-items: center;
+}
+
+canvas {
+  cursor: crosshair;
+}
+
+div#sidebarNote {
+  position: absolute;
+  margin-top: 1.25rem;
+  width: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  z-index: 100
+}
+
+canvas#canvas {
+  transform: translate(-50%, 5%);
+  left: 50%;
+  top: 0;
+  border: 1px solid lightgray !important;
+}
+
+.colorpicker {
+  border: 1px solid #e6e6e6 !important;
+  background: transparent;
+  height: 30px;
+  width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.buttonSize {
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+}
+
+.rangeInputBtn {
+  background: transparent;
+  height: 130px;
+  width: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.w-65 {
+  width: 65px !important
+}
+
+.height-32 {
+  height: 32px !important;
+}
+
+.buttonSize input[type="range"] {
+  appearance: slider-vertical;
 }

@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
-import { ErrorAlert, QuestionAlert } from "class/AlertManage";
+import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import FormsList from "components/dashboard/patientFile/formsList";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
@@ -16,7 +16,8 @@ import AddictionRecordsList from "components/dashboard/patientFile/addictionReco
 import FoodAllergyRecordsList from "components/dashboard/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "components/dashboard/patientFile/medicalAllergyRecordsList";
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
-import NotesList from "components/dashboard/patientFile/notes/notesList";
+import NotesList from "components/dashboard/notes/notesList";
+import AttachNoteModal from "components/dashboard/notes/attachNoteModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -36,6 +37,7 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ActivePatientID,
+  ActivePatientName,
   ClinicUserID = null;
 const PatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -47,13 +49,12 @@ const PatientFile = ({ ClinicUser }) => {
   const [patientForms, setPatientForms] = useState([]);
   const [patientSurgeryList, setPatientSurgeryList] = useState();
 
-  // Patient Form Preview Modal
+  //----- Patient Form Preview Modal
   const [showPrevModal, setShowPrevModal] = useState(false);
   const [patientFormData, setPatientFormData] = useState([]);
   const [patientFormValues, setPatientFormValues] = useState({});
 
   const closePatientFrmPreviewModal = () => setShowPrevModal(false);
-
   const openPatientFrmPreviewModal = (PFData) => {
     setShowPrevModal(true);
     setPatientFormData(JSON.parse(PFData.formData.formData[0]));
@@ -73,7 +74,9 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
         setPatientSurgeryList(response.data.SurgeryList);
+        setPatientNotesData(response.data.Notes);
         setPatientData(response.data);
         setIsLoading(false);
       })
@@ -195,6 +198,33 @@ const PatientFile = ({ ClinicUser }) => {
     }
   };
 
+  //----- Patient Notes Modal
+  const [showNoteCreatorModal, setShowNoteCreatorModal] = useState(false);
+  const [patientNotesData, setPatientNotesData] = useState([]);
+  const openNoteCreatorModal = () => setShowNoteCreatorModal(true);
+  const closeNoteCreatorModal = () => setShowNoteCreatorModal(false);
+
+  const AddNote = (submittedNote) => {
+    setPatientNotesData([...patientNotesData, submittedNote]);
+    getOnePatient();
+    // router.back();
+    SuccessAlert(
+      "موفق",
+      `یادداشت با موفقیت به پرونده ${patientData.Name} اضافه گردید`
+    );
+
+    setTimeout(() => {
+      setShowNoteCreatorModal(false);
+    }, 200);
+  };
+
+  const RemoveNote = (selectedNoteID) => {
+    setPatientNotesData(
+      patientNotesData.filter((x) => x._id !== selectedNoteID)
+    );
+    getOnePatient();
+  };
+
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) {
@@ -227,8 +257,14 @@ const PatientFile = ({ ClinicUser }) => {
               </div>
 
               <div className="row mb-2">
-                <div className="col-12">
-                  <NotesList ActivePatientID={ActivePatientID} />
+                <div className="col-12 ">
+                  <NotesList
+                    ClinicID={ClinicID}
+                    ActivePatientID={ActivePatientID}
+                    openNoteCreatorModal={openNoteCreatorModal}
+                    patientNotesData={patientNotesData}
+                    RemoveNote={RemoveNote}
+                  />
                 </div>
               </div>
 
@@ -299,6 +335,14 @@ const PatientFile = ({ ClinicUser }) => {
           setShowOtherSurgeryType={setShowOtherSurgeryType}
           newDefaultSurgery={newDefaultSurgery}
           setNewDefaultSurgery={setNewDefaultSurgery}
+        />
+
+        <AttachNoteModal
+          show={showNoteCreatorModal}
+          onHide={closeNoteCreatorModal}
+          ClinicID={ClinicID}
+          ActivePatientID={ActivePatientID}
+          AddNote={AddNote}
         />
       </div>
     </>

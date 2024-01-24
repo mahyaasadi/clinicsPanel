@@ -41,15 +41,16 @@ const PatientCategories = ({
         (patient) => patient.id.toString() === result.draggableId
       );
 
-      if (draggedPatient) openActionModal(draggedPatient.id, draggedPatient.item);
+      if (draggedPatient)
+        openActionModal(draggedPatient.id, draggedPatient.item);
 
       setPatientsInfo((patientsInfo) =>
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-              ...item,
-              category: result.destination.droppableId,
-            }
+                ...item,
+                category: result.destination.droppableId,
+              }
             : item
         )
       );
@@ -203,7 +204,10 @@ const PatientCategories = ({
                                                         onError={({
                                                           currentTarget,
                                                         }) => {
-                                                          item?.item?.Patient?.Gender === "M" || item?.item?.Patient?.Gender === "F"
+                                                          item?.item?.Patient
+                                                            ?.Gender === "M" ||
+                                                          item?.item?.Patient
+                                                            ?.Gender === "F"
                                                             ? (currentTarget.src = `assets/img/avatar-${item?.item?.Patient?.Gender}-pic.png`)
                                                             : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                                                         }}
