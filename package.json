@@ -14,17 +14,12 @@
     "chart.js": "^4.4.1",
     "cookie": "^0.5.0",
     "cropperjs": "^1.6.1",
-    "date-fns": "^2.30.0",
-    "date-fns-jalali": "^2.30.0-0",
-    "date-fns-tz": "^2.0.0",
     "feather-icons-react": "^0.6.2",
     "formBuilder": "^3.17.3",
     "jalali-date": "^1.1.4",
-    "jalali-moment": "^3.3.11",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "8.5",
-    "moment-jalaali": "^0.10.0",
     "next": "13.5.6",
     "primereact": "^10.0.7",
     "react": "^18",
@@ -41,11 +36,11 @@
     "react-router-dom": "^6.17.0",
     "react-select": "^5.7.7",
     "redux": "^4.2.1",
-    "sweetalert2": "^11.7.32"
+    "sweetalert2": "^11.7.32",
+    "viewerjs": "^1.11.6"
   },
   "devDependencies": {
     "eslint": "^8.52.0",
     "eslint-config-next": "^13.5.6"
   }
 }
-

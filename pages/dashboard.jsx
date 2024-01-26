@@ -180,7 +180,7 @@ const Dashboard = ({ ClinicUser }) => {
                                 <p className="font-16 fw-bold">
                                   {paymentTotalStat
                                     ? paymentTotalStat.toLocaleString() +
-                                      " ریال"
+                                    " ریال"
                                     : "-"}
                                 </p>
                               </div>
@@ -205,7 +205,7 @@ const Dashboard = ({ ClinicUser }) => {
                                 <p className="font-16 fw-bold">
                                   {paymentTotalReturn
                                     ? paymentTotalReturn.toLocaleString() +
-                                      " ریال"
+                                    " ریال"
                                     : "-"}
                                 </p>
                               </div>
@@ -228,7 +228,7 @@ const Dashboard = ({ ClinicUser }) => {
                 </div>
               </div>
 
-              <div class="mt-4 row align-items-center">
+              <div className="mt-4 row align-items-center">
                 <p className="text-secondary fw-bold font-15 clinicLine">
                   بررسی مراجعات مطب
                 </p>

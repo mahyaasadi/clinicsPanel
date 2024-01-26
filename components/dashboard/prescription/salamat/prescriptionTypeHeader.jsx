@@ -117,7 +117,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
             gap: "0.5rem",
           }}
         >
-          <Image src={item.img} alt="prescTypeIcon" height="20" width="20" />{" "}
+          <Image src={item.img} alt="prescTypeIcon" height="35" width="35" />{" "}
           &nbsp;
           {item.name}{" "}
           {/* <span

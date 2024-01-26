@@ -6,7 +6,7 @@ const generateSalamatPrescType = (data) => {
       id: parseInt(item.id),
       name: item.Des,
       title: item.Title,
-      img: `/assets/img/TaminPrescTypeID${item.id}.png`,
+      img: `/assets/img/salamatHeader/TaminPrescTypeID${item.id}.png`,
       Active: "",
     };
     prescTypeOptions.push(obj);

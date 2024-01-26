@@ -108,9 +108,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
       SavePresc: 1,
     };
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         $("#patientNID").prop("readonly", true);
 
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
@@ -154,18 +157,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
               element.type === "S"
                 ? "Success"
                 : element.type === "I"
-                ? "Info"
-                : element.type === "E"
-                ? "Error"
-                : "Warning",
+                  ? "Info"
+                  : element.type === "E"
+                    ? "Error"
+                    : "Warning",
             summary:
               element.type === "S"
                 ? "موفق!"
                 : element.type === "I"
-                ? "اطلاعات!"
-                : element.type === "E"
-                ? "خطا!"
-                : "هشدار!",
+                  ? "اطلاعات!"
+                  : element.type === "E"
+                    ? "خطا!"
+                    : "هشدار!",
             detail: element.text,
             life: 5000,
           };
@@ -664,18 +667,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 message.type === "I"
                   ? "Info"
                   : message.type === "E"
-                  ? "Error"
-                  : message.type === "W"
-                  ? "Warning"
-                  : "Success",
+                    ? "Error"
+                    : message.type === "W"
+                      ? "Warning"
+                      : "Success",
               summary:
                 message.type === "I"
                   ? "اطلاعات!"
                   : message.type === "E"
-                  ? "خطا!"
-                  : message.type === "W"
-                  ? "هشدار!"
-                  : "موفق!",
+                    ? "خطا!"
+                    : message.type === "W"
+                      ? "هشدار!"
+                      : "موفق!",
               detail: message.text,
               sticky: true,
             }))
@@ -684,8 +687,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           if (trackingCode || sequenceNumber) {
             SuccessAlert(
               "ثبت نسخه با موفقیت انجام گردید!",
-              `${trackingCode ? "کد پیگیری نسخه : " + trackingCode : ""} \n  ${
-                sequenceNumber ? "کد توالی نسخه : " + sequenceNumber : ""
+              `${trackingCode ? "کد پیگیری نسخه : " + trackingCode : ""} \n  ${sequenceNumber ? "کد توالی نسخه : " + sequenceNumber : ""
               }`
             );
             ActiveSamadCode = null;

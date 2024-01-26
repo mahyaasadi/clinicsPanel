@@ -2,15 +2,15 @@ const TaminPrescType = [
   {
     name: "دارو",
     id: 1,
-    img: "/assets/img/TaminPrescTypeID1.png",
+    img: "/assets/img/taminHeader/TaminPrescTypeID1.png",
     Active: "active",
   },
-  { name: "پاراکلینیک", id: 2, img: "/assets/img/paraClinic.png", Active: "" },
-  { name: "ویزیت", id: 3, img: "/assets/img/visit.png", Active: "" },
+  { name: "پاراکلینیک", id: 2, img: "/assets/img/taminHeader/paraClinic.png", Active: "" },
+  { name: "ویزیت", id: 3, img: "/assets/img/taminHeader/visit.png", Active: "" },
   {
     name: "خدمات",
     id: 5,
-    img: "/assets/img/TaminPrescTypeID4.png",
+    img: "/assets/img/taminHeader/TaminPrescTypeID4.png",
     Active: "",
   },
 ];

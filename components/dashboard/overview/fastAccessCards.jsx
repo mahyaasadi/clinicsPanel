@@ -143,7 +143,7 @@ const FastAccessCards = () => {
                   />
                 </g>
               </svg>
-              نسخه تامین اجتماعی
+              نسخه تامین
             </div>
           </button>
         </div>
@@ -220,7 +220,7 @@ const FastAccessCards = () => {
                   </g>
                 </svg>
               </div>
-              نسخه خدمات درمانی
+              نسخه سلامت
             </div>
           </button>
         </div>

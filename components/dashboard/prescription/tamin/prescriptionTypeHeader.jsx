@@ -64,13 +64,13 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
     <>
       <li className="nav-item">
         <a
-          className={"nav-link media-nav-link " + item.Active}
+          className={"d-flex align-items-center nav-link media-nav-link " + item.Active}
           href={"#bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
           onClick={selectPrescType}
         >
-          <Image src={item.img} alt="prescTypeIcon" height="20" width="20" />{" "}
+          <Image src={item.img} alt="prescTypeIcon" height="35" width="35" />{" "}
           &nbsp;
           {item.name}{" "}
           <span
