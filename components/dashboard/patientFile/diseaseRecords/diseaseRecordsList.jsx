@@ -6,7 +6,7 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import "react-data-table-component-extensions/dist/index.css";
 import { Tooltip } from "primereact/tooltip";
 
-const DiseaseRecordsList = ({ data }) => {
+const DiseaseRecordsList = ({ data, openDiseaseRecordsModal }) => {
   const columns = [
     {
       name: "نام بیماری",
@@ -67,7 +67,7 @@ const DiseaseRecordsList = ({ data }) => {
 
               <div className="col d-flex justify-content-end">
                 <button
-                  // onClick={openAddModal}
+                  onClick={openDiseaseRecordsModal}
                   className="btn text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-0 formBtns"
                 >
                   <FeatherIcon icon="plus" />

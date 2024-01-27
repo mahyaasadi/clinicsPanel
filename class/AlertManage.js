@@ -85,9 +85,6 @@ const TimerAlert = (options) => {
       if (timer) {
         timerElement = Swal.getPopup().querySelector("b");
         Swal.showLoading();
-        // timerInterval = setInterval(() => {
-        //   timerElement.textContent = `${Swal.getTimerLeft()}`;
-        // }, 300);
       }
     },
     onBeforeOpen: () => {

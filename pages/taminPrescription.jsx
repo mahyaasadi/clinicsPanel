@@ -254,22 +254,11 @@ const TaminPrescription = ({
     $("#srvSearchInput").focus();
   };
 
-  const selectSearchedService = (
-    name,
-    code,
-    TaminCode,
-    type,
-    paraTarefCode
-  ) => {
+  const selectSearchedService = (name, srvCode, type, paraTarefCode) => {
     ActiveSrvName = name;
+    ActiveSrvCode = srvCode;
     ActiveSrvTypePrsc = type;
     ActiveParaCode = paraTarefCode;
-
-    console.log({ ActiveSrvTypePrsc });
-
-    ActiveInsuranceID == "2"
-      ? (ActiveSrvCode = TaminCode)
-      : (ActiveSrvCode = code);
 
     $("#srvSearchInput").val(name);
     $("#BtnServiceSearch").hide();

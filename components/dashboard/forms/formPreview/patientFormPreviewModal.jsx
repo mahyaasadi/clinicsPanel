@@ -1,8 +1,28 @@
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
+import dynamic from "next/dynamic";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
+  console.log({ data, formValues });
+
   const handlePrint = () => window.print();
+  const componentsArr = [];
+
+  data?.map((x, index) => {
+    const MyComponent = dynamic(() =>
+      import("components/dashboard/forms/formComponents/form-" + x?.type)
+    );
+
+    componentsArr.push(
+      <MyComponent
+        data={x}
+        key={index}
+        index={index}
+        defaultValue={formValues[x.name]}
+      />
+    );
+  });
+
   return (
     <>
       <Modal show={show} onHide={onHide} centered fullscreen={true}>
@@ -20,7 +40,7 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
 
         <Modal.Body>
           <div className="row">
-            {data?.map((formComponent, index) => (
+            {/* {data?.map((formComponent, index) => (
               <div
                 key={index}
                 className={formComponent?.className?.replace(
@@ -48,7 +68,11 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
                   </div>
                 )}
               </div>
-            ))}
+            ))} */}
+
+            <div className="row">
+              {componentsArr.map((component, index) => component)}
+            </div>
           </div>
         </Modal.Body>
       </Modal>

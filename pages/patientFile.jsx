@@ -8,7 +8,8 @@ import Loading from "components/commonComponents/loading/loading";
 import FormsList from "components/dashboard/patientFile/formsList";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
 import PatientHorizontalCard from "components/dashboard/patientInfo/patientHorizontalCard";
-import DiseaseRecordsList from "components/dashboard/patientFile/diseaseRecordsList";
+import DiseaseRecordsList from "components/dashboard/patientFile/diseaseRecords/diseaseRecordsList";
+import DiseaseRecordsModal from "components/dashboard/patientFile/diseaseRecords/diseaseRecordsModal";
 import SurgeryRecordsList from "components/dashboard/patientFile/surgeryRecords/surgeryRecordsList";
 import SurgeryRecordModal from "components/dashboard/patientFile/surgeryRecords/surgeryRecordModal";
 import FamilyRecordsList from "components/dashboard/patientFile/familyRecordsList";
@@ -225,6 +226,11 @@ const PatientFile = ({ ClinicUser }) => {
     getOnePatient();
   };
 
+  // diseaseRecords
+  const [showDiseaseRecordsModal, setShowDiseaseRecordsModal] = useState(false);
+  const openDiseaseRecordsModal = () => setShowDiseaseRecordsModal(true);
+  const closeDiseaseRecordsModal = () => setShowDiseaseRecordsModal(false);
+
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) {
@@ -270,7 +276,9 @@ const PatientFile = ({ ClinicUser }) => {
 
               <div className="row mb-2">
                 <div className="col-lg-6 col-12">
-                  <DiseaseRecordsList />
+                  <DiseaseRecordsList
+                    openDiseaseRecordsModal={openDiseaseRecordsModal}
+                  />
                 </div>
 
                 <div className="col-lg-6 col-12 mb-2">
@@ -335,6 +343,13 @@ const PatientFile = ({ ClinicUser }) => {
           setShowOtherSurgeryType={setShowOtherSurgeryType}
           newDefaultSurgery={newDefaultSurgery}
           setNewDefaultSurgery={setNewDefaultSurgery}
+        />
+
+        <DiseaseRecordsModal
+          ClinicID={ClinicID}
+          show={showDiseaseRecordsModal}
+          onHide={closeDiseaseRecordsModal}
+          ActivePatientID={ActivePatientID}
         />
 
         <AttachNoteModal

@@ -8,7 +8,6 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 
 const FormsTable = ({ data, deleteForm }) => {
-
   const columns = [
     {
       name: "نام فرم",
@@ -18,7 +17,7 @@ const FormsTable = ({ data, deleteForm }) => {
     },
     {
       name: "بخش",
-      selector: (row) => row.Modality.Name,
+      selector: (row) => row.Modality?.Name,
       sortable: true,
       width: "auto",
     },

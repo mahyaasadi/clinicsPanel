@@ -155,10 +155,7 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
         </div>
 
         <div className="mt-4 row align-items-center">
-          <p
-            className="text-secondary fw-bold font-14 basicInfoLine"
-
-          >
+          <p className="text-secondary fw-bold font-14 basicInfoLine">
             اطلاعات پایه
           </p>
           <hr style={{ position: "relative" }} />

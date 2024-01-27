@@ -27,9 +27,6 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
         var jpegUrl = canvas.toDataURL("image/jpeg");
 
         addNote(jpegUrl);
-
-        // name of the file that gets downloaded
-        downloadCanvas(this, "canvas", "masterpiece.png");
       },
       false
     );
@@ -40,12 +37,6 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
 
     document.getElementById("eraser").addEventListener("click", eraser);
     document.getElementById("clear").addEventListener("click", createCanvas);
-    // document
-    //   .getElementById("downloadImage")
-    //   .addEventListener(
-    //     "click",
-    //     downloadCanvas(this, "canvas", "masterpiece.png")
-    //   );
 
     // DRAWING EVENT HANDLERS
     canvas.addEventListener("mousedown", function () {
@@ -67,12 +58,6 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
       ctx.fillStyle = currentBg;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       body.appendChild(canvas);
-    }
-
-    // DOWNLOAD CANVAS
-    function downloadCanvas(link, canvas, filename) {
-      link.href = document.getElementById(canvas).toDataURL();
-      link.download = filename;
     }
 
     // ERASER HANDLING
@@ -209,10 +194,6 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
         >
           ذخیره
         </button>
-
-        {/* <a id="downloadImage" className="btn btn-sm btn-outline-primary w-65">
-          دانلود فایل
-        </a> */}
       </div>
     </>
   );

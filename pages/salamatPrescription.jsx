@@ -5,12 +5,6 @@ import { getSession } from "lib/session";
 import { Toast } from "primereact/toast";
 import { axiosClient } from "class/axiosConfig";
 import { convertToFixedNumber } from "utils/convertToFixedNumber";
-import {
-  ErrorAlert,
-  WarningAlert,
-  QuestionAlert,
-  SuccessAlert,
-} from "class/AlertManage";
 import SalamatPresctypes from "class/SalamatPrescType";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
@@ -19,6 +13,14 @@ import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import SalamatAddToListItems from "components/dashboard/prescription/salamat/salamatAddToListItems";
+import { displayToastMessages } from "utils/toastMessageGenerator";
+import {
+  ErrorAlert,
+  WarningAlert,
+  QuestionAlert,
+  SuccessAlert,
+  TimerAlert,
+} from "class/AlertManage";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -108,21 +110,22 @@ const SalamatPrescription = ({ ClinicUser }) => {
       SavePresc: 1,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-        $("#patientNID").prop("readonly", true);
-
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
         setPatientInfo(response.data.res.info);
+
+        $("#patientNID").prop("readonly", true);
         $("#patientInfoCard2").show();
 
         if (response.data.res.info) {
           setTimeout(() => {
-            showPatientMessages(response.data.res.info.message.snackMessage);
+            displayToastMessages(
+              response.data.res.info.message.snackMessage,
+              toast,
+              null
+            );
           }, 1000);
         } else {
           ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
@@ -143,40 +146,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setPatientStatIsLoading(false);
         $("#patientNID").prop("readonly", false);
       });
-  };
-
-  // Patient Toast Messages
-  let patientToastMessages = [];
-  const showPatientMessages = (patientMessages) => {
-    if (patientMessages && patientMessages.length !== 0) {
-      if (patientMessages.length !== 0) {
-        for (let i = 0; i < patientMessages.length; i++) {
-          const element = patientMessages[i];
-          let obj = {
-            severity:
-              element.type === "S"
-                ? "Success"
-                : element.type === "I"
-                  ? "Info"
-                  : element.type === "E"
-                    ? "Error"
-                    : "Warning",
-            summary:
-              element.type === "S"
-                ? "موفق!"
-                : element.type === "I"
-                  ? "اطلاعات!"
-                  : element.type === "E"
-                    ? "خطا!"
-                    : "هشدار!",
-            detail: element.text,
-            life: 5000,
-          };
-          patientToastMessages.push(obj);
-        }
-        toast.current.show(patientToastMessages);
-      }
-    }
   };
 
   const getPatientActiveSearch = () => {
@@ -205,14 +174,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setSamadCode(response.data.res?.info?.samadCode);
 
         if (response.data.res?.info?.samadCode) {
-          let msObj = {
-            severity: "Success",
-            summary: "موفق!",
-            detail: "کد سماد با موفقیت دریافت گردید.",
-            life: 8000,
-          };
-          samadMessage.push(msObj);
-          toast.current.show(samadMessage);
+          displayToastMessages([], toast, "کد سماد با موفقیت دریافت گردید.");
         }
       })
       .catch((err) => {
@@ -239,8 +201,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
-
         setConsumptionOptions(
           generateSalamatConsumptionOptions(response.data.SalamatConsumption)
         );
@@ -457,10 +417,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           console.log(err);
           setIsLoading(false);
           if (err.response) {
-            ErrorAlert(
-              "ویرایش امکان پذیر نمی باشد!",
-              err.response.data.resMessage
-            );
+            ErrorAlert("خطا", err.response.data.resMessage);
           } else {
             ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
           }
@@ -481,15 +438,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
       existingCheckCodes.splice(index, 1);
 
       if (flag) {
-        console.log({ flag });
         deletedCheckCodes.push({
           checkCode: id,
         });
       }
     }
   };
-
-  // console.log({ deletedCheckCodes, existingCheckCodes, prescriptionItemsData });
 
   // Edit PrescriptionItems
   const getPrescBySamadCode = (CitizenSessionId) => {
@@ -509,7 +463,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          // console.log(response.data);
           response.data.info.subscriptionInfos.map((x, index) => {
             {
               response.data.info.subscriptionInfos[index].salamatPresc = 1;
@@ -569,14 +522,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     } else {
       setSelectedConsumptionInstruction(null);
     }
-
-    // setSelectedConsumptionInstruction(
-    //   editPrescSrvMode && srvData.consumptionInstruction
-    //     ? srvData.consumptionInstruction
-    //      // : srvData.consumptionInstructionVal
-    //       // ? srvData.consumptionInstructionVal
-
-    // );
 
     if (srvData?.salamatPresc) {
       deletedCheckCodes.push({ checkCode: srvData.checkCode });
@@ -640,64 +585,72 @@ const SalamatPrescription = ({ ClinicUser }) => {
           ErrorAlert("خطا", response.data.res.resMessage);
           setRegisterIsLoading(false);
         }
+        if (response.data.res.status === 400) {
+          ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+          setRegisterIsLoading(false);
+        }
 
         if (response.data.res.info) {
           setRegisterIsLoading(false);
 
+          // toast messages
           let registerMessages = [];
           const infoMessageArray =
             response.data.res.info.message.infoMessage || [];
           const snackMessageArray =
             response.data.res.info.message.snackMessage || [];
+
+          let sequenceNumberArray = [];
+          let seqObj = {
+            type: "S",
+            text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
+          };
+          sequenceNumberArray.push(seqObj);
+
+          let trackNumberArray = [];
+          let trackObj = {
+            type: "S",
+            text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
+          };
+          trackNumberArray.push(trackObj);
+
+          registerMessages.push(
+            ...infoMessageArray,
+            ...snackMessageArray,
+            ...sequenceNumberArray,
+            ...trackNumberArray
+          );
+
+          displayToastMessages(registerMessages, toast, null);
+
           const sequenceNumber = response.data.res.info.sequenceNumber || "";
           const trackingCode = response.data.res.info.trackingCode || "";
 
-          registerMessages.push(
-            ...infoMessageArray.map((message) => ({
-              severity: "Info",
-              summary: "اطلاعات!",
-              detail: message.text,
-              sticky: true,
-            }))
-          );
-
-          registerMessages.push(
-            ...snackMessageArray.map((message) => ({
-              severity:
-                message.type === "I"
-                  ? "Info"
-                  : message.type === "E"
-                    ? "Error"
-                    : message.type === "W"
-                      ? "Warning"
-                      : "Success",
-              summary:
-                message.type === "I"
-                  ? "اطلاعات!"
-                  : message.type === "E"
-                    ? "خطا!"
-                    : message.type === "W"
-                      ? "هشدار!"
-                      : "موفق!",
-              detail: message.text,
-              sticky: true,
-            }))
-          );
-
           if (trackingCode || sequenceNumber) {
-            SuccessAlert(
-              "ثبت نسخه با موفقیت انجام گردید!",
-              `${trackingCode ? "کد پیگیری نسخه : " + trackingCode : ""} \n  ${sequenceNumber ? "کد توالی نسخه : " + sequenceNumber : ""
-              }`
-            );
+            const seconds = 5;
+            const timerInMillis = seconds * 1000;
+
+            TimerAlert({
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
+              ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
+              با موفقیت ثبت گردید!
+              </div>`,
+              html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/salamatPrescRecords");
+              },
+            });
+
             ActiveSamadCode = null;
             existingCheckCodes = [];
             deletedCheckCodes = [];
-          }
-
-          if (response.data.res.status === 400) {
-            ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-            setRegisterIsLoading(false);
           }
         }
       })
