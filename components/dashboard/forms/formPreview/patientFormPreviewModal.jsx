@@ -18,7 +18,8 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
         data={x}
         key={index}
         index={index}
-        defaultValue={formValues[x.name]}
+        defaultValue={formValues ? formValues[x.name] : []}
+        disabled={true}
       />
     );
   });

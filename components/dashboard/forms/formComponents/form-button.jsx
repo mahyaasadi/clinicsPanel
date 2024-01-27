@@ -1,4 +1,5 @@
-const FormButton = ({ data }) => {
+const FormButton = ({ data, defaultValue, disabled }) => {
+  console.log({ defaultValue });
   return (
     <>
       <button
@@ -6,6 +7,7 @@ const FormButton = ({ data }) => {
         className={data.className + " w-50"}
         value={data.value}
         name={data.name}
+        disabled
       >
         {data.label}
       </button>

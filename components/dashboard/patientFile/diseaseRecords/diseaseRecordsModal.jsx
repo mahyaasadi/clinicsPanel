@@ -27,13 +27,13 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
       PatientID: ActivePatientID,
     };
 
-    console.log({ data });
+    // console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
         if (response.data) {
-          console.log(response.data);
+          // console.log(response.data);
           setSearchedDiseases(response.data);
           $("#DiseaseSearchDiv").show();
           setSearchIsLaoding(false);
@@ -94,12 +94,12 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
       DiseaseID: ActiveDiseaseID,
     };
 
-    console.log({ data });
+    // console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
 
         if (response.data) {
           setAddedDisease([
@@ -124,7 +124,7 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
   };
 
   useEffect(() => {
-    console.log({ addedDisease });
+    // console.log({ addedDisease });
   }, [addedDisease]);
 
   return (

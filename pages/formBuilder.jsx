@@ -69,7 +69,7 @@ const FormBuilder = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setEditFormData(response.data);
         formData = response.data.formData[0];
 
@@ -91,10 +91,6 @@ const FormBuilder = ({ ClinicUser }) => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
   }, [router.isReady]);
-
-  useEffect(() => {
-    console.log({ prevData });
-  }, [prevData]);
 
   return (
     <>
@@ -224,8 +220,6 @@ const FormBuilder = ({ ClinicUser }) => {
                     ? `https://api.irannobat.ir/Form/Update/${ActiveFormID}`
                     : "https://api.irannobat.ir/Form/add";
 
-                  console.log({ data, url });
-
                   if ($("#FormName").val() === "") {
                     ErrorAlert("خطا", "فیلد نام فرم را تکمیل نمایید!");
                   } else if (!ModalityID) {
@@ -238,7 +232,6 @@ const FormBuilder = ({ ClinicUser }) => {
                       timeout: 5000,
                     })
                       .then((responseJSON) => {
-                        console.log(responseJSON);
                         SuccessAlert(
                           "موفق",
                           "اطلاعات فرم با موفقیت ثبت گردید!"

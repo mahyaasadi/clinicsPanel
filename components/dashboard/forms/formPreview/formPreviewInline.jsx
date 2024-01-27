@@ -15,6 +15,7 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
         key={index}
         index={index}
         defaultValue={formValues[x.name]}
+        disabled={false}
       />
     );
   });

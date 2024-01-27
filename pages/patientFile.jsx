@@ -75,7 +75,7 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setPatientSurgeryList(response.data.SurgeryList);
         setPatientNotesData(response.data.Notes);
         setPatientData(response.data);
