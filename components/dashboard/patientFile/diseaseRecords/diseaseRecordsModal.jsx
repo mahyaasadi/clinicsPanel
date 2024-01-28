@@ -8,11 +8,22 @@ let ActiveDiseaseName,
   ActiveDiseaseEngName,
   ActiveICDCode = null;
 
-const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
+const DiseaseRecordModal = ({
+  show,
+  setShow,
+  ClinicID,
+  ActivePatientID,
+  addDisease,
+}) => {
   const [searchedDiseases, setSearchedDiseases] = useState([]);
   const [searchIsLoading, setSearchIsLaoding] = useState(false);
-  const [addedDisease, setAddedDisease] = useState([]);
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
+
+  const onHide = () => {
+    setShow(false);
+    $(".diseaseSearchDiv").hide();
+    setSearchedDiseases([]);
+  };
 
   const _searchInDiseases = (e) => {
     e.preventDefault();
@@ -27,19 +38,21 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
       PatientID: ActivePatientID,
     };
 
-    // console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         if (response.data) {
-          // console.log(response.data);
           setSearchedDiseases(response.data);
           $("#DiseaseSearchDiv").show();
           setSearchIsLaoding(false);
           $(".unsuccessfullSearch").hide();
-        } else {
+        }
+
+        if (response.data.length == 0) {
           $(".unsuccessfullSearch").show();
+        } else {
+          $(".unsuccessfullSearch").hide();
         }
       })
       .catch((err) => {
@@ -83,7 +96,7 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
     }
   };
 
-  const addDiseaseItem = async (e) => {
+  const _addDiseaseItem = async (e) => {
     e.preventDefault();
     setSubmitIsLoading(true);
 
@@ -94,27 +107,18 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
       DiseaseID: ActiveDiseaseID,
     };
 
-    // console.log({ data });
+    console.log({ data });
 
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
 
-        if (response.data) {
-          setAddedDisease([
-            ...addedDisease,
-            {
-              _id: response.data.Disease,
-              icdCode: ActiveICDCode,
-              PersianName: ActiveDiseaseName,
-              EngName: ActiveDiseaseEngName,
-            },
-          ]);
-        }
+        addDisease(response.data);
 
         // Reset;
         activeSearch();
+        onHide();
         setSubmitIsLoading(false);
       })
       .catch((err) => {
@@ -122,10 +126,6 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
         setSubmitIsLoading(false);
       });
   };
-
-  useEffect(() => {
-    // console.log({ addedDisease });
-  }, [addedDisease]);
 
   return (
     <>
@@ -138,7 +138,7 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
           </Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <Modal.Body className="diseaseModalBody">
           <form onSubmit={_searchInDiseases}>
             <div className="input-group">
               <label className="lblAbs font-12">جستجوی نام بیماری</label>
@@ -182,23 +182,25 @@ const DiseaseRecordModal = ({ show, onHide, ClinicID, ActivePatientID }) => {
             </div>
           </form>
 
-          <div id="DiseaseSearchDiv" className="diseaseSearchDiv">
-            <SearchedDiseasesItems
-              data={searchedDiseases}
-              selectSearchedDisease={selectSearchedDisease}
-            />
-          </div>
+          {searchedDiseases.length !== 0 && (
+            <div id="DiseaseSearchDiv" className="diseaseSearchDiv">
+              <SearchedDiseasesItems
+                data={searchedDiseases}
+                selectSearchedDisease={selectSearchedDisease}
+              />
+            </div>
+          )}
 
-          <div className="unsuccessfullSearch" id="unsuccessfullSearch">
+          <div className="unsuccessfullSearch mt-2" id="unsuccessfullSearch">
             <p>موردی یافت نشد!</p>
           </div>
 
-          <div className="submit-section">
+          <div className="submit-section diseaseSubmitBtn">
             {!submitIsLoading ? (
               <button
                 type="submit"
                 className="btn btn-primary rounded btn-save font-13"
-                onClick={addDiseaseItem}
+                onClick={_addDiseaseItem}
               >
                 اضافه به لیست
               </button>

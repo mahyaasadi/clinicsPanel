@@ -3,27 +3,9 @@ import FeatherIcon from "feather-icons-react";
 import dynamic from "next/dynamic";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
-  console.log({ data, formValues });
+  // console.log({ formValues });
 
   const handlePrint = () => window.print();
-  const componentsArr = [];
-
-  data?.map((x, index) => {
-    const MyComponent = dynamic(() =>
-      import("components/dashboard/forms/formComponents/form-" + x?.type)
-    );
-
-    componentsArr.push(
-      <MyComponent
-        data={x}
-        key={index}
-        index={index}
-        defaultValue={formValues ? formValues[x.name] : []}
-        disabled={true}
-      />
-    );
-  });
-
   return (
     <>
       <Modal show={show} onHide={onHide} centered fullscreen={true}>
@@ -41,7 +23,7 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
 
         <Modal.Body>
           <div className="row">
-            {/* {data?.map((formComponent, index) => (
+            {data?.map((formComponent, index) => (
               <div
                 key={index}
                 className={formComponent?.className?.replace(
@@ -59,21 +41,23 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
                     <hr />
                   </formComponent.subtype>
                 ) : (
-                  <div>
+                  <div className="mb-2">
                     <label className="lblAbs fw-bold font-13">
                       {formComponent.label}
                     </label>
                     <p className="p-3 patientFrmInput">
-                      {formValues[formComponent.name]}
+                      {formComponent.type === "checkbox-group"
+                        ? formValues[formComponent.name].join()
+                        : formValues[formComponent.name]}
                     </p>
                   </div>
                 )}
               </div>
-            ))} */}
-
+            ))}
+            {/* 
             <div className="row">
               {componentsArr.map((component, index) => component)}
-            </div>
+            </div> */}
           </div>
         </Modal.Body>
       </Modal>

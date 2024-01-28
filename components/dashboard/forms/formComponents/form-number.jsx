@@ -1,6 +1,7 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormNumber = ({ data }) => {
+const FormNumber = ({ data, defaultValue, disabled }) => {
+  console.log({ defaultValue });
   return (
     <>
       <div className="w-25 mt-3">
@@ -21,12 +22,13 @@ const FormNumber = ({ data }) => {
           className={data.className}
           type="number"
           name={data.name}
-          defaultValue={data.value}
+          defaultValue={defaultValue ? defaultValue : data.value}
           required={data.required}
           placeholder={data.placeholder}
           min={data.min}
           max={data.max}
           step={data.step}
+          disabled={disabled}
         />
       </div>
     </>

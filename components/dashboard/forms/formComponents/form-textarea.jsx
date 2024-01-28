@@ -1,6 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormTextarea = ({ data, defaultValue }) => {
+const FormTextarea = ({ data, defaultValue, disabled }) => {
   return (
     <>
       <div className={`${data.className.replace("form-control", "")} mb-3`}>
@@ -27,6 +27,7 @@ const FormTextarea = ({ data, defaultValue }) => {
           maxLength={data.maxLength}
           placeholder={data.placeholder}
           required={data.required}
+          disabled={disabled}
         ></textarea>
       </div>
     </>

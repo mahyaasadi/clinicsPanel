@@ -75,7 +75,6 @@ const PatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setPatientSurgeryList(response.data.SurgeryList);
         setPatientNotesData(response.data.Notes);
         setPatientData(response.data);
@@ -229,13 +228,36 @@ const PatientFile = ({ ClinicUser }) => {
   // diseaseRecords
   const [showDiseaseRecordsModal, setShowDiseaseRecordsModal] = useState(false);
   const openDiseaseRecordsModal = () => setShowDiseaseRecordsModal(true);
-  const closeDiseaseRecordsModal = () => setShowDiseaseRecordsModal(false);
+  const [patientDiseases, setPatientDiseases] = useState([]);
+
+  const getPatientDiseaseRecords = () => {
+    let url = `Patient/getDisease/${ActivePatientID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setPatientDiseases(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const addDisease = (addedDisease) => {
+    setPatientDiseases([...patientDiseases, addedDisease]);
+    getPatientDiseaseRecords();
+  };
+
+  const removeDiseaseItem = (id) => {
+    setPatientDiseases(patientDiseases.filter((x) => x._id !== id));
+  };
 
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) {
       getOnePatient();
       getPatientForms();
+      getPatientDiseaseRecords();
     }
     setShowOtherSurgeryType(false);
   }, [router.isReady]);
@@ -277,7 +299,9 @@ const PatientFile = ({ ClinicUser }) => {
               <div className="row mb-2">
                 <div className="col-lg-6 col-12">
                   <DiseaseRecordsList
+                    data={patientDiseases}
                     openDiseaseRecordsModal={openDiseaseRecordsModal}
+                    removeDiseaseItem={removeDiseaseItem}
                   />
                 </div>
 
@@ -348,8 +372,9 @@ const PatientFile = ({ ClinicUser }) => {
         <DiseaseRecordsModal
           ClinicID={ClinicID}
           show={showDiseaseRecordsModal}
-          onHide={closeDiseaseRecordsModal}
+          setShow={setShowDiseaseRecordsModal}
           ActivePatientID={ActivePatientID}
+          addDisease={addDisease}
         />
 
         <AttachNoteModal

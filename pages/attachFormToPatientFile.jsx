@@ -31,6 +31,9 @@ let ClinicID,
   ActivePatientID,
   ActiveFormName = null;
 
+let dateFormsArr = [];
+let checkboxFormsArr = [];
+
 const AttachFormToPatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
@@ -70,7 +73,18 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        console.log("onePatientFrm", response.data);
+
+        JSON.parse(response.data.formData?.formData[0])?.map((x) => {
+          if (x.type === "date" && x.subtype === "date")
+            dateFormsArr.push({ name: x.name });
+        });
+
+        JSON.parse(response.data.formData?.formData[0])?.map((x) => {
+          if (x.type === "checkbox-group")
+            checkboxFormsArr.push({ name: x.name });
+        });
+
         setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
         setFormValues(response.data.Values);
         setPatientData(response.data.Patient);
@@ -111,6 +125,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     setFrmIsLoading(true);
 
     let formData = new FormData(e.target);
+
     const formProps = Object.fromEntries(formData);
 
     let url = "Form/addPatientForm";
@@ -156,6 +171,23 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
+    dateFormsArr.map((x) => {
+      if ($("." + x.name).length > 0) {
+        let val = $("." + x.name)[0].value;
+        formProps[x.name] = val;
+      }
+    });
+
+    if (checkboxFormsArr.length > 0) {
+      checkboxFormsArr.map((x) => {
+        let checkedArr = [];
+        $(`input:checkbox[name=${x.name}]:checked`).each(function () {
+          checkedArr.push($(this).val());
+        });
+        formProps[x.name] = checkedArr;
+      });
+    }
+
     let url = `Form/editPatientForm/${ActivePatientFormID}`;
     let data = {
       ClinicID,
@@ -165,6 +197,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       FormID: ActiveFormID,
       Values: formProps,
     };
+
+    console.log({ data });
 
     axiosClient
       .put(url, data)
@@ -187,6 +221,10 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
         ErrorAlert("خطا", "ویرایش اطلاعات فرم با خطا مواجه گردید!");
         setFrmIsLoading(false);
       });
+  };
+
+  const getCheckedBoxes = (checkedItems) => {
+    console.log({ checkedItems });
   };
 
   useEffect(() => {
@@ -220,6 +258,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
                   data={selectedFormData}
                   formValues={formValues}
                   patientData={patientData}
+                  getCheckedBoxes={getCheckedBoxes}
                 />
 
                 <div className="submit-section">

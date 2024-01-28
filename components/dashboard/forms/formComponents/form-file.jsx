@@ -1,6 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormFile = ({ data }) => {
+const FormFile = ({ data, defaultValue, disabled }) => {
   return (
     <>
       <div className="form-group mt-2">
@@ -23,6 +23,7 @@ const FormFile = ({ data }) => {
           required={data.required}
           placeholder={data.label}
           multiple={data.multiple}
+          disabled={disabled}
         />
       </div>
     </>

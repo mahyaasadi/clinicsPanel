@@ -1,4 +1,4 @@
-const FormParagraph = ({ data }) => {
+const FormParagraph = ({ data, disabled }) => {
   return (
     <>
       {data.subtype === "p" ? (

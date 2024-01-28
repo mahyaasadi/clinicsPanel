@@ -15,19 +15,31 @@ const FormsList = ({
   const columns = [
     {
       name: "نام فرم",
-      selector: (row) => row.formData.Name,
+      selector: (row) => row.formData?.Name,
       sortable: true,
       width: "auto",
     },
     {
       name: "تاریخ ثبت",
-      selector: (row) => (row.EditDate ? row.EditDate : "-"),
+      selector: (row) => (row.RegisterDate ? row.RegisterDate : "-"),
       sortable: true,
       width: "auto",
     },
     {
       name: "زمان ثبت",
-      selector: (row) => (row.EditTime ? row.EditTime : "-"),
+      selector: (row) => (row.RegisterTime ? row.RegisterTime : "-"),
+      sortable: true,
+      width: "auto",
+    },
+    {
+      name: "تاریخ آخرین ویرایش",
+      selector: (row) => (row.EditDate ? row.EditDate : "-"),
+      sortable: true,
+      width: "auto",
+    },
+    {
+      name: "زمان آخرین ویرایش",
+      selector: (row) => (row.EditTime ? row.EditDate : "-"),
       sortable: true,
       width: "auto",
     },

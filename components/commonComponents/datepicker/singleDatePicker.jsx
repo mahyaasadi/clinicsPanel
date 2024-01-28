@@ -19,6 +19,7 @@ const SingleDatePicker = ({
   requiredClass,
   placeholderText,
   description,
+  name,
 }) => {
   if (defaultDate) {
     defaultDate = defaultDate.replaceAll(/\//g, "");
@@ -73,13 +74,12 @@ const SingleDatePicker = ({
           onChange={handleDateChange}
           type="single"
           local="fa"
-          inputClass="datePickerInput rounded font-12"
+          inputClass={"datePickerInput rounded font-12 " + name}
           headerClass="datePickerHeader"
           calenderModalClass="calenderModalContainer"
           placeholder={placeholderText ? placeholderText : "&nbsp;"}
           daysClass="fullDay"
-          inputName="date"
-          name="selectedDate"
+          name={name}
           initValue={initialDate}
           minDate={minimumDate}
           required={requiredClass ? requiredClass : false}

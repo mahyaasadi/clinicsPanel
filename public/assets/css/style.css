@@ -9595,6 +9595,7 @@ ul li .active {
 }
 
 .diseaseSearchDiv {
+  background-color: white;
   max-height: 250px;
   overflow: auto;
   direction: ltr;
@@ -9605,6 +9606,14 @@ ul li .active {
   flex-wrap: wrap;
   align-items: stretch;
   width: 93%;
+}
+
+.diseaseModalBody {
+  min-height: 15rem;
+}
+
+.diseaseSubmitBtn {
+  margin-top: 8rem !important;
 }
 
 .inputServiceContainer input[type="text"],
@@ -11054,6 +11063,7 @@ thead {
 
 .parameter {
   font-size: 13px;
+  text-align: center;
 }
 
 .border-gray {

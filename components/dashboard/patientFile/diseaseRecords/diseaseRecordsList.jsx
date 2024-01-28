@@ -1,16 +1,39 @@
 import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
+import { QuestionAlert } from "class/AlertManage";
+import { axiosClient } from "class/axiosConfig";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import "react-data-table-component-extensions/dist/index.css";
 import { Tooltip } from "primereact/tooltip";
 
-const DiseaseRecordsList = ({ data, openDiseaseRecordsModal }) => {
+const DiseaseRecordsList = ({
+  data,
+  openDiseaseRecordsModal,
+  removeDiseaseItem,
+}) => {
+  const _removeDiseaseItem = async (id) => {
+    let result = await QuestionAlert("حذف سابقه!", "آیا از حذف اطمینان دارید؟");
+
+    if (result) {
+      let url = `Patient/deleteDisease/${id}`;
+
+      axiosClient
+        .delete(url)
+        .then((response) => {
+          removeDiseaseItem(id);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   const columns = [
     {
       name: "نام بیماری",
-      selector: (row) => row.formData.Name,
+      selector: (row) => row.Disease?.icd11Name,
       sortable: true,
       width: "auto",
     },
@@ -23,6 +46,7 @@ const DiseaseRecordsList = ({ data, openDiseaseRecordsModal }) => {
           <button
             data-pr-position="left"
             className="btn removeBtn trashButton eventBtns d-flex align-items-center p-2"
+            onClick={() => _removeDiseaseItem(row._id)}
           >
             <FeatherIcon
               icon="trash-2"

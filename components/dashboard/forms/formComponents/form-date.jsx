@@ -2,7 +2,8 @@ import { useState } from "react";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import { Tooltip } from "primereact/tooltip";
 
-const FormDate = ({ data }) => {
+const FormDate = ({ data, defaultValue, disabled }) => {
+  // console.log({ defaultValue });
   const [date, setDate] = useState(null);
 
   return (
@@ -16,6 +17,8 @@ const FormDate = ({ data }) => {
               requiredClass={data.required}
               description={data.description}
               placeholderText={data.placeholder}
+              name={data.name}
+              // defaultDate={}
             />
           </div>
         ) : (
@@ -40,8 +43,11 @@ const FormDate = ({ data }) => {
               <input
                 type="time"
                 id={data.name}
+                name={data.name}
                 className="form-control"
                 placeholder={data.placeholder}
+                defaultValue={defaultValue ? defaultValue : ""}
+                disabled={disabled}
               />
             </div>
           )

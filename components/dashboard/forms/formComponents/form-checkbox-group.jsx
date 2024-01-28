@@ -1,32 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const FormCheckbox = ({ data, disabled, defaultValue }) => {
-  console.log({ defaultValue });
-  const [departmentsCheckboxStatus, setDepartmentsCheckboxStatus] = useState({
-    departmentsOptionsList: [],
-  });
+const FormCheckbox = ({ data, disabled, defaultValue, defaultSelected }) => {
+  console.log({ data });
+  console.log({ defaultValue, defaultSelected });
 
-  const handleCheckedDepartments = (e) => {
-    const { value, checked } = e.target;
-    const { departmentsOptionsList } = departmentsCheckboxStatus;
+  if (defaultSelected) {
+    console.log(defaultSelected[data.name]);
+  }
 
-    console.log(`${value} is ${checked}`);
+  // const [frmCheckboxStatus, setFrmCheckboxStatus] = useState({
+  //   frmOptionsList: [],
+  // });
 
-    checked
-      ? setDepartmentsCheckboxStatus({
-        departmentsOptionsList: [...departmentsOptionsList, value],
-      })
-      : setDepartmentsCheckboxStatus({
-        departmentsOptionsList: departmentsOptionsList.filter(
-          (e) => e !== value
-        ),
-      });
-  };
+  // const _handleCheckedDepartments = (e) => {
+  //   const { value, checked } = e.target;
+  //   const { frmOptionsList } = frmCheckboxStatus;
+
+  //   console.log(`${value} is ${checked}`);
+
+  //   checked
+  //     ? setFrmCheckboxStatus((prevState) => ({
+  //         frmOptionsList: [...prevState.frmOptionsList, value],
+  //       }))
+  //     : setFrmCheckboxStatus((prevState) => ({
+  //         frmOptionsList: prevState.frmOptionsList.filter((e) => e !== value),
+  //       }));
+  // };
+
+  // useEffect(() => {
+  //   data.values.map((x) => {
+  //     if (x.selected) {
+  //       setFrmCheckboxStatus((prevState) => ({
+  //         frmOptionsList: [...prevState.frmOptionsList, x.value],
+  //       }));
+  //     }
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   getCheckedBoxes(frmCheckboxStatus);
+  // }, [frmCheckboxStatus]);
 
   return (
     <>
       <div
-        className={`${data.inline && "d-inline-flex"}  ${data.className} mb-3`}
+        className={`${data.inline && "d-inline-flex"} ${data.className} mb-3`}
       >
         <label className="mb-3">{data.label}</label>
 
@@ -36,12 +54,12 @@ const FormCheckbox = ({ data, disabled, defaultValue }) => {
               {option.label}
               <input
                 type="checkbox"
-                name={option.label}
+                name={data.name}
                 value={option.value}
                 id={option.value}
                 className="checkbox-input frmCheckbox"
                 defaultChecked={option.selected}
-                onChange={handleCheckedDepartments}
+                // onChange={_handleCheckedDepartments}
                 disabled={disabled}
               />
               <span className="checkmark" />
