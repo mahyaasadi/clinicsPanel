@@ -669,7 +669,7 @@ const Appointment = ({ ClinicUser }) => {
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid p-3">
-          <div className="row">
+          <div className="row dir-rtl">
             <div className="col-sm-12">
               <div className="card">
                 <div className="card-header">

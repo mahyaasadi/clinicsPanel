@@ -180,7 +180,7 @@ const PatientsArchives = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid pt-3">
-            <div className="card p-1">
+            <div className="card p-1 dir-rtl">
               <div className="row align-items-center p-3">
                 <div className="col">
                   <p className="card-title font-14 text-secondary">
@@ -203,7 +203,7 @@ const PatientsArchives = ({ ClinicUser }) => {
 
               <hr className="mt-0 mb-1" />
 
-              <div className="card-body pendingPatientsCard">
+              <div className="card-body pendingPatientsCard ">
                 {pendingPatientsData.map((item, index) => (
                   <PendingPatients
                     key={index}
@@ -219,7 +219,7 @@ const PatientsArchives = ({ ClinicUser }) => {
             </div>
 
             <div className="col-sm-12">
-              <div className="card">
+              <div className="card dir-rtl">
                 <div className="row align-items-center p-3">
                   <div className="col">
                     <p className="card-title font-14 text-secondary">

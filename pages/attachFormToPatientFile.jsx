@@ -249,6 +249,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
         ) : (
           <div className="content container-fluid">
             <form
+              className="dir-rtl"
               onSubmit={
                 ActivePatientFormID ? editAttachedForm : attachFormToPatientFile
               }

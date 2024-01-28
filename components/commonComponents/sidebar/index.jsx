@@ -21,6 +21,7 @@ const Sidebar = () => {
 
     const prescriptionSubRoutes = [
       "/taminPrescription",
+      "/taminPrescRecords",
       "/salamatPrescription",
       "/salamatPrescRecords",
     ];
@@ -106,9 +107,8 @@ const Sidebar = () => {
                 </a>
                 <ul
                   id="hiddenSidebar"
-                  className={`hiddenSidebar ${
-                    receptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -148,10 +148,6 @@ const Sidebar = () => {
 
               <li className={router.pathname == "/appointment" ? "active" : ""}>
                 <Link href="/appointment">
-                  {/* <FeatherIcon
-                    icon="calendar"
-                    style={{ width: "17px", height: "17px" }}
-                  /> */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -190,9 +186,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -201,6 +196,15 @@ const Sidebar = () => {
                   >
                     <Link href="/taminPrescription" className="font-12">
                       تامین اجتماعی
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      router.pathname == "/taminPrescRecords" ? "active" : ""
+                    }
+                  >
+                    <Link href="/taminPrescRecords" className="font-12">
+                      نسخ تامین اجتماعی
                     </Link>
                   </li>
 
@@ -275,9 +279,8 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${
-                    formBuilderSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -313,9 +316,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={

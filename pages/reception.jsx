@@ -373,8 +373,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -576,10 +576,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -706,7 +706,7 @@ const Reception = ({ ClinicUser }) => {
       </Head>
       <div className="page-wrapper reception-wrapper">
         <div className="content container-fluid pb-0">
-          <div className="row">
+          <div className="row dir-rtl">
             <div className="row receptionUpperSection justify-between paddingL-0">
               <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
                 <PatientInfoCard

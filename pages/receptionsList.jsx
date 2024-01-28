@@ -162,7 +162,7 @@ const ReceptionsList = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="row">
+            <div className="row dir-rtl">
               <div className="col-sm-12">
                 <div className="row p-4">
                   <div className="">
@@ -177,9 +177,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link active"
-                          className={`nav-link ${
-                            activeTab === 0 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 0 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)} // Pass the index of the tab
@@ -190,9 +189,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                       <li className="nav-item">
                         <a
                           // className="nav-link"
-                          className={`nav-link ${
-                            activeTab === 1 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 1 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
@@ -206,9 +204,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                   <div className="tab-content pt-1">
                     <div
                       // className="tab-pane show active"
-                      className={`tab-pane show ${
-                        activeTab === 0 ? "active" : ""
-                      }`}
+                      className={`tab-pane show ${activeTab === 0 ? "active" : ""
+                        }`}
                       id="solid-rounded-tab1"
                     >
                       <div className="row">

@@ -24,6 +24,7 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
         <Modal.Body>
           <div className="row">
             {data?.map((formComponent, index) => (
+              console.log([formValues]),
               <div
                 key={index}
                 className={formComponent?.className?.replace(
@@ -46,9 +47,9 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
                       {formComponent.label}
                     </label>
                     <p className="p-3 patientFrmInput">
-                      {formComponent.type === "checkbox-group"
+                      {formComponent.type === "checkbox-group" && [formValues].length !== 1
                         ? formValues[formComponent.name].join()
-                        : formValues[formComponent.name]}
+                        : formValues[0][formComponent.name]}
                     </p>
                   </div>
                 )}

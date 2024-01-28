@@ -155,39 +155,42 @@ const Departments = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="page-header">
-              <div className="row align-items-center">
-                <div className="col-md-12 d-flex justify-content-end">
-                  <button
-                    onClick={openAddModal}
-                    className="btn btn-primary btn-add font-14 media-font-12"
-                  >
-                    <i className="me-1">
-                      <FeatherIcon icon="plus-square" />
-                    </i>{" "}
-                    افزودن
-                  </button>
+            <div className="dir-rtl">
+              <div className="page-header">
+                <div className="row align-items-center">
+                  <div className="col-md-12 d-flex justify-content-end">
+                    <button
+                      onClick={openAddModal}
+                      className="btn btn-primary btn-add font-14 media-font-12"
+                    >
+                      <i className="me-1">
+                        <FeatherIcon icon="plus-square" />
+                      </i>{" "}
+                      افزودن
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="card">
-                  <div className="card-header border-bottom-0">
-                    <div className="row align-items-center">
-                      <div className="col">
-                        <p className="card-title text-secondary font-14">
-                          لیست بخش ها
-                        </p>
+
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="card">
+                    <div className="card-header border-bottom-0">
+                      <div className="row align-items-center">
+                        <div className="col">
+                          <p className="card-title text-secondary font-14">
+                            لیست بخش ها
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <DepartmentsListTable
-                    data={clinicDepartments}
-                    openEditModal={openEditModal}
-                    deleteDepartment={deleteDepartment}
-                  />
+                    <DepartmentsListTable
+                      data={clinicDepartments}
+                      openEditModal={openEditModal}
+                      deleteDepartment={deleteDepartment}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

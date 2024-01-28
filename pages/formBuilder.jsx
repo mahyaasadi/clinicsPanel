@@ -99,7 +99,7 @@ const FormBuilder = ({ ClinicUser }) => {
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="d-flex flex-col gap-2 marginb-3">
+          <div className="d-flex flex-col gap-2 marginb-3 dir-rtl">
             <div className="row align-items-center">
               <div className="col-md-3 d-flex">
                 <br />

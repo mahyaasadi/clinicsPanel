@@ -161,18 +161,20 @@ const CashDesk = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <FilterReceptionItems
-              ClinicID={ClinicID}
-              ApplyFilterOnRecItems={ApplyFilterOnRecItems}
-            />
+            <div className="dir-rtl">
+              <FilterReceptionItems
+                ClinicID={ClinicID}
+                ApplyFilterOnRecItems={ApplyFilterOnRecItems}
+              />
 
-            <PatientsCategories
-              patientsInfo={patientsInfo}
-              setPatientsInfo={setPatientsInfo}
-              openActionModal={openActionModal}
-              isLoading={isLoading}
-              openNewAppointmentModal={openNewAppointmentModal}
-            />
+              <PatientsCategories
+                patientsInfo={patientsInfo}
+                setPatientsInfo={setPatientsInfo}
+                openActionModal={openActionModal}
+                isLoading={isLoading}
+                openNewAppointmentModal={openNewAppointmentModal}
+              />
+            </div>
           </div>
         )}
 

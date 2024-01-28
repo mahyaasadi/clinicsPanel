@@ -88,44 +88,36 @@ const Forms = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="page-header">
-              <div className="row align-items-center">
-                <div className="col-md-12 d-flex justify-content-end">
-                  <Link
-                    href="/formBuilder"
-                    className="btn btn-primary btn-add font-14"
-                  >
-                    <i className="me-1">
-                      <FeatherIcon icon="plus-square" />
-                    </i>{" "}
-                    افزودن
-                  </Link>
+            <div className="dir-rtl">
+              <div className="page-header">
+                <div className="row align-items-center">
+                  <div className="col-md-12 d-flex justify-content-end">
+                    <Link
+                      href="/formBuilder"
+                      className="btn btn-primary btn-add font-14"
+                    >
+                      <i className="me-1">
+                        <FeatherIcon icon="plus-square" />
+                      </i>{" "}
+                      افزودن
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="card">
-                  <div className="card-header border-bottom-0">
-                    <div className="row align-items-center">
-                      <div className="col">
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="card">
+                    <div className="card-header border-bottom-0">
+                      <div className="row align-items-center">
                         <p className="card-title font-14 text-secondary">
                           لیست فرم ها
                         </p>
                       </div>
-                      <div className="col-auto d-flex flex-wrap">
-                        <div className="form-custom me-2">
-                          <div
-                            id="tableSearch"
-                            className="dataTables_wrapper"
-                          ></div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
 
-                  <FormsTable data={formsData} deleteForm={deleteForm} />
+                    <FormsTable data={formsData} deleteForm={deleteForm} />
+                  </div>
                 </div>
               </div>
             </div>

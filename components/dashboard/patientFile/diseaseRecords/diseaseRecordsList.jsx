@@ -7,25 +7,31 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import "react-data-table-component-extensions/dist/index.css";
 import { Tooltip } from "primereact/tooltip";
+import { ErrorAlert } from "class/AlertManage"
 
 const DiseaseRecordsList = ({
   data,
   openDiseaseRecordsModal,
   removeDiseaseItem,
+  setIsLoading
 }) => {
   const _removeDiseaseItem = async (id) => {
     let result = await QuestionAlert("حذف سابقه!", "آیا از حذف اطمینان دارید؟");
 
     if (result) {
+      setIsLoading(true)
       let url = `Patient/deleteDisease/${id}`;
 
       axiosClient
         .delete(url)
         .then((response) => {
           removeDiseaseItem(id);
+          setIsLoading(false)
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false)
+          ErrorAlert("خطا", "حذف با خطا مواجه گردید!")
         });
     }
   };

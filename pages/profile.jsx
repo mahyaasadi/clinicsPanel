@@ -46,7 +46,7 @@ const Profile = ({ ClinicUser }) => {
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="card profileCard p-4">
+          <div className="card profileCard p-4 dir-rtl">
             <div className="card-body">
               <div className="profile-info">
                 <p className="font-17 text-secondary fw-bold ">پروفایل من</p>

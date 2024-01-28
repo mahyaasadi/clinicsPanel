@@ -66,7 +66,7 @@ const EditPatientsInfo = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="card p-2">
+            <div className="card p-2 dir-rtl">
               <div className="card-body">
                 <EditPatientInfoFrm
                   data={patientData}

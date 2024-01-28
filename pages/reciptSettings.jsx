@@ -140,21 +140,23 @@ const ReciptSettings = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <ReciptSettingsForm
-              data={reciptSettingsData}
-              orientation={orientation}
-              onChangeOrientation={onChangeOrientation}
-              hasQrCode={hasQrCode}
-              onChangeQRCode={onChangeQRCode}
-              onSubmit={submitReciptSettings}
-              isLoading={isLoading}
-              description={description}
-              setDescription={setDescription}
-              ansText={ansText}
-              setAnsText={setAnsText}
-              handleDesKeyDown={handleDesKeyDown}
-              handleAnsKeyDown={handleAnsKeyDown}
-            />
+            <div className="dir-rtl">
+              <ReciptSettingsForm
+                data={reciptSettingsData}
+                orientation={orientation}
+                onChangeOrientation={onChangeOrientation}
+                hasQrCode={hasQrCode}
+                onChangeQRCode={onChangeQRCode}
+                onSubmit={submitReciptSettings}
+                isLoading={isLoading}
+                description={description}
+                setDescription={setDescription}
+                ansText={ansText}
+                setAnsText={setAnsText}
+                handleDesKeyDown={handleDesKeyDown}
+                handleAnsKeyDown={handleAnsKeyDown}
+              />
+            </div>
           </div>
         )}
       </div>

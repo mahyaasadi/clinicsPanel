@@ -507,7 +507,7 @@ const TaminPrescription = ({
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <div className="row">
+          <div className="row dir-rtl">
             <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
               <PatientInfoCard
                 ClinicID={ClinicID}

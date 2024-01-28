@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
+import { ErrorAlert } from "class/AlertManage"
 import SearchedDiseasesItems from "components/dashboard/patientFile/diseaseRecords/searchedDiseasesItems";
 
 let ActiveDiseaseName,
@@ -16,7 +17,7 @@ const DiseaseRecordModal = ({
   addDisease,
 }) => {
   const [searchedDiseases, setSearchedDiseases] = useState([]);
-  const [searchIsLoading, setSearchIsLaoding] = useState(false);
+  const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
 
   const onHide = () => {
@@ -27,7 +28,7 @@ const DiseaseRecordModal = ({
 
   const _searchInDiseases = (e) => {
     e.preventDefault();
-    setSearchIsLaoding(true);
+    setSearchIsLoading(true);
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
@@ -45,7 +46,7 @@ const DiseaseRecordModal = ({
         if (response.data) {
           setSearchedDiseases(response.data);
           $("#DiseaseSearchDiv").show();
-          setSearchIsLaoding(false);
+          setSearchIsLoading(false);
           $(".unsuccessfullSearch").hide();
         }
 
@@ -57,7 +58,7 @@ const DiseaseRecordModal = ({
       })
       .catch((err) => {
         console.log(err);
-        setSearchIsLaoding(false);
+        setSearchIsLoading(false);
       });
   };
 
@@ -124,6 +125,7 @@ const DiseaseRecordModal = ({
       .catch((err) => {
         console.log(err);
         setSubmitIsLoading(false);
+        ErrorAlert("خطا", "افزودن سابقه با خطا مواجه گردید!");
       });
   };
 

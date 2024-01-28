@@ -235,38 +235,41 @@ const Services = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="page-header">
-              <div className="row align-items-center">
-                <div className="col-md-12 d-flex justify-content-end">
-                  <button
-                    onClick={() => openAddModal(true)}
-                    className="btn btn-primary btn-add font-14 media-font-12"
-                  >
-                    <i className="me-1">
-                      <FeatherIcon icon="plus-square" />
-                    </i>{" "}
-                    افزودن
-                  </button>
+            <div className="dir-rtl">
+              <div className="page-header">
+                <div className="row align-items-center">
+                  <div className="col-md-12 d-flex justify-content-end">
+                    <button
+                      onClick={() => openAddModal(true)}
+                      className="btn btn-primary btn-add font-14 media-font-12"
+                    >
+                      <i className="me-1">
+                        <FeatherIcon icon="plus-square" />
+                      </i>{" "}
+                      افزودن
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="card">
-                  <div className="card-header border-bottom-0">
-                    <div className="row align-items-center">
-                      <div className="col">
-                        <p className="card-title font-15 text-secondary">
-                          لیست خدمات بخش {DepName}
-                        </p>
+
+              <div className="row">
+                <div className="col-sm-12">
+                  <div className="card">
+                    <div className="card-header border-bottom-0">
+                      <div className="row align-items-center">
+                        <div className="col">
+                          <p className="card-title font-15 text-secondary">
+                            لیست خدمات بخش {DepName}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <ServicesListTable
+                      data={servicesData}
+                      openEditModal={openEditModal}
+                      deleteService={deleteService}
+                    />
                   </div>
-                  <ServicesListTable
-                    data={servicesData}
-                    openEditModal={openEditModal}
-                    deleteService={deleteService}
-                  />
                 </div>
               </div>
             </div>

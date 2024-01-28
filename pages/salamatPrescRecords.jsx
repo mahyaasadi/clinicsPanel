@@ -207,7 +207,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="row">
+            <div className="row dir-rtl">
               <div className="col-sm-12">
                 <FilterSalamatPrescs
                   SetRangeDate={SetRangeDate}
@@ -221,19 +221,10 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
                     <div className="row align-items-center">
                       <div className="col">
                         <p className="card-title font-15 text-secondary">
-                          سوابق نسخ ثبت شده
+                          نسخ ثبت شده خدمات درمانی
                         </p>
                       </div>
                     </div>
-
-                    {/* <div className="col-auto d-flex flex-wrap">
-                      <div className="form-custom me-2">
-                        <div
-                          id="tableSearch"
-                          className="dataTables_wrapper"
-                        ></div>
-                      </div>
-                    </div> */}
                   </div>
 
                   <SalamatPrescRecordsList

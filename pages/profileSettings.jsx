@@ -219,7 +219,7 @@ const ProfileSettings = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="card">
+            <div className="card dir-rtl">
               <div className="card-body padding-2">
                 <div className="page-header">
                   <div className="row">

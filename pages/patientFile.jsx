@@ -272,7 +272,7 @@ const PatientFile = ({ ClinicUser }) => {
           <Loading />
         ) : (
           <div className="content container-fluid">
-            <div className="card-body p-4">
+            <div className="card-body p-4 dir-rtl">
               <PatientHorizontalCard data={patientData} />
 
               <div className="mt-5 mb-2">
@@ -302,6 +302,7 @@ const PatientFile = ({ ClinicUser }) => {
                     data={patientDiseases}
                     openDiseaseRecordsModal={openDiseaseRecordsModal}
                     removeDiseaseItem={removeDiseaseItem}
+                    setIsLoading={setIsLoading}
                   />
                 </div>
 

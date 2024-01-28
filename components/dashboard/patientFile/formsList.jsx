@@ -21,26 +21,24 @@ const FormsList = ({
     },
     {
       name: "تاریخ ثبت",
-      selector: (row) => (row.RegisterDate ? row.RegisterDate : "-"),
+      selector: (row) => row.RegisterDate,
       sortable: true,
-      width: "auto",
-    },
-    {
-      name: "زمان ثبت",
-      selector: (row) => (row.RegisterTime ? row.RegisterTime : "-"),
-      sortable: true,
+      cell: (row) => (
+        <div className="text-center">
+          <p className="mb-1">{row.RegisterDate ? row.RegisterDate : ""}</p>
+          <p className="">{row.RegisterTime ? row.RegisterTime : ""}</p>
+        </div>),
       width: "auto",
     },
     {
       name: "تاریخ آخرین ویرایش",
-      selector: (row) => (row.EditDate ? row.EditDate : "-"),
+      selector: (row) => row.EditDate,
       sortable: true,
-      width: "auto",
-    },
-    {
-      name: "زمان آخرین ویرایش",
-      selector: (row) => (row.EditTime ? row.EditDate : "-"),
-      sortable: true,
+      cell: (row) => (
+        <div className="text-center">
+          <p className="mb-1">{row.EditDate ? row.EditDate : ""}</p>
+          <p className="">{row.EditTime ? row.EditTime : ""}</p>
+        </div>),
       width: "auto",
     },
     {

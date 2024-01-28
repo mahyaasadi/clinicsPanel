@@ -138,106 +138,109 @@ const Dashboard = ({ ClinicUser }) => {
             <Loading />
           ) : (
             <div className="content container pb-0">
-              <div className="overview-container">
-                <div className="dashboard-header">
-                  <div className="col overview-title">
-                    <p className="card-title text-secondary font-15">
-                      میز کار شخصی {ClinicUser.FullName}
-                    </p>
-                  </div>
-
-                  <div className="dashboard-selector font-13">
-                    <Select
-                      className="select"
-                      onChange={(e) => setSelectedDuration(e.value)}
-                      options={overviewOptions}
-                      placeholder={statsPlaceholder}
-                      id="long-value-select"
-                      instanceId="long-value-select"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-6 col-lg-7 mb-1">
-                  <div className="row">
-                    <div className="col-lg-3 pe-lg-0">
-                      <div className="row">
-                        <div className="col-md-6 col-lg-12">
-                          <div className="card CardPayment mb-1">
-                            <div className="card-body justify-center align-items-center text-center">
-                              <span className="dash-finance-icon bg-talking">
-                                <Image
-                                  src="/assets/img/total2.png"
-                                  alt=""
-                                  width="35"
-                                  height="35"
-                                />
-                              </span>
-                              <div className="justify-center align-items-center  text-secondary fw-bold">
-                                <p className="mb-0 font-14">درآمد کل</p>
-                                <p className="font-16 fw-bold">
-                                  {paymentTotalStat
-                                    ? paymentTotalStat.toLocaleString() +
-                                    " ریال"
-                                    : "-"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-lg-12">
-                          <div className="card CardPayment mb-0">
-                            <div className="card-body d-flex flex-col justify-center align-items-center text-center">
-                              <span className="dash-finance-icon bg-turnGiven d-flex justify-center align-center">
-                                <Image
-                                  src="/assets/img/cash3.png"
-                                  alt=""
-                                  width="40"
-                                  height="40"
-                                />
-                              </span>
-                              <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold">
-                                <p className="mb-0 font-14">
-                                  مبلغ بازگردانده شده
-                                </p>
-                                <p className="font-16 fw-bold">
-                                  {paymentTotalReturn
-                                    ? paymentTotalReturn.toLocaleString() +
-                                    " ریال"
-                                    : "-"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+              <div className="dir-rtl">
+                <div className="overview-container">
+                  <div className="dashboard-header">
+                    <div className="col overview-title">
+                      <p className="card-title text-secondary font-15">
+                        میز کار شخصی {ClinicUser.FullName}
+                      </p>
                     </div>
-                    <div className="col-lg-9 ps-lg-0">
-                      <PaymentChart
-                        data={paymentStats}
-                        labels={paymentLabels}
+
+                    <div className="dashboard-selector font-13">
+                      <Select
+                        className="select"
+                        onChange={(e) => setSelectedDuration(e.value)}
+                        options={overviewOptions}
+                        placeholder={statsPlaceholder}
+                        id="long-value-select"
+                        instanceId="long-value-select"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="col-md-6 col-lg-5 d-flex flex-col gap-10">
-                  <FastAccessCards />
+                <div className="row">
+                  <div className="col-md-6 col-lg-7 mb-1">
+                    <div className="row">
+                      <div className="col-lg-3 pe-lg-0">
+                        <div className="row">
+                          <div className="col-md-6 col-lg-12">
+                            <div className="card CardPayment mb-1">
+                              <div className="card-body justify-center align-items-center text-center">
+                                <span className="dash-finance-icon bg-talking">
+                                  <Image
+                                    src="/assets/img/total2.png"
+                                    alt=""
+                                    width="35"
+                                    height="35"
+                                  />
+                                </span>
+                                <div className="justify-center align-items-center  text-secondary fw-bold">
+                                  <p className="mb-0 font-14">درآمد کل</p>
+                                  <p className="font-16 fw-bold">
+                                    {paymentTotalStat
+                                      ? paymentTotalStat.toLocaleString() +
+                                      " ریال"
+                                      : "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-md-6 col-lg-12">
+                            <div className="card CardPayment mb-0">
+                              <div className="card-body d-flex flex-col justify-center align-items-center text-center">
+                                <span className="dash-finance-icon bg-turnGiven d-flex justify-center align-center">
+                                  <Image
+                                    src="/assets/img/cash3.png"
+                                    alt=""
+                                    width="40"
+                                    height="40"
+                                  />
+                                </span>
+                                <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold">
+                                  <p className="mb-0 font-14">
+                                    مبلغ بازگردانده شده
+                                  </p>
+                                  <p className="font-16 fw-bold">
+                                    {paymentTotalReturn
+                                      ? paymentTotalReturn.toLocaleString() +
+                                      " ریال"
+                                      : "-"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-9 ps-lg-0">
+                        <PaymentChart
+                          data={paymentStats}
+                          labels={paymentLabels}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 col-lg-5 d-flex flex-col gap-10">
+                    <FastAccessCards />
+                  </div>
+                </div>
+
+                <div className="mt-4 row align-items-center">
+                  <p className="text-secondary fw-bold font-15 clinicLine">
+                    بررسی مراجعات مطب
+                  </p>
+                  <hr style={{ position: "relative", marginTop: "1.5rem" }} />
+                </div>
+
+                <div className="row mt-5 justify-between">
+                  <OverviewStats stats={stats} />
                 </div>
               </div>
 
-              <div className="mt-4 row align-items-center">
-                <p className="text-secondary fw-bold font-15 clinicLine">
-                  بررسی مراجعات مطب
-                </p>
-                <hr style={{ position: "relative", marginTop: "1.5rem" }} />
-              </div>
-
-              <div className="row mt-5 justify-between">
-                <OverviewStats stats={stats} />
-              </div>
             </div>
           )}
         </div>
