@@ -29,27 +29,22 @@ const FilterTaminPrescs = ({
     e.preventDefault();
     setApplyIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
     let url = "BimehTamin/CenterPrescription";
     let data = {
       CenterID: ClinicID,
       dateFrom: dateFromOption
         ? dateFromOption
         : dateFrom
-        ? dateFrom.replaceAll(/\//g, "")
-        : "",
+          ? dateFrom.replaceAll(/\//g, "")
+          : "",
       dateTo: dateToOption
         ? dateToOption
         : dateTo
-        ? dateTo.replaceAll(/\//g, "")
-        : "",
+          ? dateTo.replaceAll(/\//g, "")
+          : "",
       NID: isNaN(patientInfo) ? null : patientInfo,
       Name: isNaN(patientInfo) ? patientInfo : null,
     };
-
-    console.log({ data });
 
     axiosClient
       .post(url, data)

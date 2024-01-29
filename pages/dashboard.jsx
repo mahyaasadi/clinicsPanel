@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import FeatherIcon from "feather-icons-react";
+// import { Toast } from "primereact/toast"
 import JDate from "jalali-date";
 import Select from "react-select";
 import { getSession } from "lib/session";
@@ -10,6 +10,7 @@ import Loading from "components/commonComponents/loading/loading";
 import OverviewStats from "components/dashboard/overview/overviewStats";
 import FastAccessCards from "components/dashboard/overview/fastAccessCards";
 import PaymentChart from "components/dashboard/overview/paymentChart";
+import { displayToastMessages } from "utils/toastMessageGenerator";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -32,6 +33,7 @@ let ClinicID = null;
 
 const Dashboard = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+  // const toast = useRef(null);
 
   const [selectedDuration, setSelectedDuration] = useState("today");
   const [statsPlaceholder, setStatsPlaceholder] = useState(
@@ -123,6 +125,10 @@ const Dashboard = ({ ClinicUser }) => {
       });
   };
 
+  // useEffect(() => {
+  //   displayToastMessages([], toast, `کاربر محترم ${ClinicUser.FullName} خوش آمدید!`)
+  // }, [])
+
   useEffect(() => {
     getGeneralStats(selectedDuration);
   }, [selectedDuration]);
@@ -133,6 +139,7 @@ const Dashboard = ({ ClinicUser }) => {
         <title>داشبورد من</title>
       </Head>
       <div className="main-wrapper">
+        {/* <Toast ref={toast} /> */}
         <div className="page-wrapper">
           {statsIsLoading ? (
             <Loading />
@@ -181,7 +188,7 @@ const Dashboard = ({ ClinicUser }) => {
                                   <p className="font-16 fw-bold">
                                     {paymentTotalStat
                                       ? paymentTotalStat.toLocaleString() +
-                                        " ریال"
+                                      " ریال"
                                       : "-"}
                                   </p>
                                 </div>
@@ -206,7 +213,7 @@ const Dashboard = ({ ClinicUser }) => {
                                   <p className="font-16 fw-bold">
                                     {paymentTotalReturn
                                       ? paymentTotalReturn.toLocaleString() +
-                                        " ریال"
+                                      " ریال"
                                       : "-"}
                                   </p>
                                 </div>

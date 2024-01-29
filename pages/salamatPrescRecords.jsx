@@ -36,7 +36,6 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [printIsLoading, setPrintIsLoading] = useState(false);
-  const [applyIsLoading, setApplyIsLoading] = useState(false);
   const [prescRecords, setPrescRecords] = useState([]);
 
   // Get All SalamatPrescription Records
@@ -69,54 +68,6 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
         ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         setIsLoading(false);
       });
-  };
-
-  // Filter PrescriptionRecords
-  let dateFrom = "";
-  let dateTo = "";
-  const SetRangeDate = (dateF, dateT) => {
-    dateFrom = dateF;
-    dateTo = dateT;
-  };
-
-  const applyFilterOnSalamatPrescs = (e) => {
-    e.preventDefault();
-    setApplyIsLoading(true);
-
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
-    let url = "BimehSalamat/SearchSamadCode/ByDate";
-    let data = {
-      SavePresc: 1,
-      Status: "O",
-      CenterID: ClinicID,
-      NID: formProps.patientNID,
-      DateFrom: dateFrom ? dateFrom.replaceAll(/\//g, "") : "",
-      DateTo: dateTo ? dateTo.replaceAll(/\//g, "") : "",
-    };
-
-    if (!dateFrom || !dateTo) {
-      WarningAlert("هشدار", "انتخاب بازه زمان الزامی است!");
-      setApplyIsLoading(false);
-    } else {
-      axiosClient
-        .post(url, data)
-        .then((response) => {
-          if (response.data.res.info) {
-            setPrescRecords(response.data.res.info);
-            setApplyIsLoading(false);
-          } else {
-            setApplyIsLoading(false);
-            ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-          setApplyIsLoading(false);
-        });
-    }
   };
 
   // Print Salamat Prescription
@@ -194,6 +145,11 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
     downloadLink.click();
   };
 
+  // Filter in Salamat Prescs
+  const applyFilterOnSalamatPrescs = (data) => {
+    setPrescRecords(data)
+  }
+
   useEffect(() => getAllSalamatPrescRecords(), []);
 
   return (
@@ -209,8 +165,7 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
             <div className="row dir-rtl">
               <div className="col-sm-12">
                 <FilterSalamatPrescs
-                  SetRangeDate={SetRangeDate}
-                  applyIsLoading={applyIsLoading}
+                  ClinicID={ClinicID}
                   applyFilterOnSalamatPrescs={applyFilterOnSalamatPrescs}
                   getAllSalamatPrescRecords={getAllSalamatPrescRecords}
                 />

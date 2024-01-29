@@ -1,8 +1,7 @@
 const displayToastMessages = (messages, toastRef, successMessage) => {
-  console.log({ messages });
   const toastMessages = [];
 
-  if (messages && messages.length !== 0) {
+  if (toastRef && messages && messages.length !== 0) {
     for (let i = 0; i < messages.length; i++) {
       const element = messages[i];
       let obj = {
@@ -10,18 +9,18 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
           element.type === "S"
             ? "Success"
             : element.type === "I"
-            ? "Info"
-            : element.type === "E"
-            ? "Error"
-            : "Warning",
+              ? "Info"
+              : element.type === "E"
+                ? "Error"
+                : "Warning",
         summary:
           element.type === "S"
             ? "موفق!"
             : element.type === "I"
-            ? "اطلاعات!"
-            : element.type === "E"
-            ? "خطا!"
-            : "هشدار!",
+              ? "اطلاعات!"
+              : element.type === "E"
+                ? "خطا!"
+                : "هشدار!",
         detail: element.text,
         life: 5000,
       };
@@ -30,10 +29,10 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
     toastRef.current.show(toastMessages);
   }
 
-  if (successMessage) {
+  if (toastRef && successMessage) {
     let msObj = {
       severity: "Success",
-      summary: "موفق!",
+      // summary: "موفق!",
       detail: successMessage,
       life: 8000,
     };
