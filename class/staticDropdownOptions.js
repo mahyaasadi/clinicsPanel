@@ -43,3 +43,11 @@ export const educationStatus = [
   { label: "دانشگاهی", value: "دانشگاهی" },
   { label: "دیپلم", value: "دیپلم" },
 ];
+
+export const dateShortcutsData = [
+  { label: "امروز", value: "today" },
+  { label: "دیروز", value: "yesterday" },
+  { label: "دو روز قبل", value: "lastTwoDays" },
+  { label: "هفته پیش", value: "lastWeek" },
+  { label: "ماه پیش", value: "lastMonth" },
+];

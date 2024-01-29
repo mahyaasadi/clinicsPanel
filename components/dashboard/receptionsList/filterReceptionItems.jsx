@@ -19,8 +19,6 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems }) => {
   const SetRangeDate = (f, t) => {
     dateFrom = f;
     dateTo = t;
-
-    console.log({ f, t });
   };
 
   const FUSelectDepartment = (departmentValue) =>

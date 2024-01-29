@@ -3,10 +3,10 @@ import Head from "next/head";
 import JDate from "jalali-date";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert } from "class/AlertManage";
+import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
-import SalamatPrescRecordsList from "components/dashboard/prescription/salamat/salamatPrescRecordsList";
-import FilterSalamatPrescs from "components/dashboard/prescription/salamat/filterSalamatPrescs";
+import SalamatPrescRecordsList from "components/dashboard/prescription/salamat/salamatPrescRecords/salamatPrescRecordsList";
+import FilterSalamatPrescs from "components/dashboard/prescription/salamat/salamatPrescRecords/filterSalamatPrescs";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -92,32 +92,31 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
       Status: "O",
       CenterID: ClinicID,
       NID: formProps.patientNID,
-      DateFrom:
-        dateFrom.indexOf("undefined") !== -1
-          ? ""
-          : dateFrom.replaceAll(/\//g, ""),
-      DateTo:
-        dateTo.indexOf("undefined") !== -1 ? "" : dateTo.replaceAll(/\//g, ""),
+      DateFrom: dateFrom ? dateFrom.replaceAll(/\//g, "") : "",
+      DateTo: dateTo ? dateTo.replaceAll(/\//g, "") : "",
     };
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-
-        if (response.data.res.info) {
-          setPrescRecords(response.data.res.info);
-          setApplyIsLoading(false);
-        } else {
-          setApplyIsLoading(false);
+    if (!dateFrom || !dateTo) {
+      WarningAlert("هشدار", "انتخاب بازه زمان الزامی است!");
+      setApplyIsLoading(false);
+    } else {
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          if (response.data.res.info) {
+            setPrescRecords(response.data.res.info);
+            setApplyIsLoading(false);
+          } else {
+            setApplyIsLoading(false);
+            ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
           ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-        setApplyIsLoading(false);
-      });
+          setApplyIsLoading(false);
+        });
+    }
   };
 
   // Print Salamat Prescription

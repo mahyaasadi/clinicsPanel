@@ -1,13 +1,12 @@
 const ServicesRecipt = ({ clinicData, data, paymentData }) => {
-
-  const insuranceType =
-    data?.Patient?.Insurance === "1"
-      ? "سلامت ایرانیان"
-      : data?.Patient?.Insurance === "2"
-        ? "تامین اجتماعی"
-        : data?.Patient?.Insurance === "3"
-          ? "نیروهای مسلح"
-          : "آزاد";
+  // const insuranceType =
+  //   data?.Patient?.Insurance === "1"
+  //     ? "سلامت ایرانیان"
+  //     : data?.Patient?.Insurance === "2"
+  //       ? "تامین اجتماعی"
+  //       : data?.Patient?.Insurance === "3"
+  //         ? "نیروهای مسلح"
+  //         : "آزاد";
 
   return (
     <>
@@ -23,7 +22,7 @@ const ServicesRecipt = ({ clinicData, data, paymentData }) => {
           <div className="col-6 text-start">
             <p className="font-11 fw-bold">{data?.Modality?.Name}</p>
             <p>سن : {data.Patient.Age}</p>
-            <p>نوع بیمه : {insuranceType}</p>
+            <p>نوع بیمه : {data?.Patient?.InsuranceName}</p>
           </div>
 
           <div className="col-6 text-end mb-2">

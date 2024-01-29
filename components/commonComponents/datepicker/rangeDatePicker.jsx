@@ -3,26 +3,33 @@ import { DtPicker } from "react-calendar-datetime-picker";
 import "react-calendar-datetime-picker/dist/style.css";
 
 const RangeDatePicker = ({ SetRangeDate }) => {
-  const setLocalDate = (value) => {
-    let dateFrom =
-      value?.from?.year.toString() +
-      "/" +
-      (value?.from?.month < 10
-        ? "0" + value?.from?.month
-        : value?.from?.month.toString()) +
-      "/" +
-      (value?.from?.day < 10
-        ? "0" + value?.from?.day
-        : value?.from?.day.toString());
+  let dateFrom,
+    dateTo = null;
 
-    let dateTo =
-      value?.to?.year.toString() +
-      "/" +
-      (value?.to?.month < 10
-        ? "0" + value?.to?.month
-        : value?.to?.month.toString()) +
-      "/" +
-      (value?.to?.day < 10 ? "0" + value?.to?.day : value?.to?.day.toString());
+  const setLocalDate = (value) => {
+    if (value) {
+      dateFrom =
+        value?.from?.year.toString() +
+        "/" +
+        (value?.from?.month < 10
+          ? "0" + value?.from?.month
+          : value?.from?.month.toString()) +
+        "/" +
+        (value?.from?.day < 10
+          ? "0" + value?.from?.day
+          : value?.from?.day.toString());
+
+      dateTo =
+        value?.to?.year.toString() +
+        "/" +
+        (value?.to?.month < 10
+          ? "0" + value?.to?.month
+          : value?.to?.month.toString()) +
+        "/" +
+        (value?.to?.day < 10
+          ? "0" + value?.to?.day
+          : value?.to?.day.toString());
+    }
 
     SetRangeDate(dateFrom, dateTo);
   };

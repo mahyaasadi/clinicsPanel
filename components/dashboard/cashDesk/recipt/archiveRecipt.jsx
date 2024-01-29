@@ -1,12 +1,12 @@
 const ArchiveRecipt = ({ data, clinicData, paymentData }) => {
-  const insuranceType =
-    data?.Patient?.Insurance === "1"
-      ? "سلامت ایرانیان"
-      : data?.Patient?.Insurance === "2"
-      ? "تامین اجتماعی"
-      : data?.Patient?.Insurance === "3"
-      ? "نیروهای مسلح"
-      : "آزاد";
+  // const insuranceType =
+  //   data?.Patient?.Insurance === "1"
+  //     ? "سلامت ایرانیان"
+  //     : data?.Patient?.Insurance === "2"
+  //     ? "تامین اجتماعی"
+  //     : data?.Patient?.Insurance === "3"
+  //     ? "نیروهای مسلح"
+  //     : "آزاد";
 
   return (
     <>
@@ -22,7 +22,7 @@ const ArchiveRecipt = ({ data, clinicData, paymentData }) => {
             <p className="font-11 fw-bold mb-1">
               کد پذیرش : {data?.ReceptionID}
             </p>
-            <p>نوع بیمه : {insuranceType}</p>
+            <p>نوع بیمه : {data?.Patient?.InsuranceName}</p>
             <p>سن : {data?.Patient.Age}</p>
           </div>
           <div className="col-6 text-end mb-1">
@@ -82,7 +82,7 @@ const ArchiveRecipt = ({ data, clinicData, paymentData }) => {
         <div className="border-b-1"></div>
         <div className="text-end">
           <p className="font-11">{clinicData.Address} : آدرس </p>
-          <p className="font-11"> : شماره مرکز </p>
+          <p className="font-11">{clinicData.ManageTel} : شماره مرکز </p>
         </div>
       </div>
     </>

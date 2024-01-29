@@ -15,6 +15,7 @@ const PrintContent = ({
   show,
   onHide,
 }) => {
+  console.log({ data });
   const [clinicData, setClinicData] = useState([]);
 
   const AnsLines = clinicData?.PrintSetting?.AnsText?.split("\n");
@@ -29,6 +30,7 @@ const PrintContent = ({
     axiosClient
       .get(url)
       .then((response) => {
+        console.log("clinicData", response.data);
         setClinicData(response.data);
       })
       .catch((err) => console.log(err));

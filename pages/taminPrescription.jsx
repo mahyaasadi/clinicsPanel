@@ -412,6 +412,7 @@ const TaminPrescription = ({
         note: [],
         SrvNames: [],
         prescTypeName: "ویزیت",
+        PatientID: ActivePatientID,
       };
 
       console.log({ data });
@@ -448,6 +449,7 @@ const TaminPrescription = ({
         note: addPrescriptionitems,
         SrvNames: visitPrescriptionData,
         prescTypeName: ActivePrescName,
+        PatientID: ActivePatientID,
       };
 
       console.log({ data });

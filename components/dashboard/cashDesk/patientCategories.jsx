@@ -12,6 +12,7 @@ const PatientCategories = ({
   isLoading,
   openNewAppointmentModal,
 }) => {
+  console.log({ patientsInfo });
   resetServerContext();
 
   const [categories, setCategories] = useState([

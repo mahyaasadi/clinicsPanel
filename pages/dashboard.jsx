@@ -65,7 +65,7 @@ const Dashboard = ({ ClinicUser }) => {
     } else if (duration === "lastWeek") {
       url += "/lastWeekPaymentStatistics";
     } else if (duration === "lastMonth") {
-      url += "/TodayPaymentStatistics";
+      url += "/MonthPaymentStatistics";
     }
 
     axiosClient
@@ -176,12 +176,12 @@ const Dashboard = ({ ClinicUser }) => {
                                     height="35"
                                   />
                                 </span>
-                                <div className="justify-center align-items-center  text-secondary fw-bold">
+                                <div className="justify-center align-items-center  text-secondary fw-bold mt-2">
                                   <p className="mb-0 font-14">درآمد کل</p>
                                   <p className="font-16 fw-bold">
                                     {paymentTotalStat
                                       ? paymentTotalStat.toLocaleString() +
-                                      " ریال"
+                                        " ریال"
                                       : "-"}
                                   </p>
                                 </div>
@@ -199,14 +199,14 @@ const Dashboard = ({ ClinicUser }) => {
                                     height="40"
                                   />
                                 </span>
-                                <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold">
+                                <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold mt-2">
                                   <p className="mb-0 font-14">
                                     مبلغ بازگردانده شده
                                   </p>
                                   <p className="font-16 fw-bold">
                                     {paymentTotalReturn
                                       ? paymentTotalReturn.toLocaleString() +
-                                      " ریال"
+                                        " ریال"
                                       : "-"}
                                   </p>
                                 </div>
@@ -240,7 +240,6 @@ const Dashboard = ({ ClinicUser }) => {
                   <OverviewStats stats={stats} />
                 </div>
               </div>
-
             </div>
           )}
         </div>
