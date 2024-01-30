@@ -5,10 +5,10 @@ import { genderDataClass } from "class/staticDropdownOptions";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
 const EditPatientInfoModal = ({
+  data,
   showModal,
   handleClose,
   handleChangePatientInfo,
-  data,
   isLoading,
 }) => {
   const [selectedTab, setSelectedTab] = useState("");
@@ -23,13 +23,45 @@ const EditPatientInfoModal = ({
     handleClose();
   };
 
-  const defaultGanderValue = data?.Gender;
-  const defaultGanderValueLabel =
-    data?.Gender === "M" ? "مرد" : data?.Gender === "F" ? "زن" : "دیگر";
+  const defaultGanderValue = data?.Gender ? data.Gender : data.gender;
+  let defaultGenderValueLbl = "";
+  if (data.Gender) {
+    switch (data.Gender) {
+      case "M":
+        defaultGenderValueLbl = "مرد";
+        break;
+      case "F":
+        defaultGenderValueLbl = "زن";
+        break;
+      case "O":
+        defaultGenderValueLbl = "دیگر";
+        break;
+      default:
+        "دیگر";
+        break;
+    }
+  }
+
+  if (data.gender) {
+    switch (data.gender) {
+      case "M":
+        defaultGenderValueLbl = "مرد";
+        break;
+      case "F":
+        defaultGenderValueLbl = "زن";
+        break;
+      case "O":
+        defaultGenderValueLbl = "دیگر";
+        break;
+      default:
+        "دیگر";
+        break;
+    }
+  }
 
   const selectedGender = {
     value: defaultGanderValue,
-    label: defaultGanderValueLabel,
+    label: defaultGenderValueLbl,
   };
 
   useEffect(() => handleTabChange("Name"), []);
@@ -105,7 +137,9 @@ const EditPatientInfoModal = ({
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.Name}
+                defaultValue={
+                  data?.Name ? data.Name : data.name + " " + data.lastName
+                }
               />
             </Form.Group>
           </div>
@@ -117,7 +151,7 @@ const EditPatientInfoModal = ({
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.Age}
+                defaultValue={data?.Age ? data.Age : data.age}
               />
             </Form.Group>
           </div>
@@ -147,7 +181,7 @@ const EditPatientInfoModal = ({
                 type="tel"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.Tel}
+                defaultValue={data?.Tel ? data.Tel : data.cellPhoneNumber}
               />
             </Form.Group>
           </div>
@@ -159,7 +193,9 @@ const EditPatientInfoModal = ({
                 dir="ltr"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.NationalID}
+                defaultValue={
+                  data?.NationalID ? data.NationalID : data.nationalNumber
+                }
               />
             </Form.Group>
           </div>

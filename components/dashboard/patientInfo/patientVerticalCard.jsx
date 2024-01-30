@@ -1,9 +1,29 @@
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { axiosClient } from "class/axiosConfig";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import { convertDateFormat } from "utils/convertDateFormat";
+import FeatherIcon from "feather-icons-react";
+import { Tooltip } from "primereact/tooltip";
+import EditPatientInfoModal from "components/dashboard/patientInfo/editPatientInfo";
+import EditInsuranceTypeModal from "components/dashboard/patientInfo/editInsuranceTypeModal";
 
-const PatientVerticalCard = ({ data }) => {
+const PatientVerticalCard = ({
+  data,
+  ClinicID,
+  ActivePatientNID,
+  setPatientInfo,
+}) => {
+  const router = useRouter();
+  const [taminPrescMode, setTaminPrescMode] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   let GenderType = "";
-  switch (data?.gender) {
+  switch (data?.gender ? data.gender : data.Gender) {
     case "M":
       GenderType = "مرد";
       break;
@@ -47,11 +67,118 @@ const PatientVerticalCard = ({ data }) => {
       break;
   }
 
+  const handleChangePatientInfo = (type, value) => {
+    setIsLoading(true);
+
+    let url = "reception/ChangeProfileData";
+    let updatedInfo = {
+      CenterID: ClinicID,
+      NID: ActivePatientNID,
+      col: type,
+      val: value,
+    };
+
+    axiosClient
+      .post(url, updatedInfo)
+      .then((response) => {
+        if (type === "Age") {
+          data.Age ? (data.Age = value) : (data.age = value);
+        } else if (type === "Name") {
+          data.Name = value;
+        } else if (type === "Gender") {
+          data.Gender = value;
+        } else if (type === "Tel") {
+          data.Tel = value;
+        } else if (type === "NationalID") {
+          data.NationalID = value;
+        }
+
+        setPatientInfo([]);
+        setTimeout(() => setPatientInfo(data), 100);
+        handleCloseModal();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const changeInsuranceType = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url = "Patient/ChangeInsurance";
+    let editData = {
+      CenterID: ClinicID,
+      Clinic: true,
+      IID: parseInt(formProps.insuranceTypeOptions),
+      NID: formProps.patientNID,
+    };
+
+    axiosClient
+      .post(url, editData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.isCovered) {
+          // if (editData.IID === 1) {
+          //   patientsInfo.InsuranceName = "سلامت ایرانیان";
+          //   patientsInfo.Insurance = 1;
+          // } else if (editData.IID === 2) {
+          //   patientsInfo.InsuranceName = "تامین اجتماعی";
+          //   patientsInfo.Insurance = 2;
+          // } else if (editData.IID === 3) {
+          //   patientsInfo.InsuranceName = "ارتش";
+          //   patientsInfo.Insurance = 3;
+          // } else {
+          //   patientsInfo.InsuranceName = "آزاد";
+          //   patientsInfo.Insurance = 4;
+          // }
+
+          SuccessAlert("موفق", "!تغییر نوع بیمه با موفقیت انجام شد");
+        } else {
+          ErrorAlert(
+            "خطا",
+            "تغییر بیمه بیمار ، به دلیل عدم پوشش بیمه امکان پذیر نیست"
+          );
+          return false;
+        }
+        setIsLoading(false);
+        $("#changeInsuranceTypeModal").hide("");
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+        ErrorAlert("خطا", "تغییر نوع بیمه با خطا مواجه گردید!");
+      });
+  };
+
+  useEffect(() => {
+    if (
+      router.pathname === "/taminPrescription" ||
+      router.pathname === "/reception"
+    ) {
+      setTaminPrescMode(true);
+    }
+  }, [router.isReady]);
+
   return (
     <>
       <div className="card shadow" id="patientInfoCard2">
         <div className="card-body">
           <div className="PVCardprofile">
+            <i className="eventBtns pointer-cursor" onClick={handleShowModal}>
+              <FeatherIcon
+                icon="edit-3"
+                className="editPatientBtn"
+                data-pr-position="left"
+              />
+              <Tooltip target=".editPatientBtn">ویرایش</Tooltip>
+            </i>
+
             <div className="PVCardpro-im-na">
               <div className="PVCardimg">
                 {data?.memberImage ? (
@@ -74,53 +201,128 @@ const PatientVerticalCard = ({ data }) => {
                 )}
               </div>
               <div className="PVCardname">
-                {data?.name} {""} {data?.lastName}{" "}
-                {data?.age ? ", " + data?.age + " ساله" : ""}
+                {taminPrescMode
+                  ? data.Name
+                    ? data.Name
+                    : "-"
+                  : data?.name + " " + data?.lastName}
+                {taminPrescMode
+                  ? data.Age
+                    ? ", " + data.Age + " ساله"
+                    : "-"
+                  : data?.age
+                  ? ", " + data?.age + " ساله"
+                  : ""}
               </div>
               <div className="PVCardjob">
-                {data?.nationalNumber ? data?.nationalNumber : "-"}
+                {taminPrescMode
+                  ? data.NationalID
+                    ? data.NationalID
+                    : "-"
+                  : data?.nationalNumber
+                  ? data?.nationalNumber
+                  : "-"}
               </div>
             </div>
           </div>
+
           <div className="PVCardviwer">
             <div className="PVCardboxall">
               <span className="PVCardvalue">
-                {data?.isCovered
+                {taminPrescMode
+                  ? data.InsuranceType && data.InsuranceType === "2"
+                    ? "تحت قرارداد بیمه می باشد"
+                    : "تحت قرارداد بیمه نمی باشد"
+                  : data?.isCovered
                   ? "تحت قرارداد بیمه می باشد"
                   : "تحت قرارداد بیمه نمی باشد"}
               </span>
               <span className="PVCardparameter">
-                {data?.isReferenceable
+                {taminPrescMode
+                  ? ""
+                  : data?.isReferenceable
                   ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
                   : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
               </span>
             </div>
+
             <div className="PVCardboxall">
-              <span className="PVCardvalue">
-                جنسیت : {GenderType ? GenderType : "-"}
-              </span>
-              <span className="PVCardparameter">
-                نوع بیمه : {data?.productName}
-              </span>
+              <div className="PVCardvalue mb-3 d-flex align-items-center">
+                <div className="">
+                  نوع بیمه :{" "}
+                  {taminPrescMode
+                    ? data?.InsuranceName
+                      ? data.InsuranceName
+                      : "مشخص نمی باشد"
+                    : data?.productName
+                    ? data.productName
+                    : "مشخص نمی باشد"}
+                </div>
+
+                {taminPrescMode && (
+                  <div className="">
+                    <Link
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target="#changeInsuranceTypeModal"
+                      className="changeInsuranceBtn"
+                      data-pr-position="top"
+                    >
+                      <Tooltip target=".changeInsuranceBtn">
+                        تغییر نوع بیمه
+                      </Tooltip>
+                      <i className="margin-right-2 themecolor d-flex align-items-center">
+                        <FeatherIcon
+                          icon="refresh-cw"
+                          style={{ width: "16px", height: "16px" }}
+                        />
+                      </i>
+                    </Link>
+                  </div>
+                )}
+              </div>
               <span className="PVCardparameter">
                 تاریخ اعتبار تا {""}
                 {data?.accountValidto
                   ? convertDateFormat(data?.accountValidto)
                   : "-"}
               </span>
+              <span className="PVCardparameter">
+                جنسیت : {GenderType ? GenderType : "-"}
+              </span>
             </div>
+
             <div className="PVCardboxall">
               <span className="PVCardvalue">
-                نسبت با سرپرست : {RelationType ? RelationType : "-"}
+                {taminPrescMode
+                  ? "شماره همراه : " + (data?.Tel ? data.Tel : "-")
+                  : "نسبت با سرپرست : " + (RelationType ? RelationType : "-")}
               </span>
               <span className="PVCardparameter">
-                پزشک خانواده :{" "}
-                {data?.familyPhysician ? data?.familyPhysician : "-"}
+                {taminPrescMode
+                  ? ""
+                  : " پزشک خانواده : " +
+                    (data?.familyPhysician ? data?.familyPhysician : "-")}
               </span>
             </div>
           </div>
         </div>
       </div>
+
+      <EditPatientInfoModal
+        data={data}
+        showModal={showModal}
+        handleClose={handleCloseModal}
+        isLoading={isLoading}
+        handleChangePatientInfo={handleChangePatientInfo}
+      />
+
+      <EditInsuranceTypeModal
+        ClinicID={ClinicID}
+        data={data}
+        changeInsuranceType={changeInsuranceType}
+        isLoading={isLoading}
+      />
     </>
   );
 };

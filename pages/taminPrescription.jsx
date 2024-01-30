@@ -57,7 +57,6 @@ let ActiveSrvTypeID = "01";
 
 // PatientInfo
 let ClinicID,
-  ActivePatientNID,
   ActivePatientID,
   ActiveNID,
   ActiveInsuranceType,
@@ -81,6 +80,7 @@ const TaminPrescription = ({
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [patientInfo, setPatientInfo] = useState([]);
+  const [ActivePatientNID, setActivePatientNID] = useState(null);
 
   const [SelectedInstruction, setSelectedInstruction] = useState(null);
   const [SelectedInstructionLbl, setSelectedInstructionLbl] = useState(null);
@@ -90,6 +90,11 @@ const TaminPrescription = ({
   const [taminSrvSearchList, setTaminSrvSearchList] = useState([]);
   const [prescriptionItemsData, setPrescriptionItemsData] = useState([]);
 
+  // New Patient
+  const [birthYear, setBirthYear] = useState("");
+  const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
+  const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
+
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
     e.preventDefault();
@@ -97,7 +102,7 @@ const TaminPrescription = ({
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-    ActivePatientNID = formProps.nationalCode;
+    setActivePatientNID(formProps.nationalCode);
 
     let url = "Patient/checkByNid";
     let data = {
@@ -109,16 +114,27 @@ const TaminPrescription = ({
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data.user);
+        $("#patientNID").prop("readonly", true);
+
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
+          $("#patientInfoCard2").hide("");
         } else {
           ActivePatientID = response.data.user._id;
           ActiveNID = response.data.user.NationalID;
           ActiveInsuranceType = response.data.user.InsuranceType;
           ActiveInsuranceID = response.data.user.Insurance;
           setPatientInfo(response.data.user);
-          $("#patientInfoCard").show("");
+          $("#patientInfoCard2").show("");
         }
+
+        setTimeout(() => {
+          setPatientStatIsLoading(false);
+          $("#frmPatientInfoBtnSubmit").hide();
+          $("#getPatientCloseBtn").show();
+          $("#patientNID").focus();
+        }, 200);
         setPatientStatIsLoading(false);
       })
       .catch((error) => {
@@ -128,7 +144,19 @@ const TaminPrescription = ({
       });
   };
 
+  const getPatientActiveSearch = () => {
+    $("#patientNID").val("");
+    $("#getPatientCloseBtn").hide();
+    $("#frmPatientInfoBtnSubmit").show();
+    $("#patientNID").prop("readonly", false);
+    $("#patientInfoCard2").hide();
+
+    setActivePatientNID(null);
+  };
+
   const addNewPatient = (props) => {
+    setAddPatientIsLoading(true);
+
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
@@ -138,22 +166,26 @@ const TaminPrescription = ({
       .then((response) => {
         setPatientInfo(response.data);
         $("#newPatientModal").modal("hide");
-        $("#patientInfoCard").show("");
+        $("#patientInfoCard2").show("");
         if (response.data === false) {
           ErrorAlert(
             "خطا",
             "بیمار با اطلاعات وارد شده, تحت پوشش این بیمه نمی باشد!"
           );
+          setAddPatientIsLoading(false);
           return false;
         } else if (response.data.errors) {
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+          setAddPatientIsLoading(false);
           return false;
         } else {
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
+        setAddPatientIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setAddPatientIsLoading(false);
         ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
       });
   };
@@ -406,7 +438,7 @@ const TaminPrescription = ({
       let data = {
         CenterID: ClinicID,
         NID: ActiveNID,
-        PMN: $("#PatientTel").html(),
+        PMN: patientInfo.Tel,
         PTI: 3,
         Comment: $("#eprscItemDescription").val(),
         note: [],
@@ -443,7 +475,7 @@ const TaminPrescription = ({
       let data = {
         CenterID: ClinicID,
         NID: ActiveNID,
-        PMN: $("#PatientTel").html(),
+        PMN: patientInfo.Tel,
         PTI: ActivePrescTypeID,
         Comment: $("#eprscItemDescription").val(),
         note: addPrescriptionitems,
@@ -502,6 +534,11 @@ const TaminPrescription = ({
   //   console.log({ prescriptionItemsData });
   // }, [prescriptionItemsData]);
 
+  useEffect(() => {
+    setShowBirthDigitsAlert(false);
+    $("#patientNID").val("");
+  }, []);
+
   return (
     <>
       <Head>
@@ -517,10 +554,16 @@ const TaminPrescription = ({
                 setPatientInfo={setPatientInfo}
                 getPatientInfo={getPatientInfo}
                 ActivePatientNID={ActivePatientNID}
+                getPatientActiveSearch={getPatientActiveSearch}
                 patientStatIsLoading={patientStatIsLoading}
               />
 
-              {/* <PatientVerticalCard data={patientInfo} mode="taminPresc" /> */}
+              <PatientVerticalCard
+                data={patientInfo}
+                ClinicID={ClinicID}
+                ActivePatientNID={ActivePatientNID}
+                setPatientInfo={setPatientInfo}
+              />
             </div>
 
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
@@ -555,9 +598,14 @@ const TaminPrescription = ({
         </div>
 
         <AddNewPatient
-          addNewPatient={addNewPatient}
           ClinicID={ClinicID}
+          addNewPatient={addNewPatient}
           ActivePatientNID={ActivePatientNID}
+          birthYear={birthYear}
+          setBirthYear={setBirthYear}
+          showBirthDigitsAlert={showBirthDigitsAlert}
+          setShowBirthDigitsAlert={setShowBirthDigitsAlert}
+          addPatientIsLoading={addPatientIsLoading}
         />
       </div>
     </>

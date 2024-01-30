@@ -58,6 +58,10 @@ const Appointment = ({ ClinicUser }) => {
   const [loadingState, setLoadingState] = useState(false);
   const [appointmentIsLoading, setAppointmentIsLoading] = useState(false);
   const [delayIsLoading, setDelayIsLoading] = useState(false);
+
+  // new patient
+  const [birthYear, setBirthYear] = useState("");
+  const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
 
   const [appointmentEvents, setAppointmentEvents] = useState([]);
@@ -302,6 +306,7 @@ const Appointment = ({ ClinicUser }) => {
       .then((response) => {
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
+          $("#appointmentPatientInfoCard").hide("");
           setShowAppointmentModal(false);
         } else {
           ActivePatientID = response.data.user._id;
@@ -636,7 +641,6 @@ const Appointment = ({ ClinicUser }) => {
 
   const openFrmOptionsModal = (eventData) => {
     ActivePatientID = eventData.Patient._id;
-    console.log({ ActivePatientID });
     setShowFormOptionsModal(true);
   };
 
@@ -660,6 +664,8 @@ const Appointment = ({ ClinicUser }) => {
         new Date(new Date().getTime() + storedWeek * 24 * 60 * 60 * 1000)
       );
     else setCurrentDate(new Date());
+
+    setShowBirthDigitsAlert(false);
   }, [router.query]);
 
   return (
@@ -776,6 +782,10 @@ const Appointment = ({ ClinicUser }) => {
           addNewPatient={addNewPatient}
           ClinicID={ClinicID}
           ActivePatientNID={ActivePatientNID}
+          birthYear={birthYear}
+          setBirthYear={setBirthYear}
+          showBirthDigitsAlert={showBirthDigitsAlert}
+          setShowBirthDigitsAlert={setShowBirthDigitsAlert}
           addPatientIsLoading={addPatientIsLoading}
         />
 

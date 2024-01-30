@@ -35,17 +35,18 @@ const FilterTaminPrescs = ({
       dateFrom: dateFromOption
         ? dateFromOption
         : dateFrom
-          ? dateFrom.replaceAll(/\//g, "")
-          : "",
+        ? dateFrom.replaceAll(/\//g, "")
+        : "",
       dateTo: dateToOption
         ? dateToOption
         : dateTo
-          ? dateTo.replaceAll(/\//g, "")
-          : "",
+        ? dateTo.replaceAll(/\//g, "")
+        : "",
       NID: isNaN(patientInfo) ? null : patientInfo,
       Name: isNaN(patientInfo) ? patientInfo : null,
     };
 
+    console.log({ data });
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -80,7 +81,7 @@ const FilterTaminPrescs = ({
         break;
       case "lastTwoDays":
         newDate = new JDate(addDayToDate(-2)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
+        setDateToOption(newDate);
         break;
       case "lastWeek":
         newDate = new JDate(addDayToDate(-7)).format("YYYYMMDD");

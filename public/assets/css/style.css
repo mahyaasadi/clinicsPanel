@@ -10416,7 +10416,7 @@ ul li .active {
 }
 
 .receptionInfoText {
-  color: #b45309;
+  color: darkslategray;
 }
 
 .vertical-line {
@@ -10583,6 +10583,12 @@ ul li .active {
   position: relative;
 }
 
+.editPatientBtn {
+  position: absolute;
+  top: 20;
+  left: 20px
+}
+
 .removeDiscountBtn {
   color: #b45309;
   fill: white;
@@ -10617,6 +10623,10 @@ ul li .active {
 
 .formBtns:hover {
   color: #b45309 !important;
+}
+
+.pointer-cursor {
+  cursor: pointer;
 }
 
 .removeDiscountIcon {
@@ -11321,10 +11331,6 @@ thead {
   align-items: center;
 }
 
-canvas {
-  cursor: crosshair;
-}
-
 div#sidebarNote {
   position: absolute;
   margin-top: 1.25rem;
@@ -11339,9 +11345,13 @@ div#sidebarNote {
 
 canvas#canvas {
   transform: translate(-50%, 5%);
-  left: 50%;
+  left: 48%;
   top: 0;
   border: 1px solid lightgray !important;
+}
+
+canvas {
+  cursor: crosshair;
 }
 
 .colorpicker {
@@ -11380,3 +11390,5 @@ canvas#canvas {
 .buttonSize input[type="range"] {
   appearance: slider-vertical;
 }
+
+/* ------- */

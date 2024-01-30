@@ -631,8 +631,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
-                }
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,
@@ -706,8 +707,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
       </Head>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <Toast ref={toast} position="top-left" />
-
+          <div className="dir-rtl">
+            <Toast ref={toast} position="top-left" />
+          </div>
           <div className="row dir-rtl">
             <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
               <PatientInfoCard
@@ -720,7 +722,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 patientStatIsLoading={patientStatIsLoading}
               />
 
-              <PatientVerticalCard data={patientInfo} mode="salamatPresc" />
+              <PatientVerticalCard
+                data={patientInfo}
+                ClinicID={ClinicID}
+                ActivePatientNID={ActivePatientNID}
+                setPatientInfo={setPatientInfo}
+              />
             </div>
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard

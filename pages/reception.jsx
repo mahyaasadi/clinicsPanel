@@ -5,6 +5,7 @@ import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, SuccessAlert, TimerAlert } from "class/AlertManage";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
+import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
 import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
@@ -46,6 +47,7 @@ let ClinicID,
   ReceptionObjectID,
   ReceptionID,
   ActiveEditSrvID,
+  ActiveDiscountSrvID,
   ActiveReceptionID = null;
 
 const Reception = ({ ClinicUser }) => {
@@ -115,11 +117,12 @@ const Reception = ({ ClinicUser }) => {
 
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
+          $("#patientInfoCard2").hide("");
         } else {
           ActivePatientID = response.data.user._id;
           ActiveInsuranceType = response.data.user.InsuranceType;
           setPatientInfo(response.data.user);
-          $("#patientInfoCard").show("");
+          $("#patientInfoCard2").show("");
           $(".pendingPaitentContainer").hide();
         }
 
@@ -142,7 +145,7 @@ const Reception = ({ ClinicUser }) => {
     $("#getPatientCloseBtn").hide();
     $("#frmPatientInfoBtnSubmit").show();
     $("#patientNID").prop("readonly", false);
-    $("#patientInfoCard").hide();
+    $("#patientInfoCard2").hide();
 
     ActivePatientID = null;
     setActivePatientNID(null);
@@ -167,7 +170,7 @@ const Reception = ({ ClinicUser }) => {
     $("#patientNID").prop("readonly", true);
     $("#frmPatientInfoBtnSubmit").hide();
     $("#getPatientCloseBtn").show();
-    $("#patientInfoCard").show("");
+    $("#patientInfoCard2").show("");
     $(".pendingPaitentContainer").hide();
     setPatientInfo(patient);
   };
@@ -199,7 +202,7 @@ const Reception = ({ ClinicUser }) => {
         } else {
           setPatientInfo(response.data);
           $("#newPatientModal").modal("hide");
-          $("#patientInfoCard").show("");
+          $("#patientInfoCard2").show("");
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
         setAddPatientIsLoading(false);
@@ -274,24 +277,26 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //----- Discount -----//
-  const openDiscountModal = () => {
+  const openDiscountModal = (id) => {
+    ActiveDiscountSrvID = id;
     $("#manualDiscountModal").modal("show");
   };
 
   // add discounts from discountsOptions
   const applyDiscount = (id, Discount) => {
-    setSelectedDiscount(Discount);
-
-    const updatedData = addedSrvItems.map((item) => {
-      if (item._id === id) {
-        return {
-          ...item,
-          Discount: Discount ? Discount : 0,
-        };
+    // setSelectedDiscount(Discount);
+    console.log(id);
+    const updatedData = addedSrvItems.map((item, index) => {
+      if (item._id === ActiveDiscountSrvID) {
+        if (Discount) addedSrvItems[index].Discount = Discount;
+        // return {
+        //   ...item,
+        //   Discount: Discount ? Discount : 0,
+        // };
       }
       return item;
     });
-
+    console.log(updatedData);
     setAddedSrvItems(updatedData);
     $("#manualDiscountModal").modal("hide");
   };
@@ -419,7 +424,7 @@ const Reception = ({ ClinicUser }) => {
 
         const newActivePatientNID = response.data.Patient.NationalID;
         setActivePatientNID(newActivePatientNID);
-        $("#patientInfoCard").show("");
+        $("#patientInfoCard2").show("");
       })
       .catch((err) => {
         console.log(err);
@@ -719,6 +724,13 @@ const Reception = ({ ClinicUser }) => {
                   getPatientActiveSearch={getPatientActiveSearch}
                   handlePendingPatientClick={handlePendingPatientClick}
                   handleShowPendingPatients={handleShowPendingPatients}
+                />
+
+                <PatientVerticalCard
+                  data={patientInfo}
+                  ClinicID={ClinicID}
+                  ActivePatientNID={ActivePatientNID}
+                  setPatientInfo={setPatientInfo}
                 />
               </div>
 

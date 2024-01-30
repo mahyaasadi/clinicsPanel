@@ -65,7 +65,7 @@ const ApplyDiscountModal = ({
                     <div data-pr-position="top">
                       <Dropdown
                         value={selectedDiscount}
-                        onChange={(e) => applyDiscount(srv._id, e.value, e)}
+                        onChange={(e) => applyDiscount(e.value, e)}
                         options={discountsList}
                         optionLabel="Name"
                         placeholder="انتخاب نمایید"

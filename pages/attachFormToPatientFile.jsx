@@ -138,8 +138,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -198,8 +196,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
@@ -221,10 +217,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
         ErrorAlert("خطا", "ویرایش اطلاعات فرم با خطا مواجه گردید!");
         setFrmIsLoading(false);
       });
-  };
-
-  const getCheckedBoxes = (checkedItems) => {
-    console.log({ checkedItems });
   };
 
   useEffect(() => {
@@ -259,7 +251,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
                   data={selectedFormData}
                   formValues={formValues}
                   patientData={patientData}
-                  getCheckedBoxes={getCheckedBoxes}
                 />
 
                 <div className="submit-section">

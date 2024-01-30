@@ -6,10 +6,10 @@ import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import { gender, insurance } from "components/commonComponents/imagepath";
+import { convertDateFormat } from "utils/convertDateFormat";
 import EditPatientInfoModal from "./editPatientInfo";
 import EditInsuranceTypeModal from "./editInsuranceTypeModal";
-import { convertDateFormat } from "utils/convertDateFormat";
+import { gender, insurance } from "components/commonComponents/imagepath";
 
 const PatientInfoCard = ({
   data,
@@ -43,8 +43,9 @@ const PatientInfoCard = ({
     axiosClient
       .post(url, updatedInfo)
       .then((response) => {
+        // it doesn't work for salamat data yet
         if (type === "Age") {
-          data.Age = value;
+          data.Age ? (data.Age = value) : (data.age = value);
         } else if (type === "Name") {
           data.Name = value;
         } else if (type === "Gender") {
@@ -84,7 +85,6 @@ const PatientInfoCard = ({
     axiosClient
       .post(url, editData)
       .then((response) => {
-        console.log(response.data);
         if (response.data.isCovered) {
           // if (editData.IID === 1) {
           //   patientsInfo.InsuranceName = "سلامت ایرانیان";
@@ -118,38 +118,6 @@ const PatientInfoCard = ({
       });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const input = value.replace(/\D/g, "").slice(0, 4);
-    setBirthYear(input);
-    validateInput(input);
-
-    if (name === "PatientBD") {
-      let calculatedAge = currentYear - input;
-      if (input === "") calculatedAge = "";
-      $("#Age").val(calculatedAge);
-    }
-
-    if (name === "Age") {
-      let calculatedYear = currentYear - e.target.value;
-      if (e.target.value === "") calculatedYear = "";
-      setBirthYear(calculatedYear);
-      $("#PatientBD").val(calculatedYear);
-
-      if (calculatedYear > 1000) setShowBirthDigitsAlert(false);
-    }
-  };
-
-  const validateInput = (input) => {
-    if (input.length < 4) {
-      setShowBirthDigitsAlert(true);
-      $("#submitNewPatient").attr("disabled", true);
-    } else {
-      setShowBirthDigitsAlert(false);
-      $("#submitNewPatient").attr("disabled", false);
-    }
-  };
-
   // Pending Patients
   const [pendingPatients, setPendingPatients] = useState([]);
 
@@ -164,14 +132,11 @@ const PatientInfoCard = ({
       .then((response) => {
         setPendingPatients(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
 
-  const _handlePendingPatientClick = (pendingPatient) => {
+  const _handlePendingPatientClick = (pendingPatient) =>
     handlePendingPatientClick(pendingPatient);
-  };
 
   useEffect(() => {
     getPendingPatients();
@@ -267,7 +232,7 @@ const PatientInfoCard = ({
                                 icon="smartphone"
                                 style={{ width: "16px" }}
                               />
-                              <p id="PatientTel">{item?.Tel}</p>
+                              <p id="PatientPhone">{item?.Tel}</p>
                             </div>
                           </div>
                         </div>
@@ -278,7 +243,7 @@ const PatientInfoCard = ({
             </div>
           </form>
 
-          <div className="font-13 mt-3" id="patientInfoCard">
+          {/* <div className="font-13 mt-3" id="patientInfoCard">
             <div className="smartphone-container font-13 phone-input">
               <div className="d-flex smartphone-padding">
                 <i className="smartphone-icon">
@@ -356,7 +321,7 @@ const PatientInfoCard = ({
                   convertDateFormat(data?.accountValidto)}
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -372,6 +337,7 @@ const PatientInfoCard = ({
         ClinicID={ClinicID}
         data={data}
         changeInsuranceType={changeInsuranceType}
+        isLoading={isLoading}
       />
     </>
   );

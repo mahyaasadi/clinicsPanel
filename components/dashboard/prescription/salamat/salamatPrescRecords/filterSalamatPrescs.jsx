@@ -2,7 +2,7 @@ import { useState } from "react";
 import JDate from "jalali-date";
 import { Tooltip } from "primereact/tooltip";
 import { axiosClient } from "@/class/axiosConfig";
-import { ErrorAlert, WarningAlert } from "class/AlertManage"
+import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import { Dropdown } from "primereact/dropdown";
 import { dateShortcutsData } from "class/staticDropdownOptions";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
@@ -40,16 +40,16 @@ const FilterSalamatPrescs = ({
       NID: formProps.patientNID,
       // DateFrom: dateFrom ? dateFrom.replaceAll(/\//g, "") : "",
       // DateTo: dateTo ? dateTo.replaceAll(/\//g, "") : "",
-      dateFrom: dateFromOption
+      DateFrom: dateFromOption
         ? dateFromOption
         : dateFrom
-          ? dateFrom.replaceAll(/\//g, "")
-          : "",
-      dateTo: dateToOption
+        ? dateFrom.replaceAll(/\//g, "")
+        : "",
+      DateTo: dateToOption
         ? dateToOption
         : dateTo
-          ? dateTo.replaceAll(/\//g, "")
-          : "",
+        ? dateTo.replaceAll(/\//g, "")
+        : "",
     };
 
     console.log({ data });
@@ -68,6 +68,9 @@ const FilterSalamatPrescs = ({
           } else {
             setApplyIsLoading(false);
             ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+          }
+          if (response.data.res.resCode === -9322) {
+            WarningAlert("", "داده ای یافت نشد!");
           }
         })
         .catch((err) => {
@@ -99,7 +102,7 @@ const FilterSalamatPrescs = ({
         break;
       case "lastTwoDays":
         newDate = new JDate(addDayToDate(-2)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
+        setDateToOption(newDate);
         break;
       case "lastWeek":
         newDate = new JDate(addDayToDate(-7)).format("YYYYMMDD");

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import ApplyDiscountModal from "components/dashboard/discounts/applyManualDiscountModal";
@@ -20,6 +21,7 @@ const AddItem = ({
   let OrgTotalCost = srv.OC * srv.Qty;
   let PatientCost = RowTotalPrice - OrgTotalCost;
   let DiscountValue = 0;
+  const [srvModal, setSrvModal] = useState({});
 
   if (srv.Discount) {
     if (srv.Discount.Percent) {
@@ -55,7 +57,7 @@ const AddItem = ({
               <button
                 type="button"
                 className="btn btn-sm btn-outline-primary dicountBtn height-27"
-                onClick={openDiscountModal}
+                onClick={() => openDiscountModal(srv._id)}
                 data-pr-position="top"
               >
                 <Tooltip target=".dicountBtn">اعمال تخفیف</Tooltip>
@@ -140,7 +142,7 @@ const AddItem = ({
         </div>
 
         <ApplyDiscountModal
-          srv={srv}
+          srv={srvModal}
           discountCost={discountCost}
           setDiscountCost={setDiscountCost}
           discountsList={discountsList}
