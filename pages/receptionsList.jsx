@@ -169,6 +169,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                     <FilterReceptionItems
                       ClinicID={ClinicID}
                       ApplyFilterOnRecItems={ApplyFilterOnRecItems}
+                      getReceptionList={getReceptionList}
                     />
                   </div>
 

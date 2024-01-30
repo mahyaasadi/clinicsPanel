@@ -222,7 +222,7 @@ const Dashboard = ({ ClinicUser }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-9 ps-lg-0">
+                      <div className="col-lg-9 ps-lg-1">
                         <PaymentChart
                           data={paymentStats}
                           labels={paymentLabels}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import JDate from "jalali-date";
 import { Tooltip } from "primereact/tooltip";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert } from "class/AlertManage";
+import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import { Dropdown } from "primereact/dropdown";
 import { dateShortcutsData } from "class/staticDropdownOptions";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
@@ -35,23 +35,28 @@ const FilterTaminPrescs = ({
       dateFrom: dateFromOption
         ? dateFromOption
         : dateFrom
-        ? dateFrom.replaceAll(/\//g, "")
-        : "",
+          ? dateFrom.replaceAll(/\//g, "")
+          : "",
       dateTo: dateToOption
         ? dateToOption
         : dateTo
-        ? dateTo.replaceAll(/\//g, "")
-        : "",
+          ? dateTo.replaceAll(/\//g, "")
+          : "",
       NID: isNaN(patientInfo) ? null : patientInfo,
       Name: isNaN(patientInfo) ? patientInfo : null,
     };
 
-    console.log({ data });
     axiosClient
       .post(url, data)
       .then((response) => {
         applyFilterOnTaminPrescs(response.data.result);
+        if (response.data.result.length == 0) {
+          WarningAlert("", "داده ای یافت نشد!");
+        }
+
+        //reset
         setApplyIsLoading(false);
+        setPatientInfo(null)
       })
       .catch((err) => {
         console.log(err);
@@ -140,7 +145,9 @@ const FilterTaminPrescs = ({
                   <div className="col-6">
                     {!applyIsLoading ? (
                       <>
-                        <button className="btn btn-primary w-100">
+                        <button
+                          type="submit"
+                          className="btn btn-primary w-100">
                           <i className="fe fe-search"></i>
                         </button>
                       </>

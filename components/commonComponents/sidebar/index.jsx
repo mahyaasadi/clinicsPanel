@@ -75,10 +75,6 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className="menu-title font-12">
-                <span>بخش های مطب</span>
-              </li>
-
               <li className={router.pathname == "/departments" ? "active" : ""}>
                 <Link href="/departments">
                   <FeatherIcon
