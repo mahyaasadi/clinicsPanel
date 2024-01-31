@@ -65,7 +65,7 @@ const ApplyDiscountModal = ({
                     <div data-pr-position="top">
                       <Dropdown
                         value={selectedDiscount}
-                        onChange={(e) => applyDiscount(e.value, e)}
+                        onChange={(e) => applyDiscount(e.value)}
                         options={discountsList}
                         optionLabel="Name"
                         placeholder="انتخاب نمایید"
@@ -80,6 +80,7 @@ const ApplyDiscountModal = ({
                         type="text"
                         className="form-control floating inputPadding rounded"
                         name="receptionDiscountDes"
+                        id="receptionDiscountDes"
                       />
                     </div>
 
@@ -92,6 +93,7 @@ const ApplyDiscountModal = ({
                         type="text"
                         className="form-control floating inputPadding rounded"
                         name="receptionDiscountValue"
+                        id="receptionDiscountValue"
                       />
                     </div>
 

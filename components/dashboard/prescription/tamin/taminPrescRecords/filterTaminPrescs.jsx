@@ -5,6 +5,7 @@ import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import { Dropdown } from "primereact/dropdown";
 import { dateShortcutsData } from "class/staticDropdownOptions";
+import { handleDateOptionsSelect } from "utils/defaultDateRanges";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 
 const FilterTaminPrescs = ({
@@ -33,15 +34,15 @@ const FilterTaminPrescs = ({
     let data = {
       CenterID: ClinicID,
       dateFrom: dateFromOption
-        ? dateFromOption
+        ? dateFromOption.replaceAll(/\//g, "")
         : dateFrom
-          ? dateFrom.replaceAll(/\//g, "")
-          : "",
+        ? dateFrom.replaceAll(/\//g, "")
+        : "",
       dateTo: dateToOption
-        ? dateToOption
+        ? dateToOption.replaceAll(/\//g, "")
         : dateTo
-          ? dateTo.replaceAll(/\//g, "")
-          : "",
+        ? dateTo.replaceAll(/\//g, "")
+        : "",
       NID: isNaN(patientInfo) ? null : patientInfo,
       Name: isNaN(patientInfo) ? patientInfo : null,
     };
@@ -56,7 +57,7 @@ const FilterTaminPrescs = ({
 
         //reset
         setApplyIsLoading(false);
-        setPatientInfo(null)
+        setPatientInfo(null);
       })
       .catch((err) => {
         console.log(err);
@@ -65,41 +66,13 @@ const FilterTaminPrescs = ({
       });
   };
 
-  const currentDate = new JDate();
-  const addDayToDate = (day) => {
-    let h = day * 24;
-    return new Date(new Date().getTime() + h * 60 * 60 * 1000);
-  };
-
-  const handleDateOptionsSelect = (option) => {
-    setSelectedDateOption(option);
-
-    let newDate;
-    switch (option) {
-      case "today":
-        newDate = new JDate(addDayToDate(0)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "yesterday":
-        newDate = new JDate(addDayToDate(-1)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "lastTwoDays":
-        newDate = new JDate(addDayToDate(-2)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "lastWeek":
-        newDate = new JDate(addDayToDate(-7)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
-        break;
-      case "lastMonth":
-        newDate = new JDate(addDayToDate(-30)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
-        break;
-      default:
-        newDate = currentDate.format("YYYYMMDD");
-    }
-    setDateFromOption(newDate);
+  const handleSelect = (option) => {
+    handleDateOptionsSelect(
+      option,
+      setSelectedDateOption,
+      setDateFromOption,
+      setDateToOption
+    );
   };
 
   return (
@@ -113,7 +86,7 @@ const FilterTaminPrescs = ({
                 <div className="col-md-12 col-md-9 col-lg-3 mt-3">
                   <div className="input-group">
                     <label className="lblAbs font-12 ">
-                      جستجو طبق کد ملی / نام بیمار
+                      کد ملی / نام بیمار
                     </label>
                     <input
                       type="text"
@@ -130,7 +103,7 @@ const FilterTaminPrescs = ({
                   <Dropdown
                     options={dateShortcutsData}
                     value={selectedDateOption}
-                    onChange={(e) => handleDateOptionsSelect(e.value)}
+                    onChange={(e) => handleSelect(e.value)}
                     optionLabel="label"
                     placeholder="انتخاب نمایید"
                     showClear
@@ -145,9 +118,7 @@ const FilterTaminPrescs = ({
                   <div className="col-6">
                     {!applyIsLoading ? (
                       <>
-                        <button
-                          type="submit"
-                          className="btn btn-primary w-100">
+                        <button type="submit" className="btn btn-primary w-100">
                           <i className="fe fe-search"></i>
                         </button>
                       </>

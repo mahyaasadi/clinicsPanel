@@ -86,6 +86,7 @@ const CashDesk = ({ ClinicUser }) => {
       axiosClient
         .get(url)
         .then((response) => {
+          console.log("findByClinic", response.data);
           setReceptionList(response.data);
           if (response.data) getReceptionPatients(response.data);
           setTimeout(() => {
@@ -100,6 +101,44 @@ const CashDesk = ({ ClinicUser }) => {
           reject(err);
         });
     });
+  };
+
+  const getCashDeskPatientsInfo = () => {
+    // setIsLoading(true);
+    let url = `ClinicReception/CashDeskPatient/${ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        console.log("cashDeskReception", response.data);
+
+        // let patientItems = [];
+        // for (let i = 0; i < response.data.length; i++) {
+        //   const item = response.data[i];
+        //   let calculatedCost = 0;
+
+        //   item.Calculated?.map((x) => {
+        //     calculatedCost += parseInt(x.RowTotalPatientCost);
+        //   });
+
+        //   let obj = {
+        //     id: item._id,
+        //     category: 1,
+        //     name: item.Patient.Name,
+        //     avatar: item.Patient.Avatar,
+        //     nationalID: item.Patient.NationalID,
+        //     totalPatientCost: calculatedCost,
+        //     item,
+        //   };
+        //   patientItems.push(obj);
+        // }
+        // setPatientsInfo(patientItems);
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setIsLoading(false);
+      });
   };
 
   const getReceptionPatients = (newReceptionList) => {
@@ -146,6 +185,7 @@ const CashDesk = ({ ClinicUser }) => {
 
   useEffect(() => {
     getReceptionList();
+    getCashDeskPatientsInfo();
     if (receptionList) {
       getReceptionPatients(receptionList);
     }
@@ -165,6 +205,7 @@ const CashDesk = ({ ClinicUser }) => {
               <FilterReceptionItems
                 ClinicID={ClinicID}
                 ApplyFilterOnRecItems={ApplyFilterOnRecItems}
+                getReceptionList={getReceptionList}
               />
 
               <PatientsCategories

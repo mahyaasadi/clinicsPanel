@@ -283,20 +283,20 @@ const Reception = ({ ClinicUser }) => {
   };
 
   // add discounts from discountsOptions
-  const applyDiscount = (id, Discount) => {
-    // setSelectedDiscount(Discount);
-    console.log(id);
+  const applyDiscount = (Discount) => {
+    setSelectedDiscount(Discount);
+
     const updatedData = addedSrvItems.map((item, index) => {
       if (item._id === ActiveDiscountSrvID) {
-        if (Discount) addedSrvItems[index].Discount = Discount;
-        // return {
-        //   ...item,
-        //   Discount: Discount ? Discount : 0,
-        // };
+        //     if (Discount) addedSrvItems[index].Discount = Discount;
+        return {
+          ...item,
+          Discount: Discount ? Discount : 0,
+        };
       }
       return item;
     });
-    console.log(updatedData);
+
     setAddedSrvItems(updatedData);
     $("#manualDiscountModal").modal("hide");
   };
@@ -322,10 +322,12 @@ const Reception = ({ ClinicUser }) => {
       Value: formProps.receptionDiscountValue,
     };
 
-    applyDiscount(ActiveSrvItemID, manualDiscount);
+    applyDiscount(manualDiscount);
 
-    // setSelectedDiscount(null);
-    // e.target.reset();
+    // reset
+    setSelectedDiscount(null);
+    $("#receptionDiscountDes").val("");
+    $("#receptionDiscountValue").val("");
   };
 
   // remove discount from receptionItem

@@ -2,13 +2,17 @@ import { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { Tooltip } from "primereact/tooltip";
 import { axiosClient } from "class/axiosConfig.js";
-import { ErrorAlert } from "class/AlertManage";
+import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import { dateShortcutsData } from "class/staticDropdownOptions";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
-import { handleDateOptionsSelect } from "utils/defaultDateRanges"
+import { handleDateOptionsSelect } from "utils/defaultDateRanges";
 
-const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionList }) => {
+const FilterReceptionItems = ({
+  ClinicID,
+  ApplyFilterOnRecItems,
+  getReceptionList,
+}) => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [dateFromOption, setDateFromOption] = useState(null);
@@ -16,7 +20,12 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
   const [selectedDateOption, setSelectedDateOption] = useState(null);
 
   const handleSelect = (option) => {
-    handleDateOptionsSelect(option, setSelectedDateOption, setDateFromOption, setDateToOption);
+    handleDateOptionsSelect(
+      option,
+      setSelectedDateOption,
+      setDateFromOption,
+      setDateToOption
+    );
   };
 
   // Fetching departments
@@ -24,7 +33,6 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
 
   let dateFrom,
     dateTo = null;
-
   const SetRangeDate = (f, t) => {
     dateFrom = f;
     dateTo = t;
@@ -36,12 +44,9 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
   const handleResetFilterFields = () => {
     setSearchIsLoading(false);
     setSelectedDepartment(null);
-    setDateFromOption("")
-    setDateToOption("")
-    getReceptionList()
-    $("#receptionID").val("");
-    $("#patientNID").val("");
-    $("#patientName").val("");
+    setDateFromOption(null);
+    setDateToOption(null);
+    getReceptionList();
   };
 
   const _applyFilterOnRecItems = (e) => {
@@ -54,19 +59,40 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
     let url = "ClinicReception/Search";
     let data = {
       ClinicID,
-      ReceptionID: formProps.receptionID ? formProps.receptionID : "",
       ModalityID: selectedDepartment ? selectedDepartment._id : "",
-      NID: formProps.patientNID ? formProps.patientNID : "",
-      PatientName: formProps.patientName ? formProps.patientName : "",
+      ReceptionID: "",
+      NID: "",
+      PatientName: "",
       DateFrom: dateFrom ? dateFrom : dateFromOption,
       DateTo: dateTo ? dateTo : dateToOption,
     };
+
+    let receptionInfo = formProps.receptionFilterInfo;
+    if (isNaN(parseInt(receptionInfo))) {
+      data.PatientName = receptionInfo;
+    } else {
+      if (receptionInfo.length < 10) {
+        data.ReceptionID = receptionInfo;
+      } else {
+        data.NID = receptionInfo;
+      }
+    }
 
     axiosClient
       .post(url, data)
       .then((response) => {
         ApplyFilterOnRecItems(response.data);
         setSearchIsLoading(false);
+
+        // reset
+        $("#receptionFilterInfo").val("");
+        setDateFromOption(null);
+        setDateToOption(null);
+        setSelectedDepartment(null);
+
+        if (response.data.length == 0) {
+          WarningAlert("", "داده ای یافت نشد!");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -81,18 +107,20 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
       <div className="card shadow filterReceptionCard">
         <form onSubmit={_applyFilterOnRecItems}>
           <div className="card-body row align-items-center mt-3 searchContainerPadding receptionSearch-header">
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">شناسه پذیرش</label>
+            <div className="col-12 col-lg-6 col-xl-4 mb-3">
+              <label className="lblAbs font-12">
+                شناسه پذیرش / کد ملی / نام بیمار
+              </label>
               <input
                 type="text"
-                dir="ltr"
-                name="receptionID"
-                id="receptionID"
-                className="form-control rounded-sm font-11 articleSearchInput"
+                // dir="ltr"
+                name="receptionFilterInfo"
+                id="receptionFilterInfo"
+                className="form-control rounded-sm font-11 articleSearchInput text-center"
               />
             </div>
 
-            <div className="col-lg-3 col-12 receptionListPage">
+            <div className="col-12 col-lg-6 col-xl-2 mb-3 receptionListPage">
               <label className="lblAbs font-12">بخش</label>
               <Dropdown
                 value={selectedDepartment}
@@ -104,55 +132,33 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
               />
             </div>
 
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">کد ملی بیمار</label>
-              <input
-                type="text"
-                dir="ltr"
-                name="patientNID"
-                id="patientNID"
-                className="form-control rounded-sm font-11 articleSearchInput"
+            <div className="col-12 col-lg-6 col-xl-2 mb-3">
+              <label className="lblAbs font-12">بازه های پیش فرض</label>
+              <Dropdown
+                options={dateShortcutsData}
+                value={selectedDateOption}
+                onChange={(e) => handleSelect(e.value)}
+                optionLabel="label"
+                placeholder="انتخاب نمایید"
+                showClear
               />
             </div>
 
-            <div className="col-lg-3 col-12">
-              <label className="lblAbs font-12">نام بیمار</label>
-              <input
-                type="text"
-                name="patientName"
-                id="patientName"
-                className="form-control rounded-sm font-11 articleSearchInput"
-              />
+            <div className="col-12 col-lg-6 col-xl-2 mb-3">
+              <RangeDatePicker SetRangeDate={SetRangeDate} />
             </div>
 
-            <div className="row mt-3">
-              <div className="col-md-12 col-md-6 col-lg-4">
-                <label className="lblAbs font-12">بازه های پیش فرض</label>
-                <Dropdown
-                  options={dateShortcutsData}
-                  value={selectedDateOption}
-                  onChange={(e) => handleSelect(e.value)}
-                  optionLabel="label"
-                  placeholder="انتخاب نمایید"
-                  showClear
-                />
+            {!searchIsLoading ? (
+              <div className="col-12 col-lg-6 col-xl-1 mb-3">
+                <button className="btn btn-primary d-flex justify-center align-items-center w-100 height-40">
+                  <i className="fe fe-search"></i>
+                </button>
               </div>
-
-              <div className="col-lg-4 col-12">
-                <RangeDatePicker SetRangeDate={SetRangeDate} />
-              </div>
-
-              {/* <div className="col-4"> */}
-              {!searchIsLoading ? (
-                <>
-                  <button className="btn btn-primary col-2 d-flex justify-center align-items-center">
-                    <i className="fe fe-search"></i>
-                  </button>
-                </>
-              ) : (
+            ) : (
+              <div className="col-12 col-lg-6 col-xl-1 mb-3">
                 <button
                   type="submit"
-                  className="btn btn-primary col-2 d-flex align-items-center justify-center"
+                  className="btn btn-primary d-flex align-items-center justify-center w-100 height-40"
                   disabled
                 >
                   <span
@@ -160,17 +166,18 @@ const FilterReceptionItems = ({ ClinicID, ApplyFilterOnRecItems, getReceptionLis
                     role="status"
                   ></span>
                 </button>
-              )}
+              </div>
+            )}
 
+            <div className="col-12 col-lg-6 col-xl-1 mb-3">
               <button
                 onClick={handleResetFilterFields}
                 data-pr-position="top"
-                className="btn btn-primary d-flex col-2 align-items-center justify-center refreshBtn"
+                className="btn btn-primary d-flex align-items-center justify-center refreshBtn w-100 height-40"
               >
                 <i className="fa fa-refresh"></i>
                 <Tooltip target=".refreshBtn">تنظیم مجدد</Tooltip>
               </button>
-              {/* </div> */}
             </div>
           </div>
         </form>

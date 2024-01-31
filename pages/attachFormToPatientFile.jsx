@@ -73,8 +73,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log("onePatientFrm", response.data);
-
         JSON.parse(response.data.formData?.formData[0])?.map((x) => {
           if (x.type === "date" && x.subtype === "date")
             dateFormsArr.push({ name: x.name });

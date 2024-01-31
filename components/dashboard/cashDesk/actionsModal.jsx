@@ -142,7 +142,7 @@ const CashDeskActions = ({
           </div>
 
           <div className="table-responsive p-2">
-            <table className="table mt-4 font-13 text-secondary table-bordered">
+            <table className="table mt-4 font-13 text-secondary table-bordered shadow-sm">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -210,7 +210,7 @@ const CashDeskActions = ({
           </div>
 
           <div className="table-responsive p-2">
-            <table className="table mt-4 font-12 text-secondary table-bordered">
+            <table className="table mt-4 font-12 text-secondary table-bordered shadow-sm">
               <tbody>
                 <tr>
                   <td>

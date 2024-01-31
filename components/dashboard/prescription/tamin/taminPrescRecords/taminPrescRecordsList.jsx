@@ -8,8 +8,6 @@ import { tableCustomStyles } from "components/commonComponents/customTableStyle/
 import { convertDateFormat } from "utils/convertDateFormat";
 
 const TaminPrescRecordsList = ({ data }) => {
-  // console.log({ data });
-
   const columns = [
     {
       name: "نوع نسخه",

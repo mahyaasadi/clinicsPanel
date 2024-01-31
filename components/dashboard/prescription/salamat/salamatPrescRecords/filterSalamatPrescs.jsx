@@ -5,6 +5,7 @@ import { axiosClient } from "@/class/axiosConfig";
 import { ErrorAlert, WarningAlert } from "class/AlertManage";
 import { Dropdown } from "primereact/dropdown";
 import { dateShortcutsData } from "class/staticDropdownOptions";
+import { handleDateOptionsSelect } from "utils/defaultDateRanges";
 import RangeDatePicker from "components/commonComponents/datepicker/rangeDatePicker";
 
 const FilterSalamatPrescs = ({
@@ -38,21 +39,17 @@ const FilterSalamatPrescs = ({
       Status: "O",
       CenterID: ClinicID,
       NID: formProps.patientNID,
-      // DateFrom: dateFrom ? dateFrom.replaceAll(/\//g, "") : "",
-      // DateTo: dateTo ? dateTo.replaceAll(/\//g, "") : "",
       DateFrom: dateFromOption
-        ? dateFromOption
+        ? dateFromOption.replaceAll(/\//g, "")
         : dateFrom
         ? dateFrom.replaceAll(/\//g, "")
         : "",
       DateTo: dateToOption
-        ? dateToOption
+        ? dateToOption.replaceAll(/\//g, "")
         : dateTo
         ? dateTo.replaceAll(/\//g, "")
         : "",
     };
-
-    console.log({ data });
 
     if (!dateFrom && !dateFromOption) {
       WarningAlert("هشدار", "انتخاب بازه زمان الزامی است!");
@@ -61,7 +58,6 @@ const FilterSalamatPrescs = ({
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
           if (response.data.res.info) {
             applyFilterOnSalamatPrescs(response.data.res.info);
             setApplyIsLoading(false);
@@ -81,46 +77,18 @@ const FilterSalamatPrescs = ({
     }
   };
 
-  const currentDate = new JDate();
-  const addDayToDate = (day) => {
-    let h = day * 24;
-    return new Date(new Date().getTime() + h * 60 * 60 * 1000);
-  };
-
-  const handleDateOptionsSelect = (option) => {
-    setSelectedDateOption(option);
-
-    let newDate;
-    switch (option) {
-      case "today":
-        newDate = new JDate(addDayToDate(0)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "yesterday":
-        newDate = new JDate(addDayToDate(-1)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "lastTwoDays":
-        newDate = new JDate(addDayToDate(-2)).format("YYYYMMDD");
-        setDateToOption(newDate);
-        break;
-      case "lastWeek":
-        newDate = new JDate(addDayToDate(-7)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
-        break;
-      case "lastMonth":
-        newDate = new JDate(addDayToDate(-30)).format("YYYYMMDD");
-        setDateToOption(new JDate(addDayToDate(0)).format("YYYYMMDD"));
-        break;
-      default:
-        newDate = currentDate.format("YYYYMMDD");
-    }
-    setDateFromOption(newDate);
+  const handleSelect = (option) => {
+    handleDateOptionsSelect(
+      option,
+      setSelectedDateOption,
+      setDateFromOption,
+      setDateToOption
+    );
   };
 
   return (
     <>
-      <div>
+      <>
         <label className="lblAbs fw-bold font-13">جستجوی پیشرفته نسخ</label>
         <div className="card shadow-sm ">
           <form onSubmit={_applyFilterOnSalamatPrescs}>
@@ -140,7 +108,7 @@ const FilterSalamatPrescs = ({
                 <Dropdown
                   options={dateShortcutsData}
                   value={selectedDateOption}
-                  onChange={(e) => handleDateOptionsSelect(e.value)}
+                  onChange={(e) => handleSelect(e.value)}
                   optionLabel="label"
                   placeholder="انتخاب نمایید"
                   showClear
@@ -182,7 +150,7 @@ const FilterSalamatPrescs = ({
             </div>
           </form>
         </div>
-      </div>
+      </>
     </>
   );
 };

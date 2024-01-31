@@ -6,6 +6,8 @@ import TaminSearchedServices from "components/dashboard/prescription/tamin/tamin
 const PrescriptionCard = ({
   setIsLoading,
   searchIsLoading,
+  visitRegIsLoading,
+  saveRegIsLoading,
   drugInstructionList,
   drugAmountList,
   SelectedInstruction,
@@ -84,19 +86,43 @@ const PrescriptionCard = ({
                 نسخه های پرمصرف
               </button>
 
-              <button
-                className="btn border-radius visitBtn font-13"
-                onClick={() => registerEpresc(1)}
-              >
-                فقط ثبت ویزیت
-              </button>
+              {!visitRegIsLoading ? (
+                <button
+                  className="btn border-radius visitBtn font-13"
+                  onClick={() => registerEpresc(1)}
+                >
+                  فقط ثبت ویزیت
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary border-radius px-40"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
+                </button>
+              )}
 
-              <button
-                className="btn btn-primary border-radius font-13"
-                onClick={() => registerEpresc(0)}
-              >
-                ثبت نسخه نهایی
-              </button>
+              {!saveRegIsLoading ? (
+                <button
+                  className="btn btn-primary border-radius font-13"
+                  onClick={() => registerEpresc(0)}
+                >
+                  ثبت نسخه نهایی
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary border-radius px-40"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
+                </button>
+              )}
             </div>
           </div>
 

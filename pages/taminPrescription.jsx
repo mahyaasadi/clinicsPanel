@@ -1,8 +1,9 @@
-import Head from "next/head";
 import { useState, useEffect } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert } from "class/AlertManage";
+import { ErrorAlert, SuccessAlert, TimerAlert } from "class/AlertManage";
 import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
@@ -75,10 +76,15 @@ const TaminPrescription = ({
   drugInstructionList,
 }) => {
   ClinicID = ClinicUser.ClinicID;
+  const router = useRouter();
 
+  // Loaders
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+  const [visitRegIsLoading, setVisitRegIsLoading] = useState(false);
+  const [saveRegIsLoading, setSaveRegIsLoading] = useState(false);
+
   const [patientInfo, setPatientInfo] = useState([]);
   const [ActivePatientNID, setActivePatientNID] = useState(null);
 
@@ -383,7 +389,6 @@ const TaminPrescription = ({
           ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
           return false;
         }
-
         return { prescData, prescItems };
       }
     }
@@ -419,7 +424,6 @@ const TaminPrescription = ({
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
-
       activeSearch();
     }
 
@@ -434,6 +438,7 @@ const TaminPrescription = ({
   // Registeration
   const registerEpresc = async (visit) => {
     if (visit === 1) {
+      setVisitRegIsLoading(true);
       let url = "TaminEprsc/PrescriptionAdd";
       let data = {
         CenterID: ClinicID,
@@ -453,12 +458,24 @@ const TaminPrescription = ({
         .post(url, data)
         .then((response) => {
           console.log(response.data);
+          setVisitRegIsLoading(false);
 
           if (response.data.res.trackingCode !== null) {
-            SuccessAlert(
-              "ویزیت با موفقیت ثبت شد!",
-              "کد رهگیری شما : " + `${response.data.res.trackingCode}`
-            );
+            const seconds = 5;
+            const timerInMillis = seconds * 1000;
+
+            TimerAlert({
+              title: `ویزیت با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+              html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/taminPrescRecords");
+              },
+            });
           } else if (response.data.res.error_Msg == "نسخه تکراری است") {
             WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
           } else if (ActiveNID === undefined) {
@@ -468,10 +485,12 @@ const TaminPrescription = ({
         .catch((err) => {
           console.log(err);
           ErrorAlert("خطا", "ثبت ویزیت با خطا مواجه گردید!");
+          setVisitRegIsLoading(false);
         });
     } else {
-      let url = "TaminEprsc/PrescriptionAdd";
+      setSaveRegIsLoading(true);
 
+      let url = "TaminEprsc/PrescriptionAdd";
       let data = {
         CenterID: ClinicID,
         NID: ActiveNID,
@@ -490,12 +509,24 @@ const TaminPrescription = ({
         .post(url, data)
         .then(async (response) => {
           console.log(response.data);
+          setSaveRegIsLoading(false);
 
           if (response.data.res.trackingCode !== null) {
-            SuccessAlert(
-              "نسخه نهایی با موفقیت ثبت شد!",
-              "کد رهگیری شما : " + `${response.data.res.trackingCode}`
-            );
+            const seconds = 5;
+            const timerInMillis = seconds * 1000;
+
+            TimerAlert({
+              title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+              html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/taminPrescRecords");
+              },
+            });
           } else if (response.data.res.error_Code !== null) {
             ErrorAlert("خطا!", response.data.res.error_Msg);
           } else if (response.data.res == null) {
@@ -504,29 +535,9 @@ const TaminPrescription = ({
         })
         .catch((err) => {
           console.log(err);
+          setSaveRegIsLoading(false);
+          ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
         });
-
-      // edit prescription
-      // let url = prescriptionHeadID
-      //   ? "TaminEprsc/PrescriptionEdit"
-      //   : "TaminEprsc/PrescriptionAdd";
-
-      // let dataToSend = { ...data, otpCode: code };
-
-      // if (prescriptionHeadID) {
-      //   dataToSend = {
-      //     ...dataToSend,
-      //     PrID: PrID,
-      //     headerID: prescriptionHeadID,
-      //   };
-      // }
-
-      // try {
-      //   const response = await axiosClient.post(url, data);
-      //   console.log(response.data);
-      // } catch (err) {
-      //   console.error(err);
-      // }
     }
   };
 
@@ -570,6 +581,8 @@ const TaminPrescription = ({
               <PrescriptionCard
                 setIsLoading={setIsLoading}
                 searchIsLoading={searchIsLoading}
+                visitRegIsLoading={visitRegIsLoading}
+                saveRegIsLoading={saveRegIsLoading}
                 drugAmountList={drugAmountList}
                 drugInstructionList={drugInstructionList}
                 SelectedInstruction={SelectedInstruction}

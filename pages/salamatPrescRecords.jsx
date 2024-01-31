@@ -112,7 +112,6 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
           if (response.data.res.info.print) {
             downloadPDF(response.data.res.info.print, prescData);
           } else {
@@ -147,8 +146,8 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
 
   // Filter in Salamat Prescs
   const applyFilterOnSalamatPrescs = (data) => {
-    setPrescRecords(data)
-  }
+    setPrescRecords(data);
+  };
 
   useEffect(() => getAllSalamatPrescRecords(), []);
 

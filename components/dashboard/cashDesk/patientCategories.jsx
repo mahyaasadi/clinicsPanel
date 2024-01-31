@@ -12,7 +12,6 @@ const PatientCategories = ({
   isLoading,
   openNewAppointmentModal,
 }) => {
-  console.log({ patientsInfo });
   resetServerContext();
 
   const [categories, setCategories] = useState([
@@ -78,10 +77,22 @@ const PatientCategories = ({
                           id="dropzone"
                           dir="rtl"
                         >
-                          <p className="mb-1 mt-3 text-secondary font-14 fw-bold text-center">
-                            {category.name}
-                          </p>
-                          <hr className="mb-4" />
+                          <div
+                            className={`card-header ${
+                              category.name === "در انتظار"
+                                ? "bg-CDwaiting"
+                                : category.name === "پرداخت کامل"
+                                ? "bg-CDtalking"
+                                : category.name === "بدهکار"
+                                ? "bg-CDtotalDebt"
+                                : "bg-CDturnGiven"
+                            }`}
+                          >
+                            <p className="mb-1 mt-3 text-secondary font-14 fw-bold text-center">
+                              {category.name}
+                            </p>
+                          </div>
+                          {/* <hr className="mb-4" /> */}
 
                           <div className="patientListContainer">
                             {patientsInfo
