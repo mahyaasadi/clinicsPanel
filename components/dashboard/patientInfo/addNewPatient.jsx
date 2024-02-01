@@ -191,7 +191,7 @@ const NewPatient = ({
                       styles={selectfieldColourStyles}
                       options={insuranceOptionsList}
                       onChange={handleOnChange}
-                      className="w-100 font-12 text-center prescForm "
+                      className="w-100 font-12 text-center prescForm"
                       placeholder="نوع بیمه مورد نظر را انتخاب نمایید"
                       name="insuranceTypeOptions"
                       id="addInsuranceType"
@@ -211,7 +211,7 @@ const NewPatient = ({
                         className="form-control rounded padding-right-2"
                         id="addPatientName"
                         name="PatientName"
-                      // required
+                        // required
                       />
                     </div>
 
@@ -229,7 +229,7 @@ const NewPatient = ({
                         id="addGenderType"
                         instanceId="addGenderType"
                         isClearable
-                      // required
+                        // required
                       />
                     </div>
 
@@ -249,7 +249,7 @@ const NewPatient = ({
                             onBlur={handleBlur}
                             maxLength={4}
                             minLength={4}
-                          // required
+                            // required
                           />
 
                           {showBirthDigitsAlert && (
@@ -279,7 +279,7 @@ const NewPatient = ({
                           name="Age"
                           onChange={handleInputChange}
                           onBlur={handleBlur}
-                        // required
+                          // required
                         />
                       </div>
                     </div>

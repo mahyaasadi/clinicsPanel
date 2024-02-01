@@ -29,7 +29,7 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let additionalCostCode = 100000;
-let Services = [];
+// let Services = [];
 let ClinicID,
   ClinicUserID,
   ActiveSrvID,
@@ -62,6 +62,7 @@ const Reception = ({ ClinicUser }) => {
   const [patientInfo, setPatientInfo] = useState([]);
   const [ActivePatientNID, setActivePatientNID] = useState("");
   const [searchedServices, setSearchedServices] = useState([]);
+  const [Services, setServices] = useState([]);
   const [addedSrvItems, setAddedSrvItems] = useState([]);
   const [editSrvData, setEditSrvData] = useState([]);
   const [editSrvMode, setEditSrvMode] = useState(false);
@@ -183,9 +184,12 @@ const Reception = ({ ClinicUser }) => {
     data.CenterID = ClinicID;
     data.Clinic = true;
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         if (response.data === false) {
           ErrorAlert(
             "خطا",
@@ -203,6 +207,7 @@ const Reception = ({ ClinicUser }) => {
           setPatientInfo(response.data);
           $("#newPatientModal").modal("hide");
           $("#patientInfoCard2").show("");
+          $(".pendingPaitentContainer").hide();
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
         }
         setAddPatientIsLoading(false);
@@ -216,7 +221,7 @@ const Reception = ({ ClinicUser }) => {
 
   //---- Departments Tab Change ----//
   const handleDepTabChange = (services, modalityId) => {
-    Services = services;
+    setServices(services);
     ActiveModalityID = modalityId;
 
     $("#searchDiv").hide();
@@ -288,7 +293,6 @@ const Reception = ({ ClinicUser }) => {
 
     const updatedData = addedSrvItems.map((item, index) => {
       if (item._id === ActiveDiscountSrvID) {
-        //     if (Discount) addedSrvItems[index].Discount = Discount;
         return {
           ...item,
           Discount: Discount ? Discount : 0,

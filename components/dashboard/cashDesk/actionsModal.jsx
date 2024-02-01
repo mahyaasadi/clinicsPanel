@@ -24,6 +24,7 @@ const CashDeskActions = ({
   paymentData,
   showPaymentModal,
   setShowPaymentModal,
+  openPatientPaymentsModal,
 }) => {
   let calculatedTotalPC = 0;
 
@@ -209,8 +210,17 @@ const CashDeskActions = ({
             </table>
           </div>
 
+          <div className="d-flex justify-end p-2">
+            <button
+              className="btn btn-outline-primary font-13"
+              onClick={openPatientPaymentsModal}
+            >
+              مشاهده پرداختی های بیمار
+            </button>
+          </div>
+
           <div className="table-responsive p-2">
-            <table className="table mt-4 font-12 text-secondary table-bordered shadow-sm">
+            <table className="table mt-1 font-12 text-secondary table-bordered shadow-sm">
               <tbody>
                 <tr>
                   <td>

@@ -88,11 +88,10 @@ const PatientCategories = ({
                                 : "bg-CDturnGiven"
                             }`}
                           >
-                            <p className="mb-1 mt-3 text-secondary font-14 fw-bold text-center">
+                            <p className="mb-2 mt-2 text-secondary font-14 fw-bold text-center">
                               {category.name}
                             </p>
                           </div>
-                          {/* <hr className="mb-4" /> */}
 
                           <div className="patientListContainer">
                             {patientsInfo
