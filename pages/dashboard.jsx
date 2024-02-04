@@ -172,7 +172,7 @@ const Dashboard = ({ ClinicUser }) => {
                     <div className="row">
                       <div className="col-lg-3 pe-lg-0">
                         <div className="row">
-                          <div className="col-md-6 col-lg-12">
+                          <div className="col-md-6 col-lg-12 px-0">
                             <div className="card CardPayment mb-1">
                               <div className="card-body justify-center align-items-center text-center">
                                 <span className="dash-finance-icon bg-talking">
@@ -183,7 +183,7 @@ const Dashboard = ({ ClinicUser }) => {
                                     height="35"
                                   />
                                 </span>
-                                <div className="justify-center align-items-center  text-secondary fw-bold mt-2">
+                                <div className="justify-center align-items-center text-secondary fw-bold mt-2">
                                   <p className="mb-0 font-14">درآمد کل</p>
                                   <p className="font-16 fw-bold">
                                     {paymentTotalStat
@@ -195,7 +195,7 @@ const Dashboard = ({ ClinicUser }) => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-md-6 col-lg-12">
+                          <div className="col-md-6 col-lg-12 px-0">
                             <div className="card CardPayment mb-0">
                               <div className="card-body d-flex flex-col justify-center align-items-center text-center">
                                 <span className="dash-finance-icon bg-turnGiven d-flex justify-center align-center">
@@ -222,7 +222,7 @@ const Dashboard = ({ ClinicUser }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-9 ps-lg-1">
+                      <div className="card col-lg-9 ps-lg-1 mb-0 pieChartHeight">
                         <PaymentChart
                           data={paymentStats}
                           labels={paymentLabels}

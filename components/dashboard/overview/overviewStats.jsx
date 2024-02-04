@@ -5,7 +5,7 @@ import FeatherIcon from "feather-icons-react";
 const OverviewStats = ({ stats }) => {
   return (
     <>
-      <div className="col">
+      <div className="col w-md-100">
         <div className="card overViewCard">
           <div className="card-body">
             <div className="dash-widget-header">
@@ -45,7 +45,7 @@ const OverviewStats = ({ stats }) => {
         </div>
       </div>
 
-      <div className="col">
+      <div className="col w-md-100">
         <div className="card overViewCard">
           <div className="card-body">
             <div className="dash-widget-header">
@@ -84,7 +84,7 @@ const OverviewStats = ({ stats }) => {
         </div>
       </div>
 
-      <div className="col">
+      <div className="col w-md-100">
         <div className="card overViewCard">
           <div className="card-body">
             <div className="dash-widget-header">
@@ -113,7 +113,7 @@ const OverviewStats = ({ stats }) => {
         </div>
       </div>
 
-      <div className="col">
+      <div className="col w-md-100">
         <div className="card overViewCard">
           <div className="card-body">
             <div className="dash-widget-header">
@@ -152,7 +152,7 @@ const OverviewStats = ({ stats }) => {
         </div>
       </div>
 
-      <div className="col">
+      <div className="col w-md-100">
         <div className="card overViewCard">
           <div className="card-body">
             <div className="dash-widget-header">

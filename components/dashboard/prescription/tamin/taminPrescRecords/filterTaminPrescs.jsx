@@ -36,13 +36,13 @@ const FilterTaminPrescs = ({
       dateFrom: dateFromOption
         ? dateFromOption.replaceAll(/\//g, "")
         : dateFrom
-        ? dateFrom.replaceAll(/\//g, "")
-        : "",
+          ? dateFrom.replaceAll(/\//g, "")
+          : "",
       dateTo: dateToOption
         ? dateToOption.replaceAll(/\//g, "")
         : dateTo
-        ? dateTo.replaceAll(/\//g, "")
-        : "",
+          ? dateTo.replaceAll(/\//g, "")
+          : "",
       NID: isNaN(patientInfo) ? null : patientInfo,
       Name: isNaN(patientInfo) ? patientInfo : null,
     };
@@ -78,8 +78,8 @@ const FilterTaminPrescs = ({
   return (
     <>
       <div>
-        <label className="lblAbs fw-bold font-13">جستجوی پیشرفته نسخ</label>
-        <div className="card shadow-sm">
+        <div className="card shadow-sm p-relative">
+          <label className="lblAbs fw-bold font-13">جستجوی پیشرفته نسخ</label>
           <div className="card-header border-bottom-0 margin-top-1 marginb-md1">
             <form onSubmit={_applyFilterOnTaminPrescs}>
               <div className="row">

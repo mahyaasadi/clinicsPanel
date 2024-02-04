@@ -14,13 +14,9 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
                 ? "Error"
                 : "Warning",
         summary:
-          element.type === "S"
-            ? "موفق!"
-            : element.type === "I"
-              ? "اطلاعات!"
-              : element.type === "E"
-                ? "خطا!"
-                : "هشدار!",
+          element.type === "E"
+            ? "خطا!"
+            : element.type === "W" ? "هشدار!" : "",
         detail: element.text,
         life: 5000,
       };
@@ -32,7 +28,6 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
   if (toastRef && successMessage) {
     let msObj = {
       severity: "Success",
-      // summary: "موفق!",
       detail: successMessage,
       life: 8000,
     };

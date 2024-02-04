@@ -42,13 +42,13 @@ const FilterSalamatPrescs = ({
       DateFrom: dateFromOption
         ? dateFromOption.replaceAll(/\//g, "")
         : dateFrom
-        ? dateFrom.replaceAll(/\//g, "")
-        : "",
+          ? dateFrom.replaceAll(/\//g, "")
+          : "",
       DateTo: dateToOption
         ? dateToOption.replaceAll(/\//g, "")
         : dateTo
-        ? dateTo.replaceAll(/\//g, "")
-        : "",
+          ? dateTo.replaceAll(/\//g, "")
+          : "",
     };
 
     if (!dateFrom && !dateFromOption) {
@@ -89,8 +89,8 @@ const FilterSalamatPrescs = ({
   return (
     <>
       <>
-        <label className="lblAbs fw-bold font-13">جستجوی پیشرفته نسخ</label>
-        <div className="card shadow-sm ">
+        <div className="card shadow-sm p-relative">
+          <label className="lblAbs fw-bold font-13">جستجوی پیشرفته نسخ</label>
           <form onSubmit={_applyFilterOnSalamatPrescs}>
             <div className=" card-body row align-items-center mt-2 searchContainerPadding receptionSearch-header">
               <div className="col-lg-3 col-12">

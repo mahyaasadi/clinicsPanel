@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert } from "class/AlertManage"
-import SearchedDiseasesItems from "components/dashboard/patientFile/diseaseRecords/searchedDiseasesItems";
+import SearchedDiseasesItems from "@/components/dashboard/patientsArchives/patientFile/diseaseRecords/searchedDiseasesItems";
 
 let ActiveDiseaseName,
   ActiveDiseaseID,

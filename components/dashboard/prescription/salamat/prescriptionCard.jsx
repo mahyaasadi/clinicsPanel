@@ -52,7 +52,11 @@ const PrescriptionCard = ({
   const handleSearchKeyUp = (e) => {
     let inputCount = $("#srvSearchInput").val().length;
 
-    if (inputCount < 2) {
+    if (inputCount > 2) {
+      setTimeout(() => {
+        $("#BtnServiceSearch").click();
+      }, 900);
+    } else {
       $("#srvSearchInput").val() == "";
       $(".SearchDiv").hide();
       $(".unsuccessfullSearch").hide();

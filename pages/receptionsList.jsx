@@ -102,9 +102,7 @@ const ReceptionsList = ({ ClinicUser }) => {
 
   // Apply Filter on ReceptionItems
   const ApplyFilterOnRecItems = (data) => {
-    if (data) {
-      setReceptionList(data);
-    }
+    if (data) setReceptionList(data);
   };
 
   const openAppointmentModal = (patientData, modality) => {
@@ -146,6 +144,7 @@ const ReceptionsList = ({ ClinicUser }) => {
   const [showFrmOptionsModal, setShowFormOptionsModal] = useState(false);
 
   const closePatientFrmOptionsModal = () => setShowFormOptionsModal(false);
+
   const openFrmOptionsModal = (srv) => {
     ActiveReceptionObjID = srv._id;
     ActivePatientID = srv.Patient._id;
@@ -177,19 +176,17 @@ const ReceptionsList = ({ ClinicUser }) => {
                     <ul className="nav nav-tabs nav-tabs-solid justify-end">
                       <li className="nav-item">
                         <a
-                          // className="nav-link active"
                           className={`nav-link ${activeTab === 0 ? "active" : ""
                             }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
-                          onClick={() => handleTabClick(0)} // Pass the index of the tab
+                          onClick={() => handleTabClick(0)}
                         >
                           <FeatherIcon icon="grid" />
                         </a>
                       </li>
                       <li className="nav-item">
                         <a
-                          // className="nav-link"
                           className={`nav-link ${activeTab === 1 ? "active" : ""
                             }`}
                           href="#solid-rounded-tab2"
@@ -204,7 +201,6 @@ const ReceptionsList = ({ ClinicUser }) => {
 
                   <div className="tab-content pt-1">
                     <div
-                      // className="tab-pane show active"
                       className={`tab-pane show ${activeTab === 0 ? "active" : ""
                         }`}
                       id="solid-rounded-tab1"
@@ -231,7 +227,6 @@ const ReceptionsList = ({ ClinicUser }) => {
                     </div>
 
                     <div
-                      // className="tab-pane"
                       id="solid-rounded-tab2"
                       className={`tab-pane ${activeTab === 1 ? "active" : ""}`}
                     >

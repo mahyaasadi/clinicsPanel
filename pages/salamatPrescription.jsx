@@ -21,6 +21,7 @@ import {
   SuccessAlert,
   TimerAlert,
 } from "class/AlertManage";
+import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator"
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -226,6 +227,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
     ActiveSrvName = null;
 
     $("#srvSearchInput").val("");
+    $("#QtyInput").val("1");
+    $("#eprscItemDescription").val("");
     $("#srvSearchInput").prop("readonly", false);
     $("#srvSearchInput").focus();
     $("#BtnActiveSearch").hide();
@@ -309,30 +312,34 @@ const SalamatPrescription = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", true);
   };
 
+
+
   // Add Services To List
-  const FUAddToListItem = (e) => {
+  const FUAddToListItem = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     let url = "BimehSalamat/SubscriptionCheckOrder";
-    let prescData = {
-      SavePresc: 1,
-      CenterID: ClinicID,
-      SamadCode: SamadCode ? SamadCode : ActiveSamadCode,
+    let prescData = await salamatPrescItemCreator(
+      1,
+      ClinicID,
+      SamadCode ? SamadCode : ActiveSamadCode,
       CitizenSessionId,
-      PrescType: ActivePrescEngTitle,
-      nationalNumber: ActiveSrvNationalNumber,
-      bulkId: ActivePrescTypeID === 10 ? 1 : 0,
-      SrvShape: ActiveSrvShape,
-      QTY: $("#QtyInput").val(),
-      description: $("#eprscItemDescription").val(),
-      consumption: selectedConsumption?.toString(),
-      consumptionInstruction: selectedConsumptionInstruction
+      ActivePrescEngTitle,
+      ActiveSrvNationalNumber,
+      ActivePrescTypeID === 10 ? 1 : 0,
+      ActiveSrvShape,
+      $("#QtyInput").val(),
+      $("#eprscItemDescription").val(),
+      selectedConsumption?.toString(),
+      selectedConsumptionInstruction
         ? selectedConsumptionInstruction
         : null,
-      numberOfPeriod: selectedNOPeriod ? selectedNOPeriod.toString() : null,
-      otherServices: existingCheckCodes.length !== 0 ? existingCheckCodes : [],
-    };
+      selectedNOPeriod ? selectedNOPeriod.toString() : null,
+      existingCheckCodes.length !== 0 ? existingCheckCodes : [],
+      ActivePrescTypeID,
+      setIsLoading
+    )
 
     let findConsumptionLbl = consumptionOptions.find(
       (x) => x.value === selectedConsumption
@@ -342,87 +349,67 @@ const SalamatPrescription = ({ ClinicUser }) => {
       (x) => x.value === selectedConsumptionInstruction
     );
 
-    if (
-      (ActivePrescTypeID === 1 || ActivePrescTypeID === 10) &&
-      !selectedConsumptionInstruction &&
-      !selectedNOPeriod
-    ) {
-      ErrorAlert("خطا", "لطفا دستور مصرف را انتخاب نمایید!");
-      setIsLoading(false);
-    } else if (
-      (ActivePrescTypeID === 1 || ActivePrescTypeID === 10) &&
-      !selectedConsumption
-    ) {
-      ErrorAlert("خطا", "لطفا زمان مصرف را انتخاب نمایید!");
-      setIsLoading(false);
-    } else {
-      axiosClient
-        .post(url, prescData)
-        .then((response) => {
-          if (response.data.res.info?.checkCode) {
-            let addedPrescItemData = {
-              serviceInterfaceName: $("#srvSearchInput").val(),
-              numberOfRequest: $("#QtyInput").val(),
-              description: $("#eprscItemDescription").val(),
-              consumption: findConsumptionLbl?.label,
-              consumptionVal: findConsumptionLbl?.value,
-              consumptionInstruction: findInstructionLbl?.label,
-              consumptionInstructionVal: findInstructionLbl?.value,
-              numberOfPeriod: selectedNOPeriod,
-              snackMessages: response.data.res.info?.message?.snackMessage,
-              infoMessages: response.data.res.info?.message?.infoMessage,
-              checkCode: response.data.res.info?.checkCode,
-              prescTypeImg: ActivePrescImg,
-              typeId: ActivePrescTypeID,
-              prescTypeEngTitle: ActivePrescEngTitle,
-              shape: ActiveSrvShape,
-              bulkId: ActivePrescTypeID === 10 ? 1 : 0,
-              serviceNationalNumber: ActiveSrvNationalNumber,
-            };
+    axiosClient
+      .post(url, prescData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.res.info?.checkCode) {
+          let addedPrescItemData = {
+            serviceInterfaceName: $("#srvSearchInput").val(),
+            numberOfRequest: $("#QtyInput").val(),
+            description: $("#eprscItemDescription").val(),
+            consumption: findConsumptionLbl?.label,
+            consumptionVal: findConsumptionLbl?.value,
+            consumptionInstruction: findInstructionLbl?.label,
+            consumptionInstructionVal: findInstructionLbl?.value,
+            numberOfPeriod: selectedNOPeriod,
+            snackMessages: response.data.res.info?.message?.snackMessage,
+            infoMessages: response.data.res.info?.message?.infoMessage,
+            checkCode: response.data.res.info?.checkCode,
+            prescTypeImg: ActivePrescImg,
+            typeId: ActivePrescTypeID,
+            prescTypeEngTitle: ActivePrescEngTitle,
+            shape: ActiveSrvShape,
+            bulkId: ActivePrescTypeID === 10 ? 1 : 0,
+            serviceNationalNumber: ActiveSrvNationalNumber,
+          };
 
-            existingCheckCodes.push({
-              checkCode: response.data.res.info?.checkCode,
-            });
+          existingCheckCodes.push({
+            checkCode: response.data.res.info?.checkCode,
+          });
 
-            if (editPrescSrvMode) {
-              updatePrescItem(
-                addedPrescItemData.serviceInterfaceName,
-                addedPrescItemData
-              );
-            } else {
-              setPrescriptionItemsData([
-                ...prescriptionItemsData,
-                addedPrescItemData,
-              ]);
-            }
-
-            // reset
-            $("#srvSearchInput").val("");
-            ActiveSrvName = null;
-            $("#QtyInput").val("1");
-            $("#eprscItemDescription").val("");
-            setSelectedConsumption(null);
-            setSelectedConsumptionInstruction(null);
-            setSelectedNOPeriod(null);
-            activeSearch();
-          } else if (response.data.res.status === 409) {
-            WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
+          if (editPrescSrvMode) {
+            updatePrescItem(
+              addedPrescItemData.serviceInterfaceName,
+              addedPrescItemData
+            );
           } else {
-            ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+            setPrescriptionItemsData([
+              ...prescriptionItemsData,
+              addedPrescItemData,
+            ]);
           }
-          setIsLoading(false);
-          setSearchFromInput(true);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsLoading(false);
-          if (err.response) {
-            ErrorAlert("خطا", err.response.data.resMessage);
-          } else {
-            ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-          }
-        });
-    }
+
+          // reset
+          activeSearch();
+        } else if (response.data.res.status === 409) {
+          WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
+        } else {
+          ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+          displayToastMessages(response.data.res.info.message.snackMessage, toast, null);
+        }
+        setIsLoading(false);
+        setSearchFromInput(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        if (err.response) {
+          ErrorAlert("خطا", err.response.data.resMessage);
+        } else {
+          ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+        }
+      });
   };
 
   // Delete Service
@@ -464,13 +451,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         .post(url, data)
         .then((response) => {
           response.data.info.subscriptionInfos.map((x, index) => {
-            {
-              response.data.info.subscriptionInfos[index].salamatPresc = 1;
-              // index !== 0 &&
-              //   existingCheckCodes.push({
-              //     checkCode: x.checkCode,
-              //   });
-            }
+            response.data.info.subscriptionInfos[index].salamatPresc = 1;
           });
           setPrescriptionItemsData(response.data.info.subscriptionInfos);
           setPrescDataIsLoading(false);
@@ -550,7 +531,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
         ...prescriptionItemsData.slice(index + 1),
       ]);
     }
-
     setEditPrescSrvMode(false);
   };
 
@@ -560,8 +540,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     let url = "BimehSalamat";
     let data = {
-      CenterID: ClinicID,
       SavePresc: 1,
+      CenterID: ClinicID,
       SamadCode: SamadCode ? SamadCode : ActiveSamadCode,
       CitizenSessionId,
       otherServices: existingCheckCodes,
@@ -573,8 +553,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     } else {
       url += "/PrescriptionSave";
     }
-
-    console.log({ url, data });
 
     axiosClient
       .post(url, data)
@@ -631,9 +609,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${
-                trackingCode ? "با کد رهگیری : " + trackingCode : ""
-              }
+              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
+                }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,

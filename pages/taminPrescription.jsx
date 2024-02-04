@@ -13,6 +13,7 @@ import {
   TaminPrescType,
   TaminParaServicesTypeList,
 } from "class/taminPrescriptionData";
+import { taminPrescItemCreator } from "utils/taminPrescCreator"
 
 const getDrugInstructionsList = async () => {
   let url = "TaminEprsc/DrugInstruction";
@@ -304,103 +305,13 @@ const TaminPrescription = ({
     $("#srvSearchInput").prop("readonly", true);
   };
 
-  // create prescItem
-  const prescItemCreator = async (
-    prescId,
-    Instruction,
-    Amount,
-    SrvCode,
-    SrvName,
-    Qty,
-    PrscImg,
-    InstructionLbl,
-    AmountLbl,
-    PrscName,
-    SrvTypePrsc,
-    ParaCode
-  ) => {
-    if (prescId == 1 && Instruction == null) {
-      ErrorAlert("خطا", "در اقلام دارویی زمان مصرف باید انتخاب گردد");
-      return false;
-    } else if (prescId == 1 && Amount == null) {
-      ErrorAlert("خطا", "در اقلام دارویی  تعداد در وعده باید انتخاب گردد");
-      return false;
-    } else {
-      if (SrvCode == null || SrvName == null) {
-        ErrorAlert("خطا", "خدمتی انتخاب نشده است");
-        return false;
-      } else {
-        let prescItems = {
-          SrvName: SrvName,
-          SrvCode: SrvCode,
-          Img: PrscImg,
-          Qty: $("#QtyInput").val(),
-          DrugInstruction: InstructionLbl,
-          TimesADay: AmountLbl,
-          PrescType: PrscName,
-          prescId,
-        };
-
-        let prescData = null;
-        if (prescId == 1) {
-          prescData = {
-            srvId: {
-              srvType: {
-                srvType: SrvTypePrsc,
-              },
-              srvCode: SrvCode,
-            },
-            srvQty: parseInt($("#QtyInput").val()),
-            timesAday: {
-              drugAmntId: Amount,
-            },
-            repeat: null,
-            drugInstruction: {
-              drugInstId: Instruction,
-            },
-            dose: "",
-          };
-        } else {
-          let parTarefGrp = null;
-          if (ParaCode === undefined) {
-            parTarefGrp = null;
-          } else {
-            parTarefGrp = {
-              parGrpCode: ParaCode,
-            };
-          }
-
-          prescData = {
-            srvId: {
-              srvType: {
-                srvType: SrvTypePrsc,
-              },
-              srvCode: SrvCode,
-              parTarefGrp: parTarefGrp,
-            },
-            srvQty: parseInt($("#QtyInput").val()),
-          };
-        }
-
-        if (
-          addPrescriptionitems.length > 0 &&
-          addPrescriptionitems.find(({ srvId }) => srvId.srvCode === SrvCode)
-        ) {
-          ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
-          return false;
-        }
-        return { prescData, prescItems };
-      }
-    }
-  };
-
   // Add TaminSrvItem to the List
   const FuAddToListItem = async (e) => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
 
-    let { prescData, prescItems } = await prescItemCreator(
+    let { prescData, prescItems } = await taminPrescItemCreator(
       ActivePrescTypeID,
       SelectedInstruction,
       SelectedAmount,
@@ -412,7 +323,8 @@ const TaminPrescription = ({
       SelectedAmountLbl,
       ActivePrescName,
       ActiveSrvTypePrsc,
-      ActiveParaCode
+      ActiveParaCode,
+      addPrescriptionitems
     );
 
     if (prescData) {
@@ -435,29 +347,32 @@ const TaminPrescription = ({
     setSelectedInstructionLbl(null);
   };
 
+  // Delete Service
+
   // Registeration
   const registerEpresc = async (visit) => {
+    let url = "TaminEprsc/PrescriptionAdd";
+    let data = {
+      CenterID: ClinicID,
+      NID: ActiveNID,
+      PMN: patientInfo.Tel,
+      Comment: $("#eprscItemDescription").val(),
+      PatientID: ActivePatientID,
+    }
+
     if (visit === 1) {
       setVisitRegIsLoading(true);
-      let url = "TaminEprsc/PrescriptionAdd";
-      let data = {
-        CenterID: ClinicID,
-        NID: ActiveNID,
-        PMN: patientInfo.Tel,
+      data = {
+        ...data,
         PTI: 3,
-        Comment: $("#eprscItemDescription").val(),
         note: [],
         SrvNames: [],
-        prescTypeName: "ویزیت",
-        PatientID: ActivePatientID,
-      };
-
-      console.log({ data });
+        prescTypeName: "ویزیت"
+      }
 
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
           setVisitRegIsLoading(false);
 
           if (response.data.res.trackingCode !== null) {
@@ -476,6 +391,7 @@ const TaminPrescription = ({
                 router.push("/taminPrescRecords");
               },
             });
+
           } else if (response.data.res.error_Msg == "نسخه تکراری است") {
             WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
           } else if (ActiveNID === undefined) {
@@ -490,20 +406,13 @@ const TaminPrescription = ({
     } else {
       setSaveRegIsLoading(true);
 
-      let url = "TaminEprsc/PrescriptionAdd";
-      let data = {
-        CenterID: ClinicID,
-        NID: ActiveNID,
-        PMN: patientInfo.Tel,
+      data = {
+        ...data,
         PTI: ActivePrescTypeID,
-        Comment: $("#eprscItemDescription").val(),
         note: addPrescriptionitems,
         SrvNames: visitPrescriptionData,
         prescTypeName: ActivePrescName,
-        PatientID: ActivePatientID,
-      };
-
-      console.log({ data });
+      }
 
       axiosClient
         .post(url, data)
@@ -540,10 +449,6 @@ const TaminPrescription = ({
         });
     }
   };
-
-  // useEffect(() => {
-  //   console.log({ prescriptionItemsData });
-  // }, [prescriptionItemsData]);
 
   useEffect(() => {
     setShowBirthDigitsAlert(false);
