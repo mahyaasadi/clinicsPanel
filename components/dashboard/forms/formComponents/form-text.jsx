@@ -1,7 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
 const FormText = ({ data, defaultValue, disabled }) => {
-  console.log({ defaultValue });
   return (
     <>
       <div className={data.className.replace("form-control", "") + " mt-3"}>

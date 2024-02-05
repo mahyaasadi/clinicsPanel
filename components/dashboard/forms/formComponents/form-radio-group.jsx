@@ -7,7 +7,7 @@ const FormRadioGroup = ({ data }) => {
 
   const onChangeRadio = (e) => {
     setSelectedOption(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert } from "class/AlertManage"
+import { ErrorAlert } from "class/AlertManage";
 import SearchedDiseasesItems from "@/components/dashboard/patientsArchives/patientFile/diseaseRecords/searchedDiseasesItems";
 
 let ActiveDiseaseName,
@@ -42,7 +42,6 @@ const DiseaseRecordModal = ({
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data) {
           setSearchedDiseases(response.data);
           $("#DiseaseSearchDiv").show();
@@ -108,13 +107,9 @@ const DiseaseRecordModal = ({
       DiseaseID: ActiveDiseaseID,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         addDisease(response.data);
 
         // Reset;

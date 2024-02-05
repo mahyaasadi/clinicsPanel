@@ -3,7 +3,6 @@ import SingleDatePicker from "components/commonComponents/datepicker/singleDateP
 import { Tooltip } from "primereact/tooltip";
 
 const FormDate = ({ data, defaultValue, disabled }) => {
-  // console.log({ defaultValue });
   const [date, setDate] = useState(null);
 
   return (

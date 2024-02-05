@@ -7,7 +7,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { convertDateFormat } from "utils/convertDateFormat";
 
-const TaminPrescRecordsList = ({ data }) => {
+const TaminPrescRecordsList = ({ data, prepareDelete }) => {
   const columns = [
     {
       name: "نوع نسخه",
@@ -46,33 +46,31 @@ const TaminPrescRecordsList = ({ data }) => {
       sortable: true,
       cell: (row) => (
         <div className="actions d-flex gap-1">
-          <Link
+          <button
             className="btn btn-sm btn-outline-danger d-flex align-items-center justify-center"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="حذف"
-            // onClick={() =>
-            //   prepareDelete(row.head_EPRSC_ID, row._id, row.CenterID)
-            // }
-            href={{
-              pathname: "/taminPrescription",
-              query: {
-                id: row.head_EPRSC_ID,
-                pid: row.NID,
-                prId: row._id,
-                centerID: row.CenterID,
-              },
-            }}
+            onClick={() => prepareDelete(row.head_EPRSC_ID, row._id)}
+            // href={{
+            //   pathname: "/taminPrescription",
+            //   query: {
+            //     headID: row.head_EPRSC_ID,
+            //     pid: row.NID,
+            //     prId: row._id,
+            //     // centerID: row.CenterID,
+            //   },
+            // }}
           >
             <FeatherIcon
               icon="trash-2"
               style={{ width: "16px", height: "16px" }}
             />
-          </Link>
+          </button>
           <Link
             href={{
               pathname: "/taminPrescription",
-              query: { id: row.head_EPRSC_ID, pid: row.NID, prId: row._id },
+              query: { headID: row.head_EPRSC_ID, pid: row.NID, prId: row._id },
             }}
             className="btn btn-sm btn-outline-primary btn-border-left editBtn d-flex align-items-center justify-center"
             data-pr-position="top"

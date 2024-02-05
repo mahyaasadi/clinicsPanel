@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import ParaServicesDropdown from "./paraServicesDropdown";
@@ -26,6 +27,10 @@ const PrescriptionCard = ({
   searchTaminSrv,
   FuAddToListItem,
   registerEpresc,
+  editSrvMode,
+  setEditSrvMode,
+  editSrvData,
+  setEditSrvData,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -67,6 +72,34 @@ const PrescriptionCard = ({
     }
   };
 
+  const editDrugInstructionData = drugInstructionList.find(
+    (x) => x.label == editSrvData.DrugInstruction
+  );
+
+  const editDrugAmountData = drugAmountList.find(
+    (x) => x.label == editSrvData.TimesADay
+  );
+
+  const handleCancel = () => {
+    setEditSrvMode(false);
+    setEditSrvData([]);
+
+    setSelectedInstruction(editDrugInstructionData?.value);
+    setSelectedAmount(editDrugAmountData?.value);
+    $("#srvSearchInput").val(editSrvData?.SrvName);
+    $("#QtyInput").val("1");
+  };
+
+  useEffect(() => {
+    if (editDrugInstructionData && editDrugAmountData) {
+      FUSelectDrugAmount(editDrugAmountData.label);
+      FUSelectInstruction(editDrugInstructionData.label);
+      handleCancel();
+      $("#QtyInput").val(editSrvData.Qty);
+      setEditSrvMode(true);
+    }
+  }, [editDrugAmountData, editDrugInstructionData]);
+
   return (
     <>
       <div className="card presCard">
@@ -76,9 +109,9 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-              // onClick={openFavModal}
+                // onClick={openFavModal}
               >
-                نسخه های پرمصرف
+                خدمات پرمصرف
               </button>
 
               {!visitRegIsLoading ? (
@@ -139,7 +172,7 @@ const PrescriptionCard = ({
                   type="hidden"
                   name="srvCode"
                   id="srvCode"
-                // value={editSrvData?.SrvCode}
+                  value={editSrvData?.SrvCode}
                 />
 
                 <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
@@ -150,6 +183,7 @@ const PrescriptionCard = ({
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
                   onKeyUp={handleSearchKeyUp}
+                  value={editSrvData?.SrvName}
                 />
 
                 {/* paraClinic */}
@@ -211,7 +245,7 @@ const PrescriptionCard = ({
               </div>
             </form>
 
-            <div className="d-flex align-items-center gap-1 media-flex-column flex-wrap row">
+            <div className="align-items-center gap-1 media-flex-column row">
               <div className="col media-w-100">
                 <label className="lblAbs margin-top-left font-12">تعداد</label>
                 <div className="row">
@@ -231,7 +265,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto">
@@ -277,21 +311,21 @@ const PrescriptionCard = ({
                 <label className="lblAbs font-12">توضیحات</label>
                 <input
                   type="text"
-                  className="form-control rounded padding-right-2"
+                  className="form-control rounded padding-right-2 height-40"
                   id="eprscItemDescription"
                 />
               </div>
 
               <div className="col-md-3 media-w-100">
-                {/* {!srvEditMode ? ( */}
-                <button
-                  className="btn rounded w-100 addToListBtn font-12"
-                  onClick={FuAddToListItem}
-                >
-                  اضافه به لیست
-                </button>
-                {/* // ) : ( */}
-                {/* <div className="d-flex gap-1">
+                {!editSrvMode ? (
+                  <button
+                    className="btn rounded w-100 addToListBtn font-12"
+                    onClick={FuAddToListItem}
+                  >
+                    اضافه به لیست
+                  </button>
+                ) : (
+                  <div className="d-flex gap-1">
                     <button
                       className="btn rounded w-100 addToListBtn font-12"
                       onClick={FuAddToListItem}
@@ -299,13 +333,13 @@ const PrescriptionCard = ({
                       ثبت تغییرات
                     </button>
                     <button
-                      className="btn btn-sm btn-outline-dark rounded w-100  font-12"
+                      className="btn btn-sm btn-outline-dark rounded w-100 font-12"
                       onClick={handleCancel}
                     >
                       انصراف
                     </button>
-                  </div> */}
-                {/* // )} */}
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -312,8 +312,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", true);
   };
 
-
-
   // Add Services To List
   const FUAddToListItem = async (e) => {
     e.preventDefault();
@@ -353,6 +351,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .post(url, prescData)
       .then((response) => {
         console.log(response.data);
+        
         if (response.data.res.info?.checkCode) {
           let addedPrescItemData = {
             serviceInterfaceName: $("#srvSearchInput").val(),

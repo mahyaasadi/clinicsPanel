@@ -70,7 +70,6 @@ const PrescriptionCard = ({
 
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
-    // console.log({ selectedValue });
 
     if (
       ActiveSrvShape === "T" ||
@@ -263,7 +262,7 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                    // value={editSrvData?.Qty}
+                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto d-flex align-items-center">
@@ -304,8 +303,8 @@ const PrescriptionCard = ({
                   onChange={handleDropdownChange}
                   options={
                     ActiveSrvShape === "T" ||
-                      ActiveSrvShape === "C" ||
-                      ActiveSrvShape === "R"
+                    ActiveSrvShape === "C" ||
+                    ActiveSrvShape === "R"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }

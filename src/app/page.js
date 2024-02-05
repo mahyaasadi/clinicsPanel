@@ -36,7 +36,6 @@ export default function Page() {
     await axiosClient
       .post(url, data)
       .then(async function (response) {
-        // console.log(response.data);
         const loginRes = response.data;
         let in24Hours = 24 * 60 * 60;
 
@@ -46,8 +45,8 @@ export default function Page() {
 
         setIsLoading(false);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
         setIsLoading(false);
         error.message == "Network Error"
           ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
@@ -65,7 +64,6 @@ export default function Page() {
               alt="login-banner"
               unoptimized={true}
               priority={true}
-            // height="800"
             />
           </div>
         </div>
@@ -114,8 +112,9 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                          className={`fa toggle-password" ${
+                            eye ? "fa-eye-slash" : "fa-eye"
+                          }`}
                         />
                       </div>
                     )}

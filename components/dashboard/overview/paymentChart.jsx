@@ -84,27 +84,46 @@
 // export default PaymentChart;
 
 import { useState, useEffect } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 const PaymentChart = ({ data, labels }) => {
   const [chartData, setChartData] = useState([]);
 
   const RADIAN = Math.PI / 180;
 
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, index }) => {
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    index,
+  }) => {
     const entry = chartData[index];
-    console.log({ entry });
     const radius = innerRadius + (outerRadius - innerRadius) * 0.85;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy - 6.65 + radius * Math.sin(-midAngle * RADIAN);
 
     return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" className="text-center">
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+        className="text-center"
+      >
         {entry.value.toLocaleString()}
       </text>
     );
   };
-
 
   useEffect(() => {
     // Check if data array is empty
@@ -115,10 +134,10 @@ const PaymentChart = ({ data, labels }) => {
     const pieData = isEmptyData
       ? defaultData
       : data.map((value, index) => ({
-        name: labels[index] || `Category ${index + 1}`,
-        value,
-        fill: defaultColors[index] || "#999999",
-      }));
+          name: labels[index] || `Category ${index + 1}`,
+          value,
+          fill: defaultColors[index] || "#999999",
+        }));
 
     setChartData(pieData);
   }, [labels, data]);

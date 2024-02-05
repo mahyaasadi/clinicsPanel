@@ -3,8 +3,6 @@ import FeatherIcon from "feather-icons-react";
 import dynamic from "next/dynamic";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
-  // console.log({ formValues });
-
   const handlePrint = () => window.print();
   return (
     <>

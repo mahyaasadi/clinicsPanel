@@ -38,7 +38,7 @@ const ImageViewer = ({ images, removeFunc }) => {
       {images.map((item, index) => (
         <div
           key={index}
-          className="border-gray articleCurrentImg card mb-1 mt-3 d-flex alifn-items-center justify-center"
+          className="border-gray articleCurrentImg card mb-1 mt-3 d-flex alifn-items-center justify-center ServiceNav"
         >
           <img
             src={`https://irannobat.ir/images/PatientNote/${item.Note}`}

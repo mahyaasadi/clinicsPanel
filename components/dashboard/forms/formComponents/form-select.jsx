@@ -2,15 +2,13 @@ import { Tooltip } from "primereact/tooltip";
 import SelectField from "components/commonComponents/selectfield";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
-let findSelectedOption = null
+let findSelectedOption = null;
 const FormSelect = ({ data, defaultValue, disabled }) => {
-
-  console.log({ defaultValue, data });
   let selectedOption = null;
   const FUSelectOption = (value) => (selectedOption = value);
 
   if (data) {
-    findSelectedOption = data.values.find((x) => x.value == defaultValue)
+    findSelectedOption = data.values.find((x) => x.value == defaultValue);
   }
 
   return (

@@ -112,8 +112,6 @@ const CashDesk = ({ ClinicUser }) => {
       axiosClient
         .get(url)
         .then((response) => {
-          console.log("cashDeskReception", response.data);
-
           setReceptionList(response.data);
           if (response.data) getReceptionPatients(response.data);
           setTimeout(() => {

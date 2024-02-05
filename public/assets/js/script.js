@@ -212,12 +212,10 @@ Version      : 1.3
   // Small Sidebar
 
   $(document).on("click", "#toggle_btn", function () {
-    // console.log("object");
     // if ($("body").hasClass("mini-sidebar")) {
     //   $("body").removeClass("mini-sidebar");
     //   $(".subdrop + ul").slideDown();
     // } else {
-    //   console.log("Add");
     //   $("body").addClass("mini-sidebar");
     //   $(".subdrop + ul").slideUp();
     // }

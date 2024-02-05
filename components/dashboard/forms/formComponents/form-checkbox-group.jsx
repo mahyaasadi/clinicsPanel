@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 
 const FormCheckbox = ({ data, disabled, defaultValue, defaultSelected }) => {
-  console.log({ data });
-  console.log({ defaultValue, defaultSelected });
-
   if (defaultSelected) {
     console.log(defaultSelected[data.name]);
   }

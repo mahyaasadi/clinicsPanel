@@ -316,8 +316,8 @@ const Appointment = ({ ClinicUser }) => {
         }
         setPatientStatIsLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
         setPatientStatIsLoading(false);
         ErrorAlert("خطا", "دریافت اطلاعات بیمار با خطا مواجه گردید!");
       });

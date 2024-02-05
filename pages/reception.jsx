@@ -184,12 +184,9 @@ const Reception = ({ ClinicUser }) => {
     data.CenterID = ClinicID;
     data.Clinic = true;
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data === false) {
           ErrorAlert(
             "خطا",

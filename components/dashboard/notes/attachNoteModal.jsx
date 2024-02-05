@@ -19,12 +19,9 @@ const AttachNoteModal = ({
       private: true,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         AddNote(response.data);
       })
       .catch((err) => {

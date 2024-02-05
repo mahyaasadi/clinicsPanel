@@ -3,17 +3,23 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert, TimerAlert } from "class/AlertManage";
+import { taminPrescItemCreator } from "utils/taminPrescItemCreator";
 import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
+import GetPinInput from "components/commonComponents/pinInput";
 import {
   TaminPrescType,
   TaminParaServicesTypeList,
 } from "class/taminPrescriptionData";
-import { taminPrescItemCreator } from "utils/taminPrescCreator"
+import {
+  ErrorAlert,
+  SuccessAlert,
+  WarningAlert,
+  TimerAlert,
+} from "class/AlertManage";
 
 const getDrugInstructionsList = async () => {
   let url = "TaminEprsc/DrugInstruction";
@@ -67,7 +73,12 @@ let ClinicID,
 // Services
 let ActiveSrvCode,
   ActiveSrvName,
-  ActiveParaCode = null;
+  ActiveParaCode,
+  ActiveEditSrvCode = null;
+
+// PrescInfo
+let ActivePrescHeadID,
+  ActivePrescID = null;
 
 let addPrescriptionitems = [];
 let visitPrescriptionData = [];
@@ -102,9 +113,14 @@ const TaminPrescription = ({
   const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
 
+  const [editSrvMode, setEditSrvMode] = useState(false);
+  const [editSrvData, setEditSrvData] = useState([]);
+
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
-    e.preventDefault();
+    {
+      e && e.preventDefault();
+    }
     setPatientStatIsLoading(true);
 
     let formData = new FormData(e.target);
@@ -121,7 +137,6 @@ const TaminPrescription = ({
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data.user);
         $("#patientNID").prop("readonly", true);
 
         if (response.data.error == "1") {
@@ -248,7 +263,7 @@ const TaminPrescription = ({
   const searchTaminSrv = (e) => {
     e.preventDefault();
 
-    if (ActiveSrvCode == null) {
+    if (ActiveSrvCode == null || editSrvMode) {
       setSearchIsLoading(true);
 
       let formData = new FormData(e.target);
@@ -258,8 +273,6 @@ const TaminPrescription = ({
         Text: formProps.srvSearchInput.toUpperCase(),
         srvType: ActiveSrvTypeID,
       };
-
-      console.log({ data });
 
       axiosClient
         .post("TaminServices/SearchSrv", data)
@@ -290,6 +303,9 @@ const TaminPrescription = ({
     $("#srvSearchInput").prop("readonly", false);
     $("#BtnServiceSearch").show();
     $("#srvSearchInput").focus();
+    $("#QtyInput").val("1");
+    setSelectedAmount(null);
+    setSelectedInstruction(null);
   };
 
   const selectSearchedService = (name, srvCode, type, paraTarefCode) => {
@@ -303,6 +319,142 @@ const TaminPrescription = ({
     $("#BtnActiveSearch").show();
     $(".SearchDiv").hide();
     $("#srvSearchInput").prop("readonly", true);
+  };
+
+  // Edit Service
+  const updateItem = (id, newArr) => {
+    let index = prescriptionItemsData.findIndex((x) => x.SrvCode === id);
+    let g = prescriptionItemsData[index];
+    g = newArr;
+
+    if (index === -1) {
+      console.log("no match");
+    } else {
+      setTimeout(() => {
+        setPrescriptionItemsData([
+          ...prescriptionItemsData.slice(0, index),
+          g,
+          ...prescriptionItemsData.slice(index + 1),
+        ]);
+      }, 5);
+    }
+  };
+
+  const handleEditService = (srvData) => {
+    setEditSrvMode(true);
+    setEditSrvData(srvData);
+
+    ActiveSrvCode = srvData.SrvCode;
+    ActiveSrvName = srvData.SrvName;
+    ActiveEditSrvCode = srvData.SrvCode;
+  };
+
+  // Delete Service
+  const DeleteService = (id, prescId, prescItems) => {
+    addPrescriptionitems = addPrescriptionitems.filter(
+      (a) => a.srvId.srvCode !== id
+    );
+
+    if (prescItems) updateItem(id, prescItems);
+  };
+
+  // pinInput modal
+  const [showPinModal, setShowPinModal] = useState(false);
+  const closePinModal = () => setShowPinModal(false);
+  const [otpCode, setOtpCode] = useState(null);
+
+  const getPinInputValue = (code) => {
+    // console.log({ code });
+
+    if (ActivePrescHeadID) {
+      setShowPinModal(true);
+    }
+
+    // registerEpresc(0, code);
+    // deletePresc(code);
+    setOtpCode(code);
+  };
+
+  // Delete Presc
+  // const deletePresc = (code) => {
+  //   getOneEprscData();
+
+  //   let url = "TaminEprsc/PrescriptionDelete";
+  //   let data = {
+  //     CenterID: ClinicID,
+  //     headerID: ActivePrescHeadID,
+  //     prID: ActivePrescID,
+  //     otpCode: code,
+  //   };
+
+  //   console.log({ data });
+
+  //   // axiosClient
+  //   //   .post(url, data)
+  //   //   .then((response) => {
+  //   //     console.log(response.data);
+  //   //     // setPrescriptionsList(prescriptionsList.filter((a) => a._id !== prID));
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.error(error);
+  //   //   });
+  // };
+
+  const getEditPrescData = async (obj) => {
+    let arr = [];
+    for (let i = 0; i < obj.data.length; i++) {
+      const presc = obj.data[i];
+      let drugAmntId = presc.drugAmntId;
+      let drugAmntLbl = drugAmountList.find((o) => o.value === drugAmntId);
+
+      if (drugAmntLbl) drugAmntLbl = drugAmntLbl.label;
+
+      let drugInstId = presc.drugInstId;
+      let InstructionLbl = drugInstructionList.find(
+        (o) => o.value === drugInstId
+      );
+
+      if (InstructionLbl) InstructionLbl = InstructionLbl.label;
+
+      let { prescData, prescItems } = await taminPrescItemCreator(
+        presc.srvId.srvType.prescTypeId,
+        drugInstId,
+        drugAmntId,
+        presc.srvId.srvCode,
+        presc.srvId.srvName,
+        presc.srvQty,
+        "",
+        InstructionLbl,
+        drugAmntLbl,
+        presc.srvId.srvType.srvTypeDes,
+        presc.srvId.srvType.srvType,
+        presc.srvId.parTarefGrp?.parGrpCode
+      );
+
+      if (prescData) {
+        addPrescriptionitems.push(prescData);
+        arr.push(prescItems);
+      }
+    }
+    setPrescriptionItemsData(arr);
+  };
+
+  // get prescription data by headId to edit
+  const getOneEprscData = () => {
+    let url = "TaminEprsc/GetEpresc";
+    let data = {
+      CenterID: ClinicID,
+      headerID: ActivePrescHeadID,
+    };
+
+    if (ActivePrescHeadID) {
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          getEditPrescData(response.data);
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   // Add TaminSrvItem to the List
@@ -323,9 +475,22 @@ const TaminPrescription = ({
       SelectedAmountLbl,
       ActivePrescName,
       ActiveSrvTypePrsc,
-      ActiveParaCode,
-      addPrescriptionitems
+      ActiveParaCode
     );
+
+    if (!editSrvMode) {
+      if (
+        addPrescriptionitems.length > 0 &&
+        addPrescriptionitems.find(({ srvId }) => srvId.srvCode === SrvCode)
+      ) {
+        ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+        return false;
+      }
+    } else {
+      DeleteService(ActiveEditSrvCode, ActivePrescTypeID, prescItems);
+      setEditSrvMode(false);
+      ActiveSrvCode = null;
+    }
 
     if (prescData) {
       let visitPrescData = {
@@ -347,8 +512,6 @@ const TaminPrescription = ({
     setSelectedInstructionLbl(null);
   };
 
-  // Delete Service
-
   // Registeration
   const registerEpresc = async (visit) => {
     let url = "TaminEprsc/PrescriptionAdd";
@@ -358,7 +521,7 @@ const TaminPrescription = ({
       PMN: patientInfo.Tel,
       Comment: $("#eprscItemDescription").val(),
       PatientID: ActivePatientID,
-    }
+    };
 
     if (visit === 1) {
       setVisitRegIsLoading(true);
@@ -367,8 +530,8 @@ const TaminPrescription = ({
         PTI: 3,
         note: [],
         SrvNames: [],
-        prescTypeName: "ویزیت"
-      }
+        prescTypeName: "ویزیت",
+      };
 
       axiosClient
         .post(url, data)
@@ -391,7 +554,6 @@ const TaminPrescription = ({
                 router.push("/taminPrescRecords");
               },
             });
-
           } else if (response.data.res.error_Msg == "نسخه تکراری است") {
             WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
           } else if (ActiveNID === undefined) {
@@ -412,43 +574,73 @@ const TaminPrescription = ({
         note: addPrescriptionitems,
         SrvNames: visitPrescriptionData,
         prescTypeName: ActivePrescName,
+      };
+
+      if (ActivePrescHeadID) {
+        setShowPinModal(true);
+
+        // if (otpCode) {
+        url = "TaminEprsc/PrescriptionEdit";
+        data = {
+          ...data,
+          PrID: ActivePrescID,
+          headerID: ActivePrescHeadID,
+          otpCode: otpCode,
+        };
+
+        console.log({ data });
+        // }
       }
 
-      axiosClient
-        .post(url, data)
-        .then(async (response) => {
-          console.log(response.data);
-          setSaveRegIsLoading(false);
+      // axiosClient
+      //   .post(url, data)
+      //   .then(async (response) => {
+      //     setSaveRegIsLoading(false);
 
-          if (response.data.res.trackingCode !== null) {
-            const seconds = 5;
-            const timerInMillis = seconds * 1000;
+      //     if (response.data.res.trackingCode !== null) {
+      //       const seconds = 5;
+      //       const timerInMillis = seconds * 1000;
 
-            TimerAlert({
-              title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
-              html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-              timer: timerInMillis,
-              timerProgressBar: true,
-              cancelButton: {
-                text: "انصراف",
-              },
-              onConfirm: () => {
-                router.push("/taminPrescRecords");
-              },
-            });
-          } else if (response.data.res.error_Code !== null) {
-            ErrorAlert("خطا!", response.data.res.error_Msg);
-          } else if (response.data.res == null) {
-            ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setSaveRegIsLoading(false);
-          ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-        });
+      //       TimerAlert({
+      //         title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+      //         html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+      //         timer: timerInMillis,
+      //         timerProgressBar: true,
+      //         cancelButton: {
+      //           text: "انصراف",
+      //         },
+      //         onConfirm: () => {
+      //           router.push("/taminPrescRecords");
+      //         },
+      //       });
+      //     } else if (response.data.res.error_Code !== null) {
+      //       ErrorAlert("خطا!", response.data.res.error_Msg);
+      //     } else if (response.data.res == null) {
+      //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setSaveRegIsLoading(false);
+      //     ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
+      //   });
     }
   };
+
+  useEffect(() => {
+    ActivePrescHeadID = router.query.headID;
+    ActivePrescID = router.query.prId;
+    ActiveNID = router.query.pid;
+
+    if (ActivePrescHeadID) getOneEprscData();
+
+    setTimeout(() => {
+      if (ActiveNID) {
+        $("#patientNID").val(router.query.pid);
+        $("#frmPatientInfoBtnSubmit").click();
+      }
+    }, 1000);
+  }, [router.query]);
 
   useEffect(() => {
     setShowBirthDigitsAlert(false);
@@ -506,14 +698,31 @@ const TaminPrescription = ({
                 taminSrvSearchList={taminSrvSearchList}
                 FuAddToListItem={FuAddToListItem}
                 registerEpresc={registerEpresc}
+                editSrvMode={editSrvMode}
+                setEditSrvMode={setEditSrvMode}
+                editSrvData={editSrvData}
+                setEditSrvData={setEditSrvData}
               />
 
               <div className="prescList">
-                <AddToListItems data={prescriptionItemsData} />
+                <AddToListItems
+                  data={prescriptionItemsData}
+                  DeleteService={DeleteService}
+                  handleEditService={handleEditService}
+                  setPrescriptionItemsData={setPrescriptionItemsData}
+                />
               </div>
             </div>
           </div>
         </div>
+
+        {ActivePrescHeadID && showPinModal && (
+          <GetPinInput
+            show={showPinModal}
+            onHide={closePinModal}
+            getPinInputValue={getPinInputValue}
+          />
+        )}
 
         <AddNewPatient
           ClinicID={ClinicID}

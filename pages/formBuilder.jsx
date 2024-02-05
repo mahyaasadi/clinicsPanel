@@ -69,7 +69,6 @@ const FormBuilder = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        // console.log(response.data);
         setEditFormData(response.data);
         formData = response.data.formData[0];
 
