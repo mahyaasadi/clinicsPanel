@@ -7,22 +7,22 @@ const GetPinInput = ({ show, onHide, getPinInputValue }) => {
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">
-            تایید کد ارسال شده
+            کد ارسال شده را وارد نمایید
           </p>
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <form>
-          <div dir="ltr" className="">
+          <div dir="ltr">
             <PinInput
               length={6}
               initialValue=""
-              secret
-              secretDelay={800}
               type="numeric"
               inputMode="numeric"
               focus="true"
+              // secret
+              // secretDelay={800}
               // onChange={(value, index) => {}}
               onComplete={(value, index) => getPinInputValue(value)}
               autoSelect={true}
@@ -35,15 +35,6 @@ const GetPinInput = ({ show, onHide, getPinInputValue }) => {
               }}
             />
           </div>
-
-          {/* <div className="submit-section d-flex justify-center align-items-center">
-                <button
-                  type="submit"
-                  className="btn btn-sm btn-primary rounded btn-save font-13 "
-                >
-                  ثبت
-                </button>
-              </div> */}
         </form>
       </Modal.Body>
     </Modal>

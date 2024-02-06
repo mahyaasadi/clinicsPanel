@@ -40,7 +40,7 @@ const FormRadioGroup = ({ data }) => {
           <RadioButton
             key={index}
             id={option.value}
-            name={option.name}
+            name={data.name}
             value={option.value}
             onChange={onChangeRadio}
             checked={selectedOption === option.value}

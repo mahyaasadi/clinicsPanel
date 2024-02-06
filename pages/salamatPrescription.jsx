@@ -21,7 +21,7 @@ import {
   SuccessAlert,
   TimerAlert,
 } from "class/AlertManage";
-import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator"
+import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -330,14 +330,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
       $("#QtyInput").val(),
       $("#eprscItemDescription").val(),
       selectedConsumption?.toString(),
-      selectedConsumptionInstruction
-        ? selectedConsumptionInstruction
-        : null,
+      selectedConsumptionInstruction ? selectedConsumptionInstruction : null,
       selectedNOPeriod ? selectedNOPeriod.toString() : null,
       existingCheckCodes.length !== 0 ? existingCheckCodes : [],
       ActivePrescTypeID,
       setIsLoading
-    )
+    );
 
     let findConsumptionLbl = consumptionOptions.find(
       (x) => x.value === selectedConsumption
@@ -351,7 +349,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .post(url, prescData)
       .then((response) => {
         console.log(response.data);
-        
+
         if (response.data.res.info?.checkCode) {
           let addedPrescItemData = {
             serviceInterfaceName: $("#srvSearchInput").val(),
@@ -395,7 +393,11 @@ const SalamatPrescription = ({ ClinicUser }) => {
           WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
         } else {
           ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-          displayToastMessages(response.data.res.info.message.snackMessage, toast, null);
+          displayToastMessages(
+            response.data.res.info.message.snackMessage,
+            toast,
+            null
+          );
         }
         setIsLoading(false);
         setSearchFromInput(true);
@@ -608,8 +610,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
-                }
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,

@@ -116,6 +116,8 @@ const TaminPrescription = ({
   const [editSrvMode, setEditSrvMode] = useState(false);
   const [editSrvData, setEditSrvData] = useState([]);
 
+  const [prescDataIsLoading, setPrescDataIsLoading] = useState(false);
+
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
     {
@@ -361,44 +363,10 @@ const TaminPrescription = ({
   // pinInput modal
   const [showPinModal, setShowPinModal] = useState(false);
   const closePinModal = () => setShowPinModal(false);
-  const [otpCode, setOtpCode] = useState(null);
 
   const getPinInputValue = (code) => {
-    // console.log({ code });
-
-    if (ActivePrescHeadID) {
-      setShowPinModal(true);
-    }
-
-    // registerEpresc(0, code);
-    // deletePresc(code);
-    setOtpCode(code);
+    if (ActivePrescHeadID && code) registerEpresc(0, code);
   };
-
-  // Delete Presc
-  // const deletePresc = (code) => {
-  //   getOneEprscData();
-
-  //   let url = "TaminEprsc/PrescriptionDelete";
-  //   let data = {
-  //     CenterID: ClinicID,
-  //     headerID: ActivePrescHeadID,
-  //     prID: ActivePrescID,
-  //     otpCode: code,
-  //   };
-
-  //   console.log({ data });
-
-  //   // axiosClient
-  //   //   .post(url, data)
-  //   //   .then((response) => {
-  //   //     console.log(response.data);
-  //   //     // setPrescriptionsList(prescriptionsList.filter((a) => a._id !== prID));
-  //   //   })
-  //   //   .catch((error) => {
-  //   //     console.error(error);
-  //   //   });
-  // };
 
   const getEditPrescData = async (obj) => {
     let arr = [];
@@ -441,6 +409,8 @@ const TaminPrescription = ({
 
   // get prescription data by headId to edit
   const getOneEprscData = () => {
+    setPrescDataIsLoading(true);
+
     let url = "TaminEprsc/GetEpresc";
     let data = {
       CenterID: ClinicID,
@@ -451,9 +421,14 @@ const TaminPrescription = ({
       axiosClient
         .post(url, data)
         .then((response) => {
+          // console.log(response.data);
           getEditPrescData(response.data);
+          setPrescDataIsLoading(false);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          setPrescDataIsLoading(false);
+        });
     }
   };
 
@@ -513,7 +488,7 @@ const TaminPrescription = ({
   };
 
   // Registeration
-  const registerEpresc = async (visit) => {
+  const registerEpresc = async (visit, otpCode) => {
     let url = "TaminEprsc/PrescriptionAdd";
     let data = {
       CenterID: ClinicID,
@@ -532,16 +507,13 @@ const TaminPrescription = ({
         SrvNames: [],
         prescTypeName: "ویزیت",
       };
-
       axiosClient
         .post(url, data)
         .then((response) => {
           setVisitRegIsLoading(false);
-
           if (response.data.res.trackingCode !== null) {
             const seconds = 5;
             const timerInMillis = seconds * 1000;
-
             TimerAlert({
               title: `ویزیت با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
               html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
@@ -576,20 +548,30 @@ const TaminPrescription = ({
         prescTypeName: ActivePrescName,
       };
 
+      // EditMode
       if (ActivePrescHeadID) {
-        setShowPinModal(true);
+        //   // Wait for the pin input
+        //   await new Promise((resolve) => {
+        //     const checkPinInterval = setInterval(() => {
+        //       if (otpCode) {
+        //         clearInterval(checkPinInterval);
+        //         resolve();
+        //       }
+        //     }, 500);
+        //   });
 
-        // if (otpCode) {
-        url = "TaminEprsc/PrescriptionEdit";
-        data = {
-          ...data,
-          PrID: ActivePrescID,
-          headerID: ActivePrescHeadID,
-          otpCode: otpCode,
-        };
+        if (otpCode) {
+          url = "TaminEprsc/PrescriptionEdit";
+          let dataToSend = {
+            ...data,
+            PrID: ActivePrescID,
+            headerID: ActivePrescHeadID,
+            otpCode: otpCode,
+          };
 
-        console.log({ data });
-        // }
+          console.log({ dataToSend });
+          setShowPinModal(false);
+        }
       }
 
       // axiosClient
@@ -702,6 +684,8 @@ const TaminPrescription = ({
                 setEditSrvMode={setEditSrvMode}
                 editSrvData={editSrvData}
                 setEditSrvData={setEditSrvData}
+                ActivePrescHeadID={ActivePrescHeadID}
+                setShowPinModal={setShowPinModal}
               />
 
               <div className="prescList">
@@ -710,6 +694,7 @@ const TaminPrescription = ({
                   DeleteService={DeleteService}
                   handleEditService={handleEditService}
                   setPrescriptionItemsData={setPrescriptionItemsData}
+                  prescDataIsLoading={prescDataIsLoading}
                 />
               </div>
             </div>

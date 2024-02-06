@@ -351,6 +351,10 @@ textarea.form-control {
   height: 40px !important;
 }
 
+.height-45 {
+  min-height: 45rem !important;
+}
+
 .gap-10 {
   gap: 10%;
 }
@@ -3033,17 +3037,28 @@ button.bg-danger:hover {
 
 .content-header .header-left .logo {
   display: inline-block;
-  /* line-height: 60px; */
-  height: 25px;
+  line-height: 60px;
+  height: 60px;
   margin-right: 3rem;
   font-family: B Sina;
   font-size: 22px;
 }
 
+
+.powerClinic {
+  font-size: 14px;
+  position: absolute;
+  top: -10px;
+  right: 70px;
+}
+
 .content-header .header-left .logo img {
-  max-height: 45px;
-  /* width: auto; */
+  max-height: 63px;
+  /* width: auto;  */
   max-width: 200px;
+  /* height: 50px;
+  width: auto;
+  margin-top: 5px; */
 }
 
 .header-left .logo.logo-small {
@@ -11473,12 +11488,17 @@ canvas {
 }
 
 /* ------- */
-.recharts-pie-labels {
-  margin-left: 2rem !important;
-}
-
 .paymentModalBody {
   height: 25rem;
   overflow-y: auto;
   direction: ltr;
+}
+
+.recharts-legend-item {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.recharts-legend-item-text {
+  margin-right: 5px !important;
 }

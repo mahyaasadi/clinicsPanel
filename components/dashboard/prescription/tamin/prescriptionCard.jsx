@@ -31,6 +31,8 @@ const PrescriptionCard = ({
   setEditSrvMode,
   editSrvData,
   setEditSrvData,
+  ActivePrescHeadID,
+  setShowPinModal,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -136,7 +138,11 @@ const PrescriptionCard = ({
               {!saveRegIsLoading ? (
                 <button
                   className="btn btn-primary border-radius font-13"
-                  onClick={() => registerEpresc(0)}
+                  onClick={() =>
+                    ActivePrescHeadID
+                      ? setShowPinModal(true)
+                      : registerEpresc(0)
+                  }
                 >
                   ثبت نسخه نهایی
                 </button>

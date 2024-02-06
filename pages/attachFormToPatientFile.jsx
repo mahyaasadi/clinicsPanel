@@ -123,7 +123,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     setFrmIsLoading(true);
 
     let formData = new FormData(e.target);
-
     const formProps = Object.fromEntries(formData);
 
     let url = "Form/addPatientForm";
@@ -135,6 +134,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       FormID: ActiveFormID,
       Values: formProps,
     };
+
+    console.log({ data });
 
     axiosClient
       .post(url, data)
@@ -194,9 +195,13 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
+    console.log({ data });
+
     axiosClient
       .put(url, data)
       .then((response) => {
+        console.log(response.data);
+
         SuccessAlert(
           "موفق",
           `ویرایش اطلاعات ${ActiveFormName} با موفقیت انجام گردید!`
@@ -244,7 +249,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
                 ActivePatientFormID ? editAttachedForm : attachFormToPatientFile
               }
             >
-              <div className="card p-4">
+              <div className="card p-4 height-45">
                 <FormPreviewInline
                   data={selectedFormData}
                   formValues={formValues}

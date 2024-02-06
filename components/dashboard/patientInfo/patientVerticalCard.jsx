@@ -23,7 +23,7 @@ const PatientVerticalCard = ({
   const handleCloseModal = () => setShowModal(false);
 
   let GenderType = "";
-  switch (data?.gender ? data.gender : data.Gender) {
+  switch (data?.gender ? data?.gender : data?.Gender) {
     case "M":
       GenderType = "مرد";
       break;
@@ -82,7 +82,7 @@ const PatientVerticalCard = ({
       .post(url, updatedInfo)
       .then((response) => {
         if (type === "Age") {
-          data.Age ? (data.Age = value) : (data.age = value);
+          data?.Age ? (data.Age = value) : (data.age = value);
         } else if (type === "Name") {
           data.Name = value;
         } else if (type === "Gender") {
@@ -204,14 +204,18 @@ const PatientVerticalCard = ({
                   ? data.Name
                     ? data.Name
                     : "-"
-                  : data?.name + " " + data?.lastName}
+                  : data?.name
+                  ? data?.name
+                  : "" + " " + data?.lastName
+                  ? data?.lastName
+                  : ""}
                 {taminPrescMode
                   ? data.Age
                     ? ", " + data.Age + " ساله"
                     : ""
                   : data?.age
-                    ? ", " + data?.age + " ساله"
-                    : ""}
+                  ? ", " + data?.age + " ساله"
+                  : ""}
               </div>
               <div className="PVCardjob">
                 {taminPrescMode
@@ -219,8 +223,8 @@ const PatientVerticalCard = ({
                     ? data.NationalID
                     : "-"
                   : data?.nationalNumber
-                    ? data?.nationalNumber
-                    : "-"}
+                  ? data?.nationalNumber
+                  : "-"}
               </div>
             </div>
           </div>
@@ -233,15 +237,15 @@ const PatientVerticalCard = ({
                     ? "تحت قرارداد بیمه می باشد"
                     : "تحت قرارداد بیمه نمی باشد"
                   : data?.isCovered
-                    ? "تحت قرارداد بیمه می باشد"
-                    : "تحت قرارداد بیمه نمی باشد"}
+                  ? "تحت قرارداد بیمه می باشد"
+                  : "تحت قرارداد بیمه نمی باشد"}
               </span>
               <span className="PVCardparameter">
                 {taminPrescMode
                   ? ""
                   : data?.isReferenceable
-                    ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
-                    : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
+                  ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
+                  : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
               </span>
             </div>
 
@@ -254,8 +258,8 @@ const PatientVerticalCard = ({
                       ? data.InsuranceName
                       : "مشخص نمی باشد"
                     : data?.productName
-                      ? data.productName
-                      : "مشخص نمی باشد"}
+                    ? data.productName
+                    : "مشخص نمی باشد"}
                 </div>
 
                 {taminPrescMode && (
@@ -301,7 +305,7 @@ const PatientVerticalCard = ({
                 {taminPrescMode
                   ? ""
                   : " پزشک خانواده : " +
-                  (data?.familyPhysician ? data?.familyPhysician : "-")}
+                    (data?.familyPhysician ? data?.familyPhysician : "-")}
               </span>
             </div>
           </div>

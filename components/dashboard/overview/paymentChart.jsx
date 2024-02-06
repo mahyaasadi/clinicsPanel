@@ -108,8 +108,8 @@ const PaymentChart = ({ data, labels }) => {
   }) => {
     const entry = chartData[index];
     const radius = innerRadius + (outerRadius - innerRadius) * 0.85;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy - 6.65 + radius * Math.sin(-midAngle * RADIAN);
+    const x = cx + 5 + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy - 3.5 + radius * Math.sin(-midAngle * RADIAN);
 
     return (
       <text
@@ -154,6 +154,7 @@ const PaymentChart = ({ data, labels }) => {
           outerRadius={120}
           fill="#8884d8"
           dataKey="value"
+          activeShape={false}
         >
           {chartData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.fill} />

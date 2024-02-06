@@ -23,10 +23,10 @@ const EditPatientInfoModal = ({
     handleClose();
   };
 
-  const defaultGanderValue = data?.Gender ? data.Gender : data.gender;
+  const defaultGanderValue = data?.Gender ? data?.Gender : data?.gender;
   let defaultGenderValueLbl = "";
-  if (data.Gender) {
-    switch (data.Gender) {
+  if (data?.Gender) {
+    switch (data?.Gender) {
       case "M":
         defaultGenderValueLbl = "مرد";
         break;
@@ -42,8 +42,8 @@ const EditPatientInfoModal = ({
     }
   }
 
-  if (data.gender) {
-    switch (data.gender) {
+  if (data?.gender) {
+    switch (data?.gender) {
       case "M":
         defaultGenderValueLbl = "مرد";
         break;
@@ -138,7 +138,7 @@ const EditPatientInfoModal = ({
                 className="rounded"
                 onChange={handleInputChange}
                 defaultValue={
-                  data?.Name ? data.Name : data.name + " " + data.lastName
+                  data?.Name ? data?.Name : data?.name + " " + data?.lastName
                 }
               />
             </Form.Group>
@@ -151,7 +151,7 @@ const EditPatientInfoModal = ({
                 type="text"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.Age ? data.Age : data.age}
+                defaultValue={data?.Age ? data?.Age : data?.age}
               />
             </Form.Group>
           </div>
@@ -181,7 +181,7 @@ const EditPatientInfoModal = ({
                 type="tel"
                 className="rounded"
                 onChange={handleInputChange}
-                defaultValue={data?.Tel ? data.Tel : data.cellPhoneNumber}
+                defaultValue={data?.Tel ? data?.Tel : data?.cellPhoneNumber}
               />
             </Form.Group>
           </div>
@@ -194,7 +194,7 @@ const EditPatientInfoModal = ({
                 className="rounded"
                 onChange={handleInputChange}
                 defaultValue={
-                  data?.NationalID ? data.NationalID : data.nationalNumber
+                  data?.NationalID ? data?.NationalID : data?.nationalNumber
                 }
               />
             </Form.Group>
