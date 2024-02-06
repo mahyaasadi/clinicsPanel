@@ -54,6 +54,13 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
+
+        JSON.parse(response.data.formData[0])?.map((x) => {
+          if (x.type === "checkbox-group")
+            checkboxFormsArr.push({ name: x.name });
+        });
+
         setSelectedFormData(JSON.parse(response.data.formData[0]));
 
         ActiveFormName = response.data.Name;
@@ -124,6 +131,24 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
+
+    dateFormsArr.map((x) => {
+      if ($("." + x.name).length > 0) {
+        let val = $("." + x.name)[0].value;
+        formProps[x.name] = val;
+      }
+    });
+
+    if (checkboxFormsArr.length > 0) {
+      console.log("object");
+      checkboxFormsArr.map((x) => {
+        let checkedArr = [];
+        $(`input:checkbox[name=${x.name}]:checked`).each(function () {
+          checkedArr.push($(this).val());
+        });
+        formProps[x.name] = checkedArr;
+      });
+    }
 
     let url = "Form/addPatientForm";
     let data = {

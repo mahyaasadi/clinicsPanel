@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 const FormCheckbox = ({ data, disabled, defaultValue, defaultSelected }) => {
+  console.log({ defaultValue });
   if (defaultSelected) {
     console.log(defaultSelected[data.name]);
   }
@@ -46,6 +47,7 @@ const FormCheckbox = ({ data, disabled, defaultValue, defaultSelected }) => {
         <label className="mb-3">{data.label}</label>
 
         {data?.values.map((option, index) => (
+          console.log({ option }),
           <div key={index}>
             <label className="custom_check multiSelectLbl mr-2 mb-0 d-inline-flex font-14">
               {option.label}
