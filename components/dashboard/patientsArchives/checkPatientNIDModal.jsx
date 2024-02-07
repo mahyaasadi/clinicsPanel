@@ -2,9 +2,25 @@ import { useState } from "react";
 import { axiosClient } from "class/axiosConfig";
 import { Modal } from "react-bootstrap";
 import { ErrorAlert } from "class/AlertManage";
+import NewPatientOptionModal from "components/dashboard/patientInfo/newPatientOptionsModal";
 
-const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
+const CheckPatientNID = ({
+  show,
+  onHide,
+  ClinicID,
+  getAllClinicsPatients,
+  getActiveNID,
+  openAppointmentModal,
+}) => {
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
+  const [patientData, setPatientData] = useState(null);
+
+  // new patient options modal
+  const [showNewPatientOptionsModal, setShowNewPatientOptionsModal] =
+    useState(false);
+  const openNewPatientOptionsModal = () => setShowNewPatientOptionsModal(true);
+  const closeNewPatientOptionsModal = () =>
+    setShowNewPatientOptionsModal(false);
 
   const _getPatientInfo = (e) => {
     e.preventDefault();
@@ -17,12 +33,20 @@ const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
       NID: $("#patientNationalCode").val(),
     };
 
+    let NIDVal = $("#patientNationalCode").val();
+    getActiveNID(NIDVal);
+
     axiosClient
       .post(url, data)
       .then((response) => {
         if (response.data.error == "1") {
           $("#newPatientModal").modal("show");
         } else {
+          setPatientData(response.data.user);
+
+          setTimeout(() => {
+            openNewPatientOptionsModal();
+          }, 100);
           getAllClinicsPatients();
         }
         onHide();
@@ -83,6 +107,13 @@ const CheckPatientNID = ({ show, onHide, ClinicID, getAllClinicsPatients }) => {
           </form>
         </Modal.Body>
       </Modal>
+
+      <NewPatientOptionModal
+        openAppointmentModal={openAppointmentModal}
+        data={patientData}
+        show={showNewPatientOptionsModal}
+        onHide={closeNewPatientOptionsModal}
+      />
     </>
   );
 };

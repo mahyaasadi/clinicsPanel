@@ -59,7 +59,7 @@ const EditPatientsInfo = ({ ClinicUser }) => {
   return (
     <>
       <Head>
-        <title>تکمیل پرونده بیمار</title>
+        <title>ویرایش اطلاعات بیمار</title>
       </Head>
       <div className="page-wrapper">
         {isLoading ? (

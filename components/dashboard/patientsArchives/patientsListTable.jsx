@@ -83,7 +83,7 @@ const PatientsListTable = ({
             className="btn btn-sm btn-outline-primary editBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
           >
-            <Tooltip target=".editBtn">تکمیل پرونده</Tooltip>
+            <Tooltip target=".editBtn">ویرایش اطلاعات</Tooltip>
             <FeatherIcon
               icon="edit-3"
               style={{ width: "15px", height: "16px" }}
@@ -166,7 +166,7 @@ const PatientsListTable = ({
     <>
       <div className="card-body p-4">
         <div className="table-responsive">
-          <DataTableExtensions {...tableData}>
+          <DataTableExtensions {...tableData} filterPlaceholder="جستجو بیمار">
             <DataTable
               noHeader
               defaultSortField="id"

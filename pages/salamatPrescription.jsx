@@ -114,6 +114,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
         setPatientInfo(response.data.res.info);
 

@@ -200,15 +200,8 @@ const PatientVerticalCard = ({
                 )}
               </div>
               <div className="PVCardname">
-                {taminPrescMode
-                  ? data.Name
-                    ? data.Name
-                    : "-"
-                  : data?.name
-                  ? data?.name
-                  : "" + " " + data?.lastName
-                  ? data?.lastName
-                  : ""}
+                {taminPrescMode && (data?.Name ? data.Name : "")}
+                {!taminPrescMode && data?.name + " " + data?.lastName}
                 {taminPrescMode
                   ? data.Age
                     ? ", " + data.Age + " ساله"

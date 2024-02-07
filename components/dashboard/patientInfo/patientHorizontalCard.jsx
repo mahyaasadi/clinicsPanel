@@ -1,26 +1,27 @@
 import { convertDateFormat } from "utils/convertDateFormat";
 
-const PatientHorizontalCard = ({ data }) => {
+const PatientHorizontalCard = ({ data, patientInfoArchiveMode }) => {
+  console.log({ data });
   let InsuranceType,
     GenderType = null;
 
   if (data) {
-    switch (data.Insurance) {
-      case "1":
-        InsuranceType = "سلامت ایرانیان";
-        break;
-      case "2":
-        InsuranceType = "تامین اجتماعی";
-        break;
-      case "3":
-        InsuranceType = "نیروهای مسلح";
-        break;
-      case "4":
-        InsuranceType = "آزاد";
-        break;
-      default:
-        break;
-    }
+    // switch (data.Insurance) {
+    //   case "1":
+    //     InsuranceType = "سلامت ایرانیان";
+    //     break;
+    //   case "2":
+    //     InsuranceType = "تامین اجتماعی";
+    //     break;
+    //   case "3":
+    //     InsuranceType = "نیروهای مسلح";
+    //     break;
+    //   case "4":
+    //     InsuranceType = "آزاد";
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     switch (data.Gender) {
       case "M":
@@ -92,7 +93,7 @@ const PatientHorizontalCard = ({ data }) => {
           <div className="boxall">
             <span className="value">نام بیمه</span>
             <span className="parameter">
-              {InsuranceType ? InsuranceType : "-"}
+              {data?.InsuranceName ? data.InsuranceName : "-"}
             </span>
           </div>
           <div className="boxall2">
@@ -110,26 +111,29 @@ const PatientHorizontalCard = ({ data }) => {
               {data?.NationalID ? data.NationalID : "-"}
             </span>
           </div>
+
           <div className="boxall2">
             <span className="value">جنسیت</span>
             <span className="parameter">{GenderType ? GenderType : "-"}</span>
           </div>
         </div>
 
-        <div className="viwer">
-          <div className="boxall">
-            <span className="value">قد</span>
-            <span className="parameter">
-              {data?.PatientHeight ? data.PatientHeight : "-"}
-            </span>
+        {!patientInfoArchiveMode && (
+          <div className="viwer">
+            <div className="boxall">
+              <span className="value">قد</span>
+              <span className="parameter">
+                {data?.PatientHeight ? data.PatientHeight : "-"}
+              </span>
+            </div>
+            <div className="boxall2">
+              <span className="value">وزن</span>
+              <span className="parameter">
+                {data?.PatientWeight ? data.PatientWeight : "-"}
+              </span>
+            </div>
           </div>
-          <div className="boxall2">
-            <span className="value">وزن</span>
-            <span className="parameter">
-              {data?.PatientWeight ? data.PatientWeight : "-"}
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

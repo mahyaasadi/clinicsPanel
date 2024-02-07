@@ -8,6 +8,7 @@ import Loading from "components/commonComponents/loading/loading";
 import PatientsListTable from "components/dashboard/patientsArchives/patientsListTable";
 import CheckPatientNIDModal from "components/dashboard/patientsArchives/checkPatientNIDModal";
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
+import NewPatientOptionModal from "components/dashboard/patientInfo/newPatientOptionsModal";
 import PendingPatients from "components/dashboard/patientsArchives/pendingPatients";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
@@ -41,11 +42,21 @@ const PatientsArchives = ({ ClinicUser }) => {
   const [addPatientIsLoading, setAddPatientIsLoading] = useState(false);
 
   const [patientsData, setPatientsData] = useState([]);
+  const [ActivePatientNID, setActivePatientNID] = useState(null);
   const [pendingPatientsData, setPendingPatientsData] = useState([]);
+  const [newPatientData, setNewPatientData] = useState([]);
+
   const [birthYear, setBirthYear] = useState("");
   const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
+  // new patient options modal
+  const [showNewPatientOptionsModal, setShowNewPatientOptionsModal] =
+    useState(false);
+  const openNewPatientOptionsModal = () => setShowNewPatientOptionsModal(true);
+  const closeNewPatientOptionsModal = () =>
+    setShowNewPatientOptionsModal(false);
+
+  const [showModal, setShowModal] = useState(false);
   const openAddModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
@@ -77,6 +88,8 @@ const PatientsArchives = ({ ClinicUser }) => {
       });
   };
 
+  const getActiveNID = (nid) => setActivePatientNID(nid);
+
   const addNewPatient = (props) => {
     setAddPatientIsLoading(true);
 
@@ -102,12 +115,19 @@ const PatientsArchives = ({ ClinicUser }) => {
 
           return false;
         } else {
+          // console.log(response.data);
+          setNewPatientData(response.data);
           setPendingPatientsData([...pendingPatientsData, response.data]);
           setTimeout(() => {
             getAllClinicsPatients();
           }, 100);
+
           $("#newPatientModal").modal("hide");
-          SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+          // SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+
+          setTimeout(() => {
+            openNewPatientOptionsModal();
+          }, 100);
         }
 
         setAddPatientIsLoading(false);
@@ -153,6 +173,8 @@ const PatientsArchives = ({ ClinicUser }) => {
       Name: modalityOptions[0].label,
       _id: modalityOptions[0].value,
     });
+
+    // $("#newPatientOptionsModal").modal("hide");
   };
 
   const addAppointment = (data) => {
@@ -243,6 +265,8 @@ const PatientsArchives = ({ ClinicUser }) => {
           onHide={handleCloseModal}
           ClinicID={ClinicID}
           getAllClinicsPatients={getAllClinicsPatients}
+          getActiveNID={getActiveNID}
+          openAppointmentModal={openAppointmentModal}
         />
 
         <NewPatient
@@ -254,6 +278,13 @@ const PatientsArchives = ({ ClinicUser }) => {
           showBirthDigitsAlert={showBirthDigitsAlert}
           setShowBirthDigitsAlert={setShowBirthDigitsAlert}
           addPatientIsLoading={addPatientIsLoading}
+        />
+
+        <NewPatientOptionModal
+          openAppointmentModal={openAppointmentModal}
+          data={newPatientData}
+          show={showNewPatientOptionsModal}
+          onHide={closeNewPatientOptionsModal}
         />
 
         <ApplyAppointmentModal

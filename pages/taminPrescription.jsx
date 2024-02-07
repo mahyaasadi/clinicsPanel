@@ -549,63 +549,63 @@ const TaminPrescription = ({
       };
 
       // EditMode
-      if (ActivePrescHeadID) {
-        //   // Wait for the pin input
-        //   await new Promise((resolve) => {
-        //     const checkPinInterval = setInterval(() => {
-        //       if (otpCode) {
-        //         clearInterval(checkPinInterval);
-        //         resolve();
-        //       }
-        //     }, 500);
-        //   });
+      // if (ActivePrescHeadID) {
+      //   //   // Wait for the pin input
+      //   //   await new Promise((resolve) => {
+      //   //     const checkPinInterval = setInterval(() => {
+      //   //       if (otpCode) {
+      //   //         clearInterval(checkPinInterval);
+      //   //         resolve();
+      //   //       }
+      //   //     }, 500);
+      //   //   });
 
-        if (otpCode) {
-          url = "TaminEprsc/PrescriptionEdit";
-          let dataToSend = {
-            ...data,
-            PrID: ActivePrescID,
-            headerID: ActivePrescHeadID,
-            otpCode: otpCode,
-          };
+      //   if (otpCode) {
+      //     url = "TaminEprsc/PrescriptionEdit";
+      //     let dataToSend = {
+      //       ...data,
+      //       PrID: ActivePrescID,
+      //       headerID: ActivePrescHeadID,
+      //       otpCode: otpCode,
+      //     };
 
-          console.log({ dataToSend });
-          setShowPinModal(false);
-        }
-      }
+      //     console.log({ dataToSend });
+      //     setShowPinModal(false);
+      //   }
+      // }
 
-      // axiosClient
-      //   .post(url, data)
-      //   .then(async (response) => {
-      //     setSaveRegIsLoading(false);
+      axiosClient
+        .post(url, data)
+        .then(async (response) => {
+          setSaveRegIsLoading(false);
 
-      //     if (response.data.res.trackingCode !== null) {
-      //       const seconds = 5;
-      //       const timerInMillis = seconds * 1000;
+          if (response.data.res.trackingCode !== null) {
+            const seconds = 5;
+            const timerInMillis = seconds * 1000;
 
-      //       TimerAlert({
-      //         title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
-      //         html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-      //         timer: timerInMillis,
-      //         timerProgressBar: true,
-      //         cancelButton: {
-      //           text: "انصراف",
-      //         },
-      //         onConfirm: () => {
-      //           router.push("/taminPrescRecords");
-      //         },
-      //       });
-      //     } else if (response.data.res.error_Code !== null) {
-      //       ErrorAlert("خطا!", response.data.res.error_Msg);
-      //     } else if (response.data.res == null) {
-      //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     setSaveRegIsLoading(false);
-      //     ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-      //   });
+            TimerAlert({
+              title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+              html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/taminPrescRecords");
+              },
+            });
+          } else if (response.data.res.error_Code !== null) {
+            ErrorAlert("خطا!", response.data.res.error_Msg);
+          } else if (response.data.res == null) {
+            ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setSaveRegIsLoading(false);
+          ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
+        });
     }
   };
 

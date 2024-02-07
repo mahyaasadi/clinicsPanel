@@ -25,11 +25,11 @@ const PendingPatients = ({
       pathname: "/reception",
       query: { PNID: PNID },
     });
-  }
+  };
 
   const btnItems = [
     {
-      label: "تکمیل پرونده",
+      label: "ویرایش اطلاعات",
       icon: <FeatherIcon icon="edit-2" size="16" />,
       command: () => handleEditPendingPatient(item),
     },
