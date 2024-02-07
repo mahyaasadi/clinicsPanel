@@ -54,7 +54,10 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
+        JSON.parse(response.data.formData[0])?.map((x) => {
+          if (x.type === "date" && x.subtype === "date")
+            dateFormsArr.push({ name: x.name });
+        });
 
         JSON.parse(response.data.formData[0])?.map((x) => {
           if (x.type === "checkbox-group")
@@ -140,7 +143,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     });
 
     if (checkboxFormsArr.length > 0) {
-      console.log("object");
       checkboxFormsArr.map((x) => {
         let checkedArr = [];
         $(`input:checkbox[name=${x.name}]:checked`).each(function () {

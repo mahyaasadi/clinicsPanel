@@ -3,7 +3,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { Tooltip } from "primereact/tooltip";
 
-const FormAutoComplete = ({ data }) => {
+const FormAutoComplete = ({ data, defaultValue }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   let options = [];
@@ -20,16 +20,18 @@ const FormAutoComplete = ({ data }) => {
   const handleSelect = (selected) => setSelectedOption(selected);
 
   useEffect(() => {
-    const defaultSelectedOption = data?.values.find(
-      (option) => option.selected
-    );
+    if (defaultValue) {
+      const defaultSelectedOption = data?.values.find(
+        (option) => option.label === defaultValue
+      );
 
-    if (defaultSelectedOption) {
-      setSelectedOption({
-        id: defaultSelectedOption.value,
-        name: defaultSelectedOption.label,
-        selected: defaultSelectedOption.selected,
-      });
+      if (defaultSelectedOption) {
+        setSelectedOption({
+          id: defaultSelectedOption.value,
+          name: defaultSelectedOption.label,
+          selected: defaultSelectedOption.selected,
+        });
+      }
     }
   }, [data.values]);
 
@@ -47,16 +49,22 @@ const FormAutoComplete = ({ data }) => {
         <Tooltip target=".newAppointBtn">{data.description}</Tooltip>
       </span>
 
+      <input
+        type="hidden"
+        name={data.name}
+        value={selectedOption ? selectedOption?.name : ""}
+      />
+
       <Typeahead
         id="autocompleteInput"
         labelKey="name"
-        name={data.name}
         options={options}
         placeholder={data.placeholder}
         onChange={(selected) => handleSelect(selected[0])}
         required={data.required}
+        defaultSelected={selectedOption ? [selectedOption] : []}
       />
-      {/* <p>Selected Option: {selectedOption ? selectedOption?.name : "None"}</p> */}
+      <p>{selectedOption ? selectedOption?.name : ""}</p>
     </div>
   );
 };

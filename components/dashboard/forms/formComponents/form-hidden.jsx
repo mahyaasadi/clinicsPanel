@@ -1,7 +1,7 @@
 const FormHidden = ({ data }) => {
   return (
     <>
-      <div className="">
+      <div>
         <input type="hidden" name={data.name} value={data.value} />
       </div>
     </>

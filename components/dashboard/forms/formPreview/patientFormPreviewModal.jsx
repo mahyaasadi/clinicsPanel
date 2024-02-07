@@ -1,9 +1,9 @@
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import dynamic from "next/dynamic";
+import { Tooltip } from "primereact/tooltip";
 
 const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
-  console.log({ formValues });
   const handlePrint = () => window.print();
 
   return (
@@ -24,7 +24,6 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
         <Modal.Body>
           <div className="row">
             {data?.map((formComponent, index) => (
-              // console.log({ formComponent }),
               <div
                 key={index}
                 className={formComponent?.className?.replace(
@@ -44,14 +43,30 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
                 ) : (
                   <div className="mb-2">
                     <label className="lblAbs fw-bold font-13">
-                      {formComponent.label}
+                      {formComponent.label}{" "}
+                      {formComponent.required && (
+                        <span className="text-danger">*</span>
+                      )}
+                      {formComponent.description && (
+                        <span
+                          className={`des-${index} autocompleteTooltip`}
+                          tooltip={formComponent.description}
+                          data-pr-position="top"
+                        >
+                          <span className="autocompleteTooltipIcon">?</span>
+                          <Tooltip target={`.des-${index}`}>
+                            {formComponent.description}
+                          </Tooltip>
+                        </span>
+                      )}
                     </label>
+
                     <p className="p-3 patientFrmInput">
                       {formValues &&
-                        //   (formComponent.type === "checkbox-group" &&
-                        //   formValues[formComponent.name].length !== 0
-                        //     ? formValues[formComponent.name].join()
-                        formValues[formComponent.name]}
+                        (formComponent.type === "checkbox-group" &&
+                        formValues[formComponent.name].isArray
+                          ? formValues[formComponent.name].join()
+                          : formValues[formComponent.name]) + " "}
                     </p>
                   </div>
                 )}

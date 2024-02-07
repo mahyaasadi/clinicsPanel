@@ -1,7 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
 const FormNumber = ({ data, defaultValue, disabled }) => {
-  console.log({ defaultValue });
   return (
     <>
       <div className="w-25 mt-3">

@@ -17,7 +17,8 @@ const FormDate = ({ data, defaultValue, disabled }) => {
               description={data.description}
               placeholderText={data.placeholder}
               name={data.name}
-              // defaultDate={}
+              birthDateMode={true}
+              defaultDate={defaultValue ? defaultValue : null}
             />
           </div>
         ) : (
