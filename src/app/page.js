@@ -48,7 +48,7 @@ export default function Page() {
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
-        error.message == "Network Error"
+        err.message == "Network Error"
           ? ErrorAlert("خطا", "در حال حاضر ارتباط با سرور برقرار نیست!")
           : ErrorAlert("خطا", "اطلاعات اشتباه وارد شده است!");
       });
@@ -112,9 +112,8 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${
-                            eye ? "fa-eye-slash" : "fa-eye"
-                          }`}
+                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
                         />
                       </div>
                     )}

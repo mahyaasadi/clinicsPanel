@@ -39,7 +39,7 @@ const DiscountModal = ({
 
           <div className="form-group">
             <label className="lblAbs font-12">
-              نام <span className="text-danger">*</span>
+              عنوان <span className="text-danger">*</span>
             </label>
             <input
               className="form-control floating inputPadding rounded"

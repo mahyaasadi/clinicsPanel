@@ -5,7 +5,7 @@ import ParaServicesDropdown from "./paraServicesDropdown";
 import TaminSearchedServices from "components/dashboard/prescription/tamin/taminSearchedServices";
 
 const PrescriptionCard = ({
-  setIsLoading,
+  setSearchIsLoading,
   searchIsLoading,
   visitRegIsLoading,
   saveRegIsLoading,
@@ -34,6 +34,7 @@ const PrescriptionCard = ({
   ActivePrescHeadID,
   setShowPinModal,
 }) => {
+  console.log({ editSrvData });
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -59,18 +60,18 @@ const PrescriptionCard = ({
 
   // Search Recommendation
   const handleSearchKeyUp = () => {
-    setIsLoading(true);
+    setSearchIsLoading(true);
     let inputCount = $("#srvSearchInput").val().length;
 
     if (inputCount > 2) {
       setTimeout(() => {
         $("#BtnServiceSearch").click();
       }, 1000);
-      setIsLoading(false);
+      setSearchIsLoading(false);
     } else {
-      $("#srvSearchInput").val() == "";
       $(".SearchDiv").hide();
-      setIsLoading(false);
+      $(".unsuccessfullSearch").hide();
+      setSearchIsLoading(false);
     }
   };
 
@@ -98,6 +99,7 @@ const PrescriptionCard = ({
       FUSelectInstruction(editDrugInstructionData.label);
       handleCancel();
       $("#QtyInput").val(editSrvData.Qty);
+      $("#eprscItemDescription").val(editSrvData.description)
       setEditSrvMode(true);
     }
   }, [editDrugAmountData, editDrugInstructionData]);
@@ -111,7 +113,7 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-                // onClick={openFavModal}
+              // onClick={openFavModal}
               >
                 خدمات پرمصرف
               </button>

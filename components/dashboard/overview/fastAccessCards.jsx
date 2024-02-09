@@ -6,8 +6,8 @@ const FastAccessCards = () => {
   const router = useRouter();
   return (
     <>
-      <div className="row">
-        <div className="col-6 col-xl-4 mb-2">
+      <div className="row eaMt-2">
+        <div className="col-6 col-xl-4 mb-2 eaPr-0">
           <button
             onClick={() => router.push("/reception")}
             className="card easyAccessCard  border-gray w-100 h-100 d-flex align-items-center font-14 fw-bold text-secondary accessCardColor"
@@ -18,7 +18,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-        <div className="col-6 col-xl-4 mb-2">
+        <div className="col-6 col-xl-4 mb-2 eaPl-0">
           <button
             onClick={() => router.push("/appointment")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -42,7 +42,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-        <div className="col-6 col-xl-4 mb-2">
+        <div className="col-6 col-xl-4 mb-2 eaPr-0">
           <button
             onClick={() => router.push("/cashDesk")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -66,7 +66,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-        <div className="col-6 col-xl-4 mb-2">
+        <div className="col-6 col-xl-4 mb-2 eaPl-0">
           <button
             onClick={() => router.push("/taminPrescription")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -75,8 +75,8 @@ const FastAccessCards = () => {
               <svg
                 version="1.0"
                 xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
+                width="26"
+                height="26"
                 viewBox="0 0 436.000000 512.000000"
                 preserveAspectRatio="xMidYMid meet"
                 className="accessSvg"
@@ -147,7 +147,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-        <div className="col-6 col-xl-4 mb-2">
+        <div className="col-6 col-xl-4 mb-2 eaPr-0">
           <button
             onClick={() => router.push("/salamatPrescription")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"
@@ -157,8 +157,8 @@ const FastAccessCards = () => {
                 <svg
                   version="1.0"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
+                  width="26"
+                  height="26"
                   viewBox="0 0 512.000000 512.000000"
                   preserveAspectRatio="xMidYMid meet"
                   className="accessSvg"
@@ -224,7 +224,7 @@ const FastAccessCards = () => {
             </div>
           </button>
         </div>
-        <div className="col-6 col-xl-4 mb-2">
+        <div className="col-6 col-xl-4 mb-2 eaPl-0">
           <button
             onClick={() => router.push("/patientsArchives")}
             className="card border-gray w-100 h-100 d-flex align-items-center easyAccessCard font-14 fw-bold text-secondary"

@@ -1,9 +1,10 @@
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
-import dynamic from "next/dynamic";
+import PatientHorizontalCard from "components/dashboard/patientInfo/patientHorizontalCard"
 import { Tooltip } from "primereact/tooltip";
 
-const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
+const PatientFormPreviewModal = ({ show, onHide, data, patientData, formValues }) => {
+  console.log({ data });
   const handlePrint = () => window.print();
 
   return (
@@ -23,6 +24,11 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
 
         <Modal.Body>
           <div className="row">
+
+            <div className="marginb-3">
+              <PatientHorizontalCard data={patientData} />
+            </div>
+
             {data?.map((formComponent, index) => (
               <div
                 key={index}
@@ -64,7 +70,7 @@ const PatientFormPreviewModal = ({ show, onHide, data, formValues }) => {
                     <p className="p-3 patientFrmInput">
                       {formValues &&
                         (formComponent.type === "checkbox-group" &&
-                        formValues[formComponent.name].isArray
+                          formValues[formComponent.name].isArray
                           ? formValues[formComponent.name].join()
                           : formValues[formComponent.name]) + " "}
                     </p>

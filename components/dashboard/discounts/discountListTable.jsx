@@ -8,14 +8,8 @@ import { Tooltip } from "primereact/tooltip";
 const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
   const columns = [
     {
-      name: "نام",
+      name: "عنوان",
       selector: (row) => row.Name,
-      sortable: true,
-      width: "auto",
-    },
-    {
-      name: "مشخصات",
-      selector: (row) => row.Des,
       sortable: true,
       width: "auto",
     },
@@ -38,6 +32,12 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
           )}
         </div>
       ),
+      width: "auto",
+    },
+    {
+      name: "توضیحات",
+      selector: (row) => row.Des,
+      sortable: true,
       width: "auto",
     },
     {
@@ -82,7 +82,7 @@ const DiscountsListTable = ({ data, updateDiscount, deleteDiscount }) => {
   return (
     <div className="card-body p-4">
       <div className="table-responsive">
-        <DataTableExtensions {...tableData}>
+        <DataTableExtensions {...tableData} filterPlaceholder={"جستجو"}>
           <DataTable
             noHeader
             defaultSortField="id"

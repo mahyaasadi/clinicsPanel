@@ -120,7 +120,7 @@ const SurgeryRecordsList = ({
 
           <div className="row">
             <div className="table-responsive patientFileTbl p-2">
-              <DataTableExtensions {...tableData}>
+              <DataTableExtensions {...tableData} filterPlaceholder={"جستجو"}>
                 <DataTable
                   noHeader
                   defaultSortField="id"

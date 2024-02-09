@@ -52,15 +52,15 @@ const TaminPrescRecordsList = ({ data, prepareDelete }) => {
             data-bs-placement="top"
             title="حذف"
             onClick={() => prepareDelete(row.head_EPRSC_ID, row._id)}
-            // href={{
-            //   pathname: "/taminPrescription",
-            //   query: {
-            //     headID: row.head_EPRSC_ID,
-            //     pid: row.NID,
-            //     prId: row._id,
-            //     // centerID: row.CenterID,
-            //   },
-            // }}
+          // href={{
+          //   pathname: "/taminPrescription",
+          //   query: {
+          //     headID: row.head_EPRSC_ID,
+          //     pid: row.NID,
+          //     prId: row._id,
+          //     // centerID: row.CenterID,
+          //   },
+          // }}
           >
             <FeatherIcon
               icon="trash-2"
@@ -95,7 +95,7 @@ const TaminPrescRecordsList = ({ data, prepareDelete }) => {
   return (
     <div className="card-body p-4">
       <div className="table-responsive">
-        <DataTableExtensions {...tableData}>
+        <DataTableExtensions {...tableData} filterPlaceholder={" جستجوی نسخه"}>
           <DataTable
             noHeader
             defaultSortField="id"

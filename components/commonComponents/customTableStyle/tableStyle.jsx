@@ -10,7 +10,7 @@ const tableCustomStyles = {
     style: {
       fontSize: "13px !important",
       fontWeight: "800 !important",
-      color: "darkslategray",
+      color: "gray",
       display: "flex",
       justifyContent: "center",
     },

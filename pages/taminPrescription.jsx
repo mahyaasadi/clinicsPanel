@@ -91,7 +91,6 @@ const TaminPrescription = ({
   const router = useRouter();
 
   // Loaders
-  const [isLoading, setIsLoading] = useState(true);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [visitRegIsLoading, setVisitRegIsLoading] = useState(false);
@@ -307,7 +306,10 @@ const TaminPrescription = ({
     $("#srvSearchInput").focus();
     $("#QtyInput").val("1");
     setSelectedAmount(null);
+    setSelectedAmountLbl(null);
     setSelectedInstruction(null);
+    setSelectedInstructionLbl(null);
+    $("#eprscItemDescription").val("")
   };
 
   const selectSearchedService = (name, srvCode, type, paraTarefCode) => {
@@ -450,13 +452,14 @@ const TaminPrescription = ({
       SelectedAmountLbl,
       ActivePrescName,
       ActiveSrvTypePrsc,
-      ActiveParaCode
+      ActiveParaCode,
+      $("#eprscItemDescription").val()
     );
 
     if (!editSrvMode) {
       if (
         addPrescriptionitems.length > 0 &&
-        addPrescriptionitems.find(({ srvId }) => srvId.srvCode === SrvCode)
+        addPrescriptionitems.find(({ srvId }) => srvId.srvCode === ActiveSrvCode)
       ) {
         ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
         return false;
@@ -478,13 +481,6 @@ const TaminPrescription = ({
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
       activeSearch();
     }
-
-    // Reset
-    $("#QtyInput").val("1");
-    setSelectedAmount(null);
-    setSelectedAmountLbl(null);
-    setSelectedInstruction(null);
-    setSelectedInstructionLbl(null);
   };
 
   // Registeration
@@ -658,7 +654,7 @@ const TaminPrescription = ({
 
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
-                setIsLoading={setIsLoading}
+                setSearchIsLoading={setSearchIsLoading}
                 searchIsLoading={searchIsLoading}
                 visitRegIsLoading={visitRegIsLoading}
                 saveRegIsLoading={saveRegIsLoading}

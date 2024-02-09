@@ -1,6 +1,5 @@
 import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
 
@@ -25,7 +24,7 @@ const AddToListItems = ({
               <div className="card-body receptionInfoText d-flex justify-between">
                 <div className="align-items-center justify-between">
                   <div className="d-flex gap-3 font-13 fw-bold">
-                    {srv.Img ? (
+                    {srv?.Img ? (
                       <Image
                         src={srv.Img}
                         alt="serviceIcon"
@@ -37,36 +36,47 @@ const AddToListItems = ({
                     )}
 
                     <div className="d-flex gap-2 font-13 align-items-center">
-                      <p className="mb-0">{srv.SrvCode}</p>
+                      <p className="mb-0">{srv?.SrvCode}</p>
                       <p className="mb-0">|</p>
-                      <p>{srv.SrvName}</p>
+                      <p>{srv?.SrvName}</p>
                     </div>
                   </div>
 
                   <div className="d-flex mt-2 gap-2 flex-wrap">
                     <div className="d-flex gap-2 ">
                       <div className="">
-                        نوع نسخه : {srv.PrescType && srv.PrescType + " |"}
+                        نوع نسخه : {srv?.PrescType && srv?.PrescType + " |"}
                       </div>
                       <div className="">
-                        {srv.Qty && srv.Qty + " عدد" + " |"}
+                        {srv?.Qty && srv.Qty + " عدد" + " |"}
                       </div>
                     </div>
 
-                    {srv.TimesADay ? (
+                    {srv?.TimesADay ? (
                       <div className="d-flex gap-2">
                         <div className="">
                           تعداد مصرف در روز :{" "}
-                          {srv.TimesADay && srv.TimesADay + " |"}
+                          {srv?.TimesADay && srv.TimesADay + " |"}
                         </div>
                         <div className="">
-                          دستور مصرف : {srv.DrugInstruction}
+                          دستور مصرف : {srv?.DrugInstruction}
                         </div>
                       </div>
                     ) : (
                       ""
                     )}
                   </div>
+
+                  {srv?.description && srv.description != "" ? (
+                    <>
+                      <hr />
+                      <div className="text-secondary font-12">
+                        توضیحات :{srv.description}
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
 
                 <div className="row font-12 text-secondary">
@@ -85,7 +95,7 @@ const AddToListItems = ({
                       type="button"
                       className="btn btn-sm btn-outline-primary favItem height-27"
                       data-pr-position="top"
-                      //   onClick={() => selectFavEprescItem(srv)}
+                    //   onClick={() => selectFavEprescItem(srv)}
                     >
                       <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
                       <FeatherIcon icon="star" className="prescItembtns" />

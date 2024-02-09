@@ -12,7 +12,8 @@ const taminPrescItemCreator = async (
   AmountLbl,
   PrscName,
   SrvTypePrsc,
-  ParaCode
+  ParaCode,
+  description
 ) => {
   let prescData = {};
   let prescItems = {};
@@ -37,6 +38,7 @@ const taminPrescItemCreator = async (
         TimesADay: AmountLbl,
         PrescType: PrscName,
         prescId,
+        description
       };
 
       prescData = null;
@@ -57,6 +59,7 @@ const taminPrescItemCreator = async (
             drugInstId: Instruction,
           },
           dose: "",
+          description
         };
       } else {
         let parTarefGrp = null;
@@ -77,6 +80,7 @@ const taminPrescItemCreator = async (
             parTarefGrp: parTarefGrp,
           },
           srvQty: parseInt(Qty),
+          description
         };
       }
     }
@@ -85,4 +89,3 @@ const taminPrescItemCreator = async (
 };
 
 module.exports.taminPrescItemCreator = taminPrescItemCreator;
-

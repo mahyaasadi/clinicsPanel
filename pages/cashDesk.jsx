@@ -34,7 +34,8 @@ const CashDesk = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cashDeskDataIsLoading, setCashDeskDataIsLoading] = useState(false)
   const [patientsInfo, setPatientsInfo] = useState([]);
   const [receptionList, setReceptionList] = useState([]);
   const [showActionsModal, setShowActionsModal] = useState(false);
@@ -44,10 +45,6 @@ const CashDesk = ({ ClinicUser }) => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleCloseActionsModal = () => setShowActionsModal(false);
-
-  // searchBox
-  const [searchIsLoading, setSearchIsLoading] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   const openActionModal = (receptionID, data) => {
     setShowActionsModal(true);
@@ -80,32 +77,8 @@ const CashDesk = ({ ClinicUser }) => {
     }
   };
 
-  // const getReceptionList = () => {
-  //   let url = `ClinicReception//FindByClinic/${ClinicID}`;
-
-  //   return new Promise((resolve, reject) => {
-  //     axiosClient
-  //       .get(url)
-  //       .then((response) => {
-  //         console.log("findByClinic", response.data);
-  //         // setReceptionList(response.data);
-  //         // if (response.data) getReceptionPatients(response.data);
-  //         setTimeout(() => {
-  //           setIsLoading(false);
-  //         }, 100);
-  //         resolve();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         ErrorAlert("خطا", "خطا در دریافت اطلاعات");
-  //         setIsLoading(false);
-  //         reject(err);
-  //       });
-  //   });
-  // };
-
   const getCashDeskPatientsInfo = () => {
-    setIsLoading(true);
+    setCashDeskDataIsLoading(true);
     let url = `ClinicReception/CashDeskPatient/${ClinicID}`;
 
     return new Promise((resolve, reject) => {
@@ -115,14 +88,14 @@ const CashDesk = ({ ClinicUser }) => {
           setReceptionList(response.data);
           if (response.data) getReceptionPatients(response.data);
           setTimeout(() => {
-            setIsLoading(false);
+            setCashDeskDataIsLoading(false);
           }, 100);
           resolve();
         })
         .catch((err) => {
           console.log(err);
           ErrorAlert("خطا", "خطا در دریافت اطلاعات");
-          setIsLoading(false);
+          setCashDeskDataIsLoading(false);
           reject(err);
         });
     });
@@ -206,7 +179,7 @@ const CashDesk = ({ ClinicUser }) => {
                 patientsInfo={patientsInfo}
                 setPatientsInfo={setPatientsInfo}
                 openActionModal={openActionModal}
-                isLoading={isLoading}
+                cashDeskDataIsLoading={cashDeskDataIsLoading}
                 openNewAppointmentModal={openNewAppointmentModal}
               />
             </div>
@@ -249,4 +222,3 @@ const CashDesk = ({ ClinicUser }) => {
 };
 
 export default CashDesk;
-

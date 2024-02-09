@@ -7,6 +7,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
     $("#searchDiv").hide();
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
+    $("#eprscItemDescription").val("")
   };
 
   const selectPrescType = () => {

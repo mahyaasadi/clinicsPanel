@@ -74,7 +74,7 @@ const ServicesListTable = ({ data, openEditModal, deleteService }) => {
   return (
     <div className="card-body p-4">
       <div className="table-responsive">
-        <DataTableExtensions {...tableData}>
+        <DataTableExtensions {...tableData} filterPlaceholder={"جستجو"}>
           <DataTable
             noHeader
             defaultSortField="id"

@@ -169,12 +169,12 @@ const Dashboard = ({ ClinicUser }) => {
 
                 <div className="row">
                   <div className="col-md-6 col-lg-7 mb-1">
-                    <div className="row">
-                      <div className="col-lg-3 pe-lg-0">
-                        <div className="row">
+                    <div className="row ">
+                      <div className="col-lg-3 pe-lg-1">
+                        <div className="row margin-left-0">
                           <div className="col-md-6 col-lg-12 px-0">
-                            <div className="card CardPayment mb-1">
-                              <div className="card-body justify-center align-items-center text-center">
+                            <div className="card CardPayment border-gray mb-1">
+                              <div className="card-body d-flex flex-col justify-center align-items-center text-center">
                                 <span className="dash-finance-icon bg-talking">
                                   <Image
                                     src="/assets/img/total2.png"
@@ -183,7 +183,7 @@ const Dashboard = ({ ClinicUser }) => {
                                     height="35"
                                   />
                                 </span>
-                                <div className="justify-center align-items-center text-secondary fw-bold mt-2">
+                                <div className="h-50 d-flex flex-col justify-center align-items-center font-14 text-secondary mt-2">
                                   <p className="mb-0 font-14">درآمد کل</p>
                                   <p className="font-16 fw-bold">
                                     {paymentTotalStat
@@ -196,7 +196,7 @@ const Dashboard = ({ ClinicUser }) => {
                             </div>
                           </div>
                           <div className="col-md-6 col-lg-12 px-0">
-                            <div className="card CardPayment mb-0">
+                            <div className="card CardPayment border-gray mb-0">
                               <div className="card-body d-flex flex-col justify-center align-items-center text-center">
                                 <span className="dash-finance-icon bg-turnGiven d-flex justify-center align-center">
                                   <Image
@@ -206,7 +206,7 @@ const Dashboard = ({ ClinicUser }) => {
                                     height="40"
                                   />
                                 </span>
-                                <div className="h-50 d-flex flex-col justify-center align-items-center font-15 text-secondary fw-bold mt-2">
+                                <div className="h-50 d-flex flex-col justify-center align-items-center font-14 text-secondary mt-2">
                                   <p className="mb-0 font-14">
                                     مبلغ بازگردانده شده
                                   </p>
@@ -222,7 +222,7 @@ const Dashboard = ({ ClinicUser }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="card col-lg-9 ps-lg-1 mb-0 pieChartHeight">
+                      <div className="card col-lg-9 ps-lg-1 mb-0 pieChartHeight eaMt-1 border-gray">
                         <PaymentChart
                           data={paymentStats}
                           labels={paymentLabels}
@@ -236,11 +236,11 @@ const Dashboard = ({ ClinicUser }) => {
                   </div>
                 </div>
 
-                <div className="mt-4 row align-items-center">
+                <div className="mt-4 row align-items-center p-relative">
+                  <hr style={{ marginTop: "1.5rem" }} />
                   <p className="text-secondary fw-bold font-15 clinicLine">
                     بررسی مراجعات مطب
                   </p>
-                  <hr style={{ position: "relative", marginTop: "1.5rem" }} />
                 </div>
 
                 <div className="row mt-5 justify-between">

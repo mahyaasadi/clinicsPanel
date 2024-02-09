@@ -38,7 +38,6 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ActivePatientID,
-  ActivePatientName,
   ClinicUserID = null;
 const PatientFile = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -207,7 +206,6 @@ const PatientFile = ({ ClinicUser }) => {
   const AddNote = (submittedNote) => {
     setPatientNotesData([...patientNotesData, submittedNote]);
     getOnePatient();
-    // router.back();
     SuccessAlert(
       "موفق",
       `یادداشت با موفقیت به پرونده ${patientData.Name} اضافه گردید`
@@ -342,6 +340,7 @@ const PatientFile = ({ ClinicUser }) => {
         )}
 
         <PatientFormPreviewModal
+          patientData={patientData}
           show={showPrevModal}
           onHide={closePatientFrmPreviewModal}
           data={patientFormData}

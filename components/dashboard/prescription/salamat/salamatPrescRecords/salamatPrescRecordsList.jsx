@@ -125,7 +125,7 @@ const SalamatPrescRecordsList = ({ data, getPatientInfo, printIsLoading }) => {
   return (
     <div className="card-body p-4">
       <div className="table-responsive">
-        <DataTableExtensions {...tableData}>
+        <DataTableExtensions {...tableData} filterPlaceholder={"جستجوی نسخه"}>
           <DataTable
             noHeader
             defaultSortField="id"
