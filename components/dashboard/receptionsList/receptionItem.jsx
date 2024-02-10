@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
+import Image from "next/image";
 import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import ReceptionItemInfoModal from "./receptionItemInfo";
 import ReceptionItemHistoryModal from "./receptionItemHistory";
+import { whitePlainBg } from "components/commonComponents/imagepath";
 
 const ReceptionItem = ({
   srv,
@@ -71,15 +73,24 @@ const ReceptionItem = ({
         <div className="card shadow h-100 patientCard receptionHeader">
           <div className=" card-header align-items-center">
             <div className="d-flex justify-between">
-              <img
-                src={srv.Modality.Icon}
-                alt="modalityIcon"
-                style={{
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "10px",
-                }}
-              />
+              {srv?.Modality?.Icon ? (
+                <img
+                  src={srv?.Modality?.Icon}
+                  alt="modalityIcon"
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "10px",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={whitePlainBg}
+                  alt="modalityIcon"
+                  width="25"
+                  height="25"
+                />
+              )}
 
               <div className="d-flex gap-1">
                 <button
@@ -132,7 +143,7 @@ const ReceptionItem = ({
             <div className="d-flex gap-4 align-items-center mt-2">
               <div className="align-items-center d-flex flex-col gap-2">
                 <img
-                  src={"https://irannobat.ir/images/" + srv.Patient.Avatar}
+                  src={"https://irannobat.ir/images/" + srv?.Patient.Avatar}
                   alt="patientAvatar"
                   style={{
                     width: "35px",
@@ -140,29 +151,29 @@ const ReceptionItem = ({
                     borderRadius: "10px",
                   }}
                   onError={({ currentTarget }) => {
-                    srv.Patient?.Gender === "F" || srv.Patient.Gender === "M"
-                      ? (currentTarget.src = `assets/img/avatar-${srv.Patient?.Gender}-pic.png`)
+                    srv?.Patient?.Gender === "F" || srv?.Patient.Gender === "M"
+                      ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
                       : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                   }}
                 />
-                <div className="font-13 fw-bold mb-2">{srv.ReceptionID}</div>
+                <div className="font-13 fw-bold mb-2">{srv?.ReceptionID}</div>
               </div>
 
               <div className="font-13">
                 <div className="d-flex gap-2 fw-bold align-items-center col-10 flex-wrap">
-                  <div className="font-12">{srv.Modality.Name}</div>
+                  <div className="font-12">{srv?.Modality?.Name}</div>
                 </div>
 
                 <div className="d-flex gap-2 mt-2 flex-wrap">
                   <FeatherIcon icon="calendar" className="prescItembtns" />
-                  <div>{srv.Date}</div>
+                  <div>{srv?.Date}</div>
                   <div>,</div>
-                  <div>{srv.Time}</div>
+                  <div>{srv?.Time}</div>
                 </div>
 
                 <p className="mb-1 d-flex gap-2 flex-wrap">
                   <FeatherIcon icon="user" className="prescItembtns" />
-                  {srv.Patient.Name}
+                  {srv?.Patient?.Name}
                 </p>
 
                 <div className="d-flex gap-2 mb-1 align-items-center">
@@ -183,7 +194,7 @@ const ReceptionItem = ({
                     </svg>
                   </div>
 
-                  {srv.Patient.NationalID}
+                  {srv?.Patient.NationalID}
                 </div>
               </div>
             </div>
@@ -204,7 +215,7 @@ const ReceptionItem = ({
                 />
               </svg>
 
-              {srv.Items?.map((item, index) => (
+              {srv?.Items?.map((item, index) => (
                 <span key={index}>
                   {item.Name}
                   {item.Des ? " (" + item.Des + ")" : ""}

@@ -48,9 +48,9 @@ const PatientCategories = ({
         patientsInfo.map((item) =>
           item.id === result.draggableId
             ? {
-              ...item,
-              category: result.destination.droppableId,
-            }
+                ...item,
+                category: result.destination.droppableId,
+              }
             : item
         )
       );
@@ -78,14 +78,15 @@ const PatientCategories = ({
                           dir="rtl"
                         >
                           <div
-                            className={`card-header ${category.name === "در انتظار"
-                              ? "bg-CDwaiting"
-                              : category.name === "پرداخت کامل"
+                            className={`card-header ${
+                              category.name === "در انتظار"
+                                ? "bg-CDwaiting"
+                                : category.name === "پرداخت کامل"
                                 ? "bg-CDtalking"
                                 : category.name === "بدهکار"
-                                  ? "bg-CDtotalDebt"
-                                  : "bg-CDturnGiven"
-                              }`}
+                                ? "bg-CDtotalDebt"
+                                : "bg-CDturnGiven"
+                            }`}
                           >
                             <p className="mb-2 mt-2 text-secondary font-14 fw-bold text-center">
                               {category.name}
@@ -216,8 +217,8 @@ const PatientCategories = ({
                                                         }) => {
                                                           item?.item?.Patient
                                                             ?.Gender === "M" ||
-                                                            item?.item?.Patient
-                                                              ?.Gender === "F"
+                                                          item?.item?.Patient
+                                                            ?.Gender === "F"
                                                             ? (currentTarget.src = `assets/img/avatar-${item?.item?.Patient?.Gender}-pic.png`)
                                                             : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                                                         }}

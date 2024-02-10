@@ -113,7 +113,18 @@ const NewPatient = ({
     }
   };
 
-  useEffect(() => getInsuranceList(), []);
+  useEffect(() => {
+    getInsuranceList();
+    $("#newPatientModal").on("hide.bs.modal", function () {
+      $("#addPatientTel").val("");
+      $("#addPatientName").val("");
+      $("#addPatientBD").val("");
+      $("#Age").val("");
+      setBirthYear(null);
+      $("#addInsuranceType").val("");
+      $("#addGenderType").val("");
+    });
+  }, []);
 
   return (
     <>
@@ -158,7 +169,7 @@ const NewPatient = ({
                   </div>
 
                   <div className="col-md-12 media-w-100 mt-3">
-                    <label id="addPatientIDLbl" className="lblAbs  font-12">
+                    <label id="addPatientIDLbl" className="lblAbs font-12">
                       کد ملی بیمار <span className="text-danger">*</span>
                     </label>
                     <input

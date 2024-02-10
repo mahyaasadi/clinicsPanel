@@ -33,8 +33,8 @@ const PrescriptionCard = ({
   setEditSrvData,
   ActivePrescHeadID,
   setShowPinModal,
+  openFavModal,
 }) => {
-  console.log({ editSrvData });
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -99,7 +99,7 @@ const PrescriptionCard = ({
       FUSelectInstruction(editDrugInstructionData.label);
       handleCancel();
       $("#QtyInput").val(editSrvData.Qty);
-      $("#eprscItemDescription").val(editSrvData.description)
+      $("#eprscItemDescription").val(editSrvData.description);
       setEditSrvMode(true);
     }
   }, [editDrugAmountData, editDrugInstructionData]);
@@ -113,7 +113,7 @@ const PrescriptionCard = ({
             <div className="d-flex gap-2">
               <button
                 className="btn btn-outline-primary border-radius font-13"
-              // onClick={openFavModal}
+                onClick={openFavModal}
               >
                 خدمات پرمصرف
               </button>

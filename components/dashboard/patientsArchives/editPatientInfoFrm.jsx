@@ -1,21 +1,35 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { axiosClient } from "class/axiosConfig";
-import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import FeatherIcon from "feather-icons-react";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
+import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
+import { convertBase64 } from "utils/convertBase64";
+import { Tooltip } from "primereact/tooltip";
 import {
   genderDataClass,
   maritalStatus,
   educationStatus,
 } from "class/staticDropdownOptions";
+import {
+  ErrorAlert,
+  SuccessAlert,
+  multipleQuestionsAlert,
+} from "class/AlertManage";
 
-const EditPatientInfoFrm = ({ data, EditPatient }) => {
+const EditPatientInfoFrm = ({
+  data,
+  EditPatient,
+  ActivePatientID,
+  patientAvatar,
+  setPatientAvatar,
+}) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarIsLoading, setAvatarIsLoading] = useState(false);
   const [showEmailAlertTxt, setShowEmailAlertTxt] = useState(false);
   const [birthDate, setBirthDate] = useState(null);
   const [email, setEmail] = useState(data.Email);
@@ -107,6 +121,7 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
 
         setTimeout(() => {
           SuccessAlert("موفق", "ویرایش اطلاعات با موفقیت انجام گردید!");
+          router.back();
         }, 200);
         setIsLoading(false);
       })
@@ -118,6 +133,51 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
   };
 
   const handleCancelBtn = () => router.push("/patientsArchives");
+
+  // upload avatar modal
+  const [showUploadAvatarModal, setShowUploadAvatarModal] = useState(false);
+  const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
+  const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
+
+  const handleChangeAvatar = () => {
+    multipleQuestionsAlert(
+      "روش مورد نظر را انتخاب نمایید",
+      "آپلود تصویر",
+      "option 2",
+      setShowUploadAvatarModal,
+      null
+    );
+  };
+
+  const changePatientAvatar = async (e) => {
+    e.preventDefault();
+    setAvatarIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    if (formProps.editPatientAvatar) {
+      let avatarBlob = await convertBase64(formProps.editPatientAvatar);
+
+      let url = "Patient/ChangeAvatar";
+      let editData = {
+        PatientID: ActivePatientID,
+        Avatar: avatarBlob,
+      };
+
+      axiosClient
+        .put(url, editData)
+        .then((response) => {
+          setPatientAvatar(response.data.Avatar);
+          setAvatarIsLoading(false);
+          setShowUploadAvatarModal(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setAvatarIsLoading(false);
+        });
+    }
+  };
 
   useEffect(() => {
     setShowEmailAlertTxt(false);
@@ -131,11 +191,11 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
             <div className="patientAvatarImg">
               {data.Avatar ? (
                 <img
-                  src={"https://irannobat.ir/images/" + data?.Avatar}
+                  src={"https://irannobat.ir/images/Avatar/" + patientAvatar}
                   alt="patientAvatar"
                   style={{
-                    width: "65px",
-                    height: "65px",
+                    width: "100px",
+                    height: "100px",
                     borderRadius: "100%",
                   }}
                 />
@@ -148,9 +208,15 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
                 </svg>
               )}
             </div>
-            <div className="changeAvatarIcon">
+            <button
+              type="button"
+              onClick={handleChangeAvatar}
+              className="btn btn-outline-primary changeAvatarIcon"
+              data-pr-position="left"
+            >
               <FeatherIcon icon="edit-2" />
-            </div>
+              <Tooltip target=".changeAvatarIcon">ویرایش آواتار</Tooltip>
+            </button>
           </div>
         </div>
 
@@ -452,6 +518,14 @@ const EditPatientInfoFrm = ({ data, EditPatient }) => {
           </button>
         </div>
       </form>
+
+      <UploadAvatarModal
+        data={data}
+        show={showUploadAvatarModal}
+        onHide={closeUploadAvatarModal}
+        changePatientAvatar={changePatientAvatar}
+        avatarIsLoading={avatarIsLoading}
+      />
     </>
   );
 };

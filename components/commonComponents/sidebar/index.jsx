@@ -103,8 +103,9 @@ const Sidebar = () => {
                 </a>
                 <ul
                   id="hiddenSidebar"
-                  className={`hiddenSidebar ${receptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    receptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={router.pathname == "/reception" ? "active" : ""}
@@ -182,8 +183,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -275,8 +277,9 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    formBuilderSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -312,8 +315,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -340,6 +344,16 @@ const Sidebar = () => {
                   </li>
                 </ul>
               </li>
+
+              {/* <li className={router.pathname == "/chat" ? "active" : ""}>
+                <Link href="/chat">
+                  <FeatherIcon
+                    icon="message-circle"
+                    style={{ width: "17px", height: "17px" }}
+                  />
+                  <span>chatpage</span>
+                </Link>
+              </li> */}
             </ul>
           </div>
         </div>

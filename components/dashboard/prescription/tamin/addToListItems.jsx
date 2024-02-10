@@ -9,6 +9,7 @@ const AddToListItems = ({
   handleEditService,
   setPrescriptionItemsData,
   prescDataIsLoading,
+  selectFavTaminItem,
 }) => {
   const _DeleteService = (id, prescId) => {
     setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
@@ -95,7 +96,7 @@ const AddToListItems = ({
                       type="button"
                       className="btn btn-sm btn-outline-primary favItem height-27"
                       data-pr-position="top"
-                    //   onClick={() => selectFavEprescItem(srv)}
+                      onClick={() => selectFavTaminItem(srv)}
                     >
                       <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
                       <FeatherIcon icon="star" className="prescItembtns" />

@@ -20,7 +20,7 @@ const ReceptionListTable = ({
       sortable: true,
       style: {
         justifyContent: "flex-start",
-        width: "180px"
+        width: "180px",
       },
       cell: (row) => (
         <div className="d-flex justify-center align-items-center gap-3">
@@ -67,7 +67,7 @@ const ReceptionListTable = ({
     },
     {
       name: "بخش",
-      selector: (row) => row.Modality.Name,
+      selector: (row) => (row.Modality?.Name ? row.Modality.Name : ""),
       sortable: true,
       width: "auto",
     },

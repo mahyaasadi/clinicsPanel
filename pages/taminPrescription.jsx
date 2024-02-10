@@ -9,6 +9,7 @@ import PatientVerticalCard from "components/dashboard/patientInfo/patientVertica
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
+import FavItemsModal from "components/dashboard/prescription/tamin/favItemsModal";
 import GetPinInput from "components/commonComponents/pinInput";
 import {
   TaminPrescType,
@@ -183,13 +184,13 @@ const TaminPrescription = ({
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
+    data.Clinic = true;
 
     axiosClient
       .post(url, data)
       .then((response) => {
         setPatientInfo(response.data);
-        $("#newPatientModal").modal("hide");
-        $("#patientInfoCard2").show("");
+
         if (response.data === false) {
           ErrorAlert(
             "خطا",
@@ -203,6 +204,8 @@ const TaminPrescription = ({
           return false;
         } else {
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
+          $("#patientInfoCard2").show("");
+          $("#newPatientModal").modal("hide");
         }
         setAddPatientIsLoading(false);
       })
@@ -309,7 +312,7 @@ const TaminPrescription = ({
     setSelectedAmountLbl(null);
     setSelectedInstruction(null);
     setSelectedInstructionLbl(null);
-    $("#eprscItemDescription").val("")
+    $("#eprscItemDescription").val("");
   };
 
   const selectSearchedService = (name, srvCode, type, paraTarefCode) => {
@@ -323,6 +326,39 @@ const TaminPrescription = ({
     $("#BtnActiveSearch").show();
     $(".SearchDiv").hide();
     $("#srvSearchInput").prop("readonly", true);
+  };
+
+  // Fav Tamin Items
+  const [showFavItemsModal, setShowFavItemsModal] = useState(false);
+  const [favTaminItems, setFavTaminItems] = useState([]);
+  const openFavModal = () => setShowFavItemsModal(true);
+  const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
+
+  const getFavTaminItems = () => {
+    let url = `FavEprscItem/getTamin/${ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setFavTaminItems(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const selectFavTaminItem = async (selectedSrv) => {
+    let url = "FavEprscItem/addTamin";
+    let data = {
+      CenterID: ClinicID,
+      prescItem: selectedSrv,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setFavTaminItems([...favTaminItems, response.data]);
+        SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
+      })
+      .catch((err) => console.log(err));
   };
 
   // Edit Service
@@ -351,6 +387,10 @@ const TaminPrescription = ({
     ActiveSrvCode = srvData.SrvCode;
     ActiveSrvName = srvData.SrvName;
     ActiveEditSrvCode = srvData.SrvCode;
+
+    setTimeout(() => {
+      setShowFavItemsModal(false);
+    }, 200);
   };
 
   // Delete Service
@@ -423,7 +463,6 @@ const TaminPrescription = ({
       axiosClient
         .post(url, data)
         .then((response) => {
-          // console.log(response.data);
           getEditPrescData(response.data);
           setPrescDataIsLoading(false);
         })
@@ -459,7 +498,9 @@ const TaminPrescription = ({
     if (!editSrvMode) {
       if (
         addPrescriptionitems.length > 0 &&
-        addPrescriptionitems.find(({ srvId }) => srvId.srvCode === ActiveSrvCode)
+        addPrescriptionitems.find(
+          ({ srvId }) => srvId.srvCode === ActiveSrvCode
+        )
       ) {
         ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
         return false;
@@ -622,6 +663,7 @@ const TaminPrescription = ({
 
   useEffect(() => {
     setShowBirthDigitsAlert(false);
+    getFavTaminItems();
     $("#patientNID").val("");
   }, []);
 
@@ -682,6 +724,7 @@ const TaminPrescription = ({
                 setEditSrvData={setEditSrvData}
                 ActivePrescHeadID={ActivePrescHeadID}
                 setShowPinModal={setShowPinModal}
+                openFavModal={openFavModal}
               />
 
               <div className="prescList">
@@ -691,11 +734,19 @@ const TaminPrescription = ({
                   handleEditService={handleEditService}
                   setPrescriptionItemsData={setPrescriptionItemsData}
                   prescDataIsLoading={prescDataIsLoading}
+                  selectFavTaminItem={selectFavTaminItem}
                 />
               </div>
             </div>
           </div>
         </div>
+
+        <FavItemsModal
+          data={favTaminItems}
+          show={showFavItemsModal}
+          onHide={handleCloseFavItemsModal}
+          handleEditService={handleEditService}
+        />
 
         {ActivePrescHeadID && showPinModal && (
           <GetPinInput

@@ -329,6 +329,7 @@ const Appointment = ({ ClinicUser }) => {
     let url = "Patient/addPatient";
     let data = props;
     data.CenterID = ClinicID;
+    data.Clinic = true;
 
     axiosClient
       .post(url, data)
@@ -652,7 +653,8 @@ const Appointment = ({ ClinicUser }) => {
 
     // Days Columns Dynamic Height
     var root = document.querySelector(":root");
-    let set = 96 - 4 * depOpeningHour;
+    let set = 96 - 4 * depClosingHour;
+    // depOpeningHour
     root.style.setProperty("--numHours", set);
   }, [ActiveModalityID, currentDate]);
 

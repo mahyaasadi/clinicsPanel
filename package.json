@@ -38,6 +38,7 @@
     "react-select": "^5.7.7",
     "recharts": "^2.11.0",
     "redux": "^4.2.1",
+    "socket.io-client": "2.5",
     "sweetalert2": "^11.7.32",
     "viewerjs": "^1.11.6"
   },
