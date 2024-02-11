@@ -8,18 +8,20 @@ import SingleDatePicker from "components/commonComponents/datepicker/singleDateP
 import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
 import { convertBase64 } from "utils/convertBase64";
 import { Tooltip } from "primereact/tooltip";
+import QRCodeModal from "components/dashboard/patientInfo/qrcodeModal";
+import {
+  ErrorAlert,
+  SuccessAlert,
+} from "class/AlertManage";
 import {
   genderDataClass,
   maritalStatus,
   educationStatus,
 } from "class/staticDropdownOptions";
-import {
-  ErrorAlert,
-  SuccessAlert,
-  multipleQuestionsAlert,
-} from "class/AlertManage";
+import { setPatientAvatarUrl } from "lib/session"
 
 const EditPatientInfoFrm = ({
+  ClinicUserID,
   data,
   EditPatient,
   ActivePatientID,
@@ -139,16 +141,6 @@ const EditPatientInfoFrm = ({
   const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
   const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
 
-  const handleChangeAvatar = () => {
-    multipleQuestionsAlert(
-      "روش مورد نظر را انتخاب نمایید",
-      "آپلود تصویر",
-      "option 2",
-      setShowUploadAvatarModal,
-      null
-    );
-  };
-
   const changePatientAvatar = async (e) => {
     e.preventDefault();
     setAvatarIsLoading(true);
@@ -178,6 +170,15 @@ const EditPatientInfoFrm = ({
         });
     }
   };
+
+  // QRCode modal
+  const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+  const openQRCodeModal = () => setShowQRCodeModal(true);
+  const closeQRCodeModal = () => setShowQRCodeModal(false);
+
+  let PatientAvatarUrl = setPatientAvatarUrl(
+    ActivePatientID + ";" + ClinicUserID
+  );
 
   useEffect(() => {
     setShowEmailAlertTxt(false);
@@ -210,7 +211,7 @@ const EditPatientInfoFrm = ({
             </div>
             <button
               type="button"
-              onClick={handleChangeAvatar}
+              onClick={openUploadAvatarModal}
               className="btn btn-outline-primary changeAvatarIcon"
               data-pr-position="left"
             >
@@ -525,6 +526,13 @@ const EditPatientInfoFrm = ({
         onHide={closeUploadAvatarModal}
         changePatientAvatar={changePatientAvatar}
         avatarIsLoading={avatarIsLoading}
+        openQRCodeModal={openQRCodeModal}
+      />
+
+      <QRCodeModal
+        show={showQRCodeModal}
+        onHide={closeQRCodeModal}
+        PatientAvatarUrl={PatientAvatarUrl}
       />
     </>
   );

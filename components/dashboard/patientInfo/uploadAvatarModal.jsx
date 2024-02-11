@@ -7,6 +7,7 @@ const UploadAvatarModal = ({
   changePatientAvatar,
   data,
   avatarIsLoading,
+  openQRCodeModal,
 }) => {
   const displayNewAvatar = (e) => {
     var urlCreator = window.URL || window.webkitURL;
@@ -56,12 +57,21 @@ const UploadAvatarModal = ({
 
           <div className="submit-section">
             {!avatarIsLoading ? (
-              <button
-                type="submit"
-                className="btn btn-primary rounded btn-save font-13"
-              >
-                ثبت
-              </button>
+              <div className="d-flex justify-center gap-2">
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded btn-save font-13"
+                >
+                  آپلود
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary rounded btn-save font-13"
+                  onClick={openQRCodeModal}
+                >
+                  استفاده از گوشی همراه
+                </button>
+              </div>
             ) : (
               <button
                 type="submit"

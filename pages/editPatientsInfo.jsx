@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { getSession, setPatientAvatarUrl } from "lib/session";
+import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import EditPatientInfoFrm from "components/dashboard/patientsArchives/editPatientInfoFrm";
 import Loading from "components/commonComponents/loading/loading";
@@ -26,6 +26,7 @@ let ClinicID,
   ActivePatientID = null;
 const EditPatientsInfo = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
+
   const router = useRouter();
 
   const [patientData, setPatientData] = useState([]);
@@ -52,10 +53,7 @@ const EditPatientsInfo = ({ ClinicUser }) => {
   const EditPatient = (data) => {
     if (data) setPatientData(data);
   };
-  let PatientAvatarUrl = setPatientAvatarUrl(
-    ActivePatientID + ";" + ClinicUser._id
-  );
-  console.log(PatientAvatarUrl);
+
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) getOnePatient();
@@ -74,6 +72,7 @@ const EditPatientsInfo = ({ ClinicUser }) => {
             <div className="card p-2 dir-rtl">
               <div className="card-body">
                 <EditPatientInfoFrm
+                  ClinicUserID={ClinicUser._id}
                   data={patientData}
                   patientAvatar={patientAvatar}
                   setPatientAvatar={setPatientAvatar}

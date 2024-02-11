@@ -116,28 +116,11 @@ const TimerAlert = (options) => {
   });
 };
 
-const multipleQuestionsAlert = (title, Q1, Q2, Q1Res, Q2Res) => {
-  Swal.fire({
-    title: title,
-    showDenyButton: true,
-    confirmButtonText: Q1,
-    confirmButtonColor: "#B45309",
-    denyButtonText: Q2,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Q1Res(true);
-    } else if (result.isDenied) {
-      // Swal.fire("Changes are not saved", "", "info");
-    }
-  });
-};
-
 module.exports.ErrorAlert = ErrorAlert;
 module.exports.SuccessAlert = SuccessAlert;
 module.exports.WarningAlert = WarningAlert;
 module.exports.QuestionAlert = QuestionAlert;
 module.exports.TimerAlert = TimerAlert;
-module.exports.multipleQuestionsAlert = multipleQuestionsAlert;
 
 // const oneInputAlert = async (Title) => {
 //   const promise = await Swal.fire({

@@ -1,4 +1,4 @@
-import List from "../chatUserMes/list";
+import List from "./chatUserMes/list";
 
 export default function ChatPage({
   ChatHeader,
@@ -57,8 +57,7 @@ export default function ChatPage({
           </div>
         </div>
 
-        {/*chatBoody*/}
-
+        {/*chatBody*/}
         <div className="chat-scroll" id="chat-body">
           <div className="chat-body">
             <ul className="list-unstyled" id="AddChat">

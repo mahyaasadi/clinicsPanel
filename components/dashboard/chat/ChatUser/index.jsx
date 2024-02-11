@@ -1,4 +1,4 @@
-const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
+const ChatUser = ({ user, SelectChat, Patients, ChatStatus }) => {
   if (user) {
     let patient = Patients?.find((x) => x._id === user?.User1);
     let LastMessage = "";

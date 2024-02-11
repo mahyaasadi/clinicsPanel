@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
-import CentersList from "components/chat/centersList";
-import ChatPage from "components/chat";
+import CentersList from "@/components/dashboard/chat/centersList";
+import ChatPage from "@/components/dashboard/chat";
 import { getSession } from "lib/session";
 import axios from "axios";
 import { axiosClient } from "class/axiosConfig";

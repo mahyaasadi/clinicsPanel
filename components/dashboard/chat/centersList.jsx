@@ -1,5 +1,5 @@
-import ChatUser from "../ChatUser";
-export default function CentersList({ UserChats, cenetrs, SelectChat, Patients,ChatStatus}) {
+import ChatUser from "./ChatUser";
+export default function CentersList({ UserChats, cenetrs, SelectChat, Patients, ChatStatus }) {
   return (
     <>
       <div className="chat-users-list">
@@ -7,7 +7,7 @@ export default function CentersList({ UserChats, cenetrs, SelectChat, Patients,C
           {UserChats.map((user) => {
             return (
               <ChatUser user={user} cenetrs={cenetrs} SelectChat={SelectChat} ChatStatus={ChatStatus}
-              Patients={Patients}
+                Patients={Patients}
               />
             );
           })}
