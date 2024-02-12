@@ -105,72 +105,62 @@ const ProfileSettings = ({ ClinicUser }) => {
   };
 
   // Edit Avatar
-  const changeUserAvatar = async (formData) => {
+  const changeUserAvatar = async (blob, userID) => {
     setAvatarIsLoading(true);
 
-    const formProps = Object.fromEntries(formData);
-    if (formProps.editUserAvatar) {
-      let avatarBlob;
+    let avatarBlob;
+    if (blob) {
+      avatarBlob = await convertBase64(blob);
 
-      if (formProps.editUserAvatar) {
-        avatarBlob = await convertBase64(formProps.editUserAvatar);
+      let url = "ClinicUser/ChangeAvatar";
+      let data = {
+        UserID: userID,
+        Avatar: avatarBlob,
+      };
 
-        let url = "ClinicUser/ChangeAvatar";
-        let data = {
-          UserID: formProps.userId,
-          Avatar: avatarBlob,
-        };
+      axiosClient
+        .put(url, data)
+        .then(async (response) => {
+          setUserInfo({ ...userInfo, Avatar: response.data.Avatar });
 
-        axiosClient
-          .put(url, data)
-          .then(async (response) => {
-            setUserInfo({ ...userInfo, Avatar: response.data.Avatar });
+          document
+            .getElementById("avatar")
+            .setAttribute("src", "https://irannobat.ir" + response.data.Avatar);
+          document
+            .getElementById("avatar")
+            .setAttribute(
+              "srcSet",
+              "https://irannobat.ir" + response.data.Avatar
+            );
+          document
+            .getElementById("dropdownAvatar")
+            .setAttribute("src", "https://irannobat.ir" + response.data.Avatar);
+          document
+            .getElementById("dropdownAvatar")
+            .setAttribute(
+              "srcSet",
+              "https://irannobat.ir" + response.data.Avatar
+            );
 
-            document
-              .getElementById("avatar")
-              .setAttribute(
-                "src",
-                "https://irannobat.ir" + response.data.Avatar
-              );
-            document
-              .getElementById("avatar")
-              .setAttribute(
-                "srcSet",
-                "https://irannobat.ir" + response.data.Avatar
-              );
-            document
-              .getElementById("dropdownAvatar")
-              .setAttribute(
-                "src",
-                "https://irannobat.ir" + response.data.Avatar
-              );
-            document
-              .getElementById("dropdownAvatar")
-              .setAttribute(
-                "srcSet",
-                "https://irannobat.ir" + response.data.Avatar
-              );
+          userInfo.Avatar = "https://irannobat.ir" + response.data.Avatar;
 
-            userInfo.Avatar = "https://irannobat.ir" + response.data.Avatar;
+          // reset cookies
+          let clinicSession = await setSession(userInfo);
+          Cookies.set("clinicSession", clinicSession, { expires: 1 });
 
-            // reset cookies
-            let clinicSession = await setSession(userInfo);
-            Cookies.set("clinicSession", clinicSession, { expires: 1 });
+          setTimeout(() => {
+            router.push("/profile");
+          }, 300);
 
-            setTimeout(() => {
-              router.push("/profile");
-            }, 300);
+          SuccessAlert("موفق", "تغییر آواتار با موفقیت انجام گردید!");
+          setAvatarIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setAvatarIsLoading(false);
 
-            SuccessAlert("موفق", "تغییر آواتار با موفقیت انجام گردید!");
-            setAvatarIsLoading(false);
-          })
-          .catch((err) => {
-            console.log(err);
-            setAvatarIsLoading(false);
-
-            ErrorAlert("خطا", "تغییر آواتار با خطا مواجه گردید!");
-          });
-      }
+          ErrorAlert("خطا", "تغییر آواتار با خطا مواجه گردید!");
+        });
     }
   };
 

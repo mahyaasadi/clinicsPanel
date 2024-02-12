@@ -78,6 +78,7 @@ const EditPatientsInfo = ({ ClinicUser }) => {
                   setPatientAvatar={setPatientAvatar}
                   EditPatient={EditPatient}
                   ActivePatientID={ActivePatientID}
+                  getOnePatient={getOnePatient}
                 />
               </div>
             </div>

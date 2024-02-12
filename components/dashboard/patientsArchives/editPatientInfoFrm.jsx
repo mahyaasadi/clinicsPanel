@@ -1,24 +1,22 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { axiosClient } from "class/axiosConfig";
+import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
+import { axiosClient } from "class/axiosConfig";
+import { setPatientAvatarUrl } from "lib/session";
+import { convertBase64 } from "utils/convertBase64";
+import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import selectfieldColourStyles from "class/selectfieldStyle";
 import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
-import { convertBase64 } from "utils/convertBase64";
-import { Tooltip } from "primereact/tooltip";
-import QRCodeModal from "components/dashboard/patientInfo/qrcodeModal";
-import {
-  ErrorAlert,
-  SuccessAlert,
-} from "class/AlertManage";
+import useImageCropper from "components/commonComponents/cropper/useImageCropper";
+import QRCodeGeneratorModal from "components/commonComponents/qrcode";
 import {
   genderDataClass,
   maritalStatus,
   educationStatus,
 } from "class/staticDropdownOptions";
-import { setPatientAvatarUrl } from "lib/session"
 
 const EditPatientInfoFrm = ({
   ClinicUserID,
@@ -27,6 +25,7 @@ const EditPatientInfoFrm = ({
   ActivePatientID,
   patientAvatar,
   setPatientAvatar,
+  getOnePatient,
 }) => {
   const router = useRouter();
 
@@ -141,6 +140,14 @@ const EditPatientInfoFrm = ({
   const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
   const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
 
+  const handleCroppedImage = async (blob) => {
+    // await changeUserAvatar(blob, userInfo._id);
+    console.log({ blob });
+  };
+
+  const [avatarSrc, setAvatarSrc] = useState(data.Avatar);
+  const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
+
   const changePatientAvatar = async (e) => {
     e.preventDefault();
     setAvatarIsLoading(true);
@@ -161,6 +168,7 @@ const EditPatientInfoFrm = ({
         .put(url, editData)
         .then((response) => {
           setPatientAvatar(response.data.Avatar);
+          getOnePatient();
           setAvatarIsLoading(false);
           setShowUploadAvatarModal(false);
         })
@@ -527,12 +535,15 @@ const EditPatientInfoFrm = ({
         changePatientAvatar={changePatientAvatar}
         avatarIsLoading={avatarIsLoading}
         openQRCodeModal={openQRCodeModal}
+        handleSubmit={handleSubmit}
+        handleCroppedImage={handleCroppedImage}
       />
 
-      <QRCodeModal
+      <QRCodeGeneratorModal
         show={showQRCodeModal}
         onHide={closeQRCodeModal}
-        PatientAvatarUrl={PatientAvatarUrl}
+        url={"changePatientAvatar"}
+        token={PatientAvatarUrl}
       />
     </>
   );

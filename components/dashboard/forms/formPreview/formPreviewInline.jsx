@@ -24,7 +24,11 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
     <>
       <div className="row">
         <div className="table-responsive p-2 marginb-3">
-          <PatientHorizontalCard data={patientData} />
+          <PatientHorizontalCard
+            data={patientData}
+            avatarEditMode={true}
+            generalEditMode={true}
+          />
         </div>
 
         <hr className="mb-4" />

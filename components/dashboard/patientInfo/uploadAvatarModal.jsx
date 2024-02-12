@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
@@ -8,9 +9,12 @@ const UploadAvatarModal = ({
   data,
   avatarIsLoading,
   openQRCodeModal,
+  handleSubmit,
+  handleCroppedImage,
 }) => {
   const displayNewAvatar = (e) => {
     var urlCreator = window.URL || window.webkitURL;
+
     if (e.target.files.length !== 0) {
       var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
       $("#patientAvatar").attr("src", imageUrl);
@@ -26,7 +30,7 @@ const UploadAvatarModal = ({
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={changePatientAvatar}>
+        <form onSubmit={(e) => handleSubmit(handleCroppedImage)}>
           <div className="form-group">
             <div className="change-photo-btn mt-4">
               <div>
@@ -47,44 +51,48 @@ const UploadAvatarModal = ({
 
           <div className="previewImgContainer">
             <img
-              src={"https://irannobat.ir/images/Avatar/" + data?.Avatar}
+              src={
+                data?.Avatar
+                  ? "https://irannobat.ir/images/Avatar/" + data.Avatar
+                  : ""
+              }
               width="200"
-              alt="patientAvatar"
+              alt=""
               id="patientAvatar"
               className="d-block m-auto previewImg"
             ></img>
           </div>
 
           <div className="submit-section">
-            {!avatarIsLoading ? (
-              <div className="d-flex justify-center gap-2">
+            <div className="d-flex flex-col-md justify-center gap-2">
+              {!avatarIsLoading ? (
                 <button
                   type="submit"
                   className="btn btn-primary rounded btn-save font-13"
                 >
                   آپلود
                 </button>
+              ) : (
                 <button
-                  type="button"
-                  className="btn btn-outline-primary rounded btn-save font-13"
-                  onClick={openQRCodeModal}
+                  type="submit"
+                  className="btn btn-primary rounded font-13"
+                  disabled
                 >
-                  استفاده از گوشی همراه
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                  در حال ثبت
                 </button>
-              </div>
-            ) : (
+              )}
               <button
-                type="submit"
-                className="btn btn-primary rounded font-13"
-                disabled
+                type="button"
+                className="btn btn-outline-primary rounded btn-save font-13"
+                onClick={openQRCodeModal}
               >
-                <span
-                  className="spinner-border spinner-border-sm me-2"
-                  role="status"
-                ></span>
-                در حال ثبت
+                استفاده از گوشی همراه
               </button>
-            )}
+            </div>
           </div>
         </form>
       </Modal.Body>

@@ -29,7 +29,7 @@ const PatientsListTable = ({
         >
           <div>
             <img
-              src={"https://irannobat.ir/images/" + row.Avatar}
+              src={"https://irannobat.ir/images/Avatar/" + row.Avatar}
               alt="patientAvatar"
               style={{
                 width: "35px",

@@ -85,6 +85,7 @@ const PatientInfoCard = ({
     axiosClient
       .post(url, editData)
       .then((response) => {
+        console.log(response.data);
         if (response.data.isCovered) {
           // if (editData.IID === 1) {
           //   patientsInfo.InsuranceName = "سلامت ایرانیان";

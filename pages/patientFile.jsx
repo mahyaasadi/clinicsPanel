@@ -271,7 +271,13 @@ const PatientFile = ({ ClinicUser }) => {
         ) : (
           <div className="content container-fluid">
             <div className="card-body p-4 dir-rtl">
-              <PatientHorizontalCard data={patientData} />
+              <PatientHorizontalCard
+                data={patientData}
+                avatarEditMode={true}
+                generalEditMode={true}
+                ClinicUserID={ClinicUserID}
+                getOnePatient={getOnePatient}
+              />
 
               <div className="mt-5 mb-2">
                 <FormsList

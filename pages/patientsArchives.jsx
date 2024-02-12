@@ -35,6 +35,7 @@ let ClinicID,
   ActivePatientNID,
   ActivePatientID = null;
 const PatientsArchives = ({ ClinicUser }) => {
+  console.log({ ClinicUser });
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
 
@@ -74,9 +75,13 @@ const PatientsArchives = ({ ClinicUser }) => {
     setIsLoading(true);
 
     let url = `ClinicReception/myPatient/${ClinicID}`;
+
+    console.log({ url });
+
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
         setPatientsData(response.data.Patient);
         setPendingPatientsData(response.data.Pending);
         setIsLoading(false);

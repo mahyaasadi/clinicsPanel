@@ -11423,9 +11423,32 @@ thead {
   background: white;
 }
 
+.changeAvatarIcon2 {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 5px;
+  bottom: 0;
+  right: 6rem;
+  background: white;
+}
+
 .changeAvatarIcon .feather {
   width: 15px !important;
   height: 15px !important;
+}
+
+.changeAvatarIcon2 .feather {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.changeAvatarFrm {
+  direction: rtl;
+  max-height: 50rem;
+  overflow: auto;
 }
 
 .easyAccessIcon .feather {

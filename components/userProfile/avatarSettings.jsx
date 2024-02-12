@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
-import Cropper from "cropperjs";
-import "cropperjs/dist/cropper.css";
+// import Cropper from "cropperjs";
+// import "cropperjs/dist/cropper.css";
+import useImageCropper from "components/commonComponents/cropper/useImageCropper";
 
 const AvatarSettings = ({
   userInfo,
@@ -13,9 +14,12 @@ const AvatarSettings = ({
 }) => {
   const router = useRouter();
 
+  const handleCroppedImage = async (blob) => {
+    await changeUserAvatar(blob, userInfo._id);
+  };
+
   const [avatarSrc, setAvatarSrc] = useState(ClinicUser.Avatar);
-  const [cropper, setCropper] = useState(null);
-  const imageElement = useRef(null);
+  const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
 
   const displayNewAvatar = (e) => {
     if (e.target.files.length !== 0) {
@@ -25,46 +29,10 @@ const AvatarSettings = ({
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (cropper) {
-      const croppedCanvas = cropper.getCroppedCanvas();
-
-      if (!croppedCanvas) {
-        return;
-      }
-      croppedCanvas.toBlob(async (blob) => {
-        let formData = new FormData();
-        formData.append("editUserAvatar", blob);
-        formData.append("userId", userInfo._id);
-
-        await changeUserAvatar(formData);
-      });
-    }
-  };
-
   const handleCancelBtn = (e) => {
     e.preventDefault();
     router.push("/profile");
   };
-
-  useEffect(() => {
-    if (avatarSrc !== ClinicUser.Avatar && imageElement.current) {
-      if (cropper) cropper.destroy();
-      const newCropper = new Cropper(imageElement.current, {
-        aspectRatio: 1,
-      });
-      setCropper(newCropper);
-    }
-
-    return () => {
-      if (cropper) {
-        cropper.destroy();
-        setCropper(null);
-      }
-    };
-  }, [avatarSrc]);
 
   return (
     <>
@@ -74,7 +42,7 @@ const AvatarSettings = ({
             <div className="card-header">
               <p className="font-16 fw-bold text-secondary">تغییر آواتار</p>
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit(e, handleCroppedImage)}>
               <div className="settings-form">
                 <p className="font-12 lblAbs">آواتار فعلی</p>
                 <div className="upload-images">

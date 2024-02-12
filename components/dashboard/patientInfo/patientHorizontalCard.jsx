@@ -1,7 +1,63 @@
+import { useState } from "react";
+import Link from "next/link";
+import { setPatientAvatarUrl } from "lib/session";
+import FeatherIcon from "feather-icons-react";
+import { convertBase64 } from "utils/convertBase64";
+import { axiosClient } from "class/axiosConfig";
+import { Tooltip } from "primereact/tooltip";
 import { convertDateFormat } from "utils/convertDateFormat";
+import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
+import QRCodeGeneratorModal from "components/commonComponents/qrcode";
 
-const PatientHorizontalCard = ({ data, patientInfoArchiveMode }) => {
-  console.log({ data });
+const PatientHorizontalCard = ({
+  ClinicUserID,
+  data,
+  patientInfoArchiveMode,
+  avatarEditMode,
+  generalEditMode,
+  getOnePatient,
+}) => {
+  // upload avatar modal
+  const [showUploadAvatarModal, setShowUploadAvatarModal] = useState(false);
+  const [avatarIsLoading, setAvatarIsLoading] = useState(false);
+  const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
+  const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
+
+  const changePatientAvatar = async (e) => {
+    e.preventDefault();
+    setAvatarIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    if (formProps.editPatientAvatar) {
+      let avatarBlob = await convertBase64(formProps.editPatientAvatar);
+
+      let url = "Patient/ChangeAvatar";
+      let editData = {
+        PatientID: data._id,
+        Avatar: avatarBlob,
+      };
+
+      axiosClient
+        .put(url, editData)
+        .then((response) => {
+          getOnePatient();
+          setAvatarIsLoading(false);
+          setShowUploadAvatarModal(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setAvatarIsLoading(false);
+        });
+    }
+  };
+
+  // QRCode modal
+  const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+  const openQRCodeModal = () => setShowQRCodeModal(true);
+  const closeQRCodeModal = () => setShowQRCodeModal(false);
+
   let InsuranceType,
     GenderType = null;
 
@@ -38,19 +94,36 @@ const PatientHorizontalCard = ({ data, patientInfoArchiveMode }) => {
     }
   }
 
+  let PatientAvatarUrl = setPatientAvatarUrl(data._id + ";" + ClinicUserID);
+
   return (
     <div className="cantainer">
-      <div className="Cardmain">
-        <div className="profile col-md-5 col-12">
+      <div className="Cardmain ">
+        <div className="profile col-md-5 col-12 p-relative">
+          {generalEditMode && (
+            <Link
+              href={{
+                pathname: "/editPatientsInfo",
+                query: { id: data._id },
+              }}
+              className="btn eventBtns editPatientInfo"
+              style={{ position: "absolute", top: "0", left: "0" }}
+              data-pr-position="top"
+            >
+              <FeatherIcon icon="edit-3" />
+              <Tooltip target=".editPatientInfo">ویرایش اطلاعات</Tooltip>
+            </Link>
+          )}
+
           <div className="pro-im-na">
             <div className="Cardimg">
               {data.Avatar ? (
                 <img
-                  src={"https://irannobat.ir/images/" + data?.Avatar}
+                  src={"https://irannobat.ir/images/Avatar/" + data?.Avatar}
                   alt="patientAvatar"
                   style={{
-                    width: "65px",
-                    height: "65px",
+                    width: "75px",
+                    height: "75px",
                     borderRadius: "100%",
                   }}
                 />
@@ -62,7 +135,19 @@ const PatientHorizontalCard = ({ data, patientInfoArchiveMode }) => {
                   ></path>
                 </svg>
               )}
+              {avatarEditMode && (
+                <button
+                  type="button"
+                  onClick={openUploadAvatarModal}
+                  className="btn btn-outline-primary changeAvatarIcon2"
+                  data-pr-position="left"
+                >
+                  <FeatherIcon icon="edit-2" />
+                  <Tooltip target=".changeAvatarIcon2">ویرایش آواتار</Tooltip>
+                </button>
+              )}
             </div>
+
             <div className="name">{data?.Name ? data.Name : "-"}</div>
             <div className="job">
               {data?.NationalID ? data.NationalID : "-"}
@@ -135,6 +220,22 @@ const PatientHorizontalCard = ({ data, patientInfoArchiveMode }) => {
           </div>
         )}
       </div>
+
+      <UploadAvatarModal
+        data={data}
+        show={showUploadAvatarModal}
+        onHide={closeUploadAvatarModal}
+        changePatientAvatar={changePatientAvatar}
+        avatarIsLoading={avatarIsLoading}
+        openQRCodeModal={openQRCodeModal}
+      />
+
+      <QRCodeGeneratorModal
+        show={showQRCodeModal}
+        onHide={closeQRCodeModal}
+        url={"changePatientAvatar"}
+        token={PatientAvatarUrl}
+      />
     </div>
   );
 };

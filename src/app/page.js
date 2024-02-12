@@ -37,6 +37,7 @@ export default function Page() {
       .post(url, data)
       .then(async function (response) {
         const loginRes = response.data;
+
         let in24Hours = 24 * 60 * 60;
 
         let clinicSession = await setSession(loginRes);
@@ -112,8 +113,9 @@ export default function Page() {
                         />
                         <span
                           onClick={onEyeClick}
-                          className={`fa toggle-password" ${eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                          className={`fa toggle-password" ${
+                            eye ? "fa-eye-slash" : "fa-eye"
+                          }`}
                         />
                       </div>
                     )}
