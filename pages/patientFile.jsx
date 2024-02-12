@@ -273,10 +273,10 @@ const PatientFile = ({ ClinicUser }) => {
             <div className="card-body p-4 dir-rtl">
               <PatientHorizontalCard
                 data={patientData}
-                avatarEditMode={true}
-                generalEditMode={true}
                 ClinicUserID={ClinicUserID}
                 getOnePatient={getOnePatient}
+                avatarEditMode={true}
+                generalEditMode={true}
               />
 
               <div className="mt-5 mb-2">

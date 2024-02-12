@@ -5,9 +5,11 @@ import FeatherIcon from "feather-icons-react";
 import { convertBase64 } from "utils/convertBase64";
 import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
+import { ErrorAlert } from "class/AlertManage"
 import { convertDateFormat } from "utils/convertDateFormat";
 import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
 import QRCodeGeneratorModal from "components/commonComponents/qrcode";
+import useImageCropper from "@/components/commonComponents/cropper/useImageCropper";
 
 const PatientHorizontalCard = ({
   ClinicUserID,
@@ -23,15 +25,18 @@ const PatientHorizontalCard = ({
   const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
   const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
 
-  const changePatientAvatar = async (e) => {
-    e.preventDefault();
+  const handleCroppedImage = async (blob) => {
+    await changePatientAvatar(blob);
+  };
+
+  const [avatarSrc, setAvatarSrc] = useState(data.Avatar);
+  const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
+
+  const changePatientAvatar = async (blob) => {
     setAvatarIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
-    if (formProps.editPatientAvatar) {
-      let avatarBlob = await convertBase64(formProps.editPatientAvatar);
+    if (blob) {
+      let avatarBlob = await convertBase64(blob);
 
       let url = "Patient/ChangeAvatar";
       let editData = {
@@ -48,6 +53,7 @@ const PatientHorizontalCard = ({
         })
         .catch((err) => {
           console.log(err);
+          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!")
           setAvatarIsLoading(false);
         });
     }
@@ -122,8 +128,8 @@ const PatientHorizontalCard = ({
                   src={"https://irannobat.ir/images/Avatar/" + data?.Avatar}
                   alt="patientAvatar"
                   style={{
-                    width: "75px",
-                    height: "75px",
+                    width: "85px",
+                    height: "85px",
                     borderRadius: "100%",
                   }}
                 />
@@ -135,6 +141,7 @@ const PatientHorizontalCard = ({
                   ></path>
                 </svg>
               )}
+
               {avatarEditMode && (
                 <button
                   type="button"
@@ -142,7 +149,7 @@ const PatientHorizontalCard = ({
                   className="btn btn-outline-primary changeAvatarIcon2"
                   data-pr-position="left"
                 >
-                  <FeatherIcon icon="edit-2" />
+                  <FeatherIcon icon="camera" />
                   <Tooltip target=".changeAvatarIcon2">ویرایش آواتار</Tooltip>
                 </button>
               )}
@@ -228,6 +235,11 @@ const PatientHorizontalCard = ({
         changePatientAvatar={changePatientAvatar}
         avatarIsLoading={avatarIsLoading}
         openQRCodeModal={openQRCodeModal}
+        avatarSrc={avatarSrc}
+        setAvatarSrc={setAvatarSrc}
+        handleSubmit={handleSubmit}
+        handleCroppedImage={handleCroppedImage}
+        imageElement={imageElement}
       />
 
       <QRCodeGeneratorModal

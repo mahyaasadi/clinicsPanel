@@ -141,22 +141,17 @@ const EditPatientInfoFrm = ({
   const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
 
   const handleCroppedImage = async (blob) => {
-    // await changeUserAvatar(blob, userInfo._id);
-    console.log({ blob });
+    await changePatientAvatar(blob);
   };
 
   const [avatarSrc, setAvatarSrc] = useState(data.Avatar);
   const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
 
-  const changePatientAvatar = async (e) => {
-    e.preventDefault();
+  const changePatientAvatar = async (blob) => {
     setAvatarIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
-    if (formProps.editPatientAvatar) {
-      let avatarBlob = await convertBase64(formProps.editPatientAvatar);
+    if (blob) {
+      let avatarBlob = await convertBase64(blob);
 
       let url = "Patient/ChangeAvatar";
       let editData = {
@@ -164,17 +159,22 @@ const EditPatientInfoFrm = ({
         Avatar: avatarBlob,
       };
 
+      console.log({ editData });
+
       axiosClient
         .put(url, editData)
         .then((response) => {
+          console.log(response.data);
           setPatientAvatar(response.data.Avatar);
           getOnePatient();
+
           setAvatarIsLoading(false);
           setShowUploadAvatarModal(false);
         })
         .catch((err) => {
           console.log(err);
           setAvatarIsLoading(false);
+          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!")
         });
     }
   };
@@ -223,7 +223,7 @@ const EditPatientInfoFrm = ({
               className="btn btn-outline-primary changeAvatarIcon"
               data-pr-position="left"
             >
-              <FeatherIcon icon="edit-2" />
+              <FeatherIcon icon="camera" />
               <Tooltip target=".changeAvatarIcon">ویرایش آواتار</Tooltip>
             </button>
           </div>
@@ -532,9 +532,12 @@ const EditPatientInfoFrm = ({
         data={data}
         show={showUploadAvatarModal}
         onHide={closeUploadAvatarModal}
-        changePatientAvatar={changePatientAvatar}
+        // changePatientAvatar={changePatientAvatar}
         avatarIsLoading={avatarIsLoading}
         openQRCodeModal={openQRCodeModal}
+        avatarSrc={avatarSrc}
+        setAvatarSrc={setAvatarSrc}
+        imageElement={imageElement}
         handleSubmit={handleSubmit}
         handleCroppedImage={handleCroppedImage}
       />
