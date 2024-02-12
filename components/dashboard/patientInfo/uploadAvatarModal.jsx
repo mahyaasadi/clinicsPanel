@@ -30,6 +30,7 @@ const UploadAvatarModal = ({
       </Modal.Header>
 
       <Modal.Body>
+        {/* used to be changePatientAvatar */}
         <form onSubmit={(e) => handleSubmit(handleCroppedImage)}>
           <div className="form-group">
             <div className="change-photo-btn mt-4">

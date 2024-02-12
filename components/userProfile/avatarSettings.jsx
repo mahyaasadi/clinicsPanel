@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
-// import Cropper from "cropperjs";
-// import "cropperjs/dist/cropper.css";
 import useImageCropper from "components/commonComponents/cropper/useImageCropper";
 
 const AvatarSettings = ({
@@ -14,10 +12,6 @@ const AvatarSettings = ({
 }) => {
   const router = useRouter();
 
-  const handleCroppedImage = async (blob) => {
-    await changeUserAvatar(blob, userInfo._id);
-  };
-
   const [avatarSrc, setAvatarSrc] = useState(ClinicUser.Avatar);
   const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
 
@@ -27,6 +21,10 @@ const AvatarSettings = ({
       var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
       setAvatarSrc(imageUrl);
     }
+  };
+
+  const handleCroppedImage = async (blob) => {
+    await changeUserAvatar(blob, userInfo._id);
   };
 
   const handleCancelBtn = (e) => {
