@@ -54,12 +54,12 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        JSON.parse(response.data.formData[0])?.map((x) => {
+        JSON.parse(response.data.formData[0])?.map((x, index) => {
           if (x.type === "date" && x.subtype === "date")
             dateFormsArr.push({ name: x.name });
         });
 
-        JSON.parse(response.data.formData[0])?.map((x) => {
+        JSON.parse(response.data.formData[0])?.map((x, index) => {
           if (x.type === "checkbox-group")
             checkboxFormsArr.push({ name: x.name });
         });
@@ -83,12 +83,12 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        JSON.parse(response.data.formData?.formData[0])?.map((x) => {
+        JSON.parse(response.data.formData?.formData[0])?.map((x, index) => {
           if (x.type === "date" && x.subtype === "date")
             dateFormsArr.push({ name: x.name });
         });
 
-        JSON.parse(response.data.formData?.formData[0])?.map((x) => {
+        JSON.parse(response.data.formData?.formData[0])?.map((x, index) => {
           if (x.type === "checkbox-group")
             checkboxFormsArr.push({ name: x.name });
         });
@@ -135,7 +135,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    dateFormsArr.map((x) => {
+    dateFormsArr.map((x, index) => {
       if ($("." + x.name).length > 0) {
         let val = $("." + x.name)[0].value;
         formProps[x.name] = val;
@@ -143,7 +143,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     });
 
     if (checkboxFormsArr.length > 0) {
-      checkboxFormsArr.map((x) => {
+      checkboxFormsArr.map((x, index) => {
         let checkedArr = [];
         $(`input:checkbox[name=${x.name}]:checked`).each(function () {
           checkedArr.push($(this).val());
@@ -195,7 +195,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    dateFormsArr.map((x) => {
+    dateFormsArr.map((x, index) => {
       if ($("." + x.name).length > 0) {
         let val = $("." + x.name)[0].value;
         formProps[x.name] = val;
@@ -203,7 +203,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     });
 
     if (checkboxFormsArr.length > 0) {
-      checkboxFormsArr.map((x) => {
+      checkboxFormsArr.map((x, index) => {
         let checkedArr = [];
         $(`input:checkbox[name=${x.name}]:checked`).each(function () {
           checkedArr.push($(this).val());

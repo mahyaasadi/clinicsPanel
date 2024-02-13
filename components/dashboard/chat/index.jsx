@@ -1,4 +1,4 @@
-import List from "./chatUserMes/list";
+import List from "components/dashboard/chat/chatUserMes/list";
 
 export default function ChatPage({
   ChatHeader,
@@ -8,7 +8,7 @@ export default function ChatPage({
   BackToChatList,
   sendTextToChatBox,
   messageStatus,
-  ClinicUserID
+  ClinicUserID,
 }) {
   return (
     <>
@@ -19,7 +19,8 @@ export default function ChatPage({
             id="back_user_list"
             href="#"
             onClick={BackToChatList}
-            className="back-user-list">
+            className="back-user-list"
+          >
             <i className="material-icons">chevron_left</i>
           </a>
           {ChatHeader ? (
@@ -27,10 +28,7 @@ export default function ChatPage({
               <div className="media-img-wrap flex-shrink-0">
                 <div className="avatar avatar-online" id="headerStatus">
                   <img
-                    src={
-                      "https://irannobat.ir/images/" +
-                      ChatHeader?.Avatar
-                    }
+                    src={"https://irannobat.ir/images/" + ChatHeader?.Avatar}
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null;
                       currentTarget.src =
@@ -57,7 +55,8 @@ export default function ChatPage({
           </div>
         </div>
 
-        {/*chatBody*/}
+        {/*chatBoody*/}
+
         <div className="chat-scroll" id="chat-body">
           <div className="chat-body">
             <ul className="list-unstyled" id="AddChat">
@@ -89,7 +88,8 @@ export default function ChatPage({
               />
               <button
                 type="submit"
-                className="btn msg-send-btn rounded-pill ms-2  bg-tel">
+                className="btn msg-send-btn rounded-pill ms-2  bg-tel"
+              >
                 <i className="fab fa-telegram-plane tel-icon"></i>
               </button>
             </div>

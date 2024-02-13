@@ -22,7 +22,7 @@ const DayList = ({
   formattedCurrentDate,
   returnToToday,
   loadingState,
-  openFrmOptionsModal
+  openFrmOptionsModal,
 }) => {
   let todaysDate = String(jdate.getDate());
   if (todaysDate.length === 1) todaysDate = "0" + todaysDate.toString();
@@ -76,10 +76,11 @@ const DayList = ({
                         <div className="mb-1">{DatesDays[index]}</div>
                         <div className="d-flex align-items-center">
                           <p
-                            className={`${convertToFixedNumber(date[2]) === todaysDate
-                              ? "todaysDate"
-                              : ""
-                              } date-num DateDayContainer`}
+                            className={`${
+                              convertToFixedNumber(date[2]) === todaysDate
+                                ? "todaysDate"
+                                : ""
+                            } date-num DateDayContainer`}
                           >
                             {convertToFixedNumber(date[2])}
                           </p>

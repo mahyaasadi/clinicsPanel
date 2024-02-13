@@ -4461,6 +4461,12 @@ html.menu-opened body {
   right: 0;
 }
 
+.sidebar-menu .submenu .menu-arrow2 {
+  top: 0 !important;
+  left: 0 !important;
+  right: inherit;
+}
+
 .sidebar-menu>ul>li>a {
   align-items: center;
   display: flex;
@@ -4873,7 +4879,7 @@ html.menu-opened body {
 
 .page-wrapper>.content {
   padding: 1.875rem 1.875rem;
-  max-height: 93vh !important;
+  max-height: 94vh !important;
   overflow: auto;
   direction: ltr;
 }
@@ -10622,6 +10628,15 @@ ul li .active {
   margin-bottom: 0.5rem;
 }
 
+.qrCodeModalBody {
+  min-height: 300px;
+}
+
+.qrcodeSkeleton .p-skeleton {
+  height: 250px !important;
+  width: 250px !important;
+}
+
 .formBuilderSkeleton .p-skeleton {
   height: 42px !important;
 }
@@ -11445,11 +11460,7 @@ thead {
   height: 15px !important;
 }
 
-.changeAvatarFrm {
-  direction: rtl;
-  max-height: 50rem;
-  overflow: auto;
-}
+
 
 .easyAccessIcon .feather {
   height: 24px !important;

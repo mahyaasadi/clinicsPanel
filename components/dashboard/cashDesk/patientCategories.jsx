@@ -45,7 +45,7 @@ const PatientCategories = ({
         openActionModal(draggedPatient.id, draggedPatient.item);
 
       setPatientsInfo((patientsInfo) =>
-        patientsInfo.map((item) =>
+        patientsInfo.map((item, index) =>
           item.id === result.draggableId
             ? {
                 ...item,
@@ -208,7 +208,7 @@ const PatientCategories = ({
                                                     <div className="d-flex flex-col gap-2">
                                                       <img
                                                         src={
-                                                          "https://irannobat.ir/images/" +
+                                                          "https://irannobat.ir/images/Avatar/" +
                                                           item.avatar
                                                         }
                                                         alt="patientAvatar"

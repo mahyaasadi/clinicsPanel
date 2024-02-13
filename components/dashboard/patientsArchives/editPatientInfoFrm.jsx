@@ -140,6 +140,7 @@ const EditPatientInfoFrm = ({
   const openUploadAvatarModal = () => setShowUploadAvatarModal(true);
   const closeUploadAvatarModal = () => setShowUploadAvatarModal(false);
 
+  // Croppper hook
   const handleCroppedImage = async (blob) => {
     await changePatientAvatar(blob);
   };
@@ -164,7 +165,6 @@ const EditPatientInfoFrm = ({
       axiosClient
         .put(url, editData)
         .then((response) => {
-          console.log(response.data);
           setPatientAvatar(response.data.Avatar);
           getOnePatient();
 
@@ -174,7 +174,7 @@ const EditPatientInfoFrm = ({
         .catch((err) => {
           console.log(err);
           setAvatarIsLoading(false);
-          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!")
+          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!");
         });
     }
   };
@@ -532,7 +532,6 @@ const EditPatientInfoFrm = ({
         data={data}
         show={showUploadAvatarModal}
         onHide={closeUploadAvatarModal}
-        // changePatientAvatar={changePatientAvatar}
         avatarIsLoading={avatarIsLoading}
         openQRCodeModal={openQRCodeModal}
         avatarSrc={avatarSrc}

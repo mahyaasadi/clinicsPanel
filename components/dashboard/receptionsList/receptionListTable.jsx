@@ -26,7 +26,7 @@ const ReceptionListTable = ({
         <div className="d-flex justify-center align-items-center gap-3">
           <div>
             <img
-              src={"https://irannobat.ir/images/" + row.Patient.Avatar}
+              src={"https://irannobat.ir/images/Avatar/" + row.Patient.Avatar}
               alt="patientAvatar"
               style={{
                 width: "35px",

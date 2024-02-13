@@ -14,6 +14,7 @@ const ReceptionItem = ({
   openAppointmentModal,
   openFrmOptionsModal,
 }) => {
+  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -143,7 +144,9 @@ const ReceptionItem = ({
             <div className="d-flex gap-4 align-items-center mt-2">
               <div className="align-items-center d-flex flex-col gap-2">
                 <img
-                  src={"https://irannobat.ir/images/" + srv?.Patient.Avatar}
+                  src={
+                    "https://irannobat.ir/images/Avatar/" + srv?.Patient.Avatar
+                  }
                   alt="patientAvatar"
                   style={{
                     width: "35px",

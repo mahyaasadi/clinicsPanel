@@ -1,11 +1,9 @@
-// import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 
 const UploadAvatarModal = ({
   show,
   onHide,
-  // changePatientAvatar,
   data,
   avatarIsLoading,
   openQRCodeModal,
@@ -13,7 +11,7 @@ const UploadAvatarModal = ({
   handleCroppedImage,
   avatarSrc,
   setAvatarSrc,
-  imageElement
+  imageElement,
 }) => {
   const displayNewAvatar = (e) => {
     var urlCreator = window.URL || window.webkitURL;
@@ -34,7 +32,6 @@ const UploadAvatarModal = ({
       </Modal.Header>
 
       <Modal.Body>
-        {/* used to be changePatientAvatar */}
         <form onSubmit={(e) => handleSubmit(e, handleCroppedImage)}>
           <div className="form-group">
             <div className="change-photo-btn mt-4">
@@ -56,16 +53,15 @@ const UploadAvatarModal = ({
 
           <div className="previewImgContainer">
             <img
-              // src={
-              //   data?.Avatar
-              //     ? "https://irannobat.ir/images/Avatar/" + data.Avatar
-              //     : ""
-              // }
               width="200"
               alt=""
               id="patientAvatar"
               className="d-block m-auto previewImg"
-              src={data.Avatar === avatarSrc ? "https://irannobat.ir/images/Avatar/" + avatarSrc : avatarSrc}
+              src={
+                data.Avatar === avatarSrc
+                  ? "https://irannobat.ir/images/Avatar/" + avatarSrc
+                  : avatarSrc
+              }
               ref={imageElement}
             ></img>
           </div>

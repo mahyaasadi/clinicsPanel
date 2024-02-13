@@ -74,7 +74,8 @@ const PrescriptionCard = ({
     if (
       ActiveSrvShape === "T" ||
       ActiveSrvShape === "C" ||
-      ActiveSrvShape === "R"
+      ActiveSrvShape === "R" ||
+      ActiveSrvShape === "Z"
     ) {
       setSelectedNOPeriod(selectedValue);
       setSelectedConsumptionInstruction(null);
@@ -304,7 +305,8 @@ const PrescriptionCard = ({
                   options={
                     ActiveSrvShape === "T" ||
                     ActiveSrvShape === "C" ||
-                    ActiveSrvShape === "R"
+                    ActiveSrvShape === "R" ||
+                    ActiveSrvShape === "Z"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }

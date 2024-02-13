@@ -5,7 +5,7 @@ import FeatherIcon from "feather-icons-react";
 import { convertBase64 } from "utils/convertBase64";
 import { axiosClient } from "class/axiosConfig";
 import { Tooltip } from "primereact/tooltip";
-import { ErrorAlert } from "class/AlertManage"
+import { ErrorAlert } from "class/AlertManage";
 import { convertDateFormat } from "utils/convertDateFormat";
 import UploadAvatarModal from "components/dashboard/patientInfo/uploadAvatarModal";
 import QRCodeGeneratorModal from "components/commonComponents/qrcode";
@@ -44,6 +44,8 @@ const PatientHorizontalCard = ({
         Avatar: avatarBlob,
       };
 
+      console.log({ editData });
+
       axiosClient
         .put(url, editData)
         .then((response) => {
@@ -53,7 +55,7 @@ const PatientHorizontalCard = ({
         })
         .catch((err) => {
           console.log(err);
-          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!")
+          ErrorAlert("خطا", "آپلود آواتار با خطا مواجه گردید!");
           setAvatarIsLoading(false);
         });
     }

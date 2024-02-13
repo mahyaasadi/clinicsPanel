@@ -8,7 +8,7 @@ export default function RecieveMessage({
   let Type = recievemes.Type;
   let content = null;
   let reciveimg = null;
-
+  /////////////
   if (Type === "Image") {
     content = (
       <>
@@ -50,7 +50,7 @@ export default function RecieveMessage({
       return '<a href="' + url + '">' + url + "</a>";
     });
   }
-
+  /////////////////
   if (Type === "") {
     reciveimg = (
       <img
@@ -82,7 +82,7 @@ export default function RecieveMessage({
         className="avatar-img rounded-circle"
       />
     );
-
+  /////////////////
   return (
     <>
       <li className="media received d-flex " id="msg-box">

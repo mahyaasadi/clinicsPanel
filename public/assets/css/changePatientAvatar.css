@@ -1,0 +1,23 @@
+/* body {
+    height: 100%;
+} */
+
+.changeAvatarContainer {
+    direction: ltr;
+    height: 100%;
+
+}
+
+/* .changeAvatarFrm {
+    height: 90vh;
+    direction: rtl;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+} */
+
+.changeAvatarScrollBox {
+    direction: ltr;
+    height: 80vh;
+    overflow-y: auto;
+    padding: 5px;
+}

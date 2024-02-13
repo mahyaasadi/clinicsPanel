@@ -1,22 +1,26 @@
 import ChatsDate from "./ChatsDates";
 import RecieveMessage from "./recieveMessage";
 import SendMessage from "./sendmes";
-
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 let CounterImage = 0;
+let ClinicUserID = null;
+
 const List = ({
   chatRoomBody,
   ImageGalleryRender,
   img,
   users,
   messageStatus,
-  ClinicUserID
+  ClinicUserID,
 }) => {
-  return chatRoomBody.map((chatDate) => {
+  const router = useRouter();
+
+  return chatRoomBody.map((chatDate, index) => {
     return (
       <>
         <ChatsDate date={chatDate.Date} />
-
-        {chatDate.Chats.map((chat) => {
+        {chatDate.Chats.map((chat, index) => {
           if (chat) {
             if (chat.Type == "Image") {
               if (chat.Sender === ClinicUserID) {
@@ -31,6 +35,7 @@ const List = ({
                 );
               } else {
                 let userInfo = users?.find((a) => a._id === chat.Sender);
+
                 return (
                   <RecieveMessage
                     key={chat._id}

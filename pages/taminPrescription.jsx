@@ -229,6 +229,19 @@ const TaminPrescription = ({
   drugInstructionList = selectInstructionData;
 
   selectInstructionData = [];
+  let accordingToInst = {
+    label: "طبق دستور-",
+    value: 170,
+  };
+
+  let ifNeededInst = {
+    label: "در صورت نياز-",
+    value: 171,
+  };
+
+  selectInstructionData.push(accordingToInst);
+  selectInstructionData.push(ifNeededInst);
+
   for (let i = 0; i < drugAmountList.length; i++) {
     const item = drugAmountList[i];
     let obj = {
@@ -237,6 +250,7 @@ const TaminPrescription = ({
     };
     selectInstructionData.push(obj);
   }
+
   drugAmountList = selectInstructionData;
   selectInstructionData = null;
 
@@ -494,6 +508,8 @@ const TaminPrescription = ({
       ActiveParaCode,
       $("#eprscItemDescription").val()
     );
+
+    console.log({ prescData, prescItems });
 
     if (!editSrvMode) {
       if (

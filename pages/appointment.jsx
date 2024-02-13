@@ -653,8 +653,8 @@ const Appointment = ({ ClinicUser }) => {
 
     // Days Columns Dynamic Height
     var root = document.querySelector(":root");
-    let set = 96 - 4 * depClosingHour;
-    // depOpeningHour
+    let set = 96 - 4 * depOpeningHour;
+
     root.style.setProperty("--numHours", set);
   }, [ActiveModalityID, currentDate]);
 

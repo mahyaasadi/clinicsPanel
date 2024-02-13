@@ -1,12 +1,23 @@
-import ChatUser from "./ChatUser";
-export default function CentersList({ UserChats, cenetrs, SelectChat, Patients, ChatStatus }) {
+import ChatUser from "components/dashboard/chat/ChatUser";
+export default function CentersList({
+  UserChats,
+  cenetrs,
+  SelectChat,
+  Patients,
+  ChatStatus,
+}) {
   return (
     <>
       <div className="chat-users-list">
         <div className="chat-scroll UserList">
-          {UserChats.map((user) => {
+          {UserChats.map((user, index) => {
             return (
-              <ChatUser user={user} cenetrs={cenetrs} SelectChat={SelectChat} ChatStatus={ChatStatus}
+              <ChatUser
+                key={index}
+                user={user}
+                cenetrs={cenetrs}
+                SelectChat={SelectChat}
+                ChatStatus={ChatStatus}
                 Patients={Patients}
               />
             );
