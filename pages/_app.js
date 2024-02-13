@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { Provider } from "react-redux";
+import { useRouter } from 'next/router';
 import store from "redux/store";
 import DashboardLayout from "pages/dashboardLayout";
 import { PrimeReactProvider } from "primereact/api";
@@ -23,66 +24,71 @@ import {
 const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }) {
-  if (Component.name == "ChangePatientAvatar") {
-    return (
-      <>
-        <Head>
-          <link rel="shortcut icon" href="assets/img/icon/logo-orange.png" />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="assets/img/icon/logo-orange.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="assets/img/icon/logo-orange.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="assets/img/icon/logo-orange.png"
-          />
-        </Head>
-        <Component {...pageProps} />
-      </>
-    );
-  }
+  const router = useRouter();
+
+  const isQRCodePage = router.asPath.startsWith('/changePatientAvatar');
+
+  // if (Component.name == "ChangePatientAvatar") {
   return (
     <>
-      <Head>
-        <link rel="shortcut icon" href="assets/img/icon/logo-orange.png" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="assets/img/icon/logo-orange.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="assets/img/icon/logo-orange.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="assets/img/icon/logo-orange.png"
-        />
-      </Head>
+      {isQRCodePage ? (
+        <>
+          <Head>
+            <link rel="shortcut icon" href="assets/img/icon/logo-orange.png" />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="assets/img/icon/logo-orange.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="assets/img/icon/logo-orange.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="assets/img/icon/logo-orange.png"
+            />
+          </Head>
+          <Component {...pageProps} />
+        </>
+      ) : (
+        <>
+          <Head>
+            <link rel="shortcut icon" href="assets/img/icon/logo-orange.png" />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="assets/img/icon/logo-orange.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="assets/img/icon/logo-orange.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="assets/img/icon/logo-orange.png"
+            />
+          </Head>
 
-      <PrimeReactProvider>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <DashboardLayout ClinicUser={pageProps.ClinicUser}>
-              <Component {...pageProps} />
-            </DashboardLayout>
-          </QueryClientProvider>
-        </Provider>
-      </PrimeReactProvider>
+          <PrimeReactProvider>
+            <Provider store={store}>
+              <QueryClientProvider client={queryClient}>
+                <DashboardLayout ClinicUser={pageProps.ClinicUser}>
+                  <Component {...pageProps} />
+                </DashboardLayout>
+              </QueryClientProvider>
+            </Provider>
+          </PrimeReactProvider>
+        </>
+      )}
     </>
-  );
+  )
 }
-
