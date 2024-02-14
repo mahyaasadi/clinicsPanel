@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { Provider } from "react-redux";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import store from "redux/store";
 import DashboardLayout from "pages/dashboardLayout";
 import { PrimeReactProvider } from "primereact/api";
@@ -26,9 +26,8 @@ const queryClient = new QueryClient();
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
-  const isQRCodePage = router.asPath.startsWith('/changePatientAvatar');
+  const isQRCodePage = router.asPath.startsWith("/changePatientAvatar");
 
-  // if (Component.name == "ChangePatientAvatar") {
   return (
     <>
       {isQRCodePage ? (
@@ -90,5 +89,6 @@ export default function MyApp({ Component, pageProps }) {
         </>
       )}
     </>
-  )
+  );
 }
+

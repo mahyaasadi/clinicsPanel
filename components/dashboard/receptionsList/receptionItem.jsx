@@ -14,7 +14,6 @@ const ReceptionItem = ({
   openAppointmentModal,
   openFrmOptionsModal,
 }) => {
-  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals

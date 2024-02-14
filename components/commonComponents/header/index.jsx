@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
+import { axiosClient } from "class/axiosConfig";
 import { useRouter } from "next/navigation";
 import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
@@ -13,11 +14,23 @@ const Header = ({ ClinicUser }) => {
 
   const [task, settask] = useState(true);
   const [task1, settask1] = useState(true);
+  const [ClinicData, setClinicData] = useState("");
 
   const handletheme = () => {
     document.body.classList.toggle("darkmode");
     settask(!task);
     settask1(!task1);
+  };
+
+  const getOneClinic = () => {
+    let url = `Clinic/getOne/${ClinicUser.ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setClinicData(response.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handlesidebar = () => {
@@ -52,6 +65,7 @@ const Header = ({ ClinicUser }) => {
 
   useEffect(() => {
     fetchUserToken(ClinicUser);
+    getOneClinic();
   }, [ClinicUser]);
 
   return (
@@ -105,7 +119,18 @@ const Header = ({ ClinicUser }) => {
 
         {/* Header Menu */}
         <ul className="nav nav-tabs user-menu">
-          <li className="nav-item">
+          <li className="nav-item d-flex gap-2">
+            <div className="clinic-menu-container px-3 text-secondary fw-bold d-flex gap-2 align-items-center">
+              {" "}
+              {ClinicData.Logo && (
+                <img
+                  src={ClinicData.Logo}
+                  style={{ width: "20px", height: "20px", borderRadius: "4px" }}
+                />
+              )}
+              کلینیک {ClinicData.Name}{" "}
+            </div>
+
             <Link href="#" id="dark-mode-toggle" className="dark-mode-toggle">
               <i
                 onClick={handletheme}

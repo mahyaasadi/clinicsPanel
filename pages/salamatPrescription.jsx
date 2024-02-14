@@ -203,7 +203,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setConsumptionOptions(
           generateSalamatConsumptionOptions(response.data.SalamatConsumption)
         );

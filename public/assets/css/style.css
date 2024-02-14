@@ -3222,6 +3222,17 @@ button.bg-danger:hover {
   margin-bottom: 2px;
 }
 
+.clinic-menu-container {
+  height: 30px;
+  display: flex;
+  display: -ms-flexbox;
+  align-items: center;
+  border: 1px solid rgba(66, 139, 193, 0.22);
+  border-radius: 3px;
+  margin: 15px 0 15px 5px;
+  padding: 1px;
+}
+
 .user-menu.nav>li>a.dark-mode-toggle {
   width: 56px;
   height: 30px;
@@ -4265,7 +4276,8 @@ html.menu-opened body {
 }
 
 .sidebar-menu li a {
-  color: #131523;
+  /* color: #131523; */
+  color: darkslategray;
   display: block;
   font-size: 15px;
   height: auto;

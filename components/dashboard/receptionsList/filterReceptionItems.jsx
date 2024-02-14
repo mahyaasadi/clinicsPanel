@@ -67,6 +67,8 @@ const FilterReceptionItems = ({
       DateTo: dateTo ? dateTo : dateToOption,
     };
 
+    console.log({ data });
+
     let receptionInfo = formProps.receptionFilterInfo;
     if (isNaN(parseInt(receptionInfo))) {
       data.PatientName = receptionInfo;
