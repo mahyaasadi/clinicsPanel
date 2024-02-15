@@ -11599,3 +11599,24 @@ canvas {
 .recharts-legend-item-text {
   margin-right: 5px !important;
 }
+
+.tabContentHeight {
+  height: 12rem;
+  overflow-y: auto;
+  direction: ltr;
+}
+
+.tabContentFrmHeight {
+  height: 30rem;
+  overflow-y: auto;
+  direction: ltr;
+}
+
+.imgFilesTabBg .nav-tabs.nav-tabs-solid {
+  background-color: #f7f3f0 !important;
+}
+
+.imgFilesTabBg .nav-tabs.nav-tabs-solid>li {
+  border: 1px solid #e8e7e6 !important;
+  border-radius: 6px !important;
+}

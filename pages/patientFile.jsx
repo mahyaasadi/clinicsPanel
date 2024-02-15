@@ -16,9 +16,11 @@ import FamilyRecordsList from "@/components/dashboard/patientsArchives/patientFi
 import AddictionRecordsList from "@/components/dashboard/patientsArchives/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/medicalAllergyRecordsList";
+import NotesList from "components/dashboard/patientsArchives/patientFile/notes/notesList";
+import AttachNoteModal from "components/dashboard/patientsArchives/patientFile/notes/attachNoteModal";
+import ImgRecordsList from "components/dashboard/patientsArchives/patientFile/imgFiles/imgRecordsList";
+import AttachImgFileModal from "components/dashboard/patientsArchives/patientFile/imgFiles/attachImgFileModal";
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
-import NotesList from "components/dashboard/notes/notesList";
-import AttachNoteModal from "components/dashboard/notes/attachNoteModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -250,12 +252,54 @@ const PatientFile = ({ ClinicUser }) => {
     setPatientDiseases(patientDiseases.filter((x) => x._id !== id));
   };
 
+  // imgFiles
+  const [patientImgFiles, setPatientImgFiles] = useState([]);
+
+  const getPatientImgAttachments = () => {
+    let url = `Patient/getAttachments/${ActivePatientID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setPatientImgFiles(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const removePatientImgFile = (id) => {
+    let url = "Patient/deleteAttachment";
+    let data = {
+      AttachmentID: id,
+    };
+
+    axiosClient
+      .delete(url, { data })
+      .then((response) => {
+        setPatientImgFiles(patientImgFiles.filter((x) => x._id !== id));
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // attach imgFile
+  const openAttachImgFilesModal = () => $("#attachImgFileModal").modal("show");
+
+  const AttachImgFile = (uploadedFile) => {
+    console.log({ uploadedFile });
+    setPatientImgFiles([...patientImgFiles, uploadedFile]);
+  };
+
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) {
       getOnePatient();
       getPatientForms();
       getPatientDiseaseRecords();
+      getPatientImgAttachments();
     }
     setShowOtherSurgeryType(false);
   }, [router.isReady]);
@@ -289,13 +333,23 @@ const PatientFile = ({ ClinicUser }) => {
               </div>
 
               <div className="row mb-2">
-                <div className="col-12 ">
+                <div className="col-12">
                   <NotesList
                     ClinicID={ClinicID}
                     ActivePatientID={ActivePatientID}
                     openNoteCreatorModal={openNoteCreatorModal}
                     patientNotesData={patientNotesData}
                     RemoveNote={RemoveNote}
+                  />
+                </div>
+              </div>
+
+              <div className="row mb-2">
+                <div className="col-12">
+                  <ImgRecordsList
+                    openAttachImgFilesModal={openAttachImgFilesModal}
+                    data={patientImgFiles}
+                    removePatientImgFile={removePatientImgFile}
                   />
                 </div>
               </div>
@@ -389,6 +443,12 @@ const PatientFile = ({ ClinicUser }) => {
           ClinicID={ClinicID}
           ActivePatientID={ActivePatientID}
           AddNote={AddNote}
+        />
+
+        <AttachImgFileModal
+          ActivePatientID={ActivePatientID}
+          ClinicID={ClinicID}
+          AttachImgFile={AttachImgFile}
         />
       </div>
     </>

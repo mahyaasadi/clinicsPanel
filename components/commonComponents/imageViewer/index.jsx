@@ -4,7 +4,7 @@ import "viewerjs/dist/viewer.css";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 
-const ImageViewer = ({ images, removeFunc }) => {
+const ImageViewer = ({ images, removeFunc, patientImgFiles, TypeID }) => {
   const [viewer, setViewer] = useState(null);
 
   useEffect(() => {
@@ -35,30 +35,55 @@ const ImageViewer = ({ images, removeFunc }) => {
 
   return (
     <div id="image-gallery" className="d-flex gap-2 notesContainer flex-wrap">
-      {images.map((item, index) => (
-        <div
-          key={index}
-          className="border-gray articleCurrentImg card mb-1 mt-3 d-flex alifn-items-center justify-center ServiceNav"
-        >
-          <img
-            src={`https://irannobat.ir/images/PatientNote/${item.Note}`}
-            alt={`image-${index}`}
-            style={{ width: "130px", height: "130px" }}
-          />
-          <button
-            className="btn removeNoteBtn tooltip-button"
-            type="button"
-            data-pr-position="top"
-            onClick={(e) => {
-              e.stopPropagation();
-              removeFunc(item._id);
-            }}
-          >
-            <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
-            <Tooltip target=".removeNoteBtn">حذف</Tooltip>
-          </button>
-        </div>
-      ))}
+      {patientImgFiles
+        ? images.map((item, index) => (
+            <div
+              key={index}
+              className="border-gray articleCurrentImg card mb-1 mt-3 d-flex alifn-items-center justify-center ServiceNav"
+            >
+              <img
+                src={`https://irannobat.ir/images/PatientAttachment/${item.Name}`}
+                alt={`image-${index}`}
+                style={{ width: "130px", height: "130px" }}
+              />
+              <button
+                className="btn removeNoteBtn tooltip-button"
+                type="button"
+                data-pr-position="top"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeFunc(item._id);
+                }}
+              >
+                <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
+                <Tooltip target=".removeNoteBtn">حذف</Tooltip>
+              </button>
+            </div>
+          ))
+        : images.map((item, index) => (
+            <div
+              key={index}
+              className="border-gray articleCurrentImg card mb-1 mt-3 d-flex alifn-items-center justify-center ServiceNav"
+            >
+              <img
+                src={`https://irannobat.ir/images/PatientNote/${item.Note}`}
+                alt={`image-${index}`}
+                style={{ width: "130px", height: "130px" }}
+              />
+              <button
+                className="btn removeNoteBtn tooltip-button"
+                type="button"
+                data-pr-position="top"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeFunc(item._id);
+                }}
+              >
+                <FeatherIcon className="removeLogoBtnIcon" icon="x-circle" />
+                <Tooltip target=".removeNoteBtn">حذف</Tooltip>
+              </button>
+            </div>
+          ))}
     </div>
   );
 };

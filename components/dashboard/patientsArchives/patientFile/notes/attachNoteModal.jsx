@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
-import NoteCreator from "components/dashboard/notes/noteCreator";
+import NoteCreator from "./noteCreator";
 
 const AttachNoteModal = ({
   show,

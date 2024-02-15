@@ -13,7 +13,7 @@ const QRCodeGeneratorModal = ({ show, onHide, url, token }) => {
           `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=https://clinic.irannobat.ir/${url}?token=${token}&choe=UTF-8`
         );
         setIsLoading(false);
-      }, 3000); // set loading time to 2 seconds
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -21,14 +21,18 @@ const QRCodeGeneratorModal = ({ show, onHide, url, token }) => {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton></Modal.Header>
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <p className="text-secondary fw-bold font-13">
+            با اسکن کد زیر وارد لینک شده و عکس خود را آپلود نمایید
+          </p>
+        </Modal.Title>
+      </Modal.Header>
       <Modal.Body className="qrCodeModalBody">
         <div className="d-flex justify-center ">
           {isLoading ? (
             <div className="qrcodeSkeleton">
-              <Skeleton>
-                <img />
-              </Skeleton>
+              <Skeleton></Skeleton>
             </div>
           ) : (
             <img src={qrCodeUrl} />
