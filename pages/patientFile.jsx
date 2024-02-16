@@ -254,43 +254,52 @@ const PatientFile = ({ ClinicUser }) => {
 
   // imgFiles
   const [patientImgFiles, setPatientImgFiles] = useState([]);
+  const [showAttachImgModal, setShowAttachImgFile] = useState(false);
+  const openAttachImgFilesModal = () => setShowAttachImgFile(true);
 
   const getPatientImgAttachments = () => {
+    setIsLoading(true);
     let url = `Patient/getAttachments/${ActivePatientID}`;
 
     axiosClient
       .get(url)
       .then((response) => {
         setPatientImgFiles(response.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
-  const removePatientImgFile = (id) => {
-    let url = "Patient/deleteAttachment";
-    let data = {
-      AttachmentID: id,
+  const removePatientImgFile = async (id) => {
+    let result = await QuestionAlert("", "آیا از حذف تصویر اطمینان دارید؟");
+
+    if (result) {
+      let url = "Patient/deleteAttachment";
+      let data = {
+        AttachmentID: id,
+      };
+
+      axiosClient
+        .delete(url, { data })
+        .then((response) => {
+          setPatientImgFiles(patientImgFiles.filter((x) => x._id !== id));
+          getPatientImgAttachments()
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
-
-    axiosClient
-      .delete(url, { data })
-      .then((response) => {
-        setPatientImgFiles(patientImgFiles.filter((x) => x._id !== id));
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  }
 
   // attach imgFile
-  const openAttachImgFilesModal = () => $("#attachImgFileModal").modal("show");
-
   const AttachImgFile = (uploadedFile) => {
-    console.log({ uploadedFile });
     setPatientImgFiles([...patientImgFiles, uploadedFile]);
+    getPatientImgAttachments()
+    // $("#attachImgFileModal").modal("hide");
+    closeAttachImgFileModal()
   };
 
   useEffect(() => {
@@ -446,6 +455,8 @@ const PatientFile = ({ ClinicUser }) => {
         />
 
         <AttachImgFileModal
+          show={showAttachImgModal}
+          setShowModal={setShowAttachImgFile}
           ActivePatientID={ActivePatientID}
           ClinicID={ClinicID}
           AttachImgFile={AttachImgFile}

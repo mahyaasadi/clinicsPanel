@@ -1,13 +1,4 @@
 const ArchiveRecipt = ({ data, clinicData, paymentData }) => {
-  // const insuranceType =
-  //   data?.Patient?.Insurance === "1"
-  //     ? "سلامت ایرانیان"
-  //     : data?.Patient?.Insurance === "2"
-  //     ? "تامین اجتماعی"
-  //     : data?.Patient?.Insurance === "3"
-  //     ? "نیروهای مسلح"
-  //     : "آزاد";
-
   return (
     <>
       <div className="reciptPrintHeader reciptLogoContainer p-3">

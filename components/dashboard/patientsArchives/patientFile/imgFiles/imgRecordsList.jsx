@@ -34,7 +34,7 @@ const ImgRecordsList = ({
       <div className="card-body">
         <div className="row align-items-center p-2 pt-0 mb-2">
           <div className="col">
-            <p className="card-title font-14 text-secondary">تصاویر</p>
+            <p className="card-title font-14 text-secondary">تصاویر مربوطه</p>
           </div>
 
           <div className="col d-flex justify-content-end">
@@ -52,7 +52,7 @@ const ImgRecordsList = ({
 
         <hr className="mt-0 mb-1" />
 
-        <div className="modal-body imgFilesTabBg">
+        <div className="modal-body imgFilesTabBg pt-0">
           <ul className="font-13 nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
             <li className="nav-item">
               <a
@@ -98,7 +98,7 @@ const ImgRecordsList = ({
 
           <div className="tab-content tabContentHeight p-0">
             <div className="dir-rtl ">
-              <div className="tab-pane show active" id="solid-rounded-tab1">
+              <div className="tab-pane show active" >
                 <ImageViewer
                   images={filteredData()}
                   removeFunc={removePatientImgFile}
@@ -107,30 +107,30 @@ const ImgRecordsList = ({
                 />
               </div>
             </div>
-            <div className="tab-pane" id="solid-rounded-tab2">
-              {/* <ImageViewer
+            {/* <div className="tab-pane" id="solid-rounded-tab2">
+              <ImageViewer
                 images={filteredData()}
-                removeFunc={null}
+                removeFunc={removePatientImgFile}
                 patientImgFiles={true}
                 TypeID={selectedTab}
-              /> */}
+              />
             </div>
             <div className="tab-pane" id="solid-rounded-tab3">
-              {/* <ImageViewer
+              <ImageViewer
                 images={filteredData()}
-                removeFunc={null}
+                removeFunc={removePatientImgFile}
                 patientImgFiles={true}
                 TypeID={selectedTab}
-              /> */}
+              />
             </div>
             <div className="tab-pane" id="solid-rounded-tab4">
-              {/* <ImageViewer
+              <ImageViewer
                 images={filteredData()}
-                removeFunc={null}
+                removeFunc={removePatientImgFile}
                 patientImgFiles={true}
                 TypeID={selectedTab}
-              /> */}
-            </div>
+              />
+            </div> */}
           </div>
         </div>
       </div>

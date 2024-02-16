@@ -170,7 +170,7 @@ const ReceptionItem = ({
                   <FeatherIcon icon="calendar" className="prescItembtns" />
                   <div>{srv?.Date}</div>
                   <div>,</div>
-                  <div>{srv?.Time}</div>
+                  <div>{srv?.Time.substring(0, 5)}</div>
                 </div>
 
                 <p className="mb-1 d-flex gap-2 flex-wrap">

@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import { axiosClient } from "class/axiosConfig";
-import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
-import { convertDateFormat } from "utils/convertDateFormat";
 import EditPatientInfoModal from "./editPatientInfo";
 import EditInsuranceTypeModal from "./editInsuranceTypeModal";
-import { gender, insurance } from "components/commonComponents/imagepath";
 
 const PatientInfoCard = ({
   data,
@@ -22,11 +16,8 @@ const PatientInfoCard = ({
   handlePendingPatientClick,
   handleShowPendingPatients,
 }) => {
-  const router = useRouter();
-
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   const handleChangePatientInfo = (type, value) => {
@@ -198,131 +189,51 @@ const PatientInfoCard = ({
             <div className="pendingPaitentContainer">
               {pendingPatients.length !== 0
                 ? pendingPatients.map((item, index) => (
-                    <div
-                      className="card shadow-none w-100 mb-2 pendPatientCard pendPatient"
-                      key={index}
-                      onClick={() => _handlePendingPatientClick(item)}
-                    >
-                      <div className="d-flex justify-between font-13 text-secondary fw-bold p-2">
-                        <div className="d-flex align-items-center gap-3">
-                          <div>
-                            <p className="mb-1">{item?.Name}</p>
-                            <div className="d-flex gap-2 align-items-center">
-                              <div className="w-16 m-0 d-flex">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth="1.5"
-                                  stroke="currentColor"
-                                  className="w-100 m-0"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
-                                  />
-                                </svg>
-                              </div>
-
-                              {item?.NationalID}
+                  <div
+                    className="card shadow-none w-100 mb-2 pendPatientCard pendPatient"
+                    key={index}
+                    onClick={() => _handlePendingPatientClick(item)}
+                  >
+                    <div className="d-flex justify-between font-13 text-secondary fw-bold p-2">
+                      <div className="d-flex align-items-center gap-3">
+                        <div>
+                          <p className="mb-1">{item?.Name}</p>
+                          <div className="d-flex gap-2 align-items-center">
+                            <div className="w-16 m-0 d-flex">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-100 m-0"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
+                                />
+                              </svg>
                             </div>
 
-                            <div className="d-flex gap-2 align-items-center">
-                              <FeatherIcon
-                                icon="smartphone"
-                                style={{ width: "16px" }}
-                              />
-                              <p id="PatientPhone">{item?.Tel}</p>
-                            </div>
+                            {item?.NationalID}
+                          </div>
+
+                          <div className="d-flex gap-2 align-items-center">
+                            <FeatherIcon
+                              icon="smartphone"
+                              style={{ width: "16px" }}
+                            />
+                            <p id="PatientPhone">{item?.Tel}</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                  ))
+                  </div>
+                ))
                 : ""}
             </div>
           </form>
-
-          {/* <div className="font-13 mt-3" id="patientInfoCard">
-            <div className="smartphone-container font-13 phone-input">
-              <div className="d-flex smartphone-padding">
-                <i className="smartphone-icon">
-                  <FeatherIcon icon="smartphone" />
-                </i>
-                <p id="PatientTel">{data?.Tel}</p>
-                <Link
-                  href="#"
-                  onClick={handleShowModal}
-                  className="editPhone-icon"
-                  data-pr-position="top"
-                >
-                  <Tooltip target=".editPhone-icon">
-                    ویرایش اطلاعات بیمار
-                  </Tooltip>
-                  <FeatherIcon icon="edit-2" className="themeColor" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="margin-right-1 font-12 mt-3">
-              <div className="d-flex gap-2 mb-3">
-                <FeatherIcon icon="user" className="mb-0" />
-                {data?.Name
-                  ? data?.Name
-                  : data?.name
-                  ? data?.name + " " + data?.lastName
-                  : "-"}{" "}
-                ,
-                {data?.Age ? (
-                  <p className="m-0">{data?.Age} ساله</p>
-                ) : data?.age ? (
-                  <p className="m-0">{data?.age} ساله</p>
-                ) : (
-                  ""
-                )}
-              </div>
-
-              <div className="d-flex gap-1 align-items-center">
-                <Image src={gender} alt="genderIcon" width="20" />
-                {data?.Gender
-                  ? data?.Gender === "M"
-                    ? "مرد"
-                    : data?.Gender === "F"
-                    ? "زن"
-                    : "دیگر"
-                  : "-"}
-              </div>
-
-              <div className="d-flex gap-2 mt-3">
-                <div className="d-flex gap-1 align-items-center">
-                  <Image src={insurance} alt="insuranceIcon" width="20" />
-                  {data?.InsuranceName
-                    ? data?.InsuranceName
-                    : "نوع بیمه مشخص نمی باشد"}
-                </div>
-
-                <Link
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#changeInsuranceTypeModal"
-                  className="changeInsuranceBtn"
-                  data-pr-position="top"
-                >
-                  <Tooltip target=".changeInsuranceBtn">تغییر نوع بیمه</Tooltip>
-                  <i className="margin-right-2 themecolor">
-                    <FeatherIcon icon="refresh-cw" />
-                  </i>
-                </Link>
-              </div>
-
-              <p className="mt-3 margin-right-sm">
-                تاریخ اعتبار تا {""}
-                {data?.accountValidto &&
-                  convertDateFormat(data?.accountValidto)}
-              </p>
-            </div>
-          </div> */}
         </div>
       </div>
 

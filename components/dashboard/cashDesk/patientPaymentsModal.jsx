@@ -108,7 +108,7 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
                   <p>{data.Time}</p>
                 </td>
                 <th scope="row">سهم پرداختی بیمار</th>
-                <td>{data?.Calculated?.TotalPC.toLocaleString() + " تومان"}</td>
+                <td>{data?.Calculated?.TotalPC.toLocaleString() + " ریال"}</td>
                 <td>0</td>
               </tr>
 
@@ -122,8 +122,8 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
                     {x.Cart
                       ? "پرداخت با کارت"
                       : x.Return
-                      ? "دریافت وجه"
-                      : "پرداخت نقدی"}
+                        ? "دریافت وجه"
+                        : "پرداخت نقدی"}
                   </td>
 
                   <td style={{ position: "relative" }}>
@@ -134,10 +134,10 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
                           className="form-control floating inputPadding text-center rounded text-secondary mt-3"
                           defaultValue={x.Price}
                           name={`patientPayment-${index}`}
-                          // value={inputValues2[index]}
-                          // onChange={(e) =>
-                          //   handleInputChange2(index, e.target.value)
-                          // }
+                        // value={inputValues2[index]}
+                        // onChange={(e) =>
+                        //   handleInputChange2(index, e.target.value)
+                        // }
                         />
 
                         <div
@@ -181,7 +181,7 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
                       </form>
                     ) : (
                       <p>
-                        {x.Return ? x.Price.toLocaleString() + " تومان" : ""}
+                        {x.Return ? x.Price.toLocaleString() + " ریال" : ""}
                       </p>
                     )}
 
@@ -260,7 +260,7 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
                       </form>
                     ) : (
                       <p>
-                        {!x.Return ? x.Price.toLocaleString() + " تومان" : ""}
+                        {!x.Return ? x.Price.toLocaleString() + " ریال" : ""}
                       </p>
                     )}
 
