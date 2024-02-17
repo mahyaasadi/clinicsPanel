@@ -286,20 +286,18 @@ const PatientFile = ({ ClinicUser }) => {
         .delete(url, { data })
         .then((response) => {
           setPatientImgFiles(patientImgFiles.filter((x) => x._id !== id));
-          getPatientImgAttachments()
+          getPatientImgAttachments();
         })
         .catch((err) => {
           console.log(err);
         });
-    };
-  }
+    }
+  };
 
   // attach imgFile
   const AttachImgFile = (uploadedFile) => {
     setPatientImgFiles([...patientImgFiles, uploadedFile]);
-    getPatientImgAttachments()
-    // $("#attachImgFileModal").modal("hide");
-    closeAttachImgFileModal()
+    getPatientImgAttachments();
   };
 
   useEffect(() => {
@@ -332,76 +330,128 @@ const PatientFile = ({ ClinicUser }) => {
                 generalEditMode={true}
               />
 
-              <div className="mt-5 mb-2">
-                <FormsList
-                  data={patientForms}
-                  openPatientFrmPreviewModal={openPatientFrmPreviewModal}
-                  openAddFrmToPatientModal={openAddFrmToPatientModal}
-                  deletePatientForm={deletePatientForm}
-                />
-              </div>
+              <div className="mt-4">
+                <ul className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b fw-bold font-14">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link active"
+                      href="#bottom-tab1"
+                      data-bs-toggle="tab"
+                    >
+                      اطلاعات تکمیلی
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#bottom-tab2"
+                      data-bs-toggle="tab"
+                    >
+                      تصاویر
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#bottom-tab3"
+                      data-bs-toggle="tab"
+                    >
+                      پرونده های دستی
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#bottom-tab4"
+                      data-bs-toggle="tab"
+                    >
+                      فرم ها
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content">
+                  <div className="tab-pane show active" id="bottom-tab1">
+                    <div className="row mb-2">
+                      <div className="col-lg-6 col-12">
+                        <DiseaseRecordsList
+                          data={patientDiseases}
+                          openDiseaseRecordsModal={openDiseaseRecordsModal}
+                          removeDiseaseItem={removeDiseaseItem}
+                          setIsLoading={setIsLoading}
+                        />
+                      </div>
 
-              <div className="row mb-2">
-                <div className="col-12">
-                  <NotesList
-                    ClinicID={ClinicID}
-                    ActivePatientID={ActivePatientID}
-                    openNoteCreatorModal={openNoteCreatorModal}
-                    patientNotesData={patientNotesData}
-                    RemoveNote={RemoveNote}
-                  />
-                </div>
-              </div>
+                      <div className="col-lg-6 col-12 mb-2">
+                        <SurgeryRecordsList
+                          ClinicID={ClinicID}
+                          ClinicUserID={ClinicUserID}
+                          ActivePatientID={ActivePatientID}
+                          data={patientSurgeryList}
+                          patientData={patientData}
+                          openSurgeryModal={openSurgeryModal}
+                          openEditSurgeryModal={openEditSurgeryModal}
+                          removeAttachedSurgeryRecord={
+                            removeAttachedSurgeryRecord
+                          }
+                        />
+                      </div>
+                    </div>
 
-              <div className="row mb-2">
-                <div className="col-12">
-                  <ImgRecordsList
-                    openAttachImgFilesModal={openAttachImgFilesModal}
-                    data={patientImgFiles}
-                    removePatientImgFile={removePatientImgFile}
-                  />
-                </div>
-              </div>
+                    <div className="row mb-2">
+                      <div className="col-lg-6 col-12">
+                        <FamilyRecordsList />
+                      </div>
+                      <div className="col-lg-6 col-12 mb-2">
+                        <AddictionRecordsList />
+                      </div>
+                    </div>
 
-              <div className="row mb-2">
-                <div className="col-lg-6 col-12">
-                  <DiseaseRecordsList
-                    data={patientDiseases}
-                    openDiseaseRecordsModal={openDiseaseRecordsModal}
-                    removeDiseaseItem={removeDiseaseItem}
-                    setIsLoading={setIsLoading}
-                  />
-                </div>
+                    <div className="row mb-2">
+                      <div className="col-lg-6 col-12">
+                        <FoodAllergyRecordsList />
+                      </div>
+                      <div className="col-lg-6 col-12 mb-2">
+                        <MedicalAllergyRecordsList />
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="col-lg-6 col-12 mb-2">
-                  <SurgeryRecordsList
-                    ClinicID={ClinicID}
-                    ClinicUserID={ClinicUserID}
-                    ActivePatientID={ActivePatientID}
-                    data={patientSurgeryList}
-                    patientData={patientData}
-                    openSurgeryModal={openSurgeryModal}
-                    openEditSurgeryModal={openEditSurgeryModal}
-                    removeAttachedSurgeryRecord={removeAttachedSurgeryRecord}
-                  />
-                </div>
-              </div>
+                  <div className="tab-pane" id="bottom-tab2">
+                    <div className="row mb-2">
+                      <div className="col-12">
+                        <ImgRecordsList
+                          openAttachImgFilesModal={openAttachImgFilesModal}
+                          data={patientImgFiles}
+                          removePatientImgFile={removePatientImgFile}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-              <div className="row mb-2">
-                <div className="col-lg-6 col-12">
-                  <FamilyRecordsList />
-                </div>
-                <div className="col-lg-6 col-12 mb-2">
-                  <AddictionRecordsList />
-                </div>
-              </div>
+                  <div className="tab-pane" id="bottom-tab3">
+                    <div className="row mb-2">
+                      <div className="col-12">
+                        <NotesList
+                          ClinicID={ClinicID}
+                          ActivePatientID={ActivePatientID}
+                          openNoteCreatorModal={openNoteCreatorModal}
+                          patientNotesData={patientNotesData}
+                          RemoveNote={RemoveNote}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
-              <div className="row mb-2">
-                <div className="col-lg-6 col-12">
-                  <FoodAllergyRecordsList />
-                </div>
-                <div className="col-lg-6 col-12 mb-2">
-                  <MedicalAllergyRecordsList />
+                  <div className="tab-pane" id="bottom-tab4">
+                    <div>
+                      <FormsList
+                        data={patientForms}
+                        openPatientFrmPreviewModal={openPatientFrmPreviewModal}
+                        openAddFrmToPatientModal={openAddFrmToPatientModal}
+                        deletePatientForm={deletePatientForm}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

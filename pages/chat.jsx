@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import axios from "axios";
+import JDate from "jalali-date";
+import { axiosClient } from "class/axiosConfig";
+import { getSession } from "lib/session";
+import { convertBase64 } from "utils/convertBase64";
 import CentersList from "components/dashboard/chat/centersList";
 import ChatPage from "components/dashboard/chat";
-import Script from "next/script";
-import { useRouter } from "next/navigation";
-import { getSession } from "lib/session";
-import { useEffect } from "react";
-import axios from "axios";
 import Loading from "components/commonComponents/loading/loading";
-import { axiosClient } from "../class/axiosConfig";
-import "../public/assets/css/style-patient.css";
-import "viewerjs/dist/viewer.css";
 import Viewer from "viewerjs";
-import JDate from "jalali-date";
+import "viewerjs/dist/viewer.css";
+import "public/assets/css/style-patient.css";
+
 let ClinicUserID = null;
 let ClinicID = null;
 let ChatClinicID = null;
@@ -23,7 +24,6 @@ let LastChatID = "";
 let UserChatsList = [];
 let PatientList = [];
 let ChatRoomsMessages = [];
-
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
   if (result) {
@@ -142,6 +142,11 @@ const PatientChat = ({ ClinicUser }) => {
         console.log(error);
       });
   };
+  function getBase64Image(img) {
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL(img);
+    return imageUrl;
+  }
   const GetChatRoomDataNotList = (id) => {
     // setChatRoomBody([]);
     let url = `/ChatRoom/GetChatRoomDataNotList`;
@@ -205,7 +210,6 @@ const PatientChat = ({ ClinicUser }) => {
         }
       }
     });
-
     // socket.on("OnlineUsers", (data) => {
     //   data.map((center) => {
     //     setTimeout(() => {
@@ -223,7 +227,6 @@ const PatientChat = ({ ClinicUser }) => {
     //         "Center-" + data.UserConnect + " avatar avatar-offline"
     //       );
     // });
-
     //ReceiveMessage
     socket.on("ReceiveMessage", async (data) => {
       if (LastID != data._id) {
@@ -234,7 +237,6 @@ const PatientChat = ({ ClinicUser }) => {
           let TodayRecivechat = ChatRoomsMessages.find(
             (a) => a.Date === formattedDate
           );
-          console.log(TodayRecivechat);
           let recieveData = {
             RepID: "",
             Sender: data.Sender,
@@ -413,6 +415,41 @@ const PatientChat = ({ ClinicUser }) => {
     ]);
   };
   //
+  async function SendFile(file) {
+    const jdate = new JDate();
+    const formattedDate = jdate.format("YYYY/MM/DD");
+    let date = new Date();
+    let Time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    let TodayChat = chatRoomBody.find((a) => a.Date === formattedDate);
+    let Text = await convertBase64(file);
+    console.log(Text);
+    let message = SendMessageDataCreator(
+      Text,
+      ActiveChatRoom,
+      ClinicUserID,
+      "",
+      "Image",
+      Time,
+      objectId()
+    );
+    if (TodayChat) {
+      // TodayChat.Chats.push(message);
+      UpdateTodayChat(TodayChat);
+      socket.emit("SendMessage", { Data: message });
+    } else {
+      let newChat = {
+        Chats: [message],
+        Date: formattedDate,
+        _id: "",
+      };
+      ChatRoomsMessages.push(newChat);
+      setChatRoomBody(ChatRoomsMessages);
+      socket.emit("SendMessage", { Data: message });
+    }
+    setTimeout(() => {
+      ScroolTobottom();
+    }, 150);
+  }
   function objectId() {
     return (
       hex(Date.now() / 1000) +
@@ -428,13 +465,15 @@ const PatientChat = ({ ClinicUser }) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="page-wrapper">
-          <div className="content p-0 h-100">
+        <div className="page-wrapper p-0 mt-4 h-100">
+          <div class="content p-0 mt-5">
             <div className="container-fluid">
               <div className="dir-rtl">
-                <div className="row">
+                <div class="row">
                   <div className="col-xl-12 chat-main">
                     <div className="chat-window">
+                      {/*  */}
+
                       <div className="chat-cont-left">
                         <div className="chat-header">
                           <h4>گفت و گو ها </h4>
@@ -465,6 +504,7 @@ const PatientChat = ({ ClinicUser }) => {
                       {/*  */}
                       <ChatPage
                         messageStatus={messageStatus}
+                        SendFile={SendFile}
                         users={users}
                         ChatHeader={ChatHeader}
                         chatRoomBody={chatRoomBody}

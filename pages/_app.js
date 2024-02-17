@@ -25,9 +25,14 @@ const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  let isQRCodePage = false;
+  if (
+    router.pathname == "/changePatientAvatar" ||
+    router.pathname == "/uploadPatientImgFile"
+  )
+    isQRCodePage = true;
 
-  const isQRCodePage = router.asPath.startsWith("/changePatientAvatar");
-
+  console.log({ isQRCodePage });
   return (
     <>
       {isQRCodePage ? (

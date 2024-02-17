@@ -9,6 +9,7 @@ export default function ChatPage({
   sendTextToChatBox,
   messageStatus,
   ClinicUserID,
+  SendFile,
 }) {
   return (
     <>
@@ -78,7 +79,10 @@ export default function ChatPage({
             <div className="input-group">
               <div className="btn-file btn">
                 <i className="fa fa-paperclip"></i>
-                <input type="file" />
+                <input
+                  type="file"
+                  onChange={(e) => SendFile(e.target.files[0])}
+                />
               </div>
               <input
                 id="TextInput"

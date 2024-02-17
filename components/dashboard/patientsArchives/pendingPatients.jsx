@@ -100,7 +100,7 @@ const PendingPatients = ({
             <div className="d-flex align-items-center gap-3">
               <div>
                 <img
-                  src={"https://irannobat.ir/images/" + item?.Avatar}
+                  src={"https://irannobat.ir/images/Avatar/" + item?.Avatar}
                   alt="patientAvatar"
                   style={{
                     width: "35px",

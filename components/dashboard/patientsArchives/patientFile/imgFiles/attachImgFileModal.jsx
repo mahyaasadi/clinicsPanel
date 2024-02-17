@@ -1,47 +1,41 @@
 import { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
+import { setPatientAvatarUrl } from "lib/session";
 import { convertBase64 } from "utils/convertBase64";
-import useImageCropper from "components/commonComponents/cropper/useImageCropper";
+import { ErrorAlert } from "class/AlertManage";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
-import { Modal } from "react-bootstrap"
+import QRCodeGeneratorModal from "components/commonComponents/qrcode";
 
-const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, AttachImgFile }) => {
+const AttachImgFileModal = ({
+  show,
+  setShowModal,
+  ActivePatientID,
+  ClinicID,
+  AttachImgFile,
+}) => {
   const [selectedTab, setSelectedTab] = useState("");
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [avatarSrc, setAvatarSrc] = useState(null);
-  const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
 
   let attachedImg = null;
   const resetFields = () => {
     $("#attachImgTitle").val(null);
     $("#attachImgDes").val(null);
     attachedImg = null;
-
     $("#attachedImgPreview").attr("src", "");
-    if (imageElement.current && imageElement.current.cropper) {
-      // Check if cropper exists before destroying
-      imageElement.current.cropper.destroy();
-    }
   };
 
   const onHide = () => {
     setShowModal(false);
-    resetFields()
-  }
+    resetFields();
+  };
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
     resetFields();
   };
-
-  // Cropper hook
-  const handleCroppedImage = async (blob) => {
-    // await changePatientAvatar(blob);
-    console.log({ blob });
-  };
-
 
   const displayPreview = (e) => {
     var urlCreator = window.URL || window.webkitURL;
@@ -49,7 +43,6 @@ const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, Att
     if (e.target.files.length !== 0) {
       var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
       $("#attachedImgPreview").attr("src", imageUrl);
-      setAvatarSrc(imageUrl)
     }
   };
 
@@ -60,7 +53,7 @@ const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, Att
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    if (formProps.attachImgFile && formProps.attachImgFile.size != 0) {
+    if (formProps.attachImgFile && formProps.attachImgFile.size !== 0) {
       attachedImg = await convertBase64(formProps.attachImgFile);
 
       let url = "Patient/addAttachment";
@@ -70,8 +63,8 @@ const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, Att
         ClinicPatientReception: null,
         Image: attachedImg,
         TypeID: selectedTab,
-        Title: formProps.attachImgTitle,
-        Description: formProps.attachImgDes,
+        Title: $("#attachImgTitle").val(),
+        Description: $("#attachImgDes").val(),
         Date: date,
       };
 
@@ -79,15 +72,25 @@ const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, Att
         .post(url, data)
         .then((response) => {
           AttachImgFile(response.data);
-          resetFields();
+          onHide();
           setIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          ErrorAlert("خطا", "آپلود تصویر با خطا مواجه گردید!");
           setIsLoading(false);
         });
     }
   };
+
+  // QRCode Modal
+  const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+  const openQRCodeModal = () => setShowQRCodeModal(true);
+  const closeQRCodeModal = () => setShowQRCodeModal(false);
+
+  let PatientImgFileURL = setPatientAvatarUrl(
+    ActivePatientID + ";" + ClinicID + ";" + selectedTab
+  );
 
   useEffect(() => handleTabChange(1), []);
 
@@ -139,107 +142,114 @@ const AttachImgFileModal = ({ show, setShowModal, ActivePatientID, ClinicID, Att
       </Modal.Header>
 
       <Modal.Body>
-        <div className="modal-body">
-          <form className="imgFilesTabBg tabContentFrmHeight" onSubmit={(e) => handleSubmit(e, handleCroppedImage)}>
-            <div className="tab-content p-1 mt-4">
-              <div className="row m-0 dir-rtl flex-col justify-center align-items-center">
-                <div
-                  className="tab-pane show active"
-                  id="solid-rounded-tab1"
-                ></div>
-                <div className="tab-pane" id="solid-rounded-tab2"></div>
-                <div className="tab-pane" id="solid-rounded-tab3"></div>
-                <div className="tab-pane" id="solid-rounded-tab4"></div>
+        <form
+          className="imgFilesTabBg tabContentFrmHeight"
+          onSubmit={_attachImgFile}
+        >
+          <div className="tab-content p-1 mt-4">
+            <div className="row m-0 dir-rtl flex-col justify-center align-items-center">
+              <div
+                className="tab-pane show active"
+                id="solid-rounded-tab1"
+              ></div>
+              <div className="tab-pane" id="solid-rounded-tab2"></div>
+              <div className="tab-pane" id="solid-rounded-tab3"></div>
+              <div className="tab-pane" id="solid-rounded-tab4"></div>
 
-                <div className="form-group col-md-11 col-12 p-relative p-0">
-                  <label className="lblAbs font-12">عنوان</label>
-                  <input
-                    className="form-control floating inputPadding rounded"
-                    name="attachImgTitle"
-                    id="attachImgTitle"
-                  />
-                </div>
-
-                <div className="form-group col-md-11 col-12 p-relative p-0">
-                  <label className="lblAbs font-12">توضیحات</label>
-                  <input
-                    className="form-control floating inputPadding rounded"
-                    name="attachImgDes"
-                    id="attachImgDes"
-                  />
-                </div>
-
-                <div className="form-group col-md-11 col-12 p-0">
-                  <SingleDatePicker
-                    setDate={setDate}
-                    label="انتخاب تاریخ"
-                    birthDateMode={true}
-                  />
-                </div>
-
-                <div className="change-photo-btn col-md-11 col-12 p-0 mb-3">
-                  <div>
-                    <i>
-                      <FeatherIcon icon="upload" />
-                    </i>
-                    <p>آپلود تصویر</p>
-                  </div>
-                  <input
-                    type="file"
-                    className="upload"
-                    id="attachImgFile"
-                    name="attachImgFile"
-                    onChange={displayPreview}
-                  />
-                </div>
-
-                <div className="previewImgContainer m-0">
-                  <img
-                    src={avatarSrc}
-                    ref={imageElement}
-                    alt=""
-                    width="250"
-                    id="attachedImgPreview"
-                    className="d-block m-auto previewImg"
-                  ></img>
-                </div>
+              <div className="form-group col-md-11 col-12 p-relative p-0">
+                <label className="lblAbs font-12">عنوان</label>
+                <input
+                  className="form-control floating inputPadding rounded"
+                  name="attachImgTitle"
+                  id="attachImgTitle"
+                />
               </div>
 
-              <div className="submit-section d-flex gap-1 justify-center">
-                {!isLoading ? (
-                  <>
-                    <button
-                      type="submit"
-                      className="btn btn-sm btn-outline-primary rounded btn-save font-13"
-                    >
-                      استفاده از گوشی همراه
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-sm btn-primary rounded btn-save font-13"
-                    >
-                      ثبت
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    type="submit"
-                    className="btn btn-primary rounded font-13 d-flex align-items-center gap-2 justify-center"
-                    disabled
-                  >
-                    <span
-                      className="spinner-border spinner-border-sm me-2"
-                      role="status"
-                    ></span>
-                    در حال ثبت
-                  </button>
-                )}
+              <div className="form-group col-md-11 col-12 p-relative p-0">
+                <label className="lblAbs font-12">توضیحات</label>
+                <input
+                  className="form-control floating inputPadding rounded"
+                  name="attachImgDes"
+                  id="attachImgDes"
+                />
+              </div>
+
+              <div className="form-group col-md-11 col-12 p-0">
+                <SingleDatePicker
+                  setDate={setDate}
+                  label="انتخاب تاریخ"
+                  birthDateMode={true}
+                />
+              </div>
+
+              <div className="change-photo-btn col-md-11 col-12 p-0 mb-3">
+                <div>
+                  <i>
+                    <FeatherIcon icon="upload" />
+                  </i>
+                  <p>آپلود تصویر</p>
+                </div>
+                <input
+                  type="file"
+                  className="upload"
+                  id="attachImgFile"
+                  name="attachImgFile"
+                  onChange={displayPreview}
+                />
+              </div>
+
+              <div className="previewImgContainer m-0">
+                <img
+                  src={""}
+                  alt=""
+                  width="250"
+                  id="attachedImgPreview"
+                  className="d-block m-auto previewImg"
+                ></img>
               </div>
             </div>
-          </form>
-        </div>
 
+            <div className="submit-section d-flex gap-1 justify-center">
+              {!isLoading ? (
+                <>
+                  <button
+                    onClick={openQRCodeModal}
+                    type="button"
+                    className="btn btn-sm btn-outline-primary rounded btn-save font-13"
+                  >
+                    استفاده از گوشی همراه
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-primary rounded btn-save font-13"
+                  >
+                    ثبت
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn btn-primary rounded font-13 d-flex align-items-center gap-2 justify-center"
+                  disabled
+                >
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  ></span>
+                  در حال ثبت
+                </button>
+              )}
+            </div>
+          </div>
+        </form>
       </Modal.Body>
+
+      <QRCodeGeneratorModal
+        show={showQRCodeModal}
+        onHide={closeQRCodeModal}
+        url={"uploadPatientImgFile"}
+        token={PatientImgFileURL}
+      />
     </Modal>
   );
 };

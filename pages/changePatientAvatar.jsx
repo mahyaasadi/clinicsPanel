@@ -77,7 +77,7 @@ const ChangePatientAvatar = () => {
       <div className="changeAvatarContainer">
         <form
           onSubmit={(e) => handleSubmit(e, handleCroppedImage)}
-          className="p-4 dir-rtl changeAvatarFrm"
+          className="p-4 dir-rtl"
         >
           <p className="mb-1 text-secondary fw-bold font-14">
             عکس مورد نظر خود را انتخاب نمایید

@@ -7,8 +7,6 @@ const ImgRecordsList = ({
   openAttachImgFilesModal,
   removePatientImgFile,
 }) => {
-  //   console.log({ data });
-
   const [selectedTab, setSelectedTab] = useState("");
 
   const handleTabChange = (tab) => setSelectedTab(tab);
@@ -52,7 +50,7 @@ const ImgRecordsList = ({
 
         <hr className="mt-0 mb-1" />
 
-        <div className="modal-body imgFilesTabBg pt-0">
+        <div className="modal-body imgFilesTabBg p-0">
           <ul className="font-13 nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
             <li className="nav-item">
               <a
@@ -98,7 +96,7 @@ const ImgRecordsList = ({
 
           <div className="tab-content tabContentHeight p-0">
             <div className="dir-rtl ">
-              <div className="tab-pane show active" >
+              <div className="tab-pane show active">
                 <ImageViewer
                   images={filteredData()}
                   removeFunc={removePatientImgFile}
