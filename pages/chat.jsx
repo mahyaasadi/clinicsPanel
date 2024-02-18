@@ -466,7 +466,7 @@ const PatientChat = ({ ClinicUser }) => {
         <Loading />
       ) : (
         <div className="page-wrapper p-0 mt-4 h-100">
-          <div class="content p-0 mt-5">
+          <div class="content p-0 margint-md">
             <div className="container-fluid">
               <div className="dir-rtl">
                 <div class="row">

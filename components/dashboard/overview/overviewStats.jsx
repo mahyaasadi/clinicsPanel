@@ -6,7 +6,7 @@ const OverviewStats = ({ stats }) => {
   return (
     <>
       <div className="col w-md-100">
-        <div className="card overViewCard">
+        <div className="card overViewCard bg-totalReqCard">
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-totalReq">
@@ -46,7 +46,7 @@ const OverviewStats = ({ stats }) => {
       </div>
 
       <div className="col w-md-100">
-        <div className="card overViewCard">
+        <div className="card overViewCard bg-talkingCard">
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-talking">
@@ -85,7 +85,7 @@ const OverviewStats = ({ stats }) => {
       </div>
 
       <div className="col w-md-100">
-        <div className="card overViewCard">
+        <div className="card overViewCard bg-waitingCard">
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-waiting">
@@ -114,7 +114,7 @@ const OverviewStats = ({ stats }) => {
       </div>
 
       <div className="col w-md-100">
-        <div className="card overViewCard">
+        <div className="card overViewCard bg-totalDebtCard">
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-totalDebt">
@@ -153,7 +153,7 @@ const OverviewStats = ({ stats }) => {
       </div>
 
       <div className="col w-md-100">
-        <div className="card overViewCard">
+        <div className="card overViewCard bg-turnGivenCard">
           <div className="card-body">
             <div className="dash-widget-header">
               <span className="dash-widget-icon bg-turnGiven">
