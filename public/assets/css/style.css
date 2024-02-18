@@ -4276,8 +4276,7 @@ html.menu-opened body {
 }
 
 .sidebar-menu li a {
-  /* color: #131523; */
-  color: darkslategray;
+  color: #3d3d3d;
   display: block;
   font-size: 15px;
   height: auto;

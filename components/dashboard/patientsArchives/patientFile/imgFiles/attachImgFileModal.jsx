@@ -4,6 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { setPatientAvatarUrl } from "lib/session";
 import { convertBase64 } from "utils/convertBase64";
+import { resizeImgFile } from "utils/resizeImgFile";
 import { ErrorAlert } from "class/AlertManage";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import QRCodeGeneratorModal from "components/commonComponents/qrcode";
@@ -18,12 +19,14 @@ const AttachImgFileModal = ({
   const [selectedTab, setSelectedTab] = useState("");
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [imgSrc, setImgSrc] = useState(null);
 
   let attachedImg = null;
   const resetFields = () => {
     $("#attachImgTitle").val(null);
     $("#attachImgDes").val(null);
     attachedImg = null;
+    setImgSrc(null);
     $("#attachedImgPreview").attr("src", "");
   };
 
@@ -37,50 +40,34 @@ const AttachImgFileModal = ({
     resetFields();
   };
 
-  const displayPreview = (e) => {
-    var urlCreator = window.URL || window.webkitURL;
-
-    if (e.target.files.length !== 0) {
-      var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-      $("#attachedImgPreview").attr("src", imageUrl);
-    }
-  };
-
   const _attachImgFile = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
+    let url = "Patient/addAttachment";
+    let data = {
+      PatientID: ActivePatientID,
+      ClinicID,
+      ClinicPatientReception: null,
+      Image: imgSrc,
+      TypeID: selectedTab,
+      Title: $("#attachImgTitle").val(),
+      Description: $("#attachImgDes").val(),
+      Date: date,
+    };
 
-    if (formProps.attachImgFile && formProps.attachImgFile.size !== 0) {
-      attachedImg = await convertBase64(formProps.attachImgFile);
-
-      let url = "Patient/addAttachment";
-      let data = {
-        PatientID: ActivePatientID,
-        ClinicID,
-        ClinicPatientReception: null,
-        Image: attachedImg,
-        TypeID: selectedTab,
-        Title: $("#attachImgTitle").val(),
-        Description: $("#attachImgDes").val(),
-        Date: date,
-      };
-
-      axiosClient
-        .post(url, data)
-        .then((response) => {
-          AttachImgFile(response.data);
-          onHide();
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          ErrorAlert("خطا", "آپلود تصویر با خطا مواجه گردید!");
-          setIsLoading(false);
-        });
-    }
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        AttachImgFile(response.data);
+        onHide();
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "آپلود تصویر با خطا مواجه گردید!");
+        setIsLoading(false);
+      });
   };
 
   // QRCode Modal
@@ -187,20 +174,21 @@ const AttachImgFileModal = ({
                   <i>
                     <FeatherIcon icon="upload" />
                   </i>
-                  <p>آپلود تصویر</p>
+                  <p>آپلود تصویر جدید</p>
                 </div>
                 <input
                   type="file"
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                   className="upload"
                   id="attachImgFile"
                   name="attachImgFile"
-                  onChange={displayPreview}
+                  onChange={(e) => resizeImgFile(e, setImgSrc)}
                 />
               </div>
 
               <div className="previewImgContainer m-0">
                 <img
-                  src={""}
+                  src={imgSrc}
                   alt=""
                   width="250"
                   id="attachedImgPreview"

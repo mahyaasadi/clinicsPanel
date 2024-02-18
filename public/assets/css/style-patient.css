@@ -574,7 +574,7 @@
 }
 
 .chat-window {
-  border: 1px solid #e0e3e4;
+  /* border: 1px solid #e0e3e4; */
   display: flex;
   flex-wrap: wrap;
   position: relative;

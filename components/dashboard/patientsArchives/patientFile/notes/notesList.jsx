@@ -44,7 +44,9 @@ const NotesList = ({
         <div className="card-body">
           <div className="row align-items-center p-2 pt-0 mb-2">
             <div className="col">
-              <p className="card-title font-14 text-secondary">یادداشت ها</p>
+              <p className="card-title font-14 text-secondary">
+                پرونده های دستی
+              </p>
             </div>
 
             <div className="col d-flex justify-content-end">

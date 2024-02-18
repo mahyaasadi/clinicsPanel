@@ -6,12 +6,12 @@ import { getPatientAvatarUrl } from "lib/session";
 import { convertBase64 } from "utils/convertBase64";
 import { SuccessAlert, ErrorAlert } from "class/AlertManage";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
+import { resizeImgFile } from "utils/resizeImgFile";
 import "public/assets/css/uploadPatientImgFile.css";
 
 let ActivePatientID,
   ClinicID,
   TypeID = null;
-let ResizeImg = null;
 const UploadPatientImgFile = () => {
   const router = useRouter();
 
@@ -19,9 +19,7 @@ const UploadPatientImgFile = () => {
   const [imgTitle, setImgTitle] = useState("");
   const [imgDes, setImgDes] = useState("");
   const [date, setDate] = useState(null);
-
-  const [fileLength, setFileLength] = useState(0);
-  const [avatarSrc, setAvatarSrc] = useState(null);
+  const [imgSrc, setImgSrc] = useState(null);
 
   let IDs = getPatientAvatarUrl(router.query.token);
   if (IDs) {
@@ -31,90 +29,22 @@ const UploadPatientImgFile = () => {
     TypeID = IDs[2];
   }
 
-  const displayNewAvatar = (e) => {
-    let settings = {
-      max_width: 1000,
-      max_height: 1000,
-      quality: 1,
-      do_not_resize: [],
-    };
-    const originalFile = e.target.files[0];
-
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      var img = document.createElement("img");
-      var canvas = document.createElement("canvas");
-
-      img.src = e.target.result;
-      img.onload = function () {
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        if (
-          img.width < settings.max_width &&
-          img.height < settings.max_height
-        ) {
-          // Resize not required
-          return;
-        }
-
-        const ratio = Math.min(
-          settings.max_width / img.width,
-          settings.max_height / img.height
-        );
-        const width = Math.round(img.width * ratio);
-        const height = Math.round(img.height * ratio);
-
-        canvas.width = width;
-        canvas.height = height;
-
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
-
-        ResizeImg = canvas.toDataURL("image/jpeg");
-        setAvatarSrc(ResizeImg);
-      };
-    };
-
-    reader.readAsDataURL(originalFile);
-    return this;
-  };
-
-  // var urlCreator = window.URL || window.webkitURL;
-  // setFileLength(e.target.files.length);
-
-  // if (e.target.files.length !== 0) {
-  //   var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-  //   setAvatarSrc(imageUrl);
-  // }
-
   let attachedImg = null;
   const attachImgFile = async (e) => {
     e.preventDefault();
     setAvatarIsLoading(true);
-
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
-    // if (
-    //   formProps.uploadPatientImgFile &&
-    //   formProps.uploadPatientImgFile !== 0
-    // ) {
-    //   attachedImg = await convertBase64(formProps.uploadPatientImgFile);
 
     let url = "Patient/addAttachment";
     let data = {
       PatientID: ActivePatientID,
       ClinicID,
       ClinicPatientReception: null,
-      Image: ResizeImg,
+      Image: imgSrc,
       TypeID: TypeID,
       Title: imgTitle,
       Description: imgDes,
       Date: date,
     };
-    console.log(data);
 
     axiosClient
       .post(url, data)
@@ -127,8 +57,9 @@ const UploadPatientImgFile = () => {
         setAvatarIsLoading(false);
         ErrorAlert("خطا", "آپلود فایل با خطا مواجه گردید!");
       });
-    // }
   };
+
+  console.log({ imgSrc });
 
   return (
     <div className="changeAvatarContainer">
@@ -170,36 +101,34 @@ const UploadPatientImgFile = () => {
             </p>
             <hr />
 
-            {/* <div className="p-2"> */}
             <div className="form-group">
               <div className="change-photo-btn mt-4">
                 <div>
                   <i>
                     <FeatherIcon icon="upload" />
                   </i>
-                  <p>آپلود آواتار جدید</p>
+                  <p>آپلود تصویر جدید</p>
                 </div>
                 <input
                   type="file"
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
                   className="upload"
                   name="uploadPatientImgFile"
-                  onChange={displayNewAvatar}
+                  onChange={(e) => resizeImgFile(e, setImgSrc)}
                   required
                 />
               </div>
             </div>
 
-            {fileLength !== 0 && (
-              <div className="previewImgContainer">
-                <img
-                  src={avatarSrc}
-                  width="200"
-                  alt="patientImgFile"
-                  id="patientImgFile"
-                  className="d-block m-auto previewImg"
-                ></img>
-              </div>
-            )}
+            <div className="previewImgContainer">
+              <img
+                src={imgSrc}
+                width="200"
+                alt=""
+                id="patientImgFile"
+                className="d-block m-auto previewImg"
+              ></img>
+            </div>
 
             <div className="margint-3 marginb-1">
               <div className="d-flex flex-col gap-2 justify-center">
@@ -226,7 +155,6 @@ const UploadPatientImgFile = () => {
               </div>
             </div>
           </div>
-          {/* </div> */}
         </div>
       </form>
     </div>

@@ -11,6 +11,7 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
 }) => {
+  console.log({ data });
   const router = useRouter();
 
   const columns = [
@@ -23,8 +24,8 @@ const ReceptionListTable = ({
         width: "180px",
       },
       cell: (row) => (
-        <div className="d-flex justify-center align-items-center gap-3">
-          <div>
+        <div className="d-flex flex-col gap-1 align-items-center">
+          <div className="d-flex align-items-center gap-3">
             <img
               src={"https://irannobat.ir/images/Avatar/" + row.Patient.Avatar}
               alt="patientAvatar"
@@ -39,9 +40,11 @@ const ReceptionListTable = ({
                   : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}
             />
-          </div>
-          <div>
-            <p>{row.Patient.Name}</p>
+
+            <div>
+              <p className="mb-0">{row.Patient.Name}</p>
+              <p className="fw-bold">{row.Patient.NationalID}</p>
+            </div>
           </div>
         </div>
       ),
@@ -50,12 +53,6 @@ const ReceptionListTable = ({
     {
       name: "شماره پذیرش",
       selector: (row) => row.ReceptionID,
-      sortable: true,
-      width: "auto",
-    },
-    {
-      name: "کد ملی",
-      selector: (row) => row.Patient.NationalID,
       sortable: true,
       width: "auto",
     },
@@ -153,4 +150,3 @@ const ReceptionListTable = ({
 };
 
 export default ReceptionListTable;
-
