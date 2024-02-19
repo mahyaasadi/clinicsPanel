@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
@@ -12,11 +11,8 @@ const SalamatAddToListItems = ({
   handleEditService,
   deleteService,
   prescDataIsLoading,
+  selectFavSalamatItem,
 }) => {
-  useEffect(() => {
-    console.log("prescriptionItemsData", data);
-  }, [data]);
-
   let consumptionLbl = "";
   let SrvPrescImage = "";
 
@@ -50,10 +46,20 @@ const SalamatAddToListItems = ({
                     type="button"
                     className="btn btn-sm btn-outline-primary editBtn height-27"
                     data-pr-position="top"
-                    onClick={() => handleEditService(srv)}
+                    onClick={() => handleEditService(srv, false)}
                   >
                     <Tooltip target=".editBtn">ویرایش</Tooltip>
                     <FeatherIcon icon="edit-2" className="prescItembtns" />
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-primary favItem height-27"
+                    data-pr-position="top"
+                    onClick={() => selectFavSalamatItem(srv)}
+                  >
+                    <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
+                    <FeatherIcon icon="star" className="prescItembtns" />
                   </button>
 
                   <button

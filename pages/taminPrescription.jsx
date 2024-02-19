@@ -9,7 +9,7 @@ import PatientVerticalCard from "components/dashboard/patientInfo/patientVertica
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
-import FavItemsModal from "components/dashboard/prescription/tamin/favItemsModal";
+import TaminFavItemsModal from "components/dashboard/prescription/tamin/taminFavItemsModal";
 import GetPinInput from "components/commonComponents/pinInput";
 import {
   TaminPrescType,
@@ -96,6 +96,7 @@ const TaminPrescription = ({
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [visitRegIsLoading, setVisitRegIsLoading] = useState(false);
   const [saveRegIsLoading, setSaveRegIsLoading] = useState(false);
+  const [searchFromInput, setSearchFromInput] = useState(true);
 
   const [patientInfo, setPatientInfo] = useState([]);
   const [ActivePatientNID, setActivePatientNID] = useState(null);
@@ -226,6 +227,7 @@ const TaminPrescription = ({
     };
     selectInstructionData.push(obj);
   }
+
   drugInstructionList = selectInstructionData;
 
   selectInstructionData = [];
@@ -272,6 +274,8 @@ const TaminPrescription = ({
     ActivePrescImg = prescImg;
     ActivePrescName = prescName;
     ActivePrescTypeID = prescId;
+
+    setSearchFromInput(true);
   };
 
   //---- ParaServices Dropdown ----//
@@ -280,8 +284,9 @@ const TaminPrescription = ({
   //--- Search In Tamin Services ---//
   const searchTaminSrv = (e) => {
     e.preventDefault();
+    setSearchFromInput(true);
 
-    if (ActiveSrvCode == null || editSrvMode) {
+    if (ActiveSrvCode == null || editSrvMode || searchFromInput) {
       setSearchIsLoading(true);
 
       let formData = new FormData(e.target);
@@ -310,11 +315,14 @@ const TaminPrescription = ({
         .catch((err) => {
           console.log(err);
           setSearchIsLoading(false);
+          setSearchFromInput(false);
         });
     }
   };
 
   const activeSearch = () => {
+    setSearchFromInput(!searchFromInput);
+
     ActiveSrvCode = null;
     $("#srvSearchInput").val("");
     $("#BtnActiveSearch").hide();
@@ -330,6 +338,8 @@ const TaminPrescription = ({
   };
 
   const selectSearchedService = (name, srvCode, type, paraTarefCode) => {
+    setSearchFromInput(false);
+
     ActiveSrvName = name;
     ActiveSrvCode = srvCode;
     ActiveSrvTypePrsc = type;
@@ -361,6 +371,8 @@ const TaminPrescription = ({
 
   const selectFavTaminItem = async (selectedSrv) => {
     let url = "FavEprscItem/addTamin";
+    selectedSrv.paraCode = ActiveParaCode;
+
     let data = {
       CenterID: ClinicID,
       prescItem: selectedSrv,
@@ -375,8 +387,21 @@ const TaminPrescription = ({
       .catch((err) => console.log(err));
   };
 
+  const removeFavItem = (srvcode) => {
+    let url = `/CenterFavEprsc/deleteTamin/${ClinicID}/${srvcode}`;
+
+    axiosClient
+      .delete(url)
+      .then((response) => {
+        setFavTaminItems(favTaminItems.filter((x) => x.SrvCode !== srvcode));
+      })
+      .catch((err) => console.log(err));
+  };
+
   // Edit Service
   const updateItem = (id, newArr) => {
+    setSearchFromInput(true);
+
     let index = prescriptionItemsData.findIndex((x) => x.SrvCode === id);
     let g = prescriptionItemsData[index];
     g = newArr;
@@ -394,17 +419,24 @@ const TaminPrescription = ({
     }
   };
 
-  const handleEditService = (srvData) => {
+  const handleEditService = (srvData, favItemMode) => {
     setEditSrvMode(true);
+    setSearchFromInput(true);
     setEditSrvData(srvData);
 
     ActiveSrvCode = srvData.SrvCode;
     ActiveSrvName = srvData.SrvName;
     ActiveEditSrvCode = srvData.SrvCode;
 
-    setTimeout(() => {
-      setShowFavItemsModal(false);
-    }, 200);
+    ActivePrescTypeID = srvData.prescId;
+    ActivePrescImg = srvData.Img;
+
+    if (favItemMode) {
+      setTimeout(() => {
+        $("#btnAddSrvItem").click();
+        $("#srvSearchInput").val("");
+      }, 200);
+    }
   };
 
   // Delete Service
@@ -509,8 +541,6 @@ const TaminPrescription = ({
       $("#eprscItemDescription").val()
     );
 
-    console.log({ prescData, prescItems });
-
     if (!editSrvMode) {
       if (
         addPrescriptionitems.length > 0 &&
@@ -538,6 +568,8 @@ const TaminPrescription = ({
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
       activeSearch();
     }
+
+    setSearchFromInput(true);
   };
 
   // Registeration
@@ -741,6 +773,7 @@ const TaminPrescription = ({
                 ActivePrescHeadID={ActivePrescHeadID}
                 setShowPinModal={setShowPinModal}
                 openFavModal={openFavModal}
+                setSearchFromInput={setSearchFromInput}
               />
 
               <div className="prescList">
@@ -757,11 +790,12 @@ const TaminPrescription = ({
           </div>
         </div>
 
-        <FavItemsModal
+        <TaminFavItemsModal
           data={favTaminItems}
           show={showFavItemsModal}
           onHide={handleCloseFavItemsModal}
           handleEditService={handleEditService}
+          removeFavItem={removeFavItem}
         />
 
         {ActivePrescHeadID && showPinModal && (

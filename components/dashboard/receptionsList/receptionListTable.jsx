@@ -18,6 +18,7 @@ const ReceptionListTable = ({
     {
       name: "بیمار",
       selector: (row) => row.action,
+      sortable: true,
       style: {
         justifyContent: "flex-start",
         width: "180px",
@@ -70,6 +71,7 @@ const ReceptionListTable = ({
     {
       name: "عملیات ها",
       selector: (row) => row.action,
+      sortable: true,
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
@@ -148,3 +150,4 @@ const ReceptionListTable = ({
 };
 
 export default ReceptionListTable;
+

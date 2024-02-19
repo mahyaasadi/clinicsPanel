@@ -38,7 +38,7 @@ const taminPrescItemCreator = async (
         TimesADay: AmountLbl,
         PrescType: PrscName,
         prescId,
-        description
+        description,
       };
 
       prescData = null;
@@ -59,7 +59,7 @@ const taminPrescItemCreator = async (
             drugInstId: Instruction,
           },
           dose: "",
-          description
+          description,
         };
       } else {
         let parTarefGrp = null;
@@ -80,7 +80,7 @@ const taminPrescItemCreator = async (
             parTarefGrp: parTarefGrp,
           },
           srvQty: parseInt(Qty),
-          description
+          description,
         };
       }
     }

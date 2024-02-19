@@ -34,6 +34,7 @@ const PrescriptionCard = ({
   ActivePrescHeadID,
   setShowPinModal,
   openFavModal,
+  setSearchFromInput,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -91,6 +92,7 @@ const PrescriptionCard = ({
     setSelectedAmount(editDrugAmountData?.value);
     $("#srvSearchInput").val(editSrvData?.SrvName);
     $("#QtyInput").val("1");
+    setSearchFromInput(true);
   };
 
   useEffect(() => {
@@ -335,6 +337,7 @@ const PrescriptionCard = ({
                 ) : (
                   <div className="d-flex gap-1">
                     <button
+                      id="btnAddSrvItem"
                       className="btn rounded w-100 addToListBtn font-12"
                       onClick={FuAddToListItem}
                     >

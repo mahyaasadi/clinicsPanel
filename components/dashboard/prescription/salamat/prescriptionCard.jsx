@@ -34,6 +34,7 @@ const PrescriptionCard = ({
   setEditSrvData,
   prescriptionItemsData,
   ActiveSamadCode,
+  openFavModal,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -106,12 +107,12 @@ const PrescriptionCard = ({
           <div className="prescript-header">
             <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
-              {/* <button
+              <button
                 className="btn btn-outline-primary border-radius font-13"
-                // onClick={openFavModal}
+                onClick={openFavModal}
               >
-                نسخه های پرمصرف
-              </button> */}
+                خدمات پرمصرف
+              </button>
 
               {!registerIsLoading ? (
                 <button
@@ -263,7 +264,6 @@ const PrescriptionCard = ({
                       name="QTY"
                       dir="ltr"
                       defaultValue="1"
-                      // value={editSrvData?.Qty}
                     />
                   </div>
                   <div className="col-auto d-flex align-items-center">
@@ -354,6 +354,7 @@ const PrescriptionCard = ({
                     {!isLoading ? (
                       <button
                         className="btn rounded w-100 addToListBtn font-12"
+                        id="btnAddSalamatSrvItem"
                         onClick={FUAddToListItem}
                       >
                         ثبت تغییرات

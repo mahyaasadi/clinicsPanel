@@ -86,7 +86,7 @@ const AddToListItems = ({
                       type="button"
                       className="btn btn-sm btn-outline-primary editBtn height-27"
                       data-pr-position="top"
-                      onClick={() => handleEditService(srv)}
+                      onClick={() => handleEditService(srv, false)}
                     >
                       <Tooltip target=".editBtn">ویرایش</Tooltip>
                       <FeatherIcon icon="edit-2" className="prescItembtns" />

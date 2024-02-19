@@ -4,16 +4,18 @@ import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { Toast } from "primereact/toast";
 import { axiosClient } from "class/axiosConfig";
-import { convertToFixedNumber } from "utils/convertToFixedNumber";
 import SalamatPresctypes from "class/SalamatPrescType";
+import { convertToFixedNumber } from "utils/convertToFixedNumber";
+import { displayToastMessages } from "utils/toastMessageGenerator";
+import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
+import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
-import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import SalamatAddToListItems from "components/dashboard/prescription/salamat/salamatAddToListItems";
-import { displayToastMessages } from "utils/toastMessageGenerator";
+import SalamatFavItemsModal from "components/dashboard/prescription/salamat/salamatFavItemsModal";
 import {
   ErrorAlert,
   WarningAlert,
@@ -21,7 +23,6 @@ import {
   SuccessAlert,
   TimerAlert,
 } from "class/AlertManage";
-import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -73,7 +74,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const [CitizenSessionId, setCitizenSessionId] = useState(null);
   const [SamadCode, setSamadCode] = useState(null);
 
-  // Searchdes in Tabs
+  // Search in Tabs
   const [searchFromInput, setSearchFromInput] = useState(true);
   const [genericCodeOption, setGenericCodeOption] = useState(null);
   const [consumptionOptions, setConsumptionOptions] = useState([]);
@@ -93,6 +94,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const [editPrescMode, setEditPrescMode] = useState(false);
   const [editPrescSrvMode, setEditPrescSrvMode] = useState(false);
   const [editSrvData, setEditSrvData] = useState([]);
+
+  // fav items
+  const [favSalamatItems, setFavSalamatItems] = useState([]);
+  const [favMode, setFavMode] = useState(false);
+  const [showFavItemsModal, setShowFavItemsModal] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("");
 
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
@@ -114,7 +121,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        // console.log(response.data);
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
         setPatientInfo(response.data.res.info);
 
@@ -313,6 +319,58 @@ const SalamatPrescription = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", true);
   };
 
+  // Fav Items
+  const openFavModal = () => {
+    setShowFavItemsModal(true);
+    handleTabChange(1);
+  };
+
+  const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
+  const handleTabChange = (tab) => setSelectedTab(tab);
+
+  const getFavSalamatItems = () => {
+    let url = `CenterFavEprsc/getSalamat/${ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setFavSalamatItems(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const selectFavSalamatItem = async (selectedSrv) => {
+    let url = "CenterFavEprsc/addSalamat";
+
+    let data = {
+      CenterID: ClinicID,
+      prescItem: selectedSrv,
+    };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setFavSalamatItems([...favSalamatItems, response.data]);
+        SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const removeFavItem = (srvNationalNumber) => {
+    let url = `CenterFavEprsc/deleteSalamat/${ClinicID}/${srvNationalNumber}`;
+
+    axiosClient
+      .delete(url)
+      .then((response) => {
+        setFavSalamatItems(
+          favSalamatItems.filter(
+            (x) => x.serviceNationalNumber !== srvNationalNumber
+          )
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   // Add Services To List
   const FUAddToListItem = async (e) => {
     e.preventDefault();
@@ -376,7 +434,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
             checkCode: response.data.res.info?.checkCode,
           });
 
-          if (editPrescSrvMode) {
+          if (editPrescSrvMode && favMode === false) {
             updatePrescItem(
               addedPrescItemData.serviceInterfaceName,
               addedPrescItemData
@@ -467,7 +525,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
   };
 
-  const handleEditService = (srvData) => {
+  const handleEditService = (srvData, favItemMode) => {
+    setFavMode(favItemMode);
     setEditSrvData(srvData);
     setEditPrescSrvMode(true);
     setSearchFromInput(true);
@@ -513,6 +572,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
     existingCheckCodes = existingCheckCodes.filter(
       (a) => a.checkCode !== srvData.checkCode
     );
+
+    if (favItemMode) {
+      setTimeout(() => {
+        $("#btnAddSalamatSrvItem").click();
+      }, 200);
+    }
   };
 
   const updatePrescItem = (id, newArr) => {
@@ -667,6 +732,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
       $("#patientNID").val("");
     }
 
+    getFavSalamatItems();
+
     existingCheckCodes = [];
     deletedCheckCodes = [];
   }, [router.isReady]);
@@ -743,6 +810,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setEditSrvData={setEditSrvData}
                 prescriptionItemsData={prescriptionItemsData}
                 ActiveSamadCode={ActiveSamadCode}
+                openFavModal={openFavModal}
               />
 
               <div className="prescList">
@@ -754,11 +822,23 @@ const SalamatPrescription = ({ ClinicUser }) => {
                   consumptionOptions={consumptionOptions}
                   handleEditService={handleEditService}
                   deleteService={deleteService}
+                  selectFavSalamatItem={selectFavSalamatItem}
                 />
               </div>
             </div>
           </div>
         </div>
+
+        <SalamatFavItemsModal
+          data={favSalamatItems}
+          show={showFavItemsModal}
+          onHide={handleCloseFavItemsModal}
+          handleEditService={handleEditService}
+          removeFavItem={removeFavItem}
+          salamatHeaderList={salamatHeaderList}
+          selectedTab={selectedTab}
+          handleTabChange={handleTabChange}
+        />
       </div>
     </>
   );

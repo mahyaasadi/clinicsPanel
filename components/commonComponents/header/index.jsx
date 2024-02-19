@@ -5,8 +5,8 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { axiosClient } from "class/axiosConfig";
 import { useRouter } from "next/navigation";
-import FeatherIcon from "feather-icons-react";
 import { setSession } from "lib/SessionMange";
+import FeatherIcon from "feather-icons-react";
 import { imgNotFound, headerLogo } from "components/commonComponents/imagepath";
 
 const Header = ({ ClinicUser }) => {
@@ -128,7 +128,7 @@ const Header = ({ ClinicUser }) => {
                   style={{ width: "20px", height: "20px", borderRadius: "4px" }}
                 />
               )}
-              کلینیک {ClinicData.Name}{" "}
+              {ClinicData.Name}{" "}
             </div>
 
             <Link href="#" id="dark-mode-toggle" className="dark-mode-toggle">
