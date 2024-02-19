@@ -2,6 +2,7 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
+import { QuestionAlert } from "class/AlertManage"
 
 const AddToListItems = ({
   data,
@@ -11,9 +12,13 @@ const AddToListItems = ({
   prescDataIsLoading,
   selectFavTaminItem,
 }) => {
-  const _DeleteService = (id, prescId) => {
-    setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
-    DeleteService(id, prescId);
+  const _DeleteService = async (id, prescId) => {
+    let result = await QuestionAlert("حذف سرویس!", "آیا از حذف اطمینان دارید؟");
+
+    if (result) {
+      setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
+      DeleteService(id, prescId);
+    }
   };
 
   return (

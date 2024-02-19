@@ -26,7 +26,7 @@ const TaminFavItemsModal = ({
     } else {
       return data;
     }
-  };
+  }
 
   useEffect(() => {
     handleTabChange(1);

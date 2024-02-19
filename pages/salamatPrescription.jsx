@@ -340,6 +340,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const selectFavSalamatItem = async (selectedSrv) => {
+    console.log({ selectedSrv, favSalamatItems });
     let url = "CenterFavEprsc/addSalamat";
 
     let data = {
@@ -347,13 +348,24 @@ const SalamatPrescription = ({ ClinicUser }) => {
       prescItem: selectedSrv,
     };
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        setFavSalamatItems([...favSalamatItems, response.data]);
-        SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
-      })
-      .catch((err) => console.log(err));
+    if (
+      favSalamatItems.length > 0 &&
+      favSalamatItems.find(
+        (x) => x.serviceNationalNumber === selectedSrv.serviceNationalNumber
+      )
+    ) {
+      ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+      return false;
+    } else {
+
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          setFavSalamatItems([...favSalamatItems, response.data]);
+          SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const removeFavItem = (srvNationalNumber) => {
@@ -676,9 +688,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${
-                trackingCode ? "با کد رهگیری : " + trackingCode : ""
-              }
+              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
+                }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,

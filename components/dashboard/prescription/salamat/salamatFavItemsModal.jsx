@@ -18,7 +18,23 @@ const SalamatFavItemsModal = ({
   const filteredData = () => {
     return data.filter((item) => item.typeId === selectedTab);
   };
-  console.log({ data, filteredData });
+
+  const [matchingIDs, setMatchingIDs] = useState([]);
+
+  useEffect(() => {
+    const idsSet = new Set(); // Use a Set to store unique values
+
+    data.forEach(dataItem => {
+      const matchingHeader = salamatHeaderList.find(headerItem => headerItem.id === dataItem.typeId);
+      if (matchingHeader) {
+        idsSet.add(matchingHeader.id);
+      }
+    });
+
+    const uniqueIds = Array.from(idsSet); // Convert Set back to array
+
+    setMatchingIDs(uniqueIds);
+  }, [data, salamatHeaderList]);
 
   useEffect(() => handleTabChange(1), []);
 
@@ -35,22 +51,27 @@ const SalamatFavItemsModal = ({
           dir="rtl"
           className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b fw-bold nav-tabs-scroll"
         >
-          {salamatHeaderList.map((item, index) => (
-            <li className="nav-item" key={index}>
-              <a
-                className={`nav-link ${index === 0 ? "active" : item.Active} ${
-                  index === 1 || index === 3 || index === 6 || index === 7
-                    ? "w-170"
-                    : ""
-                }`}
-                href={`#bottom-tab${index + 1}`}
-                data-bs-toggle="tab"
-                onClick={() => handleTabChange(item.id)}
-              >
-                {item.name}
-              </a>
-            </li>
-          ))}
+          {salamatHeaderList.map((item, index) => {
+            if (matchingIDs.includes(item.id)) {
+              return (
+                <li className="nav-item" key={index}>
+                  <a
+                    className={`nav-link ${index === 0 ? "active" : item.Active} ${index === 1 || index === 3 || index === 6 || index === 7
+                      ? "w-170"
+                      : ""
+                      }`}
+                    href={`#bottom-tab${index + 1}`}
+                    data-bs-toggle="tab"
+                    onClick={() => handleTabChange(item.id)}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              );
+            } else {
+              return null; // Render nothing if the item's id is not in matchingIds
+            }
+          })}
         </ul>
 
         <div className="tab-content tabContentHeight p-0 mt-4">

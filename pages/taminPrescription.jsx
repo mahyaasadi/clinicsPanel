@@ -373,18 +373,32 @@ const TaminPrescription = ({
     let url = "FavEprscItem/addTamin";
     selectedSrv.paraCode = ActiveParaCode;
 
+    console.log({ selectedSrv, favTaminItems });
+
     let data = {
       CenterID: ClinicID,
       prescItem: selectedSrv,
     };
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        setFavTaminItems([...favTaminItems, response.data]);
-        SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
-      })
-      .catch((err) => console.log(err));
+    if (
+      favTaminItems.length > 0 &&
+      favTaminItems.find(
+        (x) => x.SrvCode === selectedSrv.SrvCode
+      )
+    ) {
+      ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+      return false;
+    } else {
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+
+          setFavTaminItems([...favTaminItems, response.data]);
+          SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
+        })
+        .catch((err) => console.log(err));
+
+    }
   };
 
   const removeFavItem = (srvcode) => {

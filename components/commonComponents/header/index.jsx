@@ -125,7 +125,7 @@ const Header = ({ ClinicUser }) => {
               {ClinicData.Logo && (
                 <img
                   src={ClinicData.Logo}
-                  style={{ width: "20px", height: "20px", borderRadius: "4px" }}
+                  style={{ width: "22px", height: "22px", borderRadius: "4px" }}
                 />
               )}
               {ClinicData.Name}{" "}
