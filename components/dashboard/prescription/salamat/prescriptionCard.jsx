@@ -339,14 +339,13 @@ const PrescriptionCard = ({
                     </button>
                   ) : (
                     <button
-                      className="btn rounded w-100 addToListBtn font-13"
+                      className="btn rounded w-100 addToListBtn d-flex align-items-center justify-center"
                       disabled
                     >
                       <span
-                        className="spinner-border spinner-border-sm me-2"
+                        className="spinner-border spinner-border-sm"
                         role="status"
                       ></span>
-                      در حال ثبت
                     </button>
                   )
                 ) : (
@@ -361,14 +360,13 @@ const PrescriptionCard = ({
                       </button>
                     ) : (
                       <button
-                        className="btn rounded w-100 addToListBtn font-13"
+                        className="btn rounded w-100 addToListBtn d-flex align-items-center justify-center"
                         disabled
                       >
                         <span
-                          className="spinner-border spinner-border-sm me-2"
+                          className="spinner-border spinner-border-sm"
                           role="status"
                         ></span>
-                        در حال ثبت
                       </button>
                     )}
                     <button

@@ -4,6 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import FilterFavItems from "components/dashboard/prescription/filterFavItems";
 
 const SalamatFavItemsModal = ({
   show,
@@ -15,23 +16,32 @@ const SalamatFavItemsModal = ({
   handleTabChange,
   selectedTab,
 }) => {
-  const filteredData = () => {
-    return data.filter((item) => item.typeId === selectedTab);
-  };
-
+  const [favSearchInput, setFavSearchInput] = useState("");
   const [matchingIDs, setMatchingIDs] = useState([]);
 
-  useEffect(() => {
-    const idsSet = new Set(); // Use a Set to store unique values
+  const searchedFavItems = data.filter((item) =>
+    item.serviceInterfaceName
+      .toLowerCase()
+      .includes(favSearchInput.toLowerCase())
+  );
 
-    data.forEach(dataItem => {
-      const matchingHeader = salamatHeaderList.find(headerItem => headerItem.id === dataItem.typeId);
+  const filteredData = () => {
+    return searchedFavItems.filter((item) => item.typeId === selectedTab);
+  };
+
+  useEffect(() => {
+    const idsSet = new Set(); // to store unique values
+
+    searchedFavItems?.forEach((dataItem) => {
+      const matchingHeader = salamatHeaderList.find(
+        (headerItem) => headerItem.id === dataItem.typeId
+      );
       if (matchingHeader) {
         idsSet.add(matchingHeader.id);
       }
     });
 
-    const uniqueIds = Array.from(idsSet); // Convert Set back to array
+    const uniqueIds = Array.from(idsSet); // convert Set back to array
 
     setMatchingIDs(uniqueIds);
   }, [data, salamatHeaderList]);
@@ -39,7 +49,7 @@ const SalamatFavItemsModal = ({
   useEffect(() => handleTabChange(1), []);
 
   return (
-    <Modal show={show} onHide={onHide} centered size="lg">
+    <Modal show={show} onHide={onHide} centered size="xl">
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">خدمات پرمصرف</p>
@@ -56,14 +66,19 @@ const SalamatFavItemsModal = ({
               return (
                 <li className="nav-item" key={index}>
                   <a
-                    className={`nav-link ${index === 0 ? "active" : item.Active} ${index === 1 || index === 3 || index === 6 || index === 7
-                      ? "w-170"
-                      : ""
-                      }`}
+                    className={`nav-link d-flex align-items-center justify-center gap-2 ${
+                      index === 0 ? "active" : item.Active
+                    }`}
                     href={`#bottom-tab${index + 1}`}
                     data-bs-toggle="tab"
                     onClick={() => handleTabChange(item.id)}
                   >
+                    <img
+                      src={`assets/img/salamatHeader/TaminPrescTypeID${item.id}.png`}
+                      alt=""
+                      width="30px"
+                      height="30px"
+                    />
                     {item.name}
                   </a>
                 </li>
@@ -74,87 +89,120 @@ const SalamatFavItemsModal = ({
           })}
         </ul>
 
-        <div className="tab-content tabContentHeight p-0 mt-4">
+        <div className="tab-content tabContentHeight p-0">
           <div className="tab-pane show active">
-            <Accordion dir="rtl" multiple className="mt-4">
+            <FilterFavItems
+              favSearchInput={favSearchInput}
+              setFavSearchInput={setFavSearchInput}
+            />
+
+            <div className="accordion mt-4">
               {filteredData()?.map((srv, index) => (
-                <AccordionTab
-                  key={index}
-                  header={
-                    <div className="d-flex">
-                      <div className="d-flex col-9 gap-2 font-13 align-items-center">
-                        {srv.prescTypeImg ? (
-                          <Image
-                            src={srv.prescTypeImg}
-                            alt="serviceIcon"
-                            width="25"
-                            height="25"
-                          />
-                        ) : (
-                          ""
-                        )}
-
-                        <div className="d-flex gap-2 font-13 align-items-center prescDetails">
-                          <p>{srv.serviceInterfaceName}</p>
-                        </div>
-                      </div>
-
-                      <div className="d-flex col-3 gap-1 justify-end">
+                <div className="accordion-item" key={index}>
+                  <h2 className="accordion-header" id={`heading${index}`}>
+                    <div className="row w-100">
+                      <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-primary addBtn"
-                          onClick={() => handleEditService(srv, true)}
-                          data-pr-position="right"
-                        >
-                          <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
-                          <FeatherIcon icon="plus" className="prescItembtns" />
-                        </button>
-
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger removeBtn"
+                          className="btn p-2 btn-outline-danger removeBtn"
+                          data-pr-position="left"
                           onClick={() =>
                             removeFavItem(srv.serviceNationalNumber)
                           }
-                          data-pr-position="left"
                         >
                           <Tooltip target=".removeBtn">حذف</Tooltip>
                           <FeatherIcon icon="trash" className="prescItembtns" />
                         </button>
+                        <button
+                          type="button"
+                          className="btn p-2 btn-outline-primary addBtn"
+                          data-pr-position="right"
+                          onClick={(e) => {
+                            handleEditService(srv, true);
+                          }}
+                        >
+                          <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
+                          <FeatherIcon icon="plus" className="prescItembtns" />
+                        </button>
+                      </div>
+
+                      <div className="col-9 d-flex justify-end text-end">
+                        <div className="d-flex  gap-2 font-13 align-items-center">
+                          <div className="d-flex gap-2 font-13 align-items-center prescDetails">
+                            <p>{srv.serviceInterfaceName}</p>
+                          </div>
+
+                          {srv.prescTypeImg ? (
+                            <Image
+                              src={srv.prescTypeImg}
+                              alt="serviceIcon"
+                              width="30"
+                              height="30"
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col-1">
+                        <button
+                          className="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapse${index}`}
+                          aria-expanded="false"
+                          aria-controls={`collapse${index}`}
+                        ></button>
                       </div>
                     </div>
-                  }
-                >
-                  <div className="row">
-                    <div className="d-flex mt-2 gap-2 flex-wrap">
-                      <div className="d-flex gap-2 ">
-                        <div className="srvTypeInfo">
-                          {srv.numberOfRequest} عدد
-                        </div>
-                      </div>
+                  </h2>
 
-                      {srv.consumption && (
-                        <div className="d-flex gap-2">
-                          <div className="srvTypeInfo">{srv.consumption}</div>{" "}
-                        </div>
-                      )}
-
-                      {/* {srv.numberOfPeriod ||
-                        (srv.consumptionInstruction && (
+                  <div
+                    id={`collapse${index}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`heading${index}`}
+                  >
+                    <div className="accordion-body py-0 px-3 border-top">
+                      <div className="row py-2">
+                        <div className="d-flex mt-2 gap-2 flex-wrap justify-end">
                           <div className="d-flex gap-2">
-                            <div className="srvTypeInfo">
-                              دستور مصرف :{" "}
-                              {srv.consumptionInstruction
-                                ? srv.consumptionInstruction
-                                : srv.numberOfPeriod}
+                            <div className="srvTypeInfo dir-rtl">
+                              {srv.numberOfRequest} عدد
                             </div>
                           </div>
-                        ))} */}
+
+                          {srv.consumption && (
+                            <div className="d-flex gap-2">
+                              <div className="srvTypeInfo">
+                                {srv.consumption}
+                              </div>{" "}
+                            </div>
+                          )}
+
+                          {srv.numberOfPeriod &&
+                            !srv.consumptionInstruction && (
+                              <div className="d-flex gap-2">
+                                <div className="srvTypeInfo">
+                                  دستور مصرف / تعداد در وعده :{" "}
+                                  {srv.numberOfPeriod}
+                                </div>
+                              </div>
+                            )}
+
+                          {srv.consumptionInstruction && (
+                            <div className="d-flex gap-2">
+                              <div className="srvTypeInfo">
+                                دستور مصرف : {srv.consumptionInstruction}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </AccordionTab>
+                </div>
               ))}
-            </Accordion>
+            </div>
           </div>
         </div>
       </Modal.Body>

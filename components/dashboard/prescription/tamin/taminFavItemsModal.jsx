@@ -4,6 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import FilterFavItems from "components/dashboard/prescription/filterFavItems";
 
 const TaminFavItemsModal = ({
   show,
@@ -12,6 +13,7 @@ const TaminFavItemsModal = ({
   handleEditService,
   removeFavItem,
 }) => {
+  const [favSearchInput, setFavSearchInput] = useState("");
   const [selectedTab, setSelectedTab] = useState("");
 
   const handleTabChange = (tab) => setSelectedTab(tab);
@@ -26,14 +28,18 @@ const TaminFavItemsModal = ({
     } else {
       return data;
     }
-  }
+  };
 
-  useEffect(() => {
-    handleTabChange(1);
-  }, []);
+  const searchedFavItems = filteredData().filter(
+    (item) =>
+      item.SrvName.toLowerCase().includes(favSearchInput.toLowerCase()) ||
+      item.SrvCode.includes(favSearchInput)
+  );
+
+  useEffect(() => handleTabChange(1), []);
 
   return (
-    <Modal show={show} onHide={onHide} centered size="lg">
+    <Modal show={show} onHide={onHide} centered size="xl">
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">خدمات پرمصرف</p>
@@ -76,81 +82,106 @@ const TaminFavItemsModal = ({
 
         <div className="tab-content tabContentHeight p-0">
           <div className="tab-pane show active">
-            <Accordion dir="rtl" multiple className="mt-4">
-              {filteredData()?.map((srv, index) => (
-                <AccordionTab
-                  key={index}
-                  header={
-                    <div className="d-flex">
-                      <div className="d-flex col-9 gap-2 font-13 align-items-center">
-                        {srv.Img ? (
-                          <Image
-                            src={srv.Img}
-                            alt="serviceIcon"
-                            width="25"
-                            height="25"
-                          />
-                        ) : (
-                          ""
-                        )}
+            <FilterFavItems
+              favSearchInput={favSearchInput}
+              setFavSearchInput={setFavSearchInput}
+            />
 
-                        <div className="d-flex gap-2 font-13 align-items-center prescDetails">
-                          <p className="mb-0">{srv.SrvCode}</p>
-                          <p className="mb-0">|</p>
-                          <p>{srv.SrvName}</p>
-                        </div>
-                      </div>
-
-                      <div className="d-flex col-3 gap-1 justify-end">
+            <div className="accordion mt-4">
+              {searchedFavItems?.map((srv, index) => (
+                <div className="accordion-item" key={index}>
+                  <h2 className="accordion-header" id={`heading${index}`}>
+                    <div className="row w-100">
+                      <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-primary addBtn"
-                          onClick={() => handleEditService(srv, true)}
-                          data-pr-position="right"
-                        >
-                          <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
-                          <FeatherIcon icon="plus" className="prescItembtns" />
-                        </button>
-
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger removeBtn"
-                          onClick={() => removeFavItem(srv.SrvCode)}
+                          className="btn p-2 btn-outline-danger removeBtn"
                           data-pr-position="left"
+                          onClick={() => removeFavItem(srv.SrvCode)}
                         >
                           <Tooltip target=".removeBtn">حذف</Tooltip>
                           <FeatherIcon icon="trash" className="prescItembtns" />
                         </button>
-                      </div>
-                    </div>
-                  }
-                >
-                  <div className="row">
-                    <div className="d-flex mt-2 gap-2 flex-wrap">
-                      <div className="d-flex gap-2 ">
-                        <div className="srvTypeInfo">
-                          نوع نسخه : {srv.PrescType}
-                        </div>
-                        <div className="srvTypeInfo">تعداد : {srv.Qty}</div>
+                        <button
+                          type="button"
+                          className="btn p-2 btn-outline-primary addBtn"
+                          data-pr-position="right"
+                          onClick={(e) => {
+                            handleEditService(srv, true);
+                          }}
+                        >
+                          <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
+                          <FeatherIcon icon="plus" className="prescItembtns" />
+                        </button>
                       </div>
 
-                      {srv.TimesADay ? (
-                        <div className="d-flex gap-2">
-                          <div className="srvTypeInfo">
-                            تعداد مصرف در روز : {srv.TimesADay}
+                      <div className="col-9 d-flex justify-end text-end">
+                        <div className="d-flex  gap-2 font-13 align-items-center">
+                          <div className="d-flex gap-2 font-13 align-items-center prescDetails">
+                            <p className="mb-0">{srv.SrvCode}</p>
+                            <p className="mb-0">|</p>
+                            <p>{srv.SrvName}</p>
                           </div>
-                          <div className="srvTypeInfo">
-                            دستور مصرف : {srv.DrugInstruction}
-                          </div>
+
+                          {srv.Img ? (
+                            <Image
+                              src={srv.Img}
+                              alt="serviceIcon"
+                              width="25"
+                              height="25"
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
-                      ) : (
-                        ""
-                      )}
+                      </div>
+
+                      <div className="col-1">
+                        <button
+                          className="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapse${index}`}
+                          aria-expanded="false"
+                          aria-controls={`collapse${index}`}
+                        ></button>
+                      </div>
+                    </div>
+                  </h2>
+
+                  <div
+                    id={`collapse${index}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`heading${index}`}
+                  >
+                    <div className="accordion-body py-0 px-3 border-top">
+                      <div className="row py-2">
+                        <div className="d-flex mt-2 gap-2 flex-wrap justify-end">
+                          <div className="d-flex gap-2 ">
+                            <div className="srvTypeInfo">
+                              نوع نسخه : {srv.PrescType}
+                            </div>
+                            <div className="srvTypeInfo">تعداد : {srv.Qty}</div>
+                          </div>
+
+                          {srv.TimesADay ? (
+                            <div className="d-flex gap-2">
+                              <div className="srvTypeInfo">
+                                تعداد مصرف در روز : {srv.TimesADay}
+                              </div>
+                              <div className="srvTypeInfo">
+                                دستور مصرف : {srv.DrugInstruction}
+                              </div>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </AccordionTab>
+                </div>
               ))}
-            </Accordion>
+            </div>
           </div>
         </div>
       </Modal.Body>

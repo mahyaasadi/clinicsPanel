@@ -2,7 +2,7 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
-import { QuestionAlert } from "class/AlertManage"
+import { QuestionAlert } from "class/AlertManage";
 
 const AddToListItems = ({
   data,
@@ -48,7 +48,7 @@ const AddToListItems = ({
                     </div>
                   </div>
 
-                  <div className="d-flex mt-2 gap-2 flex-wrap">
+                  <div className="d-flex mt-2 gap-2 flex-wrap text-secondary font-12">
                     <div className="d-flex gap-2 ">
                       <div className="">
                         نوع نسخه : {srv?.PrescType && srv?.PrescType + " |"}

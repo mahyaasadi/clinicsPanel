@@ -340,9 +340,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const selectFavSalamatItem = async (selectedSrv) => {
-    console.log({ selectedSrv, favSalamatItems });
     let url = "CenterFavEprsc/addSalamat";
-
     let data = {
       CenterID: ClinicID,
       prescItem: selectedSrv,
@@ -357,7 +355,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
       return false;
     } else {
-
       axiosClient
         .post(url, data)
         .then((response) => {
@@ -457,6 +454,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
               addedPrescItemData,
             ]);
           }
+
+          // console.log({
+          //   prescriptionItemsData,
+          //   addedPrescItemData,
+          //   existingCheckCodes,
+          // });
 
           // reset
           activeSearch();
@@ -688,8 +691,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
-                }
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,

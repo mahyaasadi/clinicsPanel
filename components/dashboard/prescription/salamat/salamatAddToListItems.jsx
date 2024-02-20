@@ -83,7 +83,7 @@ const SalamatAddToListItems = ({
                   )),
                   console.log())
                 }
-                <div className="d-flex mt-2 gap-1 flex-wrap text-secondary font-12">
+                <div className="d-flex justify-end my-2 gap-1 flex-wrap text-secondary font-12">
                   <div>{srv.numberOfRequest} عدد</div>
 
                   {srv.consumption && <div className="vertical-line"></div>}

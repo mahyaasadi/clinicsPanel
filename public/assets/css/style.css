@@ -818,8 +818,8 @@ table.table td h2.table-avatar a>img {
   width: 48%;
 }
 
-.w-170 {
-  width: 170px !important;
+.w-190 {
+  width: 190px !important;
 }
 
 .paddingb-0 {
@@ -6412,12 +6412,21 @@ span.fa.toggle-password-confPass\".fa-eye-slash {
 .accordion-button:not(.collapsed) {
   background: #ffffff;
   color: #000000;
-  border-bottom: 1px solid #eef1fe;
+  /* border-bottom: 1px solid #eef1fe; */
   box-shadow: none;
 }
 
 .accordion-button::after {
-  content: none;
+  /* content: none; */
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  content: "";
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  transition: transform .2s ease-in-out;
 }
 
 .accordion-button,
@@ -9785,9 +9794,9 @@ ul li .active {
 }
 
 .prescItembtns {
-  padding: 1px 1px;
+  padding: 1px;
   width: 16px;
-  height: 18px !important;
+  height: 16px !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11707,4 +11716,19 @@ canvas {
 
 .navTabBorder-b {
   border-bottom: 1px solid #dee2e6 !important;
+}
+
+.articleSearchInput {
+  padding: 20px 40px;
+}
+
+.articleSearchInput:focus {
+  border: 1px solid #b45309 !important;
+}
+
+.articleSearchIcon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: gray;
 }
