@@ -3,7 +3,6 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import FilterFavItems from "components/dashboard/prescription/filterFavItems";
 
 const SalamatFavItemsModal = ({
@@ -59,9 +58,42 @@ const SalamatFavItemsModal = ({
 
       const uniqueIds = Array.from(idsSet); // convert Set back to array
 
-      setMatchingIDs(uniqueIds);
-    }
-  }, [show, data, salamatHeaderList]);
+    setMatchingIDs(uniqueIds);
+  }, [data, salamatHeaderList]);
+
+  // useEffect(() => {
+  //   console.log({ matchingIDs });
+  //   // Find the index of the first tab that matches any id in matchingIDs
+  //   const firstMatchingIndex = salamatHeaderList.findIndex(item => matchingIDs.includes(item.id));
+  //   console.log({ firstMatchingIndex });
+
+  //   // If there's at least one matching tab, call handleTabChange with its index
+  //   if (firstMatchingIndex !== -1) {
+  //     handleTabChange(firstMatchingIndex);
+  //   } else {
+  //     // If no matching tab is found, handle it accordingly
+  //     // For example, you can call handleTabChange with a default index or handle the case in another way
+  //   }
+  // }, [matchingIDs, salamatHeaderList]);
+
+  // useEffect(() => {
+  //   // Find the index of the first tab that matches any id in matchingIDs
+  //   let firstMatchingIndex = -1;
+  //   for (let i = 0; i < salamatHeaderList.length; i++) {
+  //     if (matchingIDs.includes(salamatHeaderList[i].id)) {
+  //       firstMatchingIndex = i;
+  //       break; // Found the first matching tab, no need to continue looping
+  //     }
+  //   }
+
+  //   // If a matching tab is found, call handleTabChange with its index
+  //   if (firstMatchingIndex !== -1) {
+  //     handleTabChange(firstMatchingIndex);
+  //   } else {
+  //     // If no matching tab is found, handle it accordingly
+  //     // For example, you can call handleTabChange with a default index or handle the case in another way
+  //   }
+  // }, [matchingIDs, salamatHeaderList]);
 
   const handleModalHide = () => {
     setFavSearchInput("");
@@ -87,9 +119,8 @@ const SalamatFavItemsModal = ({
               return (
                 <li className="nav-item" key={index}>
                   <a
-                    className={`nav-link d-flex align-items-center justify-center gap-2 ${
-                      index === 0 ? "active" : item.Active
-                    }`}
+                    className={`nav-link d-flex align-items-center justify-center gap-2 ${index === 0 ? "active" : item.Active
+                      }`}
                     href={`#bottom-tab${index + 1}`}
                     data-bs-toggle="tab"
                     onClick={() => handleTabChange(item.id)}
@@ -120,6 +151,7 @@ const SalamatFavItemsModal = ({
             <div className="accordion mt-4">
               {filteredData()?.map((srv, index) => (
                 <div className="accordion-item" key={index}>
+                  <h2 className="accordion-header text-secondary" id={`heading${index}`}>
                   <h2
                     className="accordion-header text-secondary"
                     id={`heading${index}`}

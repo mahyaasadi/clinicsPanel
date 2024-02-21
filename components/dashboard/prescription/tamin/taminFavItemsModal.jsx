@@ -99,6 +99,7 @@ const TaminFavItemsModal = ({
                     className="accordion-header text-secondary"
                     id={`heading${index}`}
                   >
+                  <h2 className="accordion-header text-secondary" id={`heading${index}`}>
                     <div className="row w-100">
                       <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button
