@@ -245,7 +245,7 @@ const PatientVerticalCard = ({
             </div>
 
             <div className="PVCardboxall">
-              <div className="PVCardvalue mb-3 d-flex align-items-center">
+              <div className="PVCardvalue mb-2 d-flex align-items-center">
                 <div className="">
                   نوع بیمه :{" "}
                   {taminPrescMode

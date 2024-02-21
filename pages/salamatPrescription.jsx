@@ -320,11 +320,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   // Fav Items
-  const openFavModal = () => {
-    setShowFavItemsModal(true);
-    handleTabChange(1);
-  };
-
+  const openFavModal = () => setShowFavItemsModal(true);
   const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
   const handleTabChange = (tab) => setSelectedTab(tab);
 
@@ -339,7 +335,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .catch((err) => console.log(err));
   };
 
-  const selectFavSalamatItem = async (selectedSrv) => {
+  const selectFavSalamatItem = (selectedSrv) => {
     let url = "CenterFavEprsc/addSalamat";
     let data = {
       CenterID: ClinicID,

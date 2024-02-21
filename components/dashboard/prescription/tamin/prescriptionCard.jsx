@@ -113,12 +113,12 @@ const PrescriptionCard = ({
           <div className="prescript-header">
             <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
-              <button
+              {/* <button
                 className="btn btn-outline-primary border-radius font-13"
                 onClick={openFavModal}
               >
                 خدمات پرمصرف
-              </button>
+              </button> */}
 
               {!visitRegIsLoading ? (
                 <button

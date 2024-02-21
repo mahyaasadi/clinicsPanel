@@ -11330,15 +11330,10 @@ thead {
   justify-content: space-around;
 }
 
-/* .PVCardviwer {
-  width: 150px;
-  height: 400px;
-} */
-
 .PVCardboxall {
   display: flex;
   background: #f5e8df;
-  height: 100px;
+  height: 85px;
   width: 100%;
   border-bottom: 2px solid #fff;
   flex-direction: column;
@@ -11728,7 +11723,23 @@ canvas {
 
 .articleSearchIcon {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 15px;
+  left: 1rem;
   color: gray;
+}
+
+.quickAccessPrscBox:hover {
+  border: 1px solid #b45309 !important;
+  color: #b45309 !important;
+  transition: ease-in 0.3s all;
+}
+
+.quickAccessPrscBox:hover .formBtns {
+  color: #b45309 !important;
+}
+
+.quickAccessCardHeight {
+  max-height: 35rem !important;
+  overflow-y: auto;
+  direction: ltr;
 }

@@ -3,7 +3,6 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import FilterFavItems from "components/dashboard/prescription/filterFavItems";
 
 const TaminFavItemsModal = ({
@@ -36,10 +35,16 @@ const TaminFavItemsModal = ({
       item.SrvCode.includes(favSearchInput)
   );
 
+  const handleModalHide = () => {
+    setFavSearchInput("");
+    handleTabChange(1);
+    onHide();
+  };
+
   useEffect(() => handleTabChange(1), []);
 
   return (
-    <Modal show={show} onHide={onHide} centered size="xl">
+    <Modal show={show} onHide={handleModalHide} centered size="xl">
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">خدمات پرمصرف</p>
@@ -90,7 +95,10 @@ const TaminFavItemsModal = ({
             <div className="accordion mt-4">
               {searchedFavItems?.map((srv, index) => (
                 <div className="accordion-item" key={index}>
-                  <h2 className="accordion-header" id={`heading${index}`}>
+                  <h2
+                    className="accordion-header text-secondary"
+                    id={`heading${index}`}
+                  >
                     <div className="row w-100">
                       <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button
@@ -118,9 +126,11 @@ const TaminFavItemsModal = ({
                       <div className="col-9 d-flex justify-end text-end">
                         <div className="d-flex  gap-2 font-13 align-items-center">
                           <div className="d-flex gap-2 font-13 align-items-center prescDetails">
-                            <p className="mb-0">{srv.SrvCode}</p>
+                            <p className="mb-0">
+                              {srv.SrvName.substr(0, 25) + " ..."}
+                            </p>
                             <p className="mb-0">|</p>
-                            <p>{srv.SrvName}</p>
+                            <p className="mb-0">{srv.SrvCode}</p>
                           </div>
 
                           {srv.Img ? (

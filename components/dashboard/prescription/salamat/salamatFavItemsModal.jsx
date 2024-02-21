@@ -16,6 +16,8 @@ const SalamatFavItemsModal = ({
   handleTabChange,
   selectedTab,
 }) => {
+  let firstMatchingId = null;
+
   const [favSearchInput, setFavSearchInput] = useState("");
   const [matchingIDs, setMatchingIDs] = useState([]);
 
@@ -30,26 +32,45 @@ const SalamatFavItemsModal = ({
   };
 
   useEffect(() => {
-    const idsSet = new Set(); // to store unique values
-
-    searchedFavItems?.forEach((dataItem) => {
-      const matchingHeader = salamatHeaderList.find(
-        (headerItem) => headerItem.id === dataItem.typeId
-      );
-      if (matchingHeader) {
-        idsSet.add(matchingHeader.id);
+    // Find the first matching id
+    salamatHeaderList.some((item) => {
+      if (matchingIDs.includes(item.id)) {
+        firstMatchingId = item.id;
+        return true; // Exit loop after finding the first matching id
       }
+      return false;
     });
 
-    const uniqueIds = Array.from(idsSet); // convert Set back to array
+    handleTabChange(firstMatchingId);
+  }, [matchingIDs, salamatHeaderList]);
 
-    setMatchingIDs(uniqueIds);
-  }, [data, salamatHeaderList]);
+  useEffect(() => {
+    if (show) {
+      const idsSet = new Set(); // to store unique values
 
-  useEffect(() => handleTabChange(1), []);
+      searchedFavItems?.forEach((dataItem) => {
+        const matchingHeader = salamatHeaderList.find(
+          (headerItem) => headerItem.id === dataItem.typeId
+        );
+        if (matchingHeader) {
+          idsSet.add(matchingHeader.id);
+        }
+      });
+
+      const uniqueIds = Array.from(idsSet); // convert Set back to array
+
+      setMatchingIDs(uniqueIds);
+    }
+  }, [show, data, salamatHeaderList]);
+
+  const handleModalHide = () => {
+    setFavSearchInput("");
+    setMatchingIDs([]);
+    onHide();
+  };
 
   return (
-    <Modal show={show} onHide={onHide} centered size="xl">
+    <Modal show={show} onHide={handleModalHide} centered size="xl">
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">خدمات پرمصرف</p>
@@ -99,7 +120,10 @@ const SalamatFavItemsModal = ({
             <div className="accordion mt-4">
               {filteredData()?.map((srv, index) => (
                 <div className="accordion-item" key={index}>
-                  <h2 className="accordion-header" id={`heading${index}`}>
+                  <h2
+                    className="accordion-header text-secondary"
+                    id={`heading${index}`}
+                  >
                     <div className="row w-100">
                       <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button

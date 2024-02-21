@@ -11,6 +11,8 @@ import PrescriptionCard from "components/dashboard/prescription/tamin/prescripti
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
 import TaminFavItemsModal from "components/dashboard/prescription/tamin/taminFavItemsModal";
 import GetPinInput from "components/commonComponents/pinInput";
+import PrescQuickAccessCard from "components/dashboard/prescription/prescQuickAccessCard";
+import ApplyFavPrescModal from "components/dashboard/prescription/applyFavPrescModal";
 import {
   TaminPrescType,
   TaminParaServicesTypeList,
@@ -352,7 +354,7 @@ const TaminPrescription = ({
     $("#srvSearchInput").prop("readonly", true);
   };
 
-  // Fav Tamin Items
+  //--- Fav Tamin Items ---//
   const [showFavItemsModal, setShowFavItemsModal] = useState(false);
   const [favTaminItems, setFavTaminItems] = useState([]);
   const openFavModal = () => setShowFavItemsModal(true);
@@ -373,8 +375,6 @@ const TaminPrescription = ({
     let url = "FavEprscItem/addTamin";
     selectedSrv.paraCode = ActiveParaCode;
 
-    console.log({ selectedSrv, favTaminItems });
-
     let data = {
       CenterID: ClinicID,
       prescItem: selectedSrv,
@@ -382,9 +382,7 @@ const TaminPrescription = ({
 
     if (
       favTaminItems.length > 0 &&
-      favTaminItems.find(
-        (x) => x.SrvCode === selectedSrv.SrvCode
-      )
+      favTaminItems.find((x) => x.SrvCode === selectedSrv.SrvCode)
     ) {
       ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
       return false;
@@ -392,12 +390,10 @@ const TaminPrescription = ({
       axiosClient
         .post(url, data)
         .then((response) => {
-
           setFavTaminItems([...favTaminItems, response.data]);
           SuccessAlert("موفق", "سرویس به لیست علاقه مندی ها اضافه گردید!");
         })
         .catch((err) => console.log(err));
-
     }
   };
 
@@ -410,6 +406,62 @@ const TaminPrescription = ({
         setFavTaminItems(favTaminItems.filter((x) => x.SrvCode !== srvcode));
       })
       .catch((err) => console.log(err));
+  };
+
+  //--- Fav Prescription ---//
+  const [showApplyFavPrescModal, setShowApplyFavPrescModal] = useState(false);
+  const [favPrescData, setFavPrescData] = useState([]);
+  const openApplyFavPrescModal = () => setShowApplyFavPrescModal(true);
+  const closeApplyFavPrescModal = () => setShowApplyFavPrescModal(false);
+
+  const getTaminFavPrescs = () => {
+    let url = `CenterFavEprsc/getAll/${ClinicID}/${"Tamin"}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setFavPrescData(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const applyFavPresc = (favPresc) => {
+    setFavPrescData([...favPrescData, favPresc]);
+  };
+
+  const handleAddFavPresc = async (favPresc) => {
+    console.log(favPresc.Items[0]);
+
+    // let drugAmntId = presc.drugAmntId;
+    //   let drugAmntLbl = drugAmountList.find((o) => o.value === drugAmntId);
+
+    //   if (drugAmntLbl) drugAmntLbl = drugAmntLbl.label;
+
+    //   let drugInstId = presc.drugInstId;
+    //   let InstructionLbl = drugInstructionList.find(
+    //     (o) => o.value === drugInstId
+    //   );
+
+    //   if (InstructionLbl) InstructionLbl = InstructionLbl.label;
+
+    favPresc.Items[0].map((item) => {
+      let { prescData, prescItems } = taminPrescItemCreator(
+        item.prescId,
+        //   drugInstId,
+        //   drugAmntId,
+        //   presc.srvId.srvCode,
+        //   presc.srvId.srvName,
+        item.Qty,
+        "",
+        item.DrugInstruction,
+        item.TimesADay
+        //   presc.srvId.srvType.srvTypeDes,
+        //   presc.srvId.srvType.srvType,
+        //   presc.srvId.parTarefGrp?.parGrpCode
+      );
+    });
+
+    // setPrescriptionItemsData(favPresc.Items[0]);
   };
 
   // Edit Service
@@ -447,8 +499,8 @@ const TaminPrescription = ({
 
     if (favItemMode) {
       setTimeout(() => {
+        setEditSrvData([]);
         $("#btnAddSrvItem").click();
-        $("#srvSearchInput").val("");
       }, 200);
     }
   };
@@ -647,6 +699,8 @@ const TaminPrescription = ({
         prescTypeName: ActivePrescName,
       };
 
+      console.log({ prescData, data });
+
       // EditMode
       // if (ActivePrescHeadID) {
       //   //   // Wait for the pin input
@@ -726,6 +780,7 @@ const TaminPrescription = ({
   useEffect(() => {
     setShowBirthDigitsAlert(false);
     getFavTaminItems();
+    getTaminFavPrescs();
     $("#patientNID").val("");
   }, []);
 
@@ -748,11 +803,24 @@ const TaminPrescription = ({
                 patientStatIsLoading={patientStatIsLoading}
               />
 
-              <PatientVerticalCard
+              {/* <PatientVerticalCard
                 data={patientInfo}
                 ClinicID={ClinicID}
                 ActivePatientNID={ActivePatientNID}
                 setPatientInfo={setPatientInfo}
+              /> */}
+
+              <PrescQuickAccessCard
+                data={favTaminItems}
+                handleEditService={handleEditService}
+                removeFavItem={removeFavItem}
+                patientInfo={patientInfo}
+                ClinicID={ClinicID}
+                ActivePatientNID={ActivePatientNID}
+                setPatientInfo={setPatientInfo}
+                openApplyFavPrescModal={openApplyFavPrescModal}
+                favPrescData={favPrescData}
+                handleAddFavPresc={handleAddFavPresc}
               />
             </div>
 
@@ -804,13 +872,13 @@ const TaminPrescription = ({
           </div>
         </div>
 
-        <TaminFavItemsModal
+        {/* <TaminFavItemsModal
           data={favTaminItems}
           show={showFavItemsModal}
           onHide={handleCloseFavItemsModal}
           handleEditService={handleEditService}
           removeFavItem={removeFavItem}
-        />
+        /> */}
 
         {ActivePrescHeadID && showPinModal && (
           <GetPinInput
@@ -829,6 +897,15 @@ const TaminPrescription = ({
           showBirthDigitsAlert={showBirthDigitsAlert}
           setShowBirthDigitsAlert={setShowBirthDigitsAlert}
           addPatientIsLoading={addPatientIsLoading}
+        />
+
+        <ApplyFavPrescModal
+          show={showApplyFavPrescModal}
+          onHide={closeApplyFavPrescModal}
+          ClinicID={ClinicID}
+          prescMode="Tamin"
+          prescriptionItemsData={prescriptionItemsData}
+          applyFavPresc={applyFavPresc}
         />
       </div>
     </>
