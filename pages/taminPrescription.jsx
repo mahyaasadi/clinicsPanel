@@ -454,12 +454,14 @@ const TaminPrescription = ({
         item.Qty,
         "",
         item.DrugInstruction,
-        item.TimesADay
-        //   presc.srvId.srvType.srvTypeDes,
+        item.TimesADay,
+        item.PrescType,
         //   presc.srvId.srvType.srvType,
         //   presc.srvId.parTarefGrp?.parGrpCode
       );
     });
+
+    // console.log({  prescItems });
 
     // setPrescriptionItemsData(favPresc.Items[0]);
   };
@@ -584,6 +586,9 @@ const TaminPrescription = ({
         });
     }
   };
+  const [favPrescItemsData, setFavPrescItemsData] = useState([])
+  let array1 = [];
+  let array2 = []
 
   // Add TaminSrvItem to the List
   const FuAddToListItem = async (e) => {
@@ -629,12 +634,17 @@ const TaminPrescription = ({
         Code: ActiveSrvCode,
       };
 
+      const combinedObject = { ...prescData, ...prescItems };
+
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
+
+      array1.push(combinedObject);
+      // array2.push(prescItems)
+      setFavPrescItemsData([...favPrescItemsData, ...array1])
       activeSearch();
     }
-
     setSearchFromInput(true);
   };
 
@@ -699,7 +709,7 @@ const TaminPrescription = ({
         prescTypeName: ActivePrescName,
       };
 
-      console.log({ prescData, data });
+      console.log({ data });
 
       // EditMode
       // if (ActivePrescHeadID) {
@@ -905,6 +915,7 @@ const TaminPrescription = ({
           ClinicID={ClinicID}
           prescMode="Tamin"
           prescriptionItemsData={prescriptionItemsData}
+          favPrescItemsData={favPrescItemsData}
           applyFavPresc={applyFavPresc}
         />
       </div>

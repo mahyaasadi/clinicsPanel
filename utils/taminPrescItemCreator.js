@@ -15,6 +15,7 @@ const taminPrescItemCreator = async (
   ParaCode,
   description
 ) => {
+  console.log({ SrvTypePrsc });
   let prescData = {};
   let prescItems = {};
 

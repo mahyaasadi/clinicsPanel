@@ -9,8 +9,10 @@ const ApplyFavPrescModal = ({
   prescMode,
   ClinicID,
   prescriptionItemsData,
+  favPrescItemsData,
   applyFavPresc,
 }) => {
+  // console.log({ addPrescriptionitems, prescriptionItemsData });
   const [isLoading, setIsLoading] = useState(false);
 
   const _applyFavPresc = (e) => {
@@ -26,7 +28,7 @@ const ApplyFavPrescModal = ({
       Name: formProps.prescName,
       Tamin: prescMode == "Tamin" ? true : false,
       Salamat: prescMode == "Salamat" ? true : false,
-      prescItems: prescriptionItemsData,
+      prescItems: favPrescItemsData,
     };
 
     console.log({ data });

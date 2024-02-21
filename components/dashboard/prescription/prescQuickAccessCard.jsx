@@ -17,7 +17,7 @@ const PrescQuickAccessCard = ({
   favPrescData,
   handleAddFavPresc,
 }) => {
-  console.log({ favPrescData });
+  // console.log({ favPrescData });
   const [favSearchInput, setFavSearchInput] = useState("");
   const [selectedTab, setSelectedTab] = useState("");
 
