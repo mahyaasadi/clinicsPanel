@@ -90,7 +90,7 @@ const TaminFavItemsModal = ({
             <div className="accordion mt-4">
               {searchedFavItems?.map((srv, index) => (
                 <div className="accordion-item" key={index}>
-                  <h2 className="accordion-header" id={`heading${index}`}>
+                  <h2 className="accordion-header text-secondary" id={`heading${index}`}>
                     <div className="row w-100">
                       <div className="col-2 d-flex gap-1 justify-center align-items-center">
                         <button
