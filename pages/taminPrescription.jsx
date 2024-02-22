@@ -430,40 +430,57 @@ const TaminPrescription = ({
   };
 
   const handleAddFavPresc = async (favPresc) => {
-    console.log(favPresc.Items[0]);
+    let arr2 = [];
+    addPrescriptionitems = [];
+    visitPrescriptionData = [];
 
-    // let drugAmntId = presc.drugAmntId;
-    //   let drugAmntLbl = drugAmountList.find((o) => o.value === drugAmntId);
+    for (let i = 0; i < favPresc.Items[0].length; i++) {
+      const item = favPresc.Items[0][i];
 
-    //   if (drugAmntLbl) drugAmntLbl = drugAmntLbl.label;
-
-    //   let drugInstId = presc.drugInstId;
-    //   let InstructionLbl = drugInstructionList.find(
-    //     (o) => o.value === drugInstId
-    //   );
-
-    //   if (InstructionLbl) InstructionLbl = InstructionLbl.label;
-
-    favPresc.Items[0].map((item) => {
-      let { prescData, prescItems } = taminPrescItemCreator(
+      let { prescData, prescItems } = await taminPrescItemCreator(
         item.prescId,
-        //   drugInstId,
-        //   drugAmntId,
-        //   presc.srvId.srvCode,
-        //   presc.srvId.srvName,
+        item.drugInstruction?.drugInstId
+          ? item.drugInstruction?.drugInstId
+          : null,
+        item.timesAday?.drugAmntId ? item.timesAday?.drugAmntId : null,
+        item.SrvCode,
+        item.SrvName,
         item.Qty,
         "",
         item.DrugInstruction,
         item.TimesADay,
         item.PrescType,
-        //   presc.srvId.srvType.srvType,
-        //   presc.srvId.parTarefGrp?.parGrpCode
+        item.srvId?.srvType.srvType,
+        item.srvId.parTarefGrp?.parGrpCode
       );
-    });
 
-    // console.log({  prescItems });
+      const visitData = {
+        Name: item.SrvName,
+        Code: item.SrvCode,
+      };
 
-    // setPrescriptionItemsData(favPresc.Items[0]);
+      if (prescData) {
+        addPrescriptionitems.push(prescData);
+        arr2.push(prescItems);
+        visitPrescriptionData.push(visitData);
+      }
+    }
+
+    setPrescriptionItemsData(arr2);
+  };
+
+  const removeFavPresc = (id) => {
+    let url = `CenterFavEprsc/delete/${id}`;
+
+    axiosClient
+      .delete(url)
+      .then((response) => {
+        console.log(response.data);
+        setFavPrescData(favPrescData.filter((item) => item._id !== id));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // Edit Service
@@ -586,9 +603,8 @@ const TaminPrescription = ({
         });
     }
   };
-  const [favPrescItemsData, setFavPrescItemsData] = useState([])
+  const [favPrescItemsData, setFavPrescItemsData] = useState([]);
   let array1 = [];
-  let array2 = []
 
   // Add TaminSrvItem to the List
   const FuAddToListItem = async (e) => {
@@ -634,15 +650,14 @@ const TaminPrescription = ({
         Code: ActiveSrvCode,
       };
 
+      // favPresc
       const combinedObject = { ...prescData, ...prescItems };
+      array1.push(combinedObject);
+      setFavPrescItemsData([...favPrescItemsData, ...array1]);
 
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
-
-      array1.push(combinedObject);
-      // array2.push(prescItems)
-      setFavPrescItemsData([...favPrescItemsData, ...array1])
       activeSearch();
     }
     setSearchFromInput(true);
@@ -668,15 +683,20 @@ const TaminPrescription = ({
         SrvNames: [],
         prescTypeName: "ویزیت",
       };
+
+      console.log({ data });
+
       axiosClient
         .post(url, data)
         .then((response) => {
           setVisitRegIsLoading(false);
-          if (response.data.res.trackingCode !== null) {
+          console.log(response.data);
+
+          if (response.data[0].data.data.result.trackingCode !== null) {
             const seconds = 5;
             const timerInMillis = seconds * 1000;
             TimerAlert({
-              title: `ویزیت با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+              title: `ویزیت با کد رهگیری ${response.data[0].data.data.result.trackingCode} با موفقیت ثبت گردید!`,
               html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
               timer: timerInMillis,
               timerProgressBar: true,
@@ -687,7 +707,9 @@ const TaminPrescription = ({
                 router.push("/taminPrescRecords");
               },
             });
-          } else if (response.data.res.error_Msg == "نسخه تکراری است") {
+          } else if (
+            response.data[0].data.data.result.error_Msg == "نسخه تکراری است"
+          ) {
             WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
           } else if (ActiveNID === undefined) {
             WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
@@ -713,15 +735,15 @@ const TaminPrescription = ({
 
       // EditMode
       // if (ActivePrescHeadID) {
-      //   //   // Wait for the pin input
-      //   //   await new Promise((resolve) => {
-      //   //     const checkPinInterval = setInterval(() => {
-      //   //       if (otpCode) {
-      //   //         clearInterval(checkPinInterval);
-      //   //         resolve();
-      //   //       }
-      //   //     }, 500);
-      //   //   });
+      // Wait for the pin input
+      //   await new Promise((resolve) => {
+      //     const checkPinInterval = setInterval(() => {
+      //       if (otpCode) {
+      //         clearInterval(checkPinInterval);
+      //         resolve();
+      //       }
+      //     }, 500);
+      //   });
 
       //   if (otpCode) {
       //     url = "TaminEprsc/PrescriptionEdit";
@@ -741,13 +763,21 @@ const TaminPrescription = ({
         .post(url, data)
         .then(async (response) => {
           setSaveRegIsLoading(false);
+          console.log(response.data);
 
-          if (response.data.res.trackingCode !== null) {
+          if (response.data[0].data.data.result.trackingCode) {
+            let trackingCodes = [];
+            for (let i = 0; i < response.data.length; i++) {
+              const element = response.data[i];
+              trackingCodes.push(element.data.data.result.trackingCode);
+            }
+            trackingCodes = [...new Set(trackingCodes)];
+
             const seconds = 5;
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `نسخه با کد رهگیری ${response.data.res.trackingCode} با موفقیت ثبت گردید!`,
+              title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
               html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
               timer: timerInMillis,
               timerProgressBar: true,
@@ -831,6 +861,7 @@ const TaminPrescription = ({
                 openApplyFavPrescModal={openApplyFavPrescModal}
                 favPrescData={favPrescData}
                 handleAddFavPresc={handleAddFavPresc}
+                removeFavPresc={removeFavPresc}
               />
             </div>
 

@@ -16,8 +16,8 @@ const PrescQuickAccessCard = ({
   openApplyFavPrescModal,
   favPrescData,
   handleAddFavPresc,
+  removeFavPresc,
 }) => {
-  // console.log({ favPrescData });
   const [favSearchInput, setFavSearchInput] = useState("");
   const [selectedTab, setSelectedTab] = useState("");
 
@@ -192,8 +192,21 @@ const PrescQuickAccessCard = ({
                         className="border-gray rounded my-1 py-2 px-3 fw-bold font-14 text-secondary quickAccessPrscBox d-flex align-items-center justify-between"
                         key={index}
                       >
-                        <div className="">{item.Name}</div>
-                        <div className="">
+                        <div>{item.Name}</div>
+                        <div>
+                          {/* <button
+                            type="button"
+                            className="btn formBtns removePrescBtn p-1"
+                            data-pr-position="left"
+                            onClick={() => removeFavPresc(item._id)}
+                          >
+                            <Tooltip target=".removePrescBtn">حذف</Tooltip>
+                            <FeatherIcon
+                              icon="trash"
+                              className="prescItembtns"
+                            />
+                          </button> */}
+
                           <button
                             type="button"
                             className="btn addPrescBtn formBtns p-1"

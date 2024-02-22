@@ -44,29 +44,32 @@ const SalamatFavItemsModal = ({
   }, [matchingIDs, salamatHeaderList]);
 
   useEffect(() => {
-    if (show) {
-      const idsSet = new Set(); // to store unique values
+    // if (show) {
+    console.log("object");
+    const idsSet = new Set(); // to store unique values
 
-      searchedFavItems?.forEach((dataItem) => {
-        const matchingHeader = salamatHeaderList.find(
-          (headerItem) => headerItem.id === dataItem.typeId
-        );
-        if (matchingHeader) {
-          idsSet.add(matchingHeader.id);
-        }
-      });
+    searchedFavItems?.forEach((dataItem) => {
+      const matchingHeader = salamatHeaderList.find(
+        (headerItem) => headerItem.id === dataItem.typeId
+      );
+      if (matchingHeader) {
+        idsSet.add(matchingHeader.id);
+      }
+    });
 
-      const uniqueIds = Array.from(idsSet); // convert Set back to array
+    const uniqueIds = Array.from(idsSet); // convert Set back to array
 
-      setMatchingIDs(uniqueIds);
-    }
-  }, [data, salamatHeaderList])
+    setMatchingIDs(uniqueIds);
+    // }
+  }, [data, salamatHeaderList]);
 
   const handleModalHide = () => {
     setFavSearchInput("");
     setMatchingIDs([]);
     onHide();
   };
+
+  console.log(searchedFavItems, salamatHeaderList);
 
   return (
     <Modal show={show} onHide={handleModalHide} centered size="xl">
@@ -86,8 +89,9 @@ const SalamatFavItemsModal = ({
               return (
                 <li className="nav-item" key={index}>
                   <a
-                    className={`nav-link d-flex align-items-center justify-center gap-2 ${index === 0 ? "active" : item.Active
-                      }`}
+                    className={`nav-link d-flex align-items-center justify-center gap-2 ${
+                      index === 0 ? "active" : item.Active
+                    }`}
                     href={`#bottom-tab${index + 1}`}
                     data-bs-toggle="tab"
                     onClick={() => handleTabChange(item.id)}
@@ -113,72 +117,71 @@ const SalamatFavItemsModal = ({
             <FilterFavItems
               favSearchInput={favSearchInput}
               setFavSearchInput={setFavSearchInput}
+              filterSalamatMode={true}
             />
 
             <div className="accordion mt-4">
               {filteredData()?.map((srv, index) => (
                 <div className="accordion-item" key={index}>
-                  <h2 className="accordion-header text-secondary" id={`heading${index}`}>
-                    <h2
-                      className="accordion-header text-secondary"
-                      id={`heading${index}`}
-                    >
-                      <div className="row w-100">
-                        <div className="col-2 d-flex gap-1 justify-center align-items-center">
-                          <button
-                            type="button"
-                            className="btn p-2 btn-outline-danger removeBtn"
-                            data-pr-position="left"
-                            onClick={() =>
-                              removeFavItem(srv.serviceNationalNumber)
-                            }
-                          >
-                            <Tooltip target=".removeBtn">حذف</Tooltip>
-                            <FeatherIcon icon="trash" className="prescItembtns" />
-                          </button>
-                          <button
-                            type="button"
-                            className="btn p-2 btn-outline-primary addBtn"
-                            data-pr-position="right"
-                            onClick={(e) => {
-                              handleEditService(srv, true);
-                            }}
-                          >
-                            <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
-                            <FeatherIcon icon="plus" className="prescItembtns" />
-                          </button>
-                        </div>
+                  <h2
+                    className="accordion-header text-secondary"
+                    id={`heading${index}`}
+                  >
+                    <div className="row w-100">
+                      <div className="col-2 d-flex gap-1 justify-center align-items-center">
+                        <button
+                          type="button"
+                          className="btn p-2 btn-outline-danger removeBtn"
+                          data-pr-position="left"
+                          onClick={() =>
+                            removeFavItem(srv.serviceNationalNumber)
+                          }
+                        >
+                          <Tooltip target=".removeBtn">حذف</Tooltip>
+                          <FeatherIcon icon="trash" className="prescItembtns" />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn p-2 btn-outline-primary addBtn"
+                          data-pr-position="right"
+                          onClick={(e) => {
+                            handleEditService(srv, true);
+                          }}
+                        >
+                          <Tooltip target=".addBtn">اضافه به لیست</Tooltip>
+                          <FeatherIcon icon="plus" className="prescItembtns" />
+                        </button>
+                      </div>
 
-                        <div className="col-9 d-flex justify-end text-end">
-                          <div className="d-flex  gap-2 font-13 align-items-center">
-                            <div className="d-flex gap-2 font-13 align-items-center prescDetails">
-                              <p>{srv.serviceInterfaceName}</p>
-                            </div>
-
-                            {srv.prescTypeImg ? (
-                              <Image
-                                src={srv.prescTypeImg}
-                                alt="serviceIcon"
-                                width="30"
-                                height="30"
-                              />
-                            ) : (
-                              ""
-                            )}
+                      <div className="col-9 d-flex justify-end text-end">
+                        <div className="d-flex  gap-2 font-13 align-items-center">
+                          <div className="d-flex gap-2 font-13 align-items-center prescDetails">
+                            <p>{srv.serviceInterfaceName}</p>
                           </div>
-                        </div>
 
-                        <div className="col-1">
-                          <button
-                            className="accordion-button collapsed"
-                            data-bs-toggle="collapse"
-                            data-bs-target={`#collapse${index}`}
-                            aria-expanded="false"
-                            aria-controls={`collapse${index}`}
-                          ></button>
+                          {srv.prescTypeImg ? (
+                            <Image
+                              src={srv.prescTypeImg}
+                              alt="serviceIcon"
+                              width="30"
+                              height="30"
+                            />
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
-                    </h2>
+
+                      <div className="col-1">
+                        <button
+                          className="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapse${index}`}
+                          aria-expanded="false"
+                          aria-controls={`collapse${index}`}
+                        ></button>
+                      </div>
+                    </div>
 
                     <div
                       id={`collapse${index}`}
@@ -223,6 +226,7 @@ const SalamatFavItemsModal = ({
                         </div>
                       </div>
                     </div>
+                  </h2>
                 </div>
               ))}
             </div>
@@ -232,5 +236,4 @@ const SalamatFavItemsModal = ({
     </Modal>
   );
 };
-
 export default SalamatFavItemsModal;

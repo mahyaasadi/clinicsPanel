@@ -15,7 +15,6 @@ const taminPrescItemCreator = async (
   ParaCode,
   description
 ) => {
-  console.log({ SrvTypePrsc });
   let prescData = {};
   let prescItems = {};
 
@@ -86,7 +85,9 @@ const taminPrescItemCreator = async (
       }
     }
   }
+
   return { prescData, prescItems };
 };
 
 module.exports.taminPrescItemCreator = taminPrescItemCreator;
+
