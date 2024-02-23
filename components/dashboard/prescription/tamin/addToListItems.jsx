@@ -3,12 +3,15 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
 import { QuestionAlert } from "class/AlertManage";
+import { X } from "feather-icons-react/build/IconComponents";
 
 const AddToListItems = ({
   data,
   DeleteService,
   handleEditService,
   setPrescriptionItemsData,
+  // setFavPrescItemsData,
+  // favPrescItemsData,
   prescDataIsLoading,
   selectFavTaminItem,
 }) => {
@@ -17,6 +20,7 @@ const AddToListItems = ({
 
     if (result) {
       setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
+      // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id))
       DeleteService(id, prescId);
     }
   };

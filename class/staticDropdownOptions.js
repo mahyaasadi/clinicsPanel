@@ -51,3 +51,20 @@ export const dateShortcutsData = [
   { label: "هفته گذشته", value: "lastWeek" },
   { label: "ماه گذشته", value: "lastMonth" },
 ];
+
+export const taminFavOptions = [
+  { label: "دارو", value: "1" },
+  { label: "پاراکلینیک", value: "2" },
+  { label: "خدمات", value: "5" },
+]
+
+export const salamatFavOptions = [
+  { label: "دارو", value: "1" },
+  { label: "داروی ترکیبی", value: "10" },
+  { label: "آزمایش", value: "2" },
+  { label: "تصویر برداری", value: "3" },
+  { label: "فیزیوتراپی", value: "4" },
+  { label: "ارجاع", value: "5" },
+  { label: "خدمات پزشکان", value: "6" },
+  { label: "خدمات دندان پزشکان", value: "7" },
+]

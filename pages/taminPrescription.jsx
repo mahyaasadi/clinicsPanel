@@ -4,15 +4,15 @@ import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { taminPrescItemCreator } from "utils/taminPrescItemCreator";
+import GetPinInput from "components/commonComponents/pinInput";
 import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
-import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
-import TaminFavItemsModal from "components/dashboard/prescription/tamin/taminFavItemsModal";
-import GetPinInput from "components/commonComponents/pinInput";
-import PrescQuickAccessCard from "components/dashboard/prescription/prescQuickAccessCard";
-import ApplyFavPrescModal from "components/dashboard/prescription/applyFavPrescModal";
+// import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
+// import TaminFavItemsModal from "components/dashboard/prescription/tamin/taminFavItemsModal";
+import PrescQuickAccessCard from "@/components/dashboard/prescription/favourites/prescQuickAccessCard";
+import ApplyFavPrescModal from "@/components/dashboard/prescription/favourites/applyFavPrescModal";
 import {
   TaminPrescType,
   TaminParaServicesTypeList,
@@ -98,6 +98,7 @@ const TaminPrescription = ({
   const [patientStatIsLoading, setPatientStatIsLoading] = useState(false);
   const [visitRegIsLoading, setVisitRegIsLoading] = useState(false);
   const [saveRegIsLoading, setSaveRegIsLoading] = useState(false);
+  const [prescDataIsLoading, setPrescDataIsLoading] = useState(false);
   const [searchFromInput, setSearchFromInput] = useState(true);
 
   const [patientInfo, setPatientInfo] = useState([]);
@@ -118,8 +119,6 @@ const TaminPrescription = ({
 
   const [editSrvMode, setEditSrvMode] = useState(false);
   const [editSrvData, setEditSrvData] = useState([]);
-
-  const [prescDataIsLoading, setPrescDataIsLoading] = useState(false);
 
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
@@ -755,6 +754,7 @@ const TaminPrescription = ({
       //     };
 
       //     console.log({ dataToSend });
+
       //     setShowPinModal(false);
       //   }
       // }
@@ -829,6 +829,7 @@ const TaminPrescription = ({
       <Head>
         <title>نسخه نویسی تامین اجتماعی</title>
       </Head>
+
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="row dir-rtl">
@@ -842,13 +843,6 @@ const TaminPrescription = ({
                 getPatientActiveSearch={getPatientActiveSearch}
                 patientStatIsLoading={patientStatIsLoading}
               />
-
-              {/* <PatientVerticalCard
-                data={patientInfo}
-                ClinicID={ClinicID}
-                ActivePatientNID={ActivePatientNID}
-                setPatientInfo={setPatientInfo}
-              /> */}
 
               <PrescQuickAccessCard
                 data={favTaminItems}
@@ -905,6 +899,8 @@ const TaminPrescription = ({
                   DeleteService={DeleteService}
                   handleEditService={handleEditService}
                   setPrescriptionItemsData={setPrescriptionItemsData}
+                  // setFavPrescItemsData={setFavPrescItemsData}
+                  // favPrescItemsData={favPrescItemsData}
                   prescDataIsLoading={prescDataIsLoading}
                   selectFavTaminItem={selectFavTaminItem}
                 />

@@ -3,7 +3,7 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
-import FilterFavItems from "components/dashboard/prescription/filterFavItems";
+import FilterFavItems from "@/components/dashboard/prescription/favourites/filterFavItems";
 
 const TaminFavItemsModal = ({
   show,

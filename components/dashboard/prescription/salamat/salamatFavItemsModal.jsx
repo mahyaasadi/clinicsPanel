@@ -3,7 +3,7 @@ import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Modal } from "react-bootstrap";
 import { Tooltip } from "primereact/tooltip";
-import FilterFavItems from "components/dashboard/prescription/filterFavItems";
+import FilterFavItems from "components/dashboard/prescription/favourites/filterFavItems";
 
 const SalamatFavItemsModal = ({
   show,
@@ -45,7 +45,6 @@ const SalamatFavItemsModal = ({
 
   useEffect(() => {
     // if (show) {
-    console.log("object");
     const idsSet = new Set(); // to store unique values
 
     searchedFavItems?.forEach((dataItem) => {
@@ -69,8 +68,6 @@ const SalamatFavItemsModal = ({
     onHide();
   };
 
-  console.log(searchedFavItems, salamatHeaderList);
-
   return (
     <Modal show={show} onHide={handleModalHide} centered size="xl">
       <Modal.Header closeButton>
@@ -89,9 +86,8 @@ const SalamatFavItemsModal = ({
               return (
                 <li className="nav-item" key={index}>
                   <a
-                    className={`nav-link d-flex align-items-center justify-center gap-2 ${
-                      index === 0 ? "active" : item.Active
-                    }`}
+                    className={`nav-link d-flex align-items-center justify-center gap-2 ${index === 0 ? "active" : item.Active
+                      }`}
                     href={`#bottom-tab${index + 1}`}
                     data-bs-toggle="tab"
                     onClick={() => handleTabChange(item.id)}

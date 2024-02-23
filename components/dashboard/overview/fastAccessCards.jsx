@@ -13,12 +13,13 @@ const FastAccessCards = () => {
             onClick={() => router.push("/reception")}
             className="card easyAccessCard  border-gray w-100 h-100 d-flex align-items-center font-14 fw-bold text-secondary accessCardColor"
           >
-            <div className=" card-body d-flex justify-center align-items-center flex-column gap-2 easyAccessIcon">
-              <FeatherIcon icon="clipboard" />
+            <div className="card-body d-flex justify-center align-items-center flex-column gap-2 easyAccessIcon">
+              <FeatherIcon icon="clipboard" className="" />
               پذیرش
             </div>
           </button>
         </div>
+
         <div className="col-6 col-xl-4 mb-2 eaPl-0">
           <button
             onClick={() => router.push("/appointment")}

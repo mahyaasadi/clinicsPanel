@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import Image from "next/image";
-// import { Toast } from "primereact/toast"
 import JDate from "jalali-date";
 import Select from "react-select";
 import { getSession } from "lib/session";
@@ -10,7 +9,9 @@ import Loading from "components/commonComponents/loading/loading";
 import OverviewStats from "components/dashboard/overview/overviewStats";
 import FastAccessCards from "components/dashboard/overview/fastAccessCards";
 import PaymentChart from "components/dashboard/overview/paymentChart";
-import { displayToastMessages } from "utils/toastMessageGenerator";
+// import { Toast } from "primereact/toast"
+// import { displayToastMessages } from "utils/toastMessageGenerator";
+import { bag, return2 } from "components/commonComponents/imagepath"
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -175,12 +176,12 @@ const Dashboard = ({ ClinicUser }) => {
                           <div className="col-md-6 col-lg-12 px-0">
                             <div className="card CardPayment border-gray mb-1">
                               <div className="card-body d-flex flex-col justify-center align-items-center text-center">
-                                <span className="dash-finance-icon bg-talking">
+                                <span className="dash-finance-icon">
                                   <Image
-                                    src="/assets/img/total2.png"
+                                    src={bag}
                                     alt=""
-                                    width="35"
-                                    height="35"
+                                    width="30"
+                                    height="30"
                                   />
                                 </span>
                                 <div className="h-50 d-flex flex-col justify-center align-items-center font-14 text-secondary mt-2">
@@ -198,12 +199,12 @@ const Dashboard = ({ ClinicUser }) => {
                           <div className="col-md-6 col-lg-12 px-0">
                             <div className="card CardPayment border-gray mb-0">
                               <div className="card-body d-flex flex-col justify-center align-items-center text-center">
-                                <span className="dash-finance-icon bg-turnGiven d-flex justify-center align-center">
+                                <span className="dash-finance-icon d-flex justify-center align-center">
                                   <Image
-                                    src="/assets/img/cash3.png"
+                                    src={return2}
                                     alt=""
-                                    width="40"
-                                    height="40"
+                                    width="45"
+                                    height="45"
                                   />
                                 </span>
                                 <div className="h-50 d-flex flex-col justify-center align-items-center font-14 text-secondary mt-2">
