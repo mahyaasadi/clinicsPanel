@@ -60,21 +60,22 @@ const PrescriptionCard = ({
   };
 
   // Search Recommendation
-  const handleSearchKeyUp = () => {
-    setSearchIsLoading(true);
-    let inputCount = $("#srvSearchInput").val().length;
+  // const handleSearchKeyUp = () => {
+  //   delay(function () {
+  //     setSearchIsLoading(true);
+  //     let inputCount = $("#srvSearchInput").val().length;
 
-    if (inputCount > 2) {
-      setTimeout(() => {
-        $("#BtnServiceSearch").click();
-      }, 1000);
-      setSearchIsLoading(false);
-    } else {
-      $(".SearchDiv").hide();
-      $(".unsuccessfullSearch").hide();
-      setSearchIsLoading(false);
-    }
-  };
+  //     if (inputCount > 2) {
+  //       $("#BtnServiceSearch").click();
+  //       setSearchIsLoading(false);
+  //     } else {
+  //       $(".SearchDiv").hide();
+  //       $(".unsuccessfullSearch").hide();
+  //       setSearchIsLoading(false);
+  //     }
+  //   }, 500);
+  //   console.log(result);
+  // };
 
   const editDrugInstructionData = drugInstructionList.find(
     (x) => x.label == editSrvData.DrugInstruction
@@ -83,6 +84,36 @@ const PrescriptionCard = ({
   const editDrugAmountData = drugAmountList.find(
     (x) => x.label == editSrvData.TimesADay
   );
+
+  function delay(callback, ms) {
+    var timer = 0;
+    return function () {
+      var context = this,
+        args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        callback.apply(context, args);
+      }, ms || 0);
+    };
+  }
+  useEffect(() => {
+    $("#srvSearchInput").on(
+      "keyup input",
+      delay(function () {
+        setSearchIsLoading(true);
+        let inputCount = $("#srvSearchInput").val().length;
+
+        if (inputCount > 2) {
+          $("#BtnServiceSearch").click();
+          setSearchIsLoading(false);
+        } else {
+          $(".SearchDiv").hide();
+          $(".unsuccessfullSearch").hide();
+          setSearchIsLoading(false);
+        }
+      }, 500)
+    );
+  }, []);
 
   const handleCancel = () => {
     setEditSrvMode(false);
@@ -192,7 +223,7 @@ const PrescriptionCard = ({
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
-                  onKeyUp={handleSearchKeyUp}
+                  // onKeyUp={handleSearchKeyUp}
                   value={editSrvData?.SrvName}
                 />
 

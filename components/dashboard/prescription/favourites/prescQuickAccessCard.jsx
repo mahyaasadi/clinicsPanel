@@ -15,8 +15,12 @@ const PrescQuickAccessCard = ({
   setPatientInfo,
   openApplyFavPrescModal,
   favPrescData,
+  setFavPrescItemsData,
   handleAddFavPresc,
-  // removeFavPresc,
+  removeFavPresc,
+  editFavPrescData,
+  handleReset,
+  editFavPresc,
 }) => {
   const [favSearchInput, setFavSearchInput] = useState("");
   const [selectedTab, setSelectedTab] = useState("");
@@ -52,7 +56,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link active text-center"
                 href="#bottom-tab1"
                 data-bs-toggle="tab"
-              // onClick={() => handleTabChange(1)}
+                // onClick={() => handleTabChange(1)}
               >
                 بیمار
               </a>
@@ -62,7 +66,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link text-center"
                 href="#bottom-tab2"
                 data-bs-toggle="tab"
-              // onClick={() => handleTabChange(2)}
+                // onClick={() => handleTabChange(2)}
               >
                 خدمات پرمصرف
               </a>
@@ -72,7 +76,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link text-center"
                 href="#bottom-tab3"
                 data-bs-toggle="tab"
-              // onClick={() => handleTabChange(3)}
+                // onClick={() => handleTabChange(3)}
               >
                 نسخ پرمصرف
               </a>
@@ -132,15 +136,20 @@ const PrescQuickAccessCard = ({
                     </li>
                   </ul>
 
-                  <div className="favitemTab show active mt-3" id="bottom-tab-1">
-                    <div className="dir-rtl p-1" >
+                  <div
+                    className="favitemTab show active mt-3"
+                    id="bottom-tab-1"
+                  >
+                    <div className="dir-rtl p-1">
                       {searchedFavItems?.map((srv, index) => (
                         <div
                           className="d-flex justify-between text-secondary border-gray rounded my-1 p-1 quickAccessPrscBox"
                           key={index}
                         >
                           <div className="col d-flex flex-col font-12 fw-bold align-items-center gap-1">
-                            <p className="mb-0">{srv.SrvCode}</p>
+                            <p className="mb-0 w-75 text-center border-bottom-1">
+                              {srv.SrvCode}
+                            </p>
                             <p className="mb-0 text-center">
                               {srv.SrvName.substr(0, 27) + " ..."}
                             </p>
@@ -173,55 +182,95 @@ const PrescQuickAccessCard = ({
             <div className="tab-pane" id="bottom-tab3">
               <div className="card quickAccessCardHeight">
                 <div className="card-body dir-rtl">
-                  <div>
-                    <button
-                      onClick={openApplyFavPrescModal}
-                      className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1"
-                    >
-                      <FeatherIcon
-                        icon="plus"
-                        style={{ width: "14px", height: "14px" }}
-                      />
-                      افزودن نسخه فعلی
-                    </button>
+                  <div className="row">
+                    <div className="col">
+                      <button
+                        onClick={openApplyFavPrescModal}
+                        className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 addPrescBtn"
+                        data-pr-position="right"
+                      >
+                        <FeatherIcon
+                          icon="plus"
+                          style={{ width: "14px", height: "14px" }}
+                        />
+
+                        <Tooltip target=".addPrescBtn">
+                          {" "}
+                          افزودن نسخه فعلی
+                        </Tooltip>
+                      </button>
+                    </div>
+
+                    {editFavPrescData.length !== 0 && (
+                      <>
+                        <div className="col">
+                          <button
+                            onClick={() => editFavPresc(editFavPrescData._id)}
+                            className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 editPrescBtn"
+                            data-pr-position="bottom"
+                          >
+                            <FeatherIcon
+                              icon="edit-2"
+                              style={{ width: "14px", height: "14px" }}
+                            />
+                            <Tooltip target=".editPrescBtn">
+                              {" "}
+                              ویرایش نسخه فعلی
+                            </Tooltip>
+                          </button>
+                        </div>
+
+                        <div className="col">
+                          <button
+                            onClick={handleReset}
+                            className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 refreshPrescBtn"
+                            data-pr-position="bottom"
+                          >
+                            <FeatherIcon
+                              icon="refresh-cw"
+                              style={{ width: "14px", height: "14px" }}
+                            />
+                            <Tooltip target=".refreshPrescBtn">
+                              تنظیم مجدد
+                            </Tooltip>
+                          </button>
+                        </div>
+
+                        <div className="col">
+                          <button
+                            onClick={() => removeFavPresc(editFavPrescData._id)}
+                            className="btn btn-outline-danger w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 removePrescBtn"
+                            data-pr-position="left"
+                          >
+                            <FeatherIcon
+                              icon="trash-2"
+                              style={{ width: "14px", height: "14px" }}
+                            />
+                            <Tooltip target=".removePrescBtn">
+                              {" "}
+                              حذف نسخه فعلی
+                            </Tooltip>
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="mt-3 favitemTab">
                     <div className="dir-rtl">
                       {favPrescData.map((item, index) => (
-                        <div
-                          className="border-gray rounded my-1 py-2 px-3 fw-bold font-14 text-secondary quickAccessPrscBox d-flex align-items-center justify-between"
+                        <button
+                          onClick={() => handleAddFavPresc(item)}
+                          className={`${
+                            editFavPrescData._id === item._id
+                              ? "btn-outline-primary"
+                              : "text-secondary border-gray"
+                          } btn btn-outline-primary w-100 rounded my-1 py-2 px-3 fw-bold font-14  d-flex align-items-center justify-between`}
                           key={index}
                         >
                           <div>{item.Name}</div>
-                          <div>
-                            {/* <button
-                              type="button"
-                              className="btn formBtns removePrescBtn p-1"
-                              data-pr-position="left"
-                              onClick={() => removeFavPresc(item._id)}
-                            >
-                              <Tooltip target=".removePrescBtn">حذف</Tooltip>
-                              <FeatherIcon
-                                icon="trash"
-                                className="prescItembtns"
-                              />
-                            </button> */}
-
-                            <button
-                              type="button"
-                              className="btn addPrescBtn formBtns p-1"
-                              data-pr-position="left"
-                              onClick={() => handleAddFavPresc(item)}
-                            >
-                              <Tooltip target=".addPrescBtn">مشاهده نسخه</Tooltip>
-                              <FeatherIcon
-                                icon="plus"
-                                className="prescItembtns"
-                              />
-                            </button>
-                          </div>
-                        </div>
+                          <div></div>
+                        </button>
                       ))}
                     </div>
                   </div>

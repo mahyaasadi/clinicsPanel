@@ -8,7 +8,7 @@ const Sidebar = () => {
   const router = useRouter();
 
   const [prescriptionSubmenuOpen, setPrescriptionSubMenuOpen] = useState(false);
-  const [prescFavsSubmenuOpen, setPrescFavsSubmenuOpen] = useState(false)
+  const [prescFavsSubmenuOpen, setPrescFavsSubmenuOpen] = useState(false);
   const [formBuilderSubMenuOpen, setFormBuilderSubMenuOpen] = useState(false);
   const [settingsSubMenuOpen, setSettingsSubMenuOpen] = useState(false);
 
@@ -20,10 +20,7 @@ const Sidebar = () => {
       "/salamatPrescRecords",
     ];
 
-    const prescFavSubRoutes = [
-      "/favPrescItems",
-      "/favPrescTemplates",
-    ];
+    const prescFavSubRoutes = ["/favPrescItems", "/favPrescTemplates"];
 
     const formBuildersRoutes = ["/formBuilder", "/forms"];
 
@@ -198,8 +195,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -241,12 +239,10 @@ const Sidebar = () => {
                 </ul>
               </li>
 
-              <li className="submenu">
+              {/* <li className="submenu">
                 <a
                   href="#"
-                  onClick={() =>
-                    setPrescFavsSubmenuOpen(!prescFavsSubmenuOpen)
-                  }
+                  onClick={() => setPrescFavsSubmenuOpen(!prescFavsSubmenuOpen)}
                 >
                   <FeatherIcon
                     icon="star"
@@ -256,8 +252,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescFavsSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescFavsSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -278,7 +275,7 @@ const Sidebar = () => {
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
 
               <li className="menu-title font-12"></li>
 
@@ -322,8 +319,9 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    formBuilderSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -355,8 +353,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -384,10 +383,12 @@ const Sidebar = () => {
                     </Link>
                   </li>
                   <li
-                    className={router.pathname == "/measurements" ? "active" : ""}
+                    className={
+                      router.pathname == "/measurements" ? "active" : ""
+                    }
                   >
                     <Link href="/measurements" className="font-12">
-                      Measurements
+                      پارامترهای اندازه گیری
                     </Link>
                   </li>
                   <li className={router.pathname == "/karts" ? "active" : ""}>
@@ -415,3 +416,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

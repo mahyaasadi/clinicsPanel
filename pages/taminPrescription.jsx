@@ -120,6 +120,9 @@ const TaminPrescription = ({
   const [editSrvMode, setEditSrvMode] = useState(false);
   const [editSrvData, setEditSrvData] = useState([]);
 
+  const [favPrescItemsData, setFavPrescItemsData] = useState([]);
+  let array1 = [];
+
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
     {
@@ -410,6 +413,7 @@ const TaminPrescription = ({
   //--- Fav Prescription ---//
   const [showApplyFavPrescModal, setShowApplyFavPrescModal] = useState(false);
   const [favPrescData, setFavPrescData] = useState([]);
+  const [editFavPrescData, setEditFavPrescData] = useState([]);
   const openApplyFavPrescModal = () => setShowApplyFavPrescModal(true);
   const closeApplyFavPrescModal = () => setShowApplyFavPrescModal(false);
 
@@ -429,7 +433,11 @@ const TaminPrescription = ({
   };
 
   const handleAddFavPresc = async (favPresc) => {
+    setEditFavPrescData(favPresc);
+
+    let test = [];
     let arr2 = [];
+    array1 = [];
     addPrescriptionitems = [];
     visitPrescriptionData = [];
 
@@ -462,10 +470,16 @@ const TaminPrescription = ({
         addPrescriptionitems.push(prescData);
         arr2.push(prescItems);
         visitPrescriptionData.push(visitData);
+        const combinedObject = { ...prescData, ...prescItems };
+        array1.push(combinedObject);
+        test.push(array1);
       }
     }
 
-    setPrescriptionItemsData(arr2);
+    setTimeout(() => {
+      setFavPrescItemsData(array1);
+      setPrescriptionItemsData(arr2);
+    }, 200);
   };
 
   const removeFavPresc = (id) => {
@@ -476,15 +490,55 @@ const TaminPrescription = ({
       .then((response) => {
         console.log(response.data);
         setFavPrescData(favPrescData.filter((item) => item._id !== id));
+        handleReset();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const handleReset = () => {
+    setFavPrescItemsData([]);
+    setEditFavPrescData([]);
+    setPrescriptionItemsData([]);
+  };
+
+  // Edit Fav Presc
+  const editFavPresc = (id) => {
+    let url = `CenterFavEprsc/update/${id}`;
+
+    let data = {
+      CenterID: ClinicID,
+      Name: editFavPrescData.Name,
+      Tamin: true,
+      Salamat: false,
+      prescItems: favPrescItemsData,
+    };
+
+    console.log({ editFavPrescData });
+
+    axiosClient
+      .put(url, data)
+      .then((response) => {
+        console.log(response.data);
+        // updateItem(
+        //   editFavPrescData.Items[0][0].SrvCode,
+        //   response.data.Items[0]
+        // );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // useEffect(() => {
+  //   console.log({ favPrescItemsData });
+  // }, [favPrescItemsData]);
+
   // Edit Service
   const updateItem = (id, newArr) => {
     setSearchFromInput(true);
+    console.log({ newArr, id });
 
     let index = prescriptionItemsData.findIndex((x) => x.SrvCode === id);
     let g = prescriptionItemsData[index];
@@ -500,6 +554,24 @@ const TaminPrescription = ({
           ...prescriptionItemsData.slice(index + 1),
         ]);
       }, 5);
+    }
+
+    if (favPrescItemsData.length !== 0) {
+      let index2 = favPrescItemsData.findIndex((x) => x.SrvCode === id);
+      let h = favPrescItemsData[index2];
+      h = newArr;
+
+      if (index2 === -1) {
+        console.log("no match");
+      } else {
+        setTimeout(() => {
+          setFavPrescItemsData([
+            ...favPrescItemsData.slice(0, index),
+            h,
+            ...favPrescItemsData.slice(index + 1),
+          ]);
+        }, 5);
+      }
     }
   };
 
@@ -524,12 +596,18 @@ const TaminPrescription = ({
   };
 
   // Delete Service
-  const DeleteService = (id, prescId, prescItems) => {
+  const DeleteService = (id, prescId, prescItems, combinedObject) => {
+    console.log({ prescItems });
+
     addPrescriptionitems = addPrescriptionitems.filter(
       (a) => a.srvId.srvCode !== id
     );
 
-    if (prescItems) updateItem(id, prescItems);
+    // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
+
+    if (editFavPrescData) {
+      updateItem(id, combinedObject);
+    } else if (prescItems) updateItem(id, prescItems);
   };
 
   // pinInput modal
@@ -602,8 +680,6 @@ const TaminPrescription = ({
         });
     }
   };
-  const [favPrescItemsData, setFavPrescItemsData] = useState([]);
-  let array1 = [];
 
   // Add TaminSrvItem to the List
   const FuAddToListItem = async (e) => {
@@ -627,6 +703,8 @@ const TaminPrescription = ({
       $("#eprscItemDescription").val()
     );
 
+    const combinedObject = { ...prescData, ...prescItems };
+
     if (!editSrvMode) {
       if (
         addPrescriptionitems.length > 0 &&
@@ -638,7 +716,12 @@ const TaminPrescription = ({
         return false;
       }
     } else {
-      DeleteService(ActiveEditSrvCode, ActivePrescTypeID, prescItems);
+      DeleteService(
+        ActiveEditSrvCode,
+        ActivePrescTypeID,
+        prescItems,
+        combinedObject
+      );
       setEditSrvMode(false);
       ActiveSrvCode = null;
     }
@@ -651,8 +734,9 @@ const TaminPrescription = ({
 
       // favPresc
       const combinedObject = { ...prescData, ...prescItems };
-      array1.push(combinedObject);
-      setFavPrescItemsData([...favPrescItemsData, ...array1]);
+      console.log({ combinedObject, favPrescItemsData });
+      // array1.push(combinedObject);
+      setFavPrescItemsData([...favPrescItemsData, combinedObject]);
 
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
@@ -802,6 +886,10 @@ const TaminPrescription = ({
     }
   };
 
+  // useEffect(() => {
+  //   console.log({ prescriptionItemsData, addPrescriptionitems });
+  // }, [prescriptionItemsData]);
+
   useEffect(() => {
     ActivePrescHeadID = router.query.headID;
     ActivePrescID = router.query.prId;
@@ -854,8 +942,12 @@ const TaminPrescription = ({
                 setPatientInfo={setPatientInfo}
                 openApplyFavPrescModal={openApplyFavPrescModal}
                 favPrescData={favPrescData}
+                setFavPrescItemsData={setFavPrescItemsData}
                 handleAddFavPresc={handleAddFavPresc}
                 removeFavPresc={removeFavPresc}
+                editFavPrescData={editFavPrescData}
+                handleReset={handleReset}
+                editFavPresc={editFavPresc}
               />
             </div>
 
@@ -908,14 +1000,6 @@ const TaminPrescription = ({
             </div>
           </div>
         </div>
-
-        {/* <TaminFavItemsModal
-          data={favTaminItems}
-          show={showFavItemsModal}
-          onHide={handleCloseFavItemsModal}
-          handleEditService={handleEditService}
-          removeFavItem={removeFavItem}
-        /> */}
 
         {ActivePrescHeadID && showPinModal && (
           <GetPinInput
