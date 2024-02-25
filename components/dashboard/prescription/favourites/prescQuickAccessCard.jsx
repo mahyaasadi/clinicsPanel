@@ -56,7 +56,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link active text-center"
                 href="#bottom-tab1"
                 data-bs-toggle="tab"
-                // onClick={() => handleTabChange(1)}
+              // onClick={() => handleTabChange(1)}
               >
                 بیمار
               </a>
@@ -66,7 +66,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link text-center"
                 href="#bottom-tab2"
                 data-bs-toggle="tab"
-                // onClick={() => handleTabChange(2)}
+              // onClick={() => handleTabChange(2)}
               >
                 خدمات پرمصرف
               </a>
@@ -76,7 +76,7 @@ const PrescQuickAccessCard = ({
                 className="nav-link text-center"
                 href="#bottom-tab3"
                 data-bs-toggle="tab"
-                // onClick={() => handleTabChange(3)}
+              // onClick={() => handleTabChange(3)}
               >
                 نسخ پرمصرف
               </a>
@@ -147,7 +147,7 @@ const PrescQuickAccessCard = ({
                           key={index}
                         >
                           <div className="col d-flex flex-col font-12 fw-bold align-items-center gap-1">
-                            <p className="mb-0 w-75 text-center border-bottom-1">
+                            <p className="mb-1 w-75 text-center border-bottom-1">
                               {srv.SrvCode}
                             </p>
                             <p className="mb-0 text-center">
@@ -222,9 +222,26 @@ const PrescQuickAccessCard = ({
 
                         <div className="col">
                           <button
+                            onClick={() => removeFavPresc(editFavPrescData._id)}
+                            className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 removePrescBtn"
+                            data-pr-position="bottom"
+                          >
+                            <FeatherIcon
+                              icon="trash"
+                              style={{ width: "14px", height: "14px" }}
+                            />
+                            <Tooltip target=".removePrescBtn">
+                              {" "}
+                              حذف نسخه فعلی
+                            </Tooltip>
+                          </button>
+                        </div>
+
+                        <div className="col">
+                          <button
                             onClick={handleReset}
                             className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 refreshPrescBtn"
-                            data-pr-position="bottom"
+                            data-pr-position="left"
                           >
                             <FeatherIcon
                               icon="refresh-cw"
@@ -232,23 +249,6 @@ const PrescQuickAccessCard = ({
                             />
                             <Tooltip target=".refreshPrescBtn">
                               تنظیم مجدد
-                            </Tooltip>
-                          </button>
-                        </div>
-
-                        <div className="col">
-                          <button
-                            onClick={() => removeFavPresc(editFavPrescData._id)}
-                            className="btn btn-outline-danger w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 removePrescBtn"
-                            data-pr-position="left"
-                          >
-                            <FeatherIcon
-                              icon="trash-2"
-                              style={{ width: "14px", height: "14px" }}
-                            />
-                            <Tooltip target=".removePrescBtn">
-                              {" "}
-                              حذف نسخه فعلی
                             </Tooltip>
                           </button>
                         </div>
@@ -261,11 +261,10 @@ const PrescQuickAccessCard = ({
                       {favPrescData.map((item, index) => (
                         <button
                           onClick={() => handleAddFavPresc(item)}
-                          className={`${
-                            editFavPrescData._id === item._id
-                              ? "btn-outline-primary"
-                              : "text-secondary border-gray"
-                          } btn btn-outline-primary w-100 rounded my-1 py-2 px-3 fw-bold font-14  d-flex align-items-center justify-between`}
+                          className={`${editFavPrescData._id === item._id
+                            ? "btn-outline-primary"
+                            : "text-secondary border-gray"
+                            } btn btn-outline-primary w-100 rounded my-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
                           key={index}
                         >
                           <div>{item.Name}</div>

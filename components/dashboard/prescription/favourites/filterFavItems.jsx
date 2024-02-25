@@ -5,11 +5,10 @@ const FilterFavItems = ({
 }) => {
   return (
     <div
-      className={`box relative w-100 d-flex ${
-        filterSalamatMode ? "justify-end mt-3" : ""
-      }`}
+      className={`box relative w-100 d-flex ${filterSalamatMode ? "justify-end mt-3" : ""
+        }`}
     >
-      <label className="lblAbs font-12">جستجو</label>
+      <label className="lblAbs font-12">فیلتر</label>
       <div className={`${filterSalamatMode ? "w-50" : "w-100"} search m-0`}>
         <input
           dir="rtl"

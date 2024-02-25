@@ -111,7 +111,7 @@ const PrescriptionCard = ({
           $(".unsuccessfullSearch").hide();
           setSearchIsLoading(false);
         }
-      }, 500)
+      }, 200)
     );
   }, []);
 
@@ -144,13 +144,6 @@ const PrescriptionCard = ({
           <div className="prescript-header">
             <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
-              {/* <button
-                className="btn btn-outline-primary border-radius font-13"
-                onClick={openFavModal}
-              >
-                خدمات پرمصرف
-              </button> */}
-
               {!visitRegIsLoading ? (
                 <button
                   className="btn border-radius visitBtn font-13"

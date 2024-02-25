@@ -3,15 +3,14 @@ import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
 import { QuestionAlert } from "class/AlertManage";
-import { X } from "feather-icons-react/build/IconComponents";
 
 const AddToListItems = ({
   data,
   DeleteService,
   handleEditService,
   setPrescriptionItemsData,
-  // setFavPrescItemsData,
-  // favPrescItemsData,
+  setFavPrescItemsData,
+  favPrescItemsData,
   prescDataIsLoading,
   selectFavTaminItem,
 }) => {
@@ -20,8 +19,13 @@ const AddToListItems = ({
 
     if (result) {
       setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
-      // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id))
-      DeleteService(id, prescId);
+      setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id))
+
+      if (favPrescItemsData.length !== 0) {
+        return
+      } else {
+        DeleteService(id, prescId);
+      }
     }
   };
 
@@ -48,7 +52,7 @@ const AddToListItems = ({
                     <div className="d-flex gap-2 font-13 align-items-center">
                       <p className="mb-0">{srv?.SrvCode}</p>
                       <p className="mb-0">|</p>
-                      <p>{srv?.SrvName}</p>
+                      <p>{srv?.SrvName.substr(0, 180)}</p>
                     </div>
                   </div>
 

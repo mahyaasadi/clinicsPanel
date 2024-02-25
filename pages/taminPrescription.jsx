@@ -435,7 +435,6 @@ const TaminPrescription = ({
   const handleAddFavPresc = async (favPresc) => {
     setEditFavPrescData(favPresc);
 
-    let test = [];
     let arr2 = [];
     array1 = [];
     addPrescriptionitems = [];
@@ -472,7 +471,6 @@ const TaminPrescription = ({
         visitPrescriptionData.push(visitData);
         const combinedObject = { ...prescData, ...prescItems };
         array1.push(combinedObject);
-        test.push(array1);
       }
     }
 
@@ -488,7 +486,6 @@ const TaminPrescription = ({
     axiosClient
       .delete(url)
       .then((response) => {
-        console.log(response.data);
         setFavPrescData(favPrescData.filter((item) => item._id !== id));
         handleReset();
       })
@@ -515,30 +512,23 @@ const TaminPrescription = ({
       prescItems: favPrescItemsData,
     };
 
-    console.log({ editFavPrescData });
+    console.log({ data });
 
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
-        // updateItem(
-        //   editFavPrescData.Items[0][0].SrvCode,
-        //   response.data.Items[0]
-        // );
+        let updatePresc = favPrescData.find((x) => x._id === response.data._id)
+        updatePresc.Items = response.data.Items;
+        getTaminFavPrescs()
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  // useEffect(() => {
-  //   console.log({ favPrescItemsData });
-  // }, [favPrescItemsData]);
-
   // Edit Service
   const updateItem = (id, newArr) => {
     setSearchFromInput(true);
-    console.log({ newArr, id });
 
     let index = prescriptionItemsData.findIndex((x) => x.SrvCode === id);
     let g = prescriptionItemsData[index];
@@ -558,19 +548,17 @@ const TaminPrescription = ({
 
     if (favPrescItemsData.length !== 0) {
       let index2 = favPrescItemsData.findIndex((x) => x.SrvCode === id);
-      let h = favPrescItemsData[index2];
-      h = newArr;
 
       if (index2 === -1) {
-        console.log("no match");
+        console.log("No match found for ID:", id);
+        return;
       } else {
-        setTimeout(() => {
-          setFavPrescItemsData([
-            ...favPrescItemsData.slice(0, index),
-            h,
-            ...favPrescItemsData.slice(index + 1),
-          ]);
-        }, 5);
+        let updatedItemsData = [...favPrescItemsData]; // Make a shallow copy of the array
+        updatedItemsData[index2] = newArr; // Update the item at index2 with newArr
+
+        console.log({ index2, updatedItemsData });
+
+        setFavPrescItemsData(updatedItemsData); // Update the state with the updated array
       }
     }
   };
@@ -596,9 +584,7 @@ const TaminPrescription = ({
   };
 
   // Delete Service
-  const DeleteService = (id, prescId, prescItems, combinedObject) => {
-    console.log({ prescItems });
-
+  const DeleteService = (id, prescItems, combinedObject) => {
     addPrescriptionitems = addPrescriptionitems.filter(
       (a) => a.srvId.srvCode !== id
     );
@@ -606,8 +592,12 @@ const TaminPrescription = ({
     // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
     if (editFavPrescData) {
+      // console.log({ editFavPrescData });
       updateItem(id, combinedObject);
-    } else if (prescItems) updateItem(id, prescItems);
+    } else {
+      updateItem(id, prescItems);
+    }
+    // }
   };
 
   // pinInput modal
@@ -718,7 +708,6 @@ const TaminPrescription = ({
     } else {
       DeleteService(
         ActiveEditSrvCode,
-        ActivePrescTypeID,
         prescItems,
         combinedObject
       );
@@ -732,11 +721,11 @@ const TaminPrescription = ({
         Code: ActiveSrvCode,
       };
 
-      // favPresc
-      const combinedObject = { ...prescData, ...prescItems };
-      console.log({ combinedObject, favPrescItemsData });
-      // array1.push(combinedObject);
-      setFavPrescItemsData([...favPrescItemsData, combinedObject]);
+      if (!ActiveEditSrvCode) {
+        // favPresc
+        const combinedObject = { ...prescData, ...prescItems };
+        setFavPrescItemsData([...favPrescItemsData, combinedObject]);
+      }
 
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
@@ -767,13 +756,10 @@ const TaminPrescription = ({
         prescTypeName: "ویزیت",
       };
 
-      console.log({ data });
-
       axiosClient
         .post(url, data)
         .then((response) => {
           setVisitRegIsLoading(false);
-          console.log(response.data);
 
           if (response.data[0].data.data.result.trackingCode !== null) {
             const seconds = 5;
@@ -886,10 +872,6 @@ const TaminPrescription = ({
     }
   };
 
-  // useEffect(() => {
-  //   console.log({ prescriptionItemsData, addPrescriptionitems });
-  // }, [prescriptionItemsData]);
-
   useEffect(() => {
     ActivePrescHeadID = router.query.headID;
     ActivePrescID = router.query.prId;
@@ -991,8 +973,8 @@ const TaminPrescription = ({
                   DeleteService={DeleteService}
                   handleEditService={handleEditService}
                   setPrescriptionItemsData={setPrescriptionItemsData}
-                  // setFavPrescItemsData={setFavPrescItemsData}
-                  // favPrescItemsData={favPrescItemsData}
+                  setFavPrescItemsData={setFavPrescItemsData}
+                  favPrescItemsData={favPrescItemsData}
                   prescDataIsLoading={prescDataIsLoading}
                   selectFavTaminItem={selectFavTaminItem}
                 />

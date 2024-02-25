@@ -66,7 +66,7 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
       <li className="nav-item">
         <a
           className={"d-flex align-items-center nav-link media-nav-link " + item.Active}
-          href={"#bottom-tab" + item.id}
+          href={"#presc-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
           onClick={selectPrescType}
