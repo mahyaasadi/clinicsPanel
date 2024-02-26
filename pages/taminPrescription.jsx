@@ -359,18 +359,25 @@ const TaminPrescription = ({
   //--- Fav Tamin Items ---//
   const [showFavItemsModal, setShowFavItemsModal] = useState(false);
   const [favTaminItems, setFavTaminItems] = useState([]);
+  const [favItemIsLoading, setFavItemIsLoading] = useState(false);
+
   const openFavModal = () => setShowFavItemsModal(true);
   const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
 
   const getFavTaminItems = () => {
+    setFavItemIsLoading(true);
     let url = `FavEprscItem/getTamin/${ClinicID}`;
 
     axiosClient
       .get(url)
       .then((response) => {
         setFavTaminItems(response.data);
+        setFavItemIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setFavItemIsLoading(false);
+      });
   };
 
   const selectFavTaminItem = async (selectedSrv) => {
@@ -418,14 +425,19 @@ const TaminPrescription = ({
   const closeApplyFavPrescModal = () => setShowApplyFavPrescModal(false);
 
   const getTaminFavPrescs = () => {
+    setFavItemIsLoading(true);
     let url = `CenterFavEprsc/getAll/${ClinicID}/${"Tamin"}`;
 
     axiosClient
       .get(url)
       .then((response) => {
+        setFavItemIsLoading(false);
         setFavPrescData(response.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setFavItemIsLoading(false);
+      });
   };
 
   const applyFavPresc = (favPresc) => {
@@ -433,6 +445,7 @@ const TaminPrescription = ({
   };
 
   const handleAddFavPresc = async (favPresc) => {
+    activeSearch();
     setEditFavPrescData(favPresc);
 
     let arr2 = [];
@@ -517,12 +530,19 @@ const TaminPrescription = ({
     axiosClient
       .put(url, data)
       .then((response) => {
-        let updatePresc = favPrescData.find((x) => x._id === response.data._id)
+        let updatePresc = favPrescData.find((x) => x._id === response.data._id);
         updatePresc.Items = response.data.Items;
-        getTaminFavPrescs()
+        getTaminFavPrescs();
+
+        setTimeout(() => {
+          SuccessAlert("", "ویرایش نسخه با موفقیت انجام گردید!");
+        }, 200);
+        handleReset();
+        activeSearch();
       })
       .catch((err) => {
         console.log(err);
+        ErrorAlert("خطا", "ویرایش نسخه با خطا مواجه گردید!");
       });
   };
 
@@ -592,7 +612,6 @@ const TaminPrescription = ({
     // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
     if (editFavPrescData) {
-      // console.log({ editFavPrescData });
       updateItem(id, combinedObject);
     } else {
       updateItem(id, prescItems);
@@ -706,11 +725,7 @@ const TaminPrescription = ({
         return false;
       }
     } else {
-      DeleteService(
-        ActiveEditSrvCode,
-        prescItems,
-        combinedObject
-      );
+      DeleteService(ActiveEditSrvCode, prescItems, combinedObject);
       setEditSrvMode(false);
       ActiveSrvCode = null;
     }
@@ -746,129 +761,133 @@ const TaminPrescription = ({
       PatientID: ActivePatientID,
     };
 
-    if (visit === 1) {
-      setVisitRegIsLoading(true);
-      data = {
-        ...data,
-        PTI: 3,
-        note: [],
-        SrvNames: [],
-        prescTypeName: "ویزیت",
-      };
-
-      axiosClient
-        .post(url, data)
-        .then((response) => {
-          setVisitRegIsLoading(false);
-
-          if (response.data[0].data.data.result.trackingCode !== null) {
-            const seconds = 5;
-            const timerInMillis = seconds * 1000;
-            TimerAlert({
-              title: `ویزیت با کد رهگیری ${response.data[0].data.data.result.trackingCode} با موفقیت ثبت گردید!`,
-              html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-              timer: timerInMillis,
-              timerProgressBar: true,
-              cancelButton: {
-                text: "انصراف",
-              },
-              onConfirm: () => {
-                router.push("/taminPrescRecords");
-              },
-            });
-          } else if (
-            response.data[0].data.data.result.error_Msg == "نسخه تکراری است"
-          ) {
-            WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
-          } else if (ActiveNID === undefined) {
-            WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          ErrorAlert("خطا", "ثبت ویزیت با خطا مواجه گردید!");
-          setVisitRegIsLoading(false);
-        });
+    if (!ActivePatientID) {
+      WarningAlert("", "استعلام بیمار صورت نگرفته است!");
+      return;
     } else {
-      setSaveRegIsLoading(true);
+      if (visit === 1) {
+        setVisitRegIsLoading(true);
+        data = {
+          ...data,
+          PTI: 3,
+          note: [],
+          SrvNames: [],
+          prescTypeName: "ویزیت",
+        };
 
-      data = {
-        ...data,
-        PTI: ActivePrescTypeID,
-        note: addPrescriptionitems,
-        SrvNames: visitPrescriptionData,
-        prescTypeName: ActivePrescName,
-      };
+        axiosClient
+          .post(url, data)
+          .then((response) => {
+            setVisitRegIsLoading(false);
 
-      console.log({ data });
-
-      // EditMode
-      // if (ActivePrescHeadID) {
-      // Wait for the pin input
-      //   await new Promise((resolve) => {
-      //     const checkPinInterval = setInterval(() => {
-      //       if (otpCode) {
-      //         clearInterval(checkPinInterval);
-      //         resolve();
-      //       }
-      //     }, 500);
-      //   });
-
-      //   if (otpCode) {
-      //     url = "TaminEprsc/PrescriptionEdit";
-      //     let dataToSend = {
-      //       ...data,
-      //       PrID: ActivePrescID,
-      //       headerID: ActivePrescHeadID,
-      //       otpCode: otpCode,
-      //     };
-
-      //     console.log({ dataToSend });
-
-      //     setShowPinModal(false);
-      //   }
-      // }
-
-      axiosClient
-        .post(url, data)
-        .then(async (response) => {
-          setSaveRegIsLoading(false);
-          console.log(response.data);
-
-          if (response.data[0].data.data.result.trackingCode) {
-            let trackingCodes = [];
-            for (let i = 0; i < response.data.length; i++) {
-              const element = response.data[i];
-              trackingCodes.push(element.data.data.result.trackingCode);
+            if (response.data[0].data.data.result.trackingCode !== null) {
+              const seconds = 5;
+              const timerInMillis = seconds * 1000;
+              TimerAlert({
+                title: `ویزیت با کد رهگیری ${response.data[0].data.data.result.trackingCode} با موفقیت ثبت گردید!`,
+                html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+                timer: timerInMillis,
+                timerProgressBar: true,
+                cancelButton: {
+                  text: "انصراف",
+                },
+                onConfirm: () => {
+                  router.push("/taminPrescRecords");
+                },
+              });
+            } else if (
+              response.data[0].data.data.result.error_Msg == "نسخه تکراری است"
+            ) {
+              WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
+            } else if (ActiveNID === undefined) {
+              WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
             }
-            trackingCodes = [...new Set(trackingCodes)];
+          })
+          .catch((err) => {
+            console.log(err);
+            ErrorAlert("خطا", "ثبت ویزیت با خطا مواجه گردید!");
+            setVisitRegIsLoading(false);
+          });
+      } else {
+        setSaveRegIsLoading(true);
 
-            const seconds = 5;
-            const timerInMillis = seconds * 1000;
+        data = {
+          ...data,
+          PTI: ActivePrescTypeID,
+          note: addPrescriptionitems,
+          SrvNames: visitPrescriptionData,
+          prescTypeName: ActivePrescName,
+        };
 
-            TimerAlert({
-              title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
-              html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-              timer: timerInMillis,
-              timerProgressBar: true,
-              cancelButton: {
-                text: "انصراف",
-              },
-              onConfirm: () => {
-                router.push("/taminPrescRecords");
-              },
-            });
-          } else if (response.data.res.error_Code !== null) {
-            ErrorAlert("خطا!", response.data.res.error_Msg);
-          } else if (response.data.res == null) {
-            ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setSaveRegIsLoading(false);
-          ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-        });
+        console.log({ data });
+
+        // EditMode
+        // if (ActivePrescHeadID) {
+        // Wait for the pin input
+        //   await new Promise((resolve) => {
+        //     const checkPinInterval = setInterval(() => {
+        //       if (otpCode) {
+        //         clearInterval(checkPinInterval);
+        //         resolve();
+        //       }
+        //     }, 500);
+        //   });
+
+        //   if (otpCode) {
+        //     url = "TaminEprsc/PrescriptionEdit";
+        //     let dataToSend = {
+        //       ...data,
+        //       PrID: ActivePrescID,
+        //       headerID: ActivePrescHeadID,
+        //       otpCode: otpCode,
+        //     };
+
+        //     console.log({ dataToSend });
+        //     setShowPinModal(false);
+        //   }
+        // }
+
+        // axiosClient
+        //   .post(url, data)
+        //   .then(async (response) => {
+        //     setSaveRegIsLoading(false);
+        //     console.log(response.data);
+
+        //     if (response.data[0].data.data.result.trackingCode) {
+        //       let trackingCodes = [];
+        //       for (let i = 0; i < response.data.length; i++) {
+        //         const element = response.data[i];
+        //         trackingCodes.push(element.data.data.result.trackingCode);
+        //       }
+        //       trackingCodes = [...new Set(trackingCodes)];
+
+        //       const seconds = 5;
+        //       const timerInMillis = seconds * 1000;
+
+        //       TimerAlert({
+        //         title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
+        //         html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+        //         timer: timerInMillis,
+        //         timerProgressBar: true,
+        //         cancelButton: {
+        //           text: "انصراف",
+        //         },
+        //         onConfirm: () => {
+        //           router.push("/taminPrescRecords");
+        //         },
+        //       });
+        //     } else if (response.data[0].data.data.result.error_Code !== null) {
+        //       ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
+        //     } else if (response.data[0].data.data.result == null) {
+        //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //     setSaveRegIsLoading(false);
+        //     ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
+        //   });
+      }
     }
   };
 
@@ -916,6 +935,7 @@ const TaminPrescription = ({
 
               <PrescQuickAccessCard
                 data={favTaminItems}
+                favItemIsLoading={favItemIsLoading}
                 handleEditService={handleEditService}
                 removeFavItem={removeFavItem}
                 patientInfo={patientInfo}

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
@@ -41,10 +42,16 @@ const ReceptionListTable = ({
               }}
             />
 
-            <div>
+            <Link
+              href={{
+                query: { id: row.Patient._id },
+                pathname: "/patientFile",
+              }}
+              className="receptionLink"
+            >
               <p className="mb-0">{row.Patient.Name}</p>
               <p className="fw-bold">{row.Patient.NationalID}</p>
-            </div>
+            </Link>
           </div>
         </div>
       ),

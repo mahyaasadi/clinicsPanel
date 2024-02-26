@@ -96,6 +96,7 @@ const PrescriptionCard = ({
       }, ms || 0);
     };
   }
+
   useEffect(() => {
     $("#srvSearchInput").on(
       "keyup input",
@@ -116,14 +117,21 @@ const PrescriptionCard = ({
   }, []);
 
   const handleCancel = () => {
+    console.log("object");
     setEditSrvMode(false);
     setEditSrvData([]);
+
+    console.log({ editSrvData });
 
     setSelectedInstruction(editDrugInstructionData?.value);
     setSelectedAmount(editDrugAmountData?.value);
     $("#srvSearchInput").val(editSrvData?.SrvName);
     $("#QtyInput").val("1");
     setSearchFromInput(true);
+  };
+
+  const handleCancelInFavMode = () => {
+    // console.log("object");
   };
 
   useEffect(() => {

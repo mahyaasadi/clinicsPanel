@@ -13,7 +13,7 @@ const MeasurementsModal = ({
       <Modal.Header closeButton>
         <Modal.Title>
           <p className="mb-0 text-secondary font-14 fw-bold">
-            {mode === "add" ? "add" : "edit"}
+            {mode === "add" ? "افزودن پارامتر" : "ویرایش اطلاعات"}
           </p>
         </Modal.Title>
       </Modal.Header>

@@ -16,6 +16,8 @@ import FamilyRecordsList from "@/components/dashboard/patientsArchives/patientFi
 import AddictionRecordsList from "@/components/dashboard/patientsArchives/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/medicalAllergyRecordsList";
+import MedicalParamsList from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsList";
+import MedicalParamsModal from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsModal";
 import NotesList from "components/dashboard/patientsArchives/patientFile/notes/notesList";
 import AttachNoteModal from "components/dashboard/patientsArchives/patientFile/notes/attachNoteModal";
 import ImgRecordsList from "components/dashboard/patientsArchives/patientFile/imgFiles/imgRecordsList";
@@ -300,12 +302,68 @@ const PatientFile = ({ ClinicUser }) => {
     getPatientImgAttachments();
   };
 
+  // medical params
+  const [patientMedicalParams, setPatientMedicalParams] = useState([]);
+  const [measurementData, setMeasurementData] = useState([]);
+  const [showMedicalParamModal, setShowMedicalParamModal] = useState(false);
+  const [medModalMode, setMedModalMode] = useState("add");
+  const handleCloseMedicalParamModal = () => setShowMedicalParamModal(false);
+  const openMedicalParamModal = () => setShowMedicalParamModal(true);
+
+  // Get All Measurements
+  const getMeasurementData = () => {
+    let url = `MedicalParms/getByCenter/${ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setMeasurementData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+      });
+  };
+
+  const getPatientMedicalParams = () => {
+    let url = `MedicalDetails/getAll/${ActivePatientID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setPatientMedicalParams(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const attachMedicalParam = (addedMedParam) => {
+    if (patientMedicalParams.hasOwnProperty(addedMedParam.Param)) {
+      // If it exists, directly push to the existing array
+      patientMedicalParams[addedMedParam.Param].push(addedMedParam);
+    } else {
+      // If it doesn't exist, create a new key-value pair with the new ParamID as the key
+      patientMedicalParams[addedMedParam.Param] = [addedMedParam];
+    }
+  };
+
+  const editAttachedMedParam = (updatedMedParam) => {
+    console.log(updatedMedParam);
+  };
+
+  // const removeAttachedMedicalParam = (id) => {
+  //   setPatientMedicalParams(patientMedicalParams.filter((x) => x._id !== id));
+  // };
+
   useEffect(() => {
     ActivePatientID = router.query.id;
     if (ActivePatientID) {
       getOnePatient();
       getPatientForms();
       getPatientDiseaseRecords();
+      getMeasurementData();
+      getPatientMedicalParams();
       getPatientImgAttachments();
     }
     setShowOtherSurgeryType(false);
@@ -371,7 +429,28 @@ const PatientFile = ({ ClinicUser }) => {
                 </ul>
                 <div className="tab-content">
                   <div className="tab-pane show active" id="bottom-tab1">
+                    <div className="row">
+                      {Object.keys(patientMedicalParams).map((id) => (
+                        <div className="col-md-4 col-12" key={id}>
+                          <MedicalParamsList
+                            id={id}
+                            data={patientMedicalParams}
+                            openMedicalParamModal={openMedicalParamModal}
+                            measurementData={measurementData}
+                          />
+                        </div>
+                      ))}
+                    </div>
+
                     <div className="row mb-2">
+                      {/* <div className="col-12">
+                        <MedicalParamsList
+                          data={patientMedicalParams}
+                          measurementData={measurementData}
+                          openMedicalParamModal={openMedicalParamModal}
+                        />
+                      </div> */}
+
                       <div className="col-lg-6 col-12">
                         <DiseaseRecordsList
                           data={patientDiseases}
@@ -510,6 +589,17 @@ const PatientFile = ({ ClinicUser }) => {
           ActivePatientID={ActivePatientID}
           ClinicID={ClinicID}
           AttachImgFile={AttachImgFile}
+        />
+
+        <MedicalParamsModal
+          show={showMedicalParamModal}
+          onHide={handleCloseMedicalParamModal}
+          mode={medModalMode}
+          ClinicID={ClinicID}
+          ActivePatientID={ActivePatientID}
+          measurementData={measurementData}
+          attachMedicalParam={attachMedicalParam}
+          editAttachedMedParam={editAttachedMedParam}
         />
       </div>
     </>

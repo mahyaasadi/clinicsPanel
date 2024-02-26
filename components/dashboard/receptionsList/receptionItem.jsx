@@ -1,7 +1,8 @@
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
-import Image from "next/image";
 import { Tooltip } from "primereact/tooltip";
 import { SpeedDial } from "primereact/speeddial";
 import ReceptionItemInfoModal from "./receptionItemInfo";
@@ -14,6 +15,7 @@ const ReceptionItem = ({
   openAppointmentModal,
   openFrmOptionsModal,
 }) => {
+  console.log({ srv });
   const router = useRouter();
 
   // ReceptionItem Info and History Modals
@@ -173,10 +175,16 @@ const ReceptionItem = ({
                   <div>{srv?.Time.substring(0, 5)}</div>
                 </div>
 
-                <p className="mb-1 d-flex gap-2 flex-wrap">
+                <Link
+                  href={{
+                    pathname: "/patientFile",
+                    query: { id: srv?.Patient?._id },
+                  }}
+                  className="mb-1 d-flex gap-2 flex-wrap receptionLink"
+                >
                   <FeatherIcon icon="user" className="prescItembtns" />
                   {srv?.Patient?.Name}
-                </p>
+                </Link>
 
                 <div className="d-flex gap-2 mb-1 align-items-center">
                   <div className="w-16 m-0 d-flex">
