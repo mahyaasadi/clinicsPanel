@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
+import { Tooltip } from "primereact/tooltip";
+import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import FormsList from "@/components/dashboard/patientsArchives/patientFile/formsList";
@@ -23,8 +25,6 @@ import AttachNoteModal from "components/dashboard/patientsArchives/patientFile/n
 import ImgRecordsList from "components/dashboard/patientsArchives/patientFile/imgFiles/imgRecordsList";
 import AttachImgFileModal from "components/dashboard/patientsArchives/patientFile/imgFiles/attachImgFileModal";
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
-import FeatherIcon from "feather-icons-react";
-import { Tooltip } from "primereact/tooltip";
 import MedParamsList from "components/dashboard/patientsArchives/patientFile/medicalParams/medParamsList";
 
 export const getServerSideProps = async ({ req, res }) => {

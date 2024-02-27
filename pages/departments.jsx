@@ -5,8 +5,8 @@ import FeatherIcon from "feather-icons-react";
 import { convertBase64 } from "utils/convertBase64";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
-import DepartmentsModal from "components/dashboard/departments/departmentsModal";
-import DepartmentsListTable from "components/dashboard/departments/departmentsListTable";
+import DepartmentsModal from "@/components/dashboard/settings/departments/departmentsModal";
+import DepartmentsListTable from "@/components/dashboard/settings/departments/departmentsListTable";
 import {
   useGetAllClinicDepartmentsQuery,
   useAddClinicDepartmentMutation,

@@ -31,6 +31,7 @@ const Sidebar = () => {
       "/measurements",
       "/karts",
       "reciptSettings",
+      "/patientInquiryQRCode",
     ];
 
     if (prescriptionSubRoutes.includes(router.pathname)) {
@@ -195,9 +196,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -319,9 +319,8 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${
-                    formBuilderSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -353,9 +352,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -403,6 +401,15 @@ const Sidebar = () => {
                   >
                     <Link href="/reciptSettings" className="font-12">
                       تنظیمات چاپ قبض
+                    </Link>
+                  </li>
+                  <li
+                    className={
+                      router.pathname == "/patientInquiryQRCode" ? "active" : ""
+                    }
+                  >
+                    <Link href="/patientInquiryQRCode" className="font-12">
+                      patient qr code
                     </Link>
                   </li>
                 </ul>

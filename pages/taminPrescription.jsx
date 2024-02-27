@@ -611,12 +611,13 @@ const TaminPrescription = ({
 
     // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
-    if (editFavPrescData) {
+    if (editFavPrescData.length !== 0) {
+      console.log("object");
       updateItem(id, combinedObject);
     } else {
+      console.log("222");
       updateItem(id, prescItems);
     }
-    // }
   };
 
   // pinInput modal
@@ -847,46 +848,46 @@ const TaminPrescription = ({
         //   }
         // }
 
-        // axiosClient
-        //   .post(url, data)
-        //   .then(async (response) => {
-        //     setSaveRegIsLoading(false);
-        //     console.log(response.data);
+        axiosClient
+          .post(url, data)
+          .then(async (response) => {
+            setSaveRegIsLoading(false);
+            console.log(response.data);
 
-        //     if (response.data[0].data.data.result.trackingCode) {
-        //       let trackingCodes = [];
-        //       for (let i = 0; i < response.data.length; i++) {
-        //         const element = response.data[i];
-        //         trackingCodes.push(element.data.data.result.trackingCode);
-        //       }
-        //       trackingCodes = [...new Set(trackingCodes)];
+            if (response.data[0].data.data.result.trackingCode) {
+              let trackingCodes = [];
+              for (let i = 0; i < response.data.length; i++) {
+                const element = response.data[i];
+                trackingCodes.push(element.data.data.result.trackingCode);
+              }
+              trackingCodes = [...new Set(trackingCodes)];
 
-        //       const seconds = 5;
-        //       const timerInMillis = seconds * 1000;
+              const seconds = 5;
+              const timerInMillis = seconds * 1000;
 
-        //       TimerAlert({
-        //         title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
-        //         html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-        //         timer: timerInMillis,
-        //         timerProgressBar: true,
-        //         cancelButton: {
-        //           text: "انصراف",
-        //         },
-        //         onConfirm: () => {
-        //           router.push("/taminPrescRecords");
-        //         },
-        //       });
-        //     } else if (response.data[0].data.data.result.error_Code !== null) {
-        //       ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
-        //     } else if (response.data[0].data.data.result == null) {
-        //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     setSaveRegIsLoading(false);
-        //     ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-        //   });
+              TimerAlert({
+                title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
+                html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+                timer: timerInMillis,
+                timerProgressBar: true,
+                cancelButton: {
+                  text: "انصراف",
+                },
+                onConfirm: () => {
+                  router.push("/taminPrescRecords");
+                },
+              });
+            } else if (response.data[0].data.data.result.error_Code !== null) {
+              ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
+            } else if (response.data[0].data.data.result == null) {
+              ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            setSaveRegIsLoading(false);
+            ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
+          });
       }
     }
   };
@@ -912,6 +913,10 @@ const TaminPrescription = ({
     getTaminFavPrescs();
     $("#patientNID").val("");
   }, []);
+
+  useEffect(() => {
+    console.log({ prescriptionItemsData }, [prescriptionItemsData]);
+  })
 
   return (
     <>

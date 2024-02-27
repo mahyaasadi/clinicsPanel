@@ -8,7 +8,7 @@ export default function RecieveMessage({
   let Type = recievemes.Type;
   let content = null;
   let reciveimg = null;
-  /////////////
+
   if (Type === "Image") {
     content = (
       <>
@@ -44,13 +44,14 @@ export default function RecieveMessage({
     let str = urlify(recievemes.Text);
     content = <div dangerouslySetInnerHTML={{ __html: str }}></div>;
   }
+
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function (url) {
       return '<a href="' + url + '">' + url + "</a>";
     });
   }
-  /////////////////
+
   if (Type === "") {
     reciveimg = (
       <img
@@ -82,7 +83,7 @@ export default function RecieveMessage({
         className="avatar-img rounded-circle"
       />
     );
-  /////////////////
+
   return (
     <>
       <li className="media received d-flex " id="msg-box">

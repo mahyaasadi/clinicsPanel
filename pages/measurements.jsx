@@ -5,8 +5,8 @@ import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
 import Loading from "@/components/commonComponents/loading/loading";
-import MeasurementsList from "@/components/dashboard/measurements/measurementsList";
-import MeasurementsModal from "@/components/dashboard/measurements/measurementsModal";
+import MeasurementsList from "@/components/dashboard/settings/measurements/measurementsList";
+import MeasurementsModal from "@/components/dashboard/settings/measurements/measurementsModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);

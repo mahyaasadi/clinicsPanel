@@ -6,7 +6,7 @@ import { QuestionAlert } from "class/AlertManage";
 
 const AddToListItems = ({
   data,
-  DeleteService,
+  // DeleteService,
   handleEditService,
   setPrescriptionItemsData,
   setFavPrescItemsData,
@@ -14,6 +14,7 @@ const AddToListItems = ({
   prescDataIsLoading,
   selectFavTaminItem,
 }) => {
+
   const _DeleteService = async (id, prescId) => {
     let result = await QuestionAlert("حذف سرویس!", "آیا از حذف اطمینان دارید؟");
 
@@ -21,11 +22,11 @@ const AddToListItems = ({
       setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
       setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id))
 
-      if (favPrescItemsData.length !== 0) {
-        return
-      } else {
-        DeleteService(id, prescId);
-      }
+      // if (favPrescItemsData.length !== 0) {
+      //   return
+      // } else {
+      //   DeleteService(id, prescId);
+      // }
     }
   };
 

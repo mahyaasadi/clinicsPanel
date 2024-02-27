@@ -27,7 +27,7 @@ export default function ChatPage({
           </a>
 
           {ChatHeader ? (
-            <div className="media d-flex  ">
+            <div className="media d-flex">
               <div className="media-img-wrap flex-shrink-0">
                 <div className="avatar avatar-online" id="headerStatus">
                   <img
@@ -37,7 +37,7 @@ export default function ChatPage({
                       currentTarget.src =
                         "https://irannobat.ir/admin/assets/img/profiles/NoAvatar.png";
                     }}
-                    alt="Logo "
+                    alt="Logo"
                     className="avatar-img rounded-circle"
                   />
                 </div>
