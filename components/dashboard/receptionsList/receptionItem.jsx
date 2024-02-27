@@ -144,22 +144,31 @@ const ReceptionItem = ({
           <div dir="rtl" className="card-body pt-2 text-secondary">
             <div className="d-flex gap-4 align-items-center mt-2">
               <div className="align-items-center d-flex flex-col gap-2">
-                <img
-                  src={
-                    "https://irannobat.ir/images/Avatar/" + srv?.Patient.Avatar
-                  }
-                  alt="patientAvatar"
-                  style={{
-                    width: "35px",
-                    height: "35px",
-                    borderRadius: "10px",
+                <Link
+                  href={{
+                    pathname: "/patientFile",
+                    query: { id: srv?.Patient?._id },
                   }}
-                  onError={({ currentTarget }) => {
-                    srv?.Patient?.Gender === "F" || srv?.Patient.Gender === "M"
-                      ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
-                      : (currentTarget.src = `assets/img/avatar-O-pic.png`);
-                  }}
-                />
+                  className="receptionImgLink"
+                >
+                  <img
+                    src={
+                      "https://irannobat.ir/images/Avatar/" + srv?.Patient.Avatar
+                    }
+                    alt="patientAvatar"
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      borderRadius: "10px",
+                    }}
+                    onError={({ currentTarget }) => {
+                      srv?.Patient?.Gender === "F" || srv?.Patient.Gender === "M"
+                        ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
+                        : (currentTarget.src = `assets/img/avatar-O-pic.png`);
+                    }}
+                  />
+                </Link>
+
                 <div className="font-13 fw-bold mb-2">{srv?.ReceptionID}</div>
               </div>
 

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert } from "class/AlertManage";
-import selectfieldColourStyles from "class/selectfieldStyle";
-import SelectField from "components/commonComponents/selectfield";
+// import selectfieldColourStyles from "class/selectfieldStyle";
+// import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 const MedicalParamsModal = ({
@@ -11,11 +11,13 @@ const MedicalParamsModal = ({
   onHide,
   mode,
   ClinicID,
+  selectedParamId,
   ActivePatientID,
+  measurementData,
   attachMedicalParam,
   editAttachedMedParam,
-  measurementData,
 }) => {
+
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,8 +31,8 @@ const MedicalParamsModal = ({
     medParamsOptions.push(obj);
   }
 
-  let selectedMedParam = null;
-  const FUSelectMedParam = (medParam) => (selectedMedParam = medParam);
+  // let selectedMedParam = null;
+  // const FUSelectMedParam = (medParam) => (selectedMedParam = medParam);
 
   const submitMedParam = (e) => {
     e.preventDefault();
@@ -42,7 +44,7 @@ const MedicalParamsModal = ({
     let url = "MedicalDetails/addEdit";
     let data = {
       PatientID: ActivePatientID,
-      ParamID: selectedMedParam,
+      ParamID: selectedParamId,
       Value: formProps.paramValue,
       Date: date,
     };
@@ -84,7 +86,7 @@ const MedicalParamsModal = ({
       <Modal.Body>
         <form onSubmit={submitMedParam}>
           <div className="row">
-            <div className="form-group">
+            {/* <div className="form-group">
               <label className="lblDrugIns font-12">
                 انتخاب پارامتر <span className="text-danger">*</span>
               </label>
@@ -100,7 +102,7 @@ const MedicalParamsModal = ({
                 isClearable
                 required
               />
-            </div>
+            </div> */}
 
             <div className="form-group">
               <input type="hidden" className="form-control" name="MedParamID" />
@@ -123,7 +125,7 @@ const MedicalParamsModal = ({
                 setDate={setDate}
                 label="انتخاب تاریخ"
                 birthDateMode={true}
-                // defValue={}
+              // defValue={}
               />
             </div>
           </div>

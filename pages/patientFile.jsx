@@ -16,7 +16,7 @@ import FamilyRecordsList from "@/components/dashboard/patientsArchives/patientFi
 import AddictionRecordsList from "@/components/dashboard/patientsArchives/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/medicalAllergyRecordsList";
-import MedicalParamsList from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsList";
+import MedicalParamsChartCard from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsChart";
 import MedicalParamsModal from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsModal";
 import NotesList from "components/dashboard/patientsArchives/patientFile/notes/notesList";
 import AttachNoteModal from "components/dashboard/patientsArchives/patientFile/notes/attachNoteModal";
@@ -307,8 +307,14 @@ const PatientFile = ({ ClinicUser }) => {
   const [measurementData, setMeasurementData] = useState([]);
   const [showMedicalParamModal, setShowMedicalParamModal] = useState(false);
   const [medModalMode, setMedModalMode] = useState("add");
+  const [selectedParamId, setSelectedParamId] = useState(null);
+
   const handleCloseMedicalParamModal = () => setShowMedicalParamModal(false);
-  const openMedicalParamModal = () => setShowMedicalParamModal(true);
+  const openMedicalParamModal = (id) => {
+    console.log({ id });
+    setShowMedicalParamModal(true);
+    setSelectedParamId(id);
+  }
 
   // Get All Measurements
   const getMeasurementData = () => {
@@ -352,9 +358,27 @@ const PatientFile = ({ ClinicUser }) => {
     console.log(updatedMedParam);
   };
 
-  // const removeAttachedMedicalParam = (id) => {
-  //   setPatientMedicalParams(patientMedicalParams.filter((x) => x._id !== id));
-  // };
+  const removeAttachedMedicalParam = (id) => {
+    console.log({ id });
+
+    // if (patientMedicalParams[id]) {
+    //   const index = patientMedicalParams[id].findIndex(
+    //     (item) => item._id === id
+    //   );
+
+    //   if (index !== -1) {
+    //     // Remove the entry from the array
+    //     patientMedicalParams[id].splice(index, 1);
+
+    //     // If no items are left for the id, delete the date entry
+    //     if (patientMedicalParams[id].length === 0) {
+    //       delete patientMedicalParams[id];
+    //     }
+    //   }
+    // }
+    // setPatientMedicalParams({ ...patientMedicalParams });
+    // getPatientMedicalParams()
+  };
 
   useEffect(() => {
     ActivePatientID = router.query.id;
@@ -432,25 +456,17 @@ const PatientFile = ({ ClinicUser }) => {
                     <div className="row">
                       {Object.keys(patientMedicalParams).map((id) => (
                         <div className="col-md-4 col-12" key={id}>
-                          <MedicalParamsList
+                          <MedicalParamsChartCard
                             id={id}
-                            data={patientMedicalParams}
+                            data={patientMedicalParams[id]}
                             openMedicalParamModal={openMedicalParamModal}
-                            measurementData={measurementData}
+                            removeAttachedMedicalParam={removeAttachedMedicalParam}
                           />
                         </div>
                       ))}
                     </div>
 
                     <div className="row mb-2">
-                      {/* <div className="col-12">
-                        <MedicalParamsList
-                          data={patientMedicalParams}
-                          measurementData={measurementData}
-                          openMedicalParamModal={openMedicalParamModal}
-                        />
-                      </div> */}
-
                       <div className="col-lg-6 col-12">
                         <DiseaseRecordsList
                           data={patientDiseases}
@@ -597,6 +613,7 @@ const PatientFile = ({ ClinicUser }) => {
           mode={medModalMode}
           ClinicID={ClinicID}
           ActivePatientID={ActivePatientID}
+          selectedParamId={selectedParamId}
           measurementData={measurementData}
           attachMedicalParam={attachMedicalParam}
           editAttachedMedParam={editAttachedMedParam}

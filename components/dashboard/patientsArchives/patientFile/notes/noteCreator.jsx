@@ -33,7 +33,7 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
 
     document
       .getElementById("saveToImage")
-      .addEventListener("click", function () {});
+      .addEventListener("click", function () { });
 
     document.getElementById("eraser").addEventListener("click", eraser);
     document.getElementById("clear").addEventListener("click", createCanvas);
@@ -174,7 +174,7 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
           <Tooltip target=".refreshBtn">رفرش</Tooltip>
         </button>
 
-        <div className="buttonSize w-65" data-pr-position="left">
+        <div className="buttonSize w-65 py-1" data-pr-position="left">
           <input
             type="range"
             min="1"
