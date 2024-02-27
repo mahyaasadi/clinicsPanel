@@ -2,14 +2,13 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert } from "class/AlertManage";
-// import selectfieldColourStyles from "class/selectfieldStyle";
-// import SelectField from "components/commonComponents/selectfield";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 const MedicalParamsModal = ({
   show,
   onHide,
   mode,
+  data,
   ClinicID,
   selectedParamId,
   ActivePatientID,
@@ -17,7 +16,6 @@ const MedicalParamsModal = ({
   attachMedicalParam,
   editAttachedMedParam,
 }) => {
-
   const [date, setDate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,9 +29,6 @@ const MedicalParamsModal = ({
     medParamsOptions.push(obj);
   }
 
-  // let selectedMedParam = null;
-  // const FUSelectMedParam = (medParam) => (selectedMedParam = medParam);
-
   const submitMedParam = (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -42,25 +37,24 @@ const MedicalParamsModal = ({
     const formProps = Object.fromEntries(formData);
 
     let url = "MedicalDetails/addEdit";
-    let data = {
+    let sentData = {
       PatientID: ActivePatientID,
-      ParamID: selectedParamId,
+      ParamID: selectedParamId ? selectedParamId : data.Param._id,
       Value: formProps.paramValue,
       Date: date,
+      MedicalDetailID: formProps.MedParamID,
     };
 
-    if (mode === "edit") data.MedicalDetailID = formProps.MedParamID;
-
-    console.log({ data });
+    console.log({ sentData });
 
     axiosClient
-      .post(url, data)
+      .post(url, sentData)
       .then((response) => {
         if (mode == "add") {
           attachMedicalParam(response.data);
-        } else editAttachedMedParam();
-
-        // console.log(response.data);
+        } else {
+          editAttachedMedParam(response.data);
+        }
 
         onHide();
         setIsLoading(false);
@@ -68,8 +62,11 @@ const MedicalParamsModal = ({
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
-        // customise ErrorAlert()
-        // ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
+        if (mode == "add") {
+          ErrorAlert("خطا", "ثبت اطلاعات با خطا مواجه گردید!");
+        } else {
+          ErrorAlert("خطا", "ویرایش اطلاعات با خطا مواجه گردید!");
+        }
       });
   };
 
@@ -86,26 +83,13 @@ const MedicalParamsModal = ({
       <Modal.Body>
         <form onSubmit={submitMedParam}>
           <div className="row">
-            {/* <div className="form-group">
-              <label className="lblDrugIns font-12">
-                انتخاب پارامتر <span className="text-danger">*</span>
-              </label>
-
-              <SelectField
-                styles={selectfieldColourStyles}
-                options={medParamsOptions}
-                label={true}
-                className="text-center font-12"
-                placeholder={"انتخاب کنید"}
-                onChange={(value) => FUSelectMedParam(value?.value)}
-                // defaultValue={defDepValue}
-                isClearable
-                required
-              />
-            </div> */}
-
             <div className="form-group">
-              <input type="hidden" className="form-control" name="MedParamID" />
+              <input
+                type="hidden"
+                className="form-control"
+                name="MedParamID"
+                value={mode == "edit" ? data._id : ""}
+              />
 
               <label className="lblAbs font-12">
                 مقدار اندازه گیری شده <span className="text-danger">*</span>
@@ -115,7 +99,7 @@ const MedicalParamsModal = ({
                 type="text"
                 className="form-control"
                 name="paramValue"
-                // defaultValue={mode === "edit" ? editFormData.Name : ""}
+                defaultValue={mode === "edit" ? data.Value : ""}
                 required
               />
             </div>
@@ -125,7 +109,7 @@ const MedicalParamsModal = ({
                 setDate={setDate}
                 label="انتخاب تاریخ"
                 birthDateMode={true}
-              // defValue={}
+                defaultDate={mode == "edit" ? data.Date : null}
               />
             </div>
           </div>

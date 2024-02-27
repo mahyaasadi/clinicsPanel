@@ -3,7 +3,7 @@ import { Tooltip } from "primereact/tooltip";
 const FormText = ({ data, defaultValue, disabled }) => {
   return (
     <>
-      <div className={data.className.replace("form-control", "") + " mt-3"}>
+      <div className={data.className.replace("form-control", "") + " my-4"}>
         <label className="lblAbs font-12">
           {data.label} {data.required && <span className="text-danger">*</span>}{" "}
           {data.description && (

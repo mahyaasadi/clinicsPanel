@@ -10,11 +10,12 @@ export default function ChatPage({
   messageStatus,
   ClinicUserID,
   SendFile,
+  sendBackToChatSms,
 }) {
   return (
     <>
       <div className="chat-cont-right">
-        {/* chat header */}
+        {/* Chat Header */}
         <div className="chat-header">
           <a
             id="back_user_list"
@@ -24,6 +25,7 @@ export default function ChatPage({
           >
             <i className="material-icons">chevron_left</i>
           </a>
+
           {ChatHeader ? (
             <div className="media d-flex  ">
               <div className="media-img-wrap flex-shrink-0">
@@ -43,6 +45,11 @@ export default function ChatPage({
 
               <div className="media-body flex-grow-1">
                 <div className="user-name ">{ChatHeader?.Name}</div>
+                <div className="user-name text-secondary font-14 fw-bold">
+                  {ChatHeader?.Tel && ChatHeader.Tel + " , "}
+                  {ChatHeader?.NationalID &&
+                    "کد ملی  : " + ChatHeader.NationalID}{" "}
+                </div>
                 <div className="user-status"></div>
               </div>
             </div>
@@ -51,13 +58,26 @@ export default function ChatPage({
           )}
           <div className="chat-options">
             <a href="#">
+              <i
+                className="material-icons"
+                onClick={() =>
+                  sendBackToChatSms(
+                    ChatHeader?._id,
+                    ChatHeader?.Tel,
+                    ChatHeader?.Name
+                  )
+                }
+              >
+                sms
+              </i>
+            </a>
+            <a href="#">
               <i className="material-icons">more_vert</i>
             </a>
           </div>
         </div>
 
-        {/*chatBoody*/}
-
+        {/* Chat Body */}
         <div className="chat-scroll" id="chat-body">
           <div className="chat-body">
             <ul className="list-unstyled" id="AddChat">
@@ -73,7 +93,7 @@ export default function ChatPage({
           </div>
         </div>
 
-        {/* chatFooter */}
+        {/* Chat Footer */}
         <form onSubmit={sendTextToChatBox}>
           <div className="chat-footer">
             <div className="input-group">

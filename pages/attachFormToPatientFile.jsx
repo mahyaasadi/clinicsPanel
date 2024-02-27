@@ -43,6 +43,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [frmIsLoading, setFrmIsLoading] = useState(false);
   const [selectedFormData, setSelectedFormData] = useState([]);
+  const [formDirection, setFormDirection] = useState(false);
   const [formValues, setFormValues] = useState({});
   const [patientData, setPatientData] = useState([]);
 
@@ -64,6 +65,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
             checkboxFormsArr.push({ name: x.name });
         });
 
+        setFormDirection(response.data.ltr);
         setSelectedFormData(JSON.parse(response.data.formData[0]));
 
         ActiveFormName = response.data.Name;
@@ -260,6 +262,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     if (ActivePatientFormID) getOnePatientForm();
   }, [router.isReady]);
 
+  console.log({ selectedFormData });
+
   return (
     <>
       <Head>
@@ -276,11 +280,16 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
                 ActivePatientFormID ? editAttachedForm : attachFormToPatientFile
               }
             >
-              <div className="card p-4 height-45">
+              <div
+                className={`card p-4 height-45 ${
+                  formDirection ? "dir-ltr" : "dir-rtl"
+                }`}
+              >
                 <FormPreviewInline
                   data={selectedFormData}
                   formValues={formValues}
                   patientData={patientData}
+                  formDirection={formDirection}
                 />
 
                 <div className="submit-section">

@@ -27,20 +27,28 @@ const ReceptionListTable = ({
       cell: (row) => (
         <div className="d-flex flex-col gap-1 align-items-center">
           <div className="d-flex align-items-center gap-3">
-            <img
-              src={"https://irannobat.ir/images/Avatar/" + row.Patient.Avatar}
-              alt="patientAvatar"
-              style={{
-                width: "35px",
-                height: "35px",
-                borderRadius: "10px",
+            <Link
+              href={{
+                query: { id: row.Patient._id },
+                pathname: "/patientFile",
               }}
-              onError={({ currentTarget }) => {
-                row.Patient.Gender === "F" || row.Patient.Gender === "M"
-                  ? (currentTarget.src = `assets/img/avatar-${row.Patient.Gender}-pic.png`)
-                  : (currentTarget.src = `assets/img/avatar-O-pic.png`);
-              }}
-            />
+              className="receptionImgLink"
+            >
+              <img
+                src={"https://irannobat.ir/images/Avatar/" + row.Patient.Avatar}
+                alt="patientAvatar"
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  borderRadius: "10px",
+                }}
+                onError={({ currentTarget }) => {
+                  row.Patient.Gender === "F" || row.Patient.Gender === "M"
+                    ? (currentTarget.src = `assets/img/avatar-${row.Patient.Gender}-pic.png`)
+                    : (currentTarget.src = `assets/img/avatar-O-pic.png`);
+                }}
+              />
+            </Link>
 
             <Link
               href={{

@@ -29,7 +29,8 @@ export default function MyApp({ Component, pageProps }) {
   let isQRCodePage = false;
   if (
     router.pathname == "/changePatientAvatar" ||
-    router.pathname == "/uploadPatientImgFile"
+    router.pathname == "/uploadPatientImgFile" ||
+    router.pathname == "/patientInquiry"
   ) {
     isQRCodePage = true;
   }

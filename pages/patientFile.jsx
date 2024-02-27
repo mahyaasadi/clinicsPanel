@@ -16,13 +16,16 @@ import FamilyRecordsList from "@/components/dashboard/patientsArchives/patientFi
 import AddictionRecordsList from "@/components/dashboard/patientsArchives/patientFile/addictionRecordsList";
 import FoodAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/foodAllergyRecordsList";
 import MedicalAllergyRecordsList from "@/components/dashboard/patientsArchives/patientFile/medicalAllergyRecordsList";
-import MedicalParamsChartCard from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsChart";
+import MedicalParamsChart from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsChart";
 import MedicalParamsModal from "components/dashboard/patientsArchives/patientFile/medicalParams/medicalParamsModal";
 import NotesList from "components/dashboard/patientsArchives/patientFile/notes/notesList";
 import AttachNoteModal from "components/dashboard/patientsArchives/patientFile/notes/attachNoteModal";
 import ImgRecordsList from "components/dashboard/patientsArchives/patientFile/imgFiles/imgRecordsList";
 import AttachImgFileModal from "components/dashboard/patientsArchives/patientFile/imgFiles/attachImgFileModal";
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
+import FeatherIcon from "feather-icons-react";
+import { Tooltip } from "primereact/tooltip";
+import MedParamsList from "components/dashboard/patientsArchives/patientFile/medicalParams/medParamsList";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -307,14 +310,14 @@ const PatientFile = ({ ClinicUser }) => {
   const [measurementData, setMeasurementData] = useState([]);
   const [showMedicalParamModal, setShowMedicalParamModal] = useState(false);
   const [medModalMode, setMedModalMode] = useState("add");
+  const [selectedParam, setSelectedParam] = useState(null);
   const [selectedParamId, setSelectedParamId] = useState(null);
 
   const handleCloseMedicalParamModal = () => setShowMedicalParamModal(false);
   const openMedicalParamModal = (id) => {
-    console.log({ id });
     setShowMedicalParamModal(true);
     setSelectedParamId(id);
-  }
+  };
 
   // Get All Measurements
   const getMeasurementData = () => {
@@ -331,6 +334,21 @@ const PatientFile = ({ ClinicUser }) => {
       });
   };
 
+  const [showMedParamsListModal, setShowMedParamsListModal] = useState(false);
+  const [editMedParamData, setEditMedParamData] = useState([]);
+
+  const closeMedParamsListModal = () => setShowMedParamsListModal(false);
+  const openMedParamsListModal = (paramName, data, removeMedParam) => {
+    setSelectedParam({ paramName, data, removeMedParam });
+    setShowMedParamsListModal(true);
+  };
+
+  const openEditMedParamModal = (editData) => {
+    setEditMedParamData(editData);
+    setMedModalMode("edit");
+    setShowMedicalParamModal(true);
+  };
+
   const getPatientMedicalParams = () => {
     let url = `MedicalDetails/getAll/${ActivePatientID}`;
 
@@ -341,6 +359,7 @@ const PatientFile = ({ ClinicUser }) => {
       })
       .catch((err) => {
         console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
       });
   };
 
@@ -352,32 +371,37 @@ const PatientFile = ({ ClinicUser }) => {
       // If it doesn't exist, create a new key-value pair with the new ParamID as the key
       patientMedicalParams[addedMedParam.Param] = [addedMedParam];
     }
+
+    getPatientMedicalParams();
   };
 
   const editAttachedMedParam = (updatedMedParam) => {
-    console.log(updatedMedParam);
+    const index = selectedParam.data.findIndex(
+      (item) => item._id === updatedMedParam._id
+    );
+
+    if (index !== -1) {
+      const newData = [...selectedParam.data];
+      newData[index] = updatedMedParam;
+
+      setSelectedParam((prevState) => ({
+        ...prevState,
+        data: newData,
+      }));
+
+      getPatientMedicalParams();
+    }
   };
 
   const removeAttachedMedicalParam = (id) => {
-    console.log({ id });
+    const updatedData = selectedParam.data.filter((item) => item._id !== id);
 
-    // if (patientMedicalParams[id]) {
-    //   const index = patientMedicalParams[id].findIndex(
-    //     (item) => item._id === id
-    //   );
+    setSelectedParam((prevState) => ({
+      ...prevState,
+      data: updatedData,
+    }));
 
-    //   if (index !== -1) {
-    //     // Remove the entry from the array
-    //     patientMedicalParams[id].splice(index, 1);
-
-    //     // If no items are left for the id, delete the date entry
-    //     if (patientMedicalParams[id].length === 0) {
-    //       delete patientMedicalParams[id];
-    //     }
-    //   }
-    // }
-    // setPatientMedicalParams({ ...patientMedicalParams });
-    // getPatientMedicalParams()
+    getPatientMedicalParams();
   };
 
   useEffect(() => {
@@ -451,19 +475,68 @@ const PatientFile = ({ ClinicUser }) => {
                     </a>
                   </li>
                 </ul>
+
                 <div className="tab-content">
                   <div className="tab-pane show active" id="bottom-tab1">
                     <div className="row">
-                      {Object.keys(patientMedicalParams).map((id) => (
-                        <div className="col-md-4 col-12" key={id}>
-                          <MedicalParamsChartCard
-                            id={id}
-                            data={patientMedicalParams[id]}
-                            openMedicalParamModal={openMedicalParamModal}
-                            removeAttachedMedicalParam={removeAttachedMedicalParam}
-                          />
-                        </div>
-                      ))}
+                      {measurementData.map((measure, index) => {
+                        const id = measure._id;
+                        const medicalData = patientMedicalParams[id];
+
+                        return (
+                          <div
+                            className="col-lg-4 col-sm-6 col-12 "
+                            key={index}
+                          >
+                            <div className="card border-gray">
+                              <div className="card-header text-secondary font-13 fw-bold d-flex align-items-cenetr">
+                                <div>نمودار {measure.Name}</div>
+                                <div className="col d-flex gap-1 justify-content-end">
+                                  <button
+                                    onClick={() =>
+                                      openMedParamsListModal(
+                                        measure.Name,
+                                        medicalData
+                                      )
+                                    }
+                                    data-pr-position="right"
+                                    className="btn btn-outline-secondary text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-1 formBtns editParamBtn"
+                                  >
+                                    <FeatherIcon icon="table" />
+                                    <Tooltip target=".editParamBtn">
+                                      ویرایش اطلاعات نمودار
+                                    </Tooltip>
+                                  </button>
+
+                                  <button
+                                    onClick={() => openMedicalParamModal(id)}
+                                    data-pr-position="left"
+                                    className="btn btn-outline-secondary text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-1 formBtns newParamRecord"
+                                  >
+                                    <FeatherIcon icon="plus" />
+                                    <Tooltip target=".newParamRecord">
+                                      سابقه جدید
+                                    </Tooltip>
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="card-body">
+                                {medicalData ? (
+                                  <MedicalParamsChart
+                                    id={id}
+                                    data={medicalData}
+                                  />
+                                ) : (
+                                  <p className="text-center font-12 text-secondary">
+                                    داده ای ثبت نشده است.
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
 
                     <div className="row mb-2">
@@ -612,11 +685,22 @@ const PatientFile = ({ ClinicUser }) => {
           onHide={handleCloseMedicalParamModal}
           mode={medModalMode}
           ClinicID={ClinicID}
+          data={editMedParamData}
           ActivePatientID={ActivePatientID}
           selectedParamId={selectedParamId}
           measurementData={measurementData}
           attachMedicalParam={attachMedicalParam}
           editAttachedMedParam={editAttachedMedParam}
+        />
+
+        <MedParamsList
+          show={showMedParamsListModal}
+          onHide={closeMedParamsListModal}
+          paramName={selectedParam?.paramName}
+          data={selectedParam?.data}
+          ActivePatientID={ActivePatientID}
+          removeAttachedMedicalParam={removeAttachedMedicalParam}
+          openEditMedParamModal={openEditMedParamModal}
         />
       </div>
     </>

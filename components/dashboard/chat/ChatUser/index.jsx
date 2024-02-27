@@ -1,13 +1,16 @@
 const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
   if (user) {
     let patient = Patients?.find((x) => x._id === user?.User1);
+    console.log(patient);
     let LastMessage = "";
     let LastMessageUser = "";
-    user.LastMessage.map((a, index) => {
+    user.LastMessage.map((a) => {
       LastMessage = a;
       LastMessageUser = Patients?.find((x) => x._id === a.Sender);
     });
+
     let insuranceImg = "";
+
     if (user.Insurance) {
       insuranceImg = (
         <img
@@ -16,6 +19,7 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
         />
       );
     }
+
     return (
       <>
         <a
@@ -43,6 +47,7 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
               {insuranceImg}
             </div>
           </div>
+
           <div className="media-body flex-grow-1">
             <div>
               <div className=" center-color "> {patient?.Name}</div>
@@ -56,7 +61,7 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
 
             <div>
               <div
-                className="badge badge-success rounded-pill mt-4"
+                className="badge badge-primary rounded-pill mt-4"
                 id={"badge" + user._id}
               >
                 {user.unReadChatCount}
@@ -71,4 +76,5 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
     return false;
   }
 };
+
 export default ChatUser;

@@ -1,7 +1,12 @@
 import dynamic from "next/dynamic";
 import PatientHorizontalCard from "components/dashboard/patientInfo/patientHorizontalCard";
 
-const FormPreviewInline = ({ data, formValues, patientData }) => {
+const FormPreviewInline = ({
+  data,
+  formValues,
+  patientData,
+  formDirection,
+}) => {
   let componentsArr = [];
 
   data?.map((x, index) => {
@@ -16,6 +21,7 @@ const FormPreviewInline = ({ data, formValues, patientData }) => {
         index={index}
         defaultValue={formValues ? formValues[x.name] : []}
         disabled={false}
+        formDirection={formDirection}
       />
     );
   });
