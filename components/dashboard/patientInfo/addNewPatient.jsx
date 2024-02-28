@@ -84,6 +84,7 @@ const NewPatient = ({
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const input = value.replace(/\D/g, "").slice(0, 4);
+
     setBirthYear(input);
     validateInput(input);
 
@@ -151,6 +152,7 @@ const NewPatient = ({
                 </i>
               </button>
             </div>
+
             <div className="modal-body">
               <form onSubmit={AddPatientCheck}>
                 <div className="form-group">

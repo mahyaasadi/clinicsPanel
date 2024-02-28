@@ -37,7 +37,7 @@ const FormCheckbox = ({ data, disabled, defaultValue, formDirection }) => {
               }`}
               style={{ paddingRight: "2.5em !important" }}
             >
-              <label class="form-check-label mx-2" for={option.value}>
+              <label className="form-check-label mx-2" for={option.value}>
                 {option.label}
               </label>
               <input
@@ -45,7 +45,7 @@ const FormCheckbox = ({ data, disabled, defaultValue, formDirection }) => {
                 name={data.name}
                 value={option.value}
                 id={option.value}
-                class={`form-check-input  ${
+                className={`form-check-input  ${
                   formDirection ? "form-check-input-left" : ""
                 }`}
                 defaultChecked={

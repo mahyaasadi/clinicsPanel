@@ -16,6 +16,7 @@
     "cropperjs": "^1.6.1",
     "feather-icons-react": "^0.6.2",
     "formBuilder": "^3.17.3",
+    "html2canvas": "^1.4.1",
     "jalali-date": "^1.1.4",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",

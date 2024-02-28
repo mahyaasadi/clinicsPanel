@@ -6,6 +6,7 @@ const RadioButton = ({
   checked,
   text,
   requiredOption,
+  patientInquiryStyle,
 }) => {
   return (
     <label htmlFor={id} className="radio-label">
@@ -19,7 +20,11 @@ const RadioButton = ({
         checked={checked}
         required={requiredOption ? requiredOption : false}
       />
-      <span className="custom-radio" />
+      <span
+        className={`${
+          patientInquiryStyle ? "custom-patient-radio" : "custom-radio"
+        }`}
+      />
       {text}
     </label>
   );

@@ -1,0 +1,12 @@
+.patientInquiryContainer {
+    height: 100%;
+    direction: ltr;
+    margin-top: 3rem;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+.patientInquiryForm {
+    direction: rtl;
+    width: 100%;
+}

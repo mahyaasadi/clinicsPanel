@@ -44,8 +44,6 @@ const PatientHorizontalCard = ({
         Avatar: avatarBlob,
       };
 
-      console.log({ editData });
-
       axiosClient
         .put(url, editData)
         .then((response) => {

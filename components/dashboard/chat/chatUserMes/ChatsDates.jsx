@@ -1,5 +1,5 @@
 const ChatsDate = ({ date }) => {
-  return <li class="chat-date">{date}</li>;
+  return <li className="chat-date">{date}</li>;
 };
 
 export default ChatsDate;

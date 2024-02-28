@@ -8800,6 +8800,10 @@ body.darkmode {
     margin-right: 60px;
   }
 
+  .mini-sidebar .page-wrapper-qr {
+    margin-right: 60px;
+  }
+
   .darkmode #toggle_btn {
     color: #97a2d2;
   }
@@ -10937,6 +10941,32 @@ ul li .active {
   opacity: 1;
 }
 
+.custom-patient-radio {
+  left: 5px;
+  top: 5px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #8a8988;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+}
+
+.custom-patient-radio::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: #b45309;
+  position: absolute;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
 .custom-radio {
   left: 5px;
   top: 5px;
@@ -11031,13 +11061,31 @@ ul li .active {
   .sidebar,
   .cashDeskActionModal,
   .modalHeader,
-  .printBtn {
+  .printBtn .downloadBtn {
     display: none !important;
   }
 
   .printContent {
     page-break-after: always;
   }
+
+  .showPrint {
+    display: block !important;
+  }
+}
+
+.page-wrapper-qr {
+  margin-right: 200px;
+  padding-top: 80px;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.page-wrapper-qr>.content {
+  padding: 1.875rem 1.875rem;
+  max-height: 94vh !important;
+  overflow: auto;
+  direction: ltr;
 }
 
 .tContainer {
@@ -11801,6 +11849,24 @@ canvas {
 
 .form-check-left .form-check-input-left {
   float: left !important;
-  /* margin-left: -1.25em !important; */
   margin-right: 0 !important;
+}
+
+.form-check-input:checked {
+  background-color: #b45309 !important;
+  border-color: #b45309 !important;
+}
+
+.form-check-input:focus {
+  border-color: #b45309 !important;
+  box-shadow: none !important
+}
+
+.form-check-input {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.form-check-label {
+  margin-bottom: 7px !important;
 }
