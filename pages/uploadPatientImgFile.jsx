@@ -59,8 +59,6 @@ const UploadPatientImgFile = () => {
       });
   };
 
-  console.log({ imgSrc });
-
   return (
     <div className="changeAvatarContainer">
       <form onSubmit={attachImgFile} className="p-4 mt-4">
@@ -142,11 +140,11 @@ const UploadPatientImgFile = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="btn btn-primary rounded btn-save font-13"
+                    className="btn btn-primary rounded font-13 d-flex align-items-center justify-center gap-2"
                     disabled
                   >
                     <span
-                      className="spinner-border spinner-border-sm me-2"
+                      className="spinner-border spinner-border-sm"
                       role="status"
                     ></span>
                     در حال ثبت

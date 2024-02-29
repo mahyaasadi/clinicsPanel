@@ -4,6 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { convertBase64 } from "utils/convertBase64";
 import { getPatientAvatarUrl } from "lib/session";
+import { resizeImgFile } from "utils/resizeImgFile";
 import { SuccessAlert, ErrorAlert } from "class/AlertManage";
 import useImageCropper from "components/commonComponents/cropper/useImageCropper";
 import "public/assets/css/changePatientAvatar.css";
@@ -29,15 +30,15 @@ const ChangePatientAvatar = () => {
     await submitUpload(blob);
   };
 
-  const displayNewAvatar = (e) => {
-    var urlCreator = window.URL || window.webkitURL;
-    setFileLength(e.target.files.length);
+  // const displayNewAvatar = (e) => {
+  //   var urlCreator = window.URL || window.webkitURL;
+  //   setFileLength(e.target.files.length);
 
-    if (e.target.files.length !== 0) {
-      var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-      setAvatarSrc(imageUrl);
-    }
-  };
+  //   if (e.target.files.length !== 0) {
+  //     var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
+  //     setAvatarSrc(imageUrl);
+  //   }
+  // };
 
   let avatarBlob = null;
   const submitUpload = async (blob) => {
@@ -97,7 +98,7 @@ const ChangePatientAvatar = () => {
                   type="file"
                   className="upload"
                   name="editPatientAvatar"
-                  onChange={displayNewAvatar}
+                  onChange={(e) => resizeImgFile(e, setAvatarSrc)}
                   required
                 />
               </div>

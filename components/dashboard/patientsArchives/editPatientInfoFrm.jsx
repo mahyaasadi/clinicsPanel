@@ -33,7 +33,7 @@ const EditPatientInfoFrm = ({
   const [avatarIsLoading, setAvatarIsLoading] = useState(false);
   const [showEmailAlertTxt, setShowEmailAlertTxt] = useState(false);
   const [birthDate, setBirthDate] = useState(null);
-  const [email, setEmail] = useState(data.Email);
+  const [email, setEmail] = useState(data?.Email);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
 
@@ -66,9 +66,9 @@ const EditPatientInfoFrm = ({
   let education = "";
   const FUSelectEducationStatus = (education) => (education = education);
 
-  const defaultGenderValue = data.Gender;
+  const defaultGenderValue = data?.Gender;
   const defaultGenderValueLabel =
-    data.Gender === "M" ? "مرد" : data.Gender === "F" ? "زن" : "دیگر";
+    data?.Gender === "M" ? "مرد" : data?.Gender === "F" ? "زن" : "دیگر";
 
   const selectedGender = {
     value: defaultGenderValue,
@@ -76,13 +76,13 @@ const EditPatientInfoFrm = ({
   };
 
   const selectedMaritalStatus = {
-    value: data.MaritalStatus,
-    label: data.MaritalStatus,
+    value: data?.MaritalStatus,
+    label: data?.MaritalStatus,
   };
 
   const selectedEducationStatus = {
-    value: data.Education,
-    label: data.Education,
+    value: data?.Education,
+    label: data?.Education,
   };
 
   const _editPatientInfo = (e) => {
@@ -145,7 +145,7 @@ const EditPatientInfoFrm = ({
     await changePatientAvatar(blob);
   };
 
-  const [avatarSrc, setAvatarSrc] = useState(data.Avatar);
+  const [avatarSrc, setAvatarSrc] = useState(data?.Avatar);
   const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
 
   const changePatientAvatar = async (blob) => {
@@ -198,7 +198,7 @@ const EditPatientInfoFrm = ({
         <div className="card shadow-none col-6">
           <div className="card-body">
             <div className="patientAvatarImg">
-              {data.Avatar ? (
+              {data?.Avatar ? (
                 <img
                   src={"https://irannobat.ir/images/Avatar/" + patientAvatar}
                   alt="patientAvatar"
@@ -236,7 +236,7 @@ const EditPatientInfoFrm = ({
           <hr style={{ position: "relative" }} />
 
           <div className="form-group col-md-4 col-sm-6 col-12 margint-frmGrp">
-            <input type="hidden" value={data._id} name="patientID" />
+            <input type="hidden" value={data?._id} name="patientID" />
 
             <label className="lblAbs font-12">
               نام کامل <span className="text-danger">*</span>
@@ -244,8 +244,8 @@ const EditPatientInfoFrm = ({
             <input
               className="form-control floating inputPadding rounded"
               name="patientName"
-              defaultValue={data.Name ? data.Name : ""}
-              key={data.Name}
+              defaultValue={data?.Name ? data?.Name : ""}
+              key={data?.Name}
               required
             />
           </div>
@@ -258,8 +258,8 @@ const EditPatientInfoFrm = ({
               dir="ltr"
               className="form-control floating inputPadding rounded"
               name="patientNID"
-              defaultValue={data.NationalID ? data.NationalID : ""}
-              key={data.NationalID}
+              defaultValue={data?.NationalID ? data?.NationalID : ""}
+              key={data?.NationalID}
               required
             />
           </div>
@@ -275,7 +275,7 @@ const EditPatientInfoFrm = ({
               placeholder={"انتخاب کنید"}
               defaultValue={selectedGender}
               onChangeValue={(value) => FUSelectGender(value?.value)}
-              key={data.Gender}
+              key={data?.Gender}
               isClearable
             />
           </div>
@@ -290,8 +290,8 @@ const EditPatientInfoFrm = ({
               type="tel"
               className="form-control floating inputPadding rounded"
               name="patientTel"
-              defaultValue={data.Tel ? data.Tel : ""}
-              key={data.Tel}
+              defaultValue={data?.Tel ? data?.Tel : ""}
+              key={data?.Tel}
               required
             />
           </div>
@@ -302,8 +302,8 @@ const EditPatientInfoFrm = ({
               type="tel"
               className="form-control floating inputPadding rounded"
               name="patientLandlinePhone"
-              defaultValue={data.Landline ? data.Landline : ""}
-              key={data.Landline}
+              defaultValue={data?.Landline ? data?.Landline : ""}
+              key={data?.Landline}
             />
           </div>
         </div>
@@ -321,8 +321,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="fathersName"
-              defaultValue={data.FatherName ? data.FatherName : ""}
-              key={data.FatherName}
+              defaultValue={data?.FatherName ? data?.FatherName : ""}
+              key={data?.FatherName}
             />
           </div>
 
@@ -333,14 +333,14 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="patientAge"
-              defaultValue={data.Age ? data.Age : ""}
-              key={data.Age}
+              defaultValue={data?.Age ? data?.Age : ""}
+              key={data?.Age}
             />
           </div>
 
           <div className="form-group col-md-3 col-sm-6 col-12 margint-frmGrp">
             <SingleDatePicker
-              defaultDate={data.BD}
+              defaultDate={data?.BD}
               birthDateMode={true}
               setDate={setBirthDate}
               label="تاریخ تولد"
@@ -353,8 +353,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="representative"
-              defaultValue={data.Representative ? data.Representative : ""}
-              key={data.Representative}
+              defaultValue={data?.Representative ? data?.Representative : ""}
+              key={data?.Representative}
             />
           </div>
         </div>
@@ -367,8 +367,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="ShenasnamehNo"
-              defaultValue={data.ShenasnamehNo ? data.ShenasnamehNo : ""}
-              key={data.ShenasnamehNo}
+              defaultValue={data?.ShenasnamehNo ? data?.ShenasnamehNo : ""}
+              key={data?.ShenasnamehNo}
             />
           </div>
 
@@ -383,7 +383,7 @@ const EditPatientInfoFrm = ({
               placeholder={"انتخاب کنید"}
               defaultValue={selectedMaritalStatus}
               onChangeValue={(value) => FUSelectMaritalStatus(value?.value)}
-              key={data.MaritalStatus}
+              key={data?.MaritalStatus}
               isClearable
             />
           </div>
@@ -399,7 +399,7 @@ const EditPatientInfoFrm = ({
               placeholder={"انتخاب کنید"}
               onChangeValue={(value) => FUSelectEducationStatus(value?.value)}
               defaultValue={selectedEducationStatus}
-              key={data.Education}
+              key={data?.Education}
               isClearable
             />
           </div>
@@ -410,8 +410,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="Job"
-              defaultValue={data.Job ? data.Job : ""}
-              key={data.Job}
+              defaultValue={data?.Job ? data?.Job : ""}
+              key={data?.Job}
             />
           </div>
         </div>
@@ -424,8 +424,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="PatientHeight"
-              defaultValue={data.PatientHeight ? data.PatientHeight : ""}
-              key={data.PatientHeight}
+              defaultValue={data?.PatientHeight ? data?.PatientHeight : ""}
+              key={data?.PatientHeight}
             />
           </div>
 
@@ -436,8 +436,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="PatientWeight"
-              defaultValue={data.PatientWeight ? data.PatientWeight : ""}
-              key={data.PatientWeight}
+              defaultValue={data?.PatientWeight ? data?.PatientWeight : ""}
+              key={data?.PatientWeight}
             />
           </div>
 
@@ -448,8 +448,8 @@ const EditPatientInfoFrm = ({
               type="text"
               className="form-control floating inputPadding rounded"
               name="PostalCode"
-              defaultValue={data.PostalCode ? data.PostalCode : ""}
-              key={data.PostalCode}
+              defaultValue={data?.PostalCode ? data?.PostalCode : ""}
+              key={data?.PostalCode}
             />
           </div>
 
@@ -464,7 +464,7 @@ const EditPatientInfoFrm = ({
               value={email}
               onBlur={handleEmailBlur}
               onChange={handleEmailChange}
-              key={data.Email}
+              key={data?.Email}
             />
 
             {showEmailAlertTxt && (
@@ -489,8 +489,8 @@ const EditPatientInfoFrm = ({
             type="text"
             className="form-control floating inputPadding rounded"
             name="Address"
-            defaultValue={data.Address}
-            key={data.Address}
+            defaultValue={data?.Address}
+            key={data?.Address}
           ></textarea>
         </div>
 

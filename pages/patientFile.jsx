@@ -479,15 +479,38 @@ const PatientFile = ({ ClinicUser }) => {
                 <div className="tab-content">
                   <div className="tab-pane show active" id="bottom-tab1">
                     <div className="row">
-                      {measurementData.map((measure, index) => {
+                      {Object.keys(patientMedicalParams).map((id) => (
+                        <div className="col-md-4 col-12" key={id}>
+                          <div className="card">
+                            <div className="card-body">
+                              <MedicalParamsChart
+                                id={id}
+                                data={patientMedicalParams[id]}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+
+                      <div className="col-md-4">
+                        <div
+                          className="dashedBorder-card text-secondary btn w-100"
+                          onClick={() => console.log("object")}
+                        >
+                          <div className="card-body h-100">
+                            <div className="d-flex align-items-center justify-center plusIcon">
+                              <FeatherIcon icon="plus" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* {measurementData.map((measure, index) => {
                         const id = measure._id;
                         const medicalData = patientMedicalParams[id];
 
                         return (
-                          <div
-                            className="col-lg-4 col-sm-6 col-12 "
-                            key={index}
-                          >
+                          <div className="col-lg-4 col-sm-6 col-12" key={index}>
                             <div className="card border-gray">
                               <div className="card-header text-secondary font-13 fw-bold d-flex align-items-cenetr">
                                 <div>نمودار {measure.Name}</div>
@@ -536,7 +559,7 @@ const PatientFile = ({ ClinicUser }) => {
                             </div>
                           </div>
                         );
-                      })}
+                      })} */}
                     </div>
 
                     <div className="row mb-2">

@@ -18,26 +18,22 @@ const PatientInquiry = () => {
   const router = useRouter();
   let ClinicID = getPatientAvatarUrl(router.query.token);
 
-  console.log({ ClinicID });
-
   const [patientNID, setPatientNID] = useState("");
   const [patientData, setPatientData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [patientIsLoading, setPatientIsLoading] = useState(false);
-  const [showSearchBtn, setShowSearchBtn] = useState(true);
-  const [showResetBtn, setShowResetBtn] = useState(false);
-
-  const [newPatientMode, setNewPatientMode] = useState(false);
-  const [foreignersMode, setForeignersMode] = useState(false);
+  const [clinicData, setClinicData] = useState([]);
   const [insuranceOptionsList, setInsuranceOptionsList] = useState([]);
   const [selectedInsuranceOption, setSelectedInsuranceOption] = useState(null);
   const [selectedGenderOption, setSelectedGenderOption] = useState(null);
   const [birthYear, setBirthYear] = useState("");
   const [age, setAge] = useState("");
-  const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
-  const [disabledMode, setDisabledMode] = useState(false);
+  const [PatientTel, setPatientTel] = useState("");
 
-  const [clinicData, setClinicData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [patientIsLoading, setPatientIsLoading] = useState(false);
+  const [showSearchBtn, setShowSearchBtn] = useState(true);
+  const [showResetBtn, setShowResetBtn] = useState(false);
+  const [showBirthDigitsAlert, setShowBirthDigitsAlert] = useState(false);
+  const [newPatientMode, setNewPatientMode] = useState(false);
 
   const getOneClinic = () => {
     let url = `Clinic/getOne/${ClinicID}`;
@@ -45,7 +41,6 @@ const PatientInquiry = () => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setClinicData(response.data);
       })
       .catch((err) => console.log(err));
@@ -100,14 +95,6 @@ const PatientInquiry = () => {
 
   const confirmPatientInfo = () => {
     SuccessAlert("", "درخواست پذیرش با موفقیت ثبت گردید!");
-  };
-
-  const changeForeigners = (e) => {
-    if (e.target.checked) {
-      setForeignersMode(true);
-    } else {
-      setForeignersMode(false);
-    }
   };
 
   const getInsuranceList = () => {
@@ -168,11 +155,17 @@ const PatientInquiry = () => {
   const validateInput = (input) => {
     if (input.length < 4) {
       setShowBirthDigitsAlert(true);
-      setDisabledMode(true);
     } else {
       setShowBirthDigitsAlert(false);
-      setDisabledMode(false);
     }
+  };
+
+  const resetInputFields = () => {
+    setSelectedGenderOption(null);
+    setSelectedInsuranceOption(null);
+    setPatientTel("");
+    setBirthYear("");
+    setAge("");
   };
 
   const addNewPatient = (props) => {
@@ -194,21 +187,25 @@ const PatientInquiry = () => {
           setPatientIsLoading(false);
           return false;
         } else if (response.data.errors) {
+          console.log(response.data.errors);
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
           setPatientIsLoading(false);
           return false;
         } else {
           SuccessAlert("موفق", "اطلاعات بیمار با موفقیت ثبت گردید!");
           setPatientData(response.data);
+
+          setTimeout(() => {
+            resetInputFields();
+          }, 200);
         }
         setPatientIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
+        setPatientIsLoading(false);
       });
-
-    setPatientIsLoading(false);
   };
 
   const AddPatientCheck = (e) => {
@@ -217,23 +214,31 @@ const PatientInquiry = () => {
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
 
-    if (formProps.PatientID.length < 10 && !formProps.Foreigners) {
+    if (patientNID.length < 10) {
       ErrorAlert("خطا", "کد ملی بیمار نمی تواند کمتر از 10 رقم باشد");
-    } else if (formProps.PatientID.length < 12 && formProps.Foreigners) {
-      ErrorAlert("خطا", "کد اتباع نمی تواند کمتر از 12 رقم باشد");
     } else if (formProps.PatientTel.length != 11) {
       ErrorAlert("خطا", "شماره همراه باید حداقل 11 رقم باشد");
     } else {
+      if (patientNID.length == 10) {
+        formProps.Foreigners = false;
+      } else {
+        formProps.Foreigners = true;
+      }
+
+      formProps.PatientID = patientNID;
       formProps.insuranceTypeOptions = selectedInsuranceOption;
-      formProps.genderOption = selectedGenderOption;
+      if (selectedGenderOption) formProps.genderOption = selectedGenderOption;
       addNewPatient(formProps);
     }
   };
 
   useEffect(() => {
-    getInsuranceList();
-    getOneClinic();
-  }, []);
+    if (router.query.token) {
+      getOneClinic();
+    }
+  }, [router.isReady]);
+
+  useEffect(() => getInsuranceList(), []);
 
   return (
     <>
@@ -242,9 +247,17 @@ const PatientInquiry = () => {
       </Head>
 
       <div className="patientInquiryContainer d-flex flex-col">
-        {/* <div className="">
-          <p className="">{clinicData.Name}</p>
-        </div> */}
+        {clinicData.Name && (
+          <div className="d-flex justify-center align-items-center gap-2 text-secondary font-14 fw-bold">
+            <p className="mb-0">{clinicData.Name}</p>
+            <img
+              src={clinicData.Logo}
+              alt="clinicLogo"
+              style={{ width: "30px", height: "30px", borderRadius: "4px" }}
+            />
+          </div>
+        )}
+        <hr />
 
         <div className="patientInquiryForm p-4 d-flex flex-col justify-center">
           <form onSubmit={_getPatientInfo}>
@@ -302,7 +315,7 @@ const PatientInquiry = () => {
                   <InfoCard data={patientData} />
                 </div>
 
-                <div className="submit-section d-flex justify-center ">
+                <div className="submit-section d-flex justify-center">
                   <button
                     onClick={confirmPatientInfo}
                     className="btn btn-primary px-5 font-13 d-flex align-items-center justify-center gap-2 w-100"
@@ -323,34 +336,6 @@ const PatientInquiry = () => {
               <p className="font-14">اطلاعات خود را به دقت وارد نمایید</p>
               <hr />
 
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="1"
-                  id="Foreigners"
-                  name="Foreigners"
-                  onChange={changeForeigners}
-                />
-                <label className="form-check-label text-secondary">اتباع</label>
-              </div>
-
-              <div className="col-md-12 media-w-100 my-4">
-                <label id="addPatientIDLbl" className="font-13">
-                  {foreignersMode ? "کد اتباع بیمار" : "کد ملی بیمار"}{" "}
-                  <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  dir="ltr"
-                  className="form-control rounded padding-right-2"
-                  id="addPatientID"
-                  name="PatientID"
-                  required
-                  defaultValue={patientNID}
-                />
-              </div>
-
               <div className="col-md-12 media-w-100 my-4">
                 <label className="font-13">
                   شماره موبایل <span className="text-danger">*</span>
@@ -359,12 +344,14 @@ const PatientInquiry = () => {
                   type="tel"
                   className="form-control rounded padding-right-2"
                   id="addPatientTel"
+                  value={PatientTel}
+                  onChange={(e) => setPatientTel(e.target.value)}
                   name="PatientTel"
                   required
                 />
               </div>
 
-              <div className="">
+              <div>
                 <p className="font-14">نوع بیمه خود را انتخاب نمایید</p>
                 <hr />
                 {insuranceOptionsList.map((option, index) => (
@@ -434,7 +421,6 @@ const PatientInquiry = () => {
                           onBlur={handleBlur}
                           maxLength={4}
                           minLength={4}
-                          // required
                         />
 
                         {showBirthDigitsAlert && (
@@ -474,7 +460,6 @@ const PatientInquiry = () => {
                   <button
                     type="submit"
                     className="btn btn-primary px-5 font-13 w-100"
-                    disabled={disabledMode}
                   >
                     ثبت اطلاعات
                   </button>

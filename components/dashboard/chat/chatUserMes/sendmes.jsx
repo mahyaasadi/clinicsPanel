@@ -7,14 +7,14 @@ export default function SendMessage({
   let Type = sendmes.Type;
   let content = null;
   let status = null;
-
+  // console.log(messageStatus);
   if (messageStatus === null) {
     console.log(messageStatus);
     status = " در حال ارسال ";
   } else {
     status = messageStatus[sendmes.Status];
   }
-
+  /////////
   if (Type === "Image") {
     content = (
       <>
@@ -55,7 +55,6 @@ export default function SendMessage({
       return '<a href="' + url + '">' + url + "</a>";
     });
   }
-
   return (
     <>
       <li className="media sent d-flex">

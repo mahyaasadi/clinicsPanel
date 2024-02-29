@@ -1,4 +1,5 @@
 import { Modal } from "react-bootstrap";
+import { resizeImgFile } from "utils/resizeImgFile";
 import FeatherIcon from "feather-icons-react";
 
 const UploadAvatarModal = ({
@@ -13,15 +14,15 @@ const UploadAvatarModal = ({
   setAvatarSrc,
   imageElement,
 }) => {
-  const displayNewAvatar = (e) => {
-    var urlCreator = window.URL || window.webkitURL;
+  // const displayNewAvatar = (e) => {
+  //   var urlCreator = window.URL || window.webkitURL;
 
-    if (e.target.files.length !== 0) {
-      var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-      $("#patientAvatar").attr("src", imageUrl);
-      setAvatarSrc(imageUrl);
-    }
-  };
+  //   if (e.target.files.length !== 0) {
+  //     var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
+  //     $("#patientAvatar").attr("src", imageUrl);
+  //     setAvatarSrc(imageUrl);
+  //   }
+  // };
 
   return (
     <Modal show={show} onHide={onHide} centered size="lg">
@@ -45,7 +46,7 @@ const UploadAvatarModal = ({
                 type="file"
                 className="upload"
                 name="editPatientAvatar"
-                onChange={displayNewAvatar}
+                onChange={(e) => resizeImgFile(e, setAvatarSrc)}
                 required
               />
             </div>
@@ -58,7 +59,7 @@ const UploadAvatarModal = ({
               id="patientAvatar"
               className="d-block m-auto previewImg"
               src={
-                data.Avatar === avatarSrc
+                data?.Avatar === avatarSrc
                   ? "https://irannobat.ir/images/Avatar/" + avatarSrc
                   : avatarSrc
               }
@@ -78,11 +79,11 @@ const UploadAvatarModal = ({
               ) : (
                 <button
                   type="submit"
-                  className="btn btn-primary rounded font-13"
+                  className="btn btn-primary rounded font-13 d-flex align-items-center justify-center gap-2"
                   disabled
                 >
                   <span
-                    className="spinner-border spinner-border-sm me-2"
+                    className="spinner-border spinner-border-sm"
                     role="status"
                   ></span>
                   در حال ثبت

@@ -72,7 +72,7 @@ const Header = ({ ClinicUser }) => {
     <>
       <div className="content-header shadow-sm">
         <div className="header-left">
-          <Link href="/dashboard" className="logo">
+          <Link href="#" className="logo">
             ایران نوبت {/* اینو <span className="powerClinic">کلینیک</span> */}
             {/* <Image
               src={headerLogo}
@@ -101,7 +101,7 @@ const Header = ({ ClinicUser }) => {
           </Link>
 
           {/* Search */}
-          <div className="top-nav-search">
+          {/* <div className="top-nav-search">
             <div className="main">
               <form className="search" method="post" action="/admin">
                 <div className="s-icon">
@@ -114,7 +114,7 @@ const Header = ({ ClinicUser }) => {
                 />
               </form>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Header Menu */}

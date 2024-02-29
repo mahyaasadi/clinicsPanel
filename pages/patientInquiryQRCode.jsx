@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import { getSession } from "lib/session";
 import { setPatientAvatarUrl } from "lib/session";
-import { Skeleton } from "primereact/skeleton";
-import { Tooltip } from "primereact/tooltip";
-import FeatherIcon from "feather-icons-react";
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
+import { Skeleton } from "primereact/skeleton";
+import FeatherIcon from "feather-icons-react";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -31,17 +30,6 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setQrCodeUrl(
-        `http://192.168.1.116:3000/patientInquiry?token=${ClinicID}`
-      );
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [ClinicID]);
-
   const handlePrint = () => window.print();
 
   const handleDownload = () => {
@@ -54,39 +42,56 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
     });
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setQrCodeUrl(
+        `https://clinic.irannobat.ir/patientInquiry?token=${ClinicID}`
+      );
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [ClinicID]);
+
   return (
     <>
-      <Head>{/* <title>مدیریت سرویس ها</title> */}</Head>
+      <Head>
+        <title>کیوسک آنلاین</title>
+      </Head>
       <div className="page-wrapper-qr">
         <div className="content container-fluid">
-          <div className="card dir-rtl">
-            <div className="card-header d-flex gap-1 justify-end">
-              {/* <p className="text-secondary fw-bold font-13">
-                با اسکن کد زیر وارد لینک شده و استعلام اطلاعات خود را از طریق کد
-                ملی دریافت نمایید
-              </p> */}
-
+          {/* <div className="card dir-rtl"> */}
+          <div className="card-header d-flex gap-1">
+            <div className="printBtn">
               <button
                 onClick={() => handlePrint()}
-                className="btn btn-outline-primary printBtn"
+                className="btn btn-outline-primary "
               >
                 <FeatherIcon icon="printer" />
               </button>
+            </div>
+
+            <div className="downloadBtn">
               <button
                 onClick={handleDownload}
-                className="btn btn-outline-primary downloadBtn"
+                className="btn btn-outline-primary "
               >
                 <FeatherIcon icon="download" />
               </button>
             </div>
+          </div>
 
-            <div className="card-body" id="qr-code">
-              <div className="d-flex justify-center align-items-center showPrint">
-                {isLoading ? (
-                  <div className="qrcodeSkeleton">
-                    <Skeleton></Skeleton>
-                  </div>
-                ) : (
+          <div className="card-body">
+            <div className="showPrint">
+              <div className="text-center my-5 fw-bold font-17">
+                {/* <p className="">TEXT</p> */}
+              </div>
+              {isLoading ? (
+                <div className="qrcodeSkeleton d-flex justify-center">
+                  <Skeleton></Skeleton>
+                </div>
+              ) : (
+                <div className="d-flex justify-center p-0" id="qr-code">
                   <QRCode
                     size={70}
                     style={{
@@ -98,10 +103,11 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                     viewBox={`0 0 100 100`}
                     fgColor={"#633512"}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
+          {/* </div> */}
         </div>
       </div>
     </>
