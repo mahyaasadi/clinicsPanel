@@ -80,7 +80,7 @@ const PatientChat = ({ ClinicUser }) => {
     }
   };
 
-  //centers & chatsrooms
+  // centers & chatsrooms
   const centers = () => {
     let url = "ChatRoom/GetData/Admin";
     let data = {
@@ -105,7 +105,7 @@ const PatientChat = ({ ClinicUser }) => {
       });
   };
 
-  /////////images
+  // images
   let gallery = null;
   const ImageGalleryRender = (src) => {
     let ul = document.createElement("ul");
@@ -114,7 +114,6 @@ const PatientChat = ({ ClinicUser }) => {
       Array.from(imageMess).map((el) => {
         ul.appendChild(el);
       });
-      // console.log(ul);
       gallery = new Viewer(ul, {
         fullscreen: true,
       });
@@ -122,7 +121,7 @@ const PatientChat = ({ ClinicUser }) => {
     gallery.view(src);
   };
 
-  //////////chats
+  // chats
   const getChatRommData = (id) => {
     // setChatRoomBody([]);
     let url = `/ChatRoom/GetChatRoomData`;

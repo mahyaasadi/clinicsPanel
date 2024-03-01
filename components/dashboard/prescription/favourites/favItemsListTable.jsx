@@ -7,7 +7,6 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 
 const FavItemsListTable = ({ data, removeFavItem, selectedFavItemTab }) => {
-    console.log({ data });
     const columns = [
         {
             name: "کد خدمت",

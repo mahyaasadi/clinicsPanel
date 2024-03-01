@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Tooltip } from "primereact/tooltip";
-import FeatherIcon from "feather-icons-react";
 
 const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
   var isMouseDown = false;

@@ -9,8 +9,6 @@ const NewPatientOptionsModal = ({
   data,
   openAppointmentModal,
 }) => {
-  //   console.log({ data });
-
   const router = useRouter();
 
   return (

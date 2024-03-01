@@ -160,8 +160,6 @@ const EditPatientInfoFrm = ({
         Avatar: avatarBlob,
       };
 
-      console.log({ editData });
-
       axiosClient
         .put(url, editData)
         .then((response) => {
@@ -499,14 +497,14 @@ const EditPatientInfoFrm = ({
             <button
               type="submit"
               id="submitEditPatient"
-              className="btn btn-primary rounded col-md-2 col-12 font-13"
+              className="btn btn-primary rounded col-md-3 col-12 font-13"
             >
               ثبت
             </button>
           ) : (
             <button
               type="submit"
-              className="btn btn-primary rounded col-md-2 col-12 font-13"
+              className="btn btn-primary rounded col-md-3 col-12 font-13"
               disabled
             >
               <span
@@ -519,7 +517,7 @@ const EditPatientInfoFrm = ({
 
           <button
             type="submit"
-            className="btn btn-outline-primary rounded profileSettingsBtn col-md-2 col-12 font-13"
+            className="btn btn-outline-primary rounded profileSettingsBtn col-md-3 col-12 font-13"
             id="cancelEditPatientInfoBtn"
             onClick={handleCancelBtn}
           >

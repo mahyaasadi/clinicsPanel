@@ -45,11 +45,7 @@ const ApplyAppointmentModal = ({
     ? hoursOptions.filter((option) => option.value > pureStartTime)
     : hoursOptions;
 
-  const FUSelectStartTime = (startTime) => {
-    setPureStartTime(startTime);
-    console.log("object");
-  };
-
+  const FUSelectStartTime = (startTime) => setPureStartTime(startTime);
   const FUSelectEndTime = (endTime) => setPureEndTime(endTime);
 
   const { data: clinicDepartments, isLoading } =

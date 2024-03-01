@@ -1,5 +1,4 @@
 import { useState } from "react";
-import JDate from "jalali-date";
 import { Tooltip } from "primereact/tooltip";
 import { axiosClient } from "@/class/axiosConfig";
 import { ErrorAlert, WarningAlert } from "class/AlertManage";

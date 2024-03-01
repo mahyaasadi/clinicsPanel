@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { returnPayment } from "components/commonComponents/imagepath";
 import FeatherIcon from "feather-icons-react";
 
 const OverviewStats = ({ stats }) => {

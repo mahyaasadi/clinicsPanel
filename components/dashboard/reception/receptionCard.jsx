@@ -170,7 +170,7 @@ const ReceptionCard = ({
                       ثبت تغییرات
                     </button>
                     <button
-                      className="btn btn-outline-dark cancelBtn rounded font-12 col-xl-5 col-12"
+                      className="btn btn-outline-primary cancelBtn rounded font-12 col-xl-5 col-12"
                       onClick={handleCancelEdit}
                     >
                       انصراف

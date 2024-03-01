@@ -176,9 +176,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                     <ul className="nav nav-tabs nav-tabs-solid justify-end">
                       <li className="nav-item">
                         <a
-                          className={`nav-link ${
-                            activeTab === 0 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 0 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)}
@@ -188,9 +187,8 @@ const ReceptionsList = ({ ClinicUser }) => {
                       </li>
                       <li className="nav-item">
                         <a
-                          className={`nav-link ${
-                            activeTab === 1 ? "active" : ""
-                          }`}
+                          className={`nav-link ${activeTab === 1 ? "active" : ""
+                            }`}
                           href="#solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
@@ -203,9 +201,8 @@ const ReceptionsList = ({ ClinicUser }) => {
 
                   <div className="tab-content pt-1">
                     <div
-                      className={`tab-pane show ${
-                        activeTab === 0 ? "active" : ""
-                      }`}
+                      className={`tab-pane show ${activeTab === 0 ? "active" : ""
+                        }`}
                       id="solid-rounded-tab1"
                     >
                       <div className="row">

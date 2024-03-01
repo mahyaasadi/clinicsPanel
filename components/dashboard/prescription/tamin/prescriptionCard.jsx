@@ -74,7 +74,6 @@ const PrescriptionCard = ({
   //       setSearchIsLoading(false);
   //     }
   //   }, 500);
-  //   console.log(result);
   // };
 
   const editDrugInstructionData = drugInstructionList.find(
@@ -369,7 +368,7 @@ const PrescriptionCard = ({
                       ثبت تغییرات
                     </button>
                     <button
-                      className="btn btn-sm btn-outline-dark rounded w-100 font-12"
+                      className="btn btn-sm btn-outline-primary rounded w-100 font-12"
                       onClick={handleCancel}
                     >
                       انصراف

@@ -65,8 +65,6 @@ const TaminPrescRecords = ({ ClinicUser }) => {
       headerID: headerID,
     };
 
-    console.log("getOnePresc", data);
-
     if (headerID) {
       axiosClient
         .post(url, data)
@@ -102,7 +100,6 @@ const TaminPrescRecords = ({ ClinicUser }) => {
   };
 
   const prepareDelete = (headerID, prID) => {
-    // ActivePrescHeadID = headerID;
     setPrescData({ headerID, prID });
     getOneEprscData(headerID, prID);
 

@@ -1,16 +1,15 @@
 const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
   if (user) {
-    let patient = Patients?.find((x) => x._id === user?.User1);
-    console.log(patient);
     let LastMessage = "";
     let LastMessageUser = "";
+    let patient = Patients?.find((x) => x._id === user?.User1);
+
     user.LastMessage.map((a) => {
       LastMessage = a;
       LastMessageUser = Patients?.find((x) => x._id === a.Sender);
     });
 
     let insuranceImg = "";
-
     if (user.Insurance) {
       insuranceImg = (
         <img

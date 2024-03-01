@@ -12,7 +12,6 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
 }) => {
-  console.log({ data });
   const router = useRouter();
 
   const columns = [

@@ -525,8 +525,6 @@ const TaminPrescription = ({
       prescItems: favPrescItemsData,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
@@ -573,12 +571,9 @@ const TaminPrescription = ({
         console.log("No match found for ID:", id);
         return;
       } else {
-        let updatedItemsData = [...favPrescItemsData]; // Make a shallow copy of the array
-        updatedItemsData[index2] = newArr; // Update the item at index2 with newArr
-
-        console.log({ index2, updatedItemsData });
-
-        setFavPrescItemsData(updatedItemsData); // Update the state with the updated array
+        let updatedItemsData = [...favPrescItemsData];
+        updatedItemsData[index2] = newArr;
+        setFavPrescItemsData(updatedItemsData);
       }
     }
   };
@@ -612,10 +607,8 @@ const TaminPrescription = ({
     // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
     if (editFavPrescData.length !== 0) {
-      console.log("object");
       updateItem(id, combinedObject);
     } else {
-      console.log("222");
       updateItem(id, prescItems);
     }
   };
@@ -913,10 +906,6 @@ const TaminPrescription = ({
     getTaminFavPrescs();
     $("#patientNID").val("");
   }, []);
-
-  useEffect(() => {
-    console.log({ prescriptionItemsData }, [prescriptionItemsData]);
-  })
 
   return (
     <>

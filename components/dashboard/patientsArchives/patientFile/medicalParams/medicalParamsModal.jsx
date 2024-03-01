@@ -2,15 +2,18 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert } from "class/AlertManage";
+import { Dropdown } from "primereact/dropdown"
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 
 const MedicalParamsModal = ({
   show,
   onHide,
   mode,
+  medModalAddMode,
   data,
   ClinicID,
   selectedParamId,
+  setSelectedParamId,
   ActivePatientID,
   measurementData,
   attachMedicalParam,
@@ -45,8 +48,6 @@ const MedicalParamsModal = ({
       MedicalDetailID: formProps.MedParamID,
     };
 
-    console.log({ sentData });
-
     axiosClient
       .post(url, sentData)
       .then((response) => {
@@ -55,7 +56,6 @@ const MedicalParamsModal = ({
         } else {
           editAttachedMedParam(response.data);
         }
-
         onHide();
         setIsLoading(false);
       })
@@ -90,6 +90,21 @@ const MedicalParamsModal = ({
                 name="MedParamID"
                 value={mode == "edit" ? data._id : ""}
               />
+
+              {medModalAddMode && (
+                <div className="my-3">
+                  <label className="lblAbs font-12">انتخاب پارامتر</label>
+                  <div data-pr-position="top">
+                    <Dropdown
+                      value={selectedParamId}
+                      onChange={(e) => setSelectedParamId(e.value)}
+                      options={medParamsOptions}
+                      optionLabel="label"
+                      placeholder="انتخاب نمایید"
+                    />
+                  </div>
+                </div>
+              )}
 
               <label className="lblAbs font-12">
                 مقدار اندازه گیری شده <span className="text-danger">*</span>

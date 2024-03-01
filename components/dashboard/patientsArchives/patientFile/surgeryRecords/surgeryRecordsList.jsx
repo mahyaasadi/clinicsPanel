@@ -1,4 +1,3 @@
-import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { axiosClient } from "class/axiosConfig.js";
@@ -15,7 +14,6 @@ const SurgeryRecordsList = ({
   ActivePatientID,
   ClinicUserID,
   openSurgeryModal,
-  patientData,
 }) => {
   // remove patient's surgeryRecord
   const _removeAttachedSurgeryRecord = async (id) => {

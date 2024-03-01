@@ -48,7 +48,6 @@ const Measurements = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setMeasurementData(response.data);
         setIsLoading(false);
       })
@@ -116,12 +115,9 @@ const Measurements = ({ ClinicUser }) => {
       EngName: formProps.SN,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
         updateItem(formProps.MeasureID, response.data);
         setShowModal(false);
         setIsLoading(false);
@@ -159,7 +155,6 @@ const Measurements = ({ ClinicUser }) => {
       await axiosClient
         .delete(url)
         .then((response) => {
-          console.log(response.data);
           setMeasurementData(measurementData.filter((a) => a._id !== id));
           setIsLoading(false);
         })

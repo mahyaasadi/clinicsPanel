@@ -1,16 +1,12 @@
-import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
-import { Tooltip } from "primereact/tooltip";
 import { QuestionAlert } from "class/AlertManage";
 import ImageViewer from "components/commonComponents/imageViewer";
 
 const NotesList = ({
-  ActivePatientID,
   openNoteCreatorModal,
   patientNotesData,
-  ClinicID,
   RemoveNote,
 }) => {
   const router = useRouter();

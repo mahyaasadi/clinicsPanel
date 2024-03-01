@@ -304,9 +304,9 @@ const PrescriptionCard = ({
                   onChange={handleDropdownChange}
                   options={
                     ActiveSrvShape === "T" ||
-                    ActiveSrvShape === "C" ||
-                    ActiveSrvShape === "R" ||
-                    ActiveSrvShape === "Z"
+                      ActiveSrvShape === "C" ||
+                      ActiveSrvShape === "R" ||
+                      ActiveSrvShape === "Z"
                       ? defaultConsumptionOptions
                       : instructionOptions
                   }
@@ -370,7 +370,7 @@ const PrescriptionCard = ({
                       </button>
                     )}
                     <button
-                      className="btn btn-sm btn-outline-dark rounded w-100  font-12"
+                      className="btn btn-sm btn-outline-primary rounded w-100  font-12"
                       onClick={() => handleCancelEdit(editSrvData)}
                     >
                       انصراف

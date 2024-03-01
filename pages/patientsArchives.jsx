@@ -32,7 +32,6 @@ export const getServerSideProps = async ({ req, res }) => {
 
 let ClinicID,
   ClinicUserID,
-  ActivePatientNID,
   ActivePatientID = null;
 const PatientsArchives = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
@@ -78,7 +77,6 @@ const PatientsArchives = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setPatientsData(response.data.Patient);
         setPendingPatientsData(response.data.Pending);
         setIsLoading(false);
@@ -117,7 +115,6 @@ const PatientsArchives = ({ ClinicUser }) => {
 
           return false;
         } else {
-          // console.log(response.data);
           setNewPatientData(response.data);
           setPendingPatientsData([...pendingPatientsData, response.data]);
           setTimeout(() => {
@@ -175,8 +172,6 @@ const PatientsArchives = ({ ClinicUser }) => {
       Name: modalityOptions[0].label,
       _id: modalityOptions[0].value,
     });
-
-    // $("#newPatientOptionsModal").modal("hide");
   };
 
   const addAppointment = (data) => {

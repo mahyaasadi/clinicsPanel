@@ -161,14 +161,14 @@ const PasswordSettings = ({
                     <button
                       type="submit"
                       id="submitNewPasswordBtn"
-                      className="btn btn-primary rounded col-lg-5 col-12 font-13"
+                      className="btn btn-primary rounded col-lg-6 col-12 font-13"
                     >
                       ثبت
                     </button>
                   ) : (
                     <button
                       type="submit"
-                      className="btn btn-primary rounded col-lg-5 col-12 font-13"
+                      className="btn btn-primary rounded col-lg-6 col-12 font-13"
                       disabled
                     >
                       <span
@@ -181,7 +181,7 @@ const PasswordSettings = ({
 
                   <button
                     type="submit"
-                    className="btn btn-outline-primary rounded profileSettingsBtn col-lg-5 col-12 font-13"
+                    className="btn btn-outline-primary rounded profileSettingsBtn col-lg-6 col-12 font-13"
                     id="cancelNewPasswordBtn"
                     onClick={handleCancelBtn}
                   >

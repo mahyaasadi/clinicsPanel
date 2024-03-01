@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { axiosClient } from "class/axiosConfig";
 import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
-// import { convertToLocaleString } from "utils/convertToLocaleString";
 
 const PatientPaymentsModal = ({ show, onHide, data }) => {
   const [editPaymentModes1, setEditPaymentModes1] = useState(
@@ -38,8 +36,6 @@ const PatientPaymentsModal = ({ show, onHide, data }) => {
 
     let formData = new FormData(e.target);
     const formProps = Object.fromEntries(formData);
-
-    console.log({ formProps });
 
     // inputValues.forEach((value, index) => {
     //   console.log(`Value for patientPayment-${index}: ${value}`);

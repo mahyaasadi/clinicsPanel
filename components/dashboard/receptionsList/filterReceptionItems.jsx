@@ -67,8 +67,6 @@ const FilterReceptionItems = ({
       DateTo: dateTo ? dateTo : dateToOption,
     };
 
-    console.log({ data });
-
     let receptionInfo = formProps.receptionFilterInfo;
     if (isNaN(parseInt(receptionInfo))) {
       data.PatientName = receptionInfo;
@@ -115,7 +113,6 @@ const FilterReceptionItems = ({
               </label>
               <input
                 type="text"
-                // dir="ltr"
                 name="receptionFilterInfo"
                 id="receptionFilterInfo"
                 className="form-control rounded-sm font-11 articleSearchInput text-center"

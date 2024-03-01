@@ -12,7 +12,6 @@ const PatientCategories = ({
   cashDeskDataIsLoading,
   openNewAppointmentModal,
 }) => {
-  console.log({ patientsInfo });
   resetServerContext();
 
   const [categories, setCategories] = useState([

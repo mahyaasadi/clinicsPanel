@@ -3,15 +3,14 @@ import Head from "next/head";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import FeatherIcon from "feather-icons-react";
-import { QuestionAlert, ErrorAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
+import FavItemsListTable from "components/dashboard/prescription/favourites/favItemsListTable";
+import SelectField from "components/commonComponents/selectfield";
+import selectfieldColourStyles from "class/selectfieldStyle";
 import {
   taminFavOptions,
   salamatFavOptions,
 } from "class/staticDropdownOptions";
-import FavItemsListTable from "components/dashboard/prescription/favourites/favItemsListTable";
-import SelectField from "components/commonComponents/selectfield";
-import selectfieldColourStyles from "class/selectfieldStyle";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -84,9 +83,7 @@ const FavPrescItems = ({ ClinicUser }) => {
 
   const filteredData = () => {
     if (selectedFavItemTab === "Tamin") {
-      console.log("object");
       if (selectedFavOption === 1) {
-        console.log("1");
         return favItems.filter((item) => item.prescId === 1);
       } else if (selectedFavOption === 2) {
         return favItems.filter((item) => item.prescId === 2);
@@ -95,21 +92,11 @@ const FavPrescItems = ({ ClinicUser }) => {
       } else {
         return [];
       }
-    } else {
-      //
     }
   };
 
   useEffect(() => getFavItems(selectedFavItemTab), [selectedFavItemTab]);
   useEffect(() => handleFavItemTabChange("Tamin"), []);
-
-  useEffect(() => {
-    console.log(selectedFavOption, filteredData());
-  }, [selectedFavItemTab, selectedFavOption]);
-
-  //   useEffect(() => {
-  //     filteredData();
-  //   }, [selectedFavItemTab, selectedFavOption]);
 
   return (
     <>
@@ -194,9 +181,6 @@ const FavPrescItems = ({ ClinicUser }) => {
                     />
                   </div>
                 </div>
-
-                {/* <div className="tab-pane show active" id="bottom-tab-1">111</div>
-                            <div className="tab-pane" id="bottom-tab-2">222</div> */}
               </div>
             )}
           </div>

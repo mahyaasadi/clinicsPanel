@@ -187,7 +187,6 @@ const PatientInquiry = () => {
           setPatientIsLoading(false);
           return false;
         } else if (response.data.errors) {
-          console.log(response.data.errors);
           ErrorAlert("خطا", "ثبت اطلاعات بیمار با خطا مواجه گردید!");
           setPatientIsLoading(false);
           return false;
@@ -370,90 +369,90 @@ const PatientInquiry = () => {
 
               {(selectedInsuranceOption == 3 ||
                 selectedInsuranceOption == 4) && (
-                <div className="mt-4">
-                  <div className="col-md-12 mt-3">
-                    <label className="font-13">
-                      نام و نام خانوادگی <span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control rounded padding-right-2"
-                      id="addPatientName"
-                      name="PatientName"
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-12 mt-4">
-                    <label className="font-13">
-                      جنسیت <span className="text-danger">*</span>
-                    </label>
-
-                    <div className="">
-                      {genderDataClass.map((gender, index) => (
-                        <RadioButton
-                          key={index}
-                          id={gender.value}
-                          value={gender.value}
-                          onChange={onChangeGenderRadioBtn}
-                          checked={selectedGenderOption === gender.value}
-                          text={gender.label}
-                          required
-                          patientInquiryStyle={true}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="row mt-4">
-                    <div className="col">
-                      <div>
-                        <label className="font-13">
-                          سال تولد <span className="text-danger">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control rounded padding-right-2"
-                          id="addPatientBD"
-                          name="PatientBD"
-                          value={birthYear}
-                          onChange={handleInputChange}
-                          onBlur={handleBlur}
-                          maxLength={4}
-                          minLength={4}
-                        />
-
-                        {showBirthDigitsAlert && (
-                          <div className="mb-3 mt-4 col">
-                            <div className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1">
-                              <FeatherIcon
-                                icon="alert-triangle"
-                                className="frmValidationTxt"
-                              />
-                              <div className="frmValidationTxt">
-                                سال تولد باید دارای 4 رقم باشد!
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="col">
-                      <label className="font-13">سن</label>
+                  <div className="mt-4">
+                    <div className="col-md-12 mt-3">
+                      <label className="font-13">
+                        نام و نام خانوادگی <span className="text-danger">*</span>
+                      </label>
                       <input
                         type="text"
                         className="form-control rounded padding-right-2"
-                        id="Age"
-                        name="Age"
-                        value={age}
-                        onChange={handleInputChange}
-                        onBlur={handleBlur}
+                        id="addPatientName"
+                        name="PatientName"
+                        required
                       />
                     </div>
+
+                    <div className="col-md-12 mt-4">
+                      <label className="font-13">
+                        جنسیت <span className="text-danger">*</span>
+                      </label>
+
+                      <div className="">
+                        {genderDataClass.map((gender, index) => (
+                          <RadioButton
+                            key={index}
+                            id={gender.value}
+                            value={gender.value}
+                            onChange={onChangeGenderRadioBtn}
+                            checked={selectedGenderOption === gender.value}
+                            text={gender.label}
+                            required
+                            patientInquiryStyle={true}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="row mt-4">
+                      <div className="col">
+                        <div>
+                          <label className="font-13">
+                            سال تولد <span className="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control rounded padding-right-2"
+                            id="addPatientBD"
+                            name="PatientBD"
+                            value={birthYear}
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            maxLength={4}
+                            minLength={4}
+                          />
+
+                          {showBirthDigitsAlert && (
+                            <div className="mb-3 mt-4 col">
+                              <div className="text-secondary font-13 frmValidation form-control inputPadding rounded mb-1">
+                                <FeatherIcon
+                                  icon="alert-triangle"
+                                  className="frmValidationTxt"
+                                />
+                                <div className="frmValidationTxt">
+                                  سال تولد باید دارای 4 رقم باشد!
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col">
+                        <label className="font-13">سن</label>
+                        <input
+                          type="text"
+                          className="form-control rounded padding-right-2"
+                          id="Age"
+                          name="Age"
+                          value={age}
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div className="submit-section">
                 {!patientIsLoading ? (

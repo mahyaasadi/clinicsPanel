@@ -3,7 +3,6 @@ import { Modal } from "react-bootstrap";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { setPatientAvatarUrl } from "lib/session";
-import { convertBase64 } from "utils/convertBase64";
 import { resizeImgFile } from "utils/resizeImgFile";
 import { ErrorAlert } from "class/AlertManage";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";

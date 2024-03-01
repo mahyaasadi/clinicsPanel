@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { axiosClient } from "class/axiosConfig";
 import NoteCreator from "./noteCreator";

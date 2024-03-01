@@ -164,8 +164,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -224,13 +222,9 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
       Values: formProps,
     };
 
-    console.log({ data });
-
     axiosClient
       .put(url, data)
       .then((response) => {
-        console.log(response.data);
-
         SuccessAlert(
           "موفق",
           `ویرایش اطلاعات ${ActiveFormName} با موفقیت انجام گردید!`
@@ -262,8 +256,6 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
     if (ActivePatientFormID) getOnePatientForm();
   }, [router.isReady]);
 
-  console.log({ selectedFormData });
-
   return (
     <>
       <Head>
@@ -281,9 +273,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
               }
             >
               <div
-                className={`card p-4 height-45 ${
-                  formDirection ? "dir-ltr" : "dir-rtl"
-                }`}
+                className={`card p-4 height-45 ${formDirection ? "dir-ltr" : "dir-rtl"
+                  }`}
               >
                 <FormPreviewInline
                   data={selectedFormData}

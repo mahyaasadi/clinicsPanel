@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import FeatherIcon from "feather-icons-react";
 import { Tooltip } from "primereact/tooltip";
 import { Skeleton } from "primereact/skeleton";
@@ -204,7 +203,6 @@ const PrescQuickAccessCard = ({
                         {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
 
                         <Tooltip target=".addPrescBtn">
-                          {" "}
                           افزودن نسخه فعلی
                         </Tooltip>
                       </button>
@@ -221,9 +219,8 @@ const PrescQuickAccessCard = ({
                             icon="edit-2"
                             style={{ width: "14px", height: "14px" }}
                           />
-                          {/* ویرایش نسخه فعلی */}
+
                           <Tooltip target=".editPrescBtn">
-                            {" "}
                             ویرایش نسخه فعلی
                           </Tooltip>
                         </button>
@@ -243,7 +240,6 @@ const PrescQuickAccessCard = ({
                             icon="trash"
                             style={{ width: "14px", height: "14px" }}
                           />
-                          {/* حذف نسخه فعلی */}
 
                           <Tooltip target=".removePrescBtn">
                             {" "}
@@ -262,7 +258,6 @@ const PrescQuickAccessCard = ({
                             icon="refresh-cw"
                             style={{ width: "14px", height: "14px" }}
                           />
-                          {/* تنظیم مجدد */}
 
                           <Tooltip target=".refreshPrescBtn">
                             تنظیم مجدد
@@ -271,65 +266,6 @@ const PrescQuickAccessCard = ({
                       </div>
                     </div>
                   )}
-
-                  {/* {editFavPrescData.length !== 0 && (
-                      <>
-                        <div className="col">
-                          <button
-                            onClick={() => editFavPresc(editFavPrescData._id)}
-                            className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 editPrescBtn"
-                            data-pr-position="bottom"
-                          >
-                            <FeatherIcon
-                              icon="edit-2"
-                              style={{ width: "14px", height: "14px" }}
-                            />
-                            ویرایش نسخه فعلی
-                            <Tooltip target=".editPrescBtn">
-                              {" "}
-                              ویرایش نسخه فعلی
-                            </Tooltip>
-                          </button>
-                        </div>
-
-                        <div className="col">
-                          <button
-                            onClick={() => removeFavPresc(editFavPrescData._id)}
-                            className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 removePrescBtn"
-                            data-pr-position="bottom"
-                          >
-                            <FeatherIcon
-                              icon="trash"
-                              style={{ width: "14px", height: "14px" }}
-                            />
-                            حذف نسخه فعلی
-
-                            <Tooltip target=".removePrescBtn">
-                              {" "}
-                              حذف نسخه فعلی
-                            </Tooltip>
-                          </button>
-                        </div>
-
-                        <div className="col">
-                          <button
-                            onClick={handleReset}
-                            className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 refreshPrescBtn"
-                            data-pr-position="left"
-                          >
-                            <FeatherIcon
-                              icon="refresh-cw"
-                              style={{ width: "14px", height: "14px" }}
-                            />
-                            تنظیم مجدد
-
-                            <Tooltip target=".refreshPrescBtn">
-                              تنظیم مجدد
-                            </Tooltip>
-                          </button>
-                        </div>
-                      </>
-                    )} */}
 
                   <div
                     className={`favitemTab mt-2 ${editFavPrescData.length == 0
@@ -361,83 +297,6 @@ const PrescQuickAccessCard = ({
                         )
                       )}
                     </div>
-
-                    {/* <div className="d-flex flex-col gap-1">
-                      <div className="col">
-                        <button
-                          onClick={openApplyFavPrescModal}
-                          className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 addPrescBtn"
-                          data-pr-position="right"
-                        >
-                          {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
-                          <FeatherIcon
-                            icon="plus"
-                            style={{ width: "14px", height: "14px" }}
-                          />
-
-                          <Tooltip target=".addPrescBtn">
-                            {" "}
-                            افزودن نسخه فعلی
-                          </Tooltip>
-                        </button>
-                      </div>
-
-                      {editFavPrescData.length !== 0 && (
-                        <>
-                          <div className="col">
-                            <button
-                              onClick={() => editFavPresc(editFavPrescData._id)}
-                              className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 editPrescBtn"
-                              data-pr-position="right"
-                            >
-                              <FeatherIcon
-                                icon="edit-2"
-                                style={{ width: "14px", height: "14px" }}
-                              />
-                              <Tooltip target=".editPrescBtn">
-                                {" "}
-                                ویرایش نسخه فعلی
-                              </Tooltip>
-                            </button>
-                          </div>
-
-                          <div className="col">
-                            <button
-                              onClick={() =>
-                                removeFavPresc(editFavPrescData._id)
-                              }
-                              className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 removePrescBtn"
-                              data-pr-position="right"
-                            >
-                              <FeatherIcon
-                                icon="trash"
-                                style={{ width: "14px", height: "14px" }}
-                              />
-                              <Tooltip target=".removePrescBtn">
-                                {" "}
-                                حذف نسخه فعلی
-                              </Tooltip>
-                            </button>
-                          </div>
-
-                          <div className="col">
-                            <button
-                              onClick={handleReset}
-                              className="btn btn-outline-primary w-100 font-13 d-flex align-items-center justify-center gap-1 height-40 refreshPrescBtn"
-                              data-pr-position="right"
-                            >
-                              <FeatherIcon
-                                icon="refresh-cw"
-                                style={{ width: "14px", height: "14px" }}
-                              />
-                              <Tooltip target=".refreshPrescBtn">
-                                تنظیم مجدد
-                              </Tooltip>
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </div> */}
                   </div>
                 </div>
               </div>
