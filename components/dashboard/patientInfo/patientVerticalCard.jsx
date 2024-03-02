@@ -190,7 +190,7 @@ const PatientVerticalCard = ({
                       borderRadius: "100%",
                     }}
                   />
-                ) : data.Avatar ? (
+                ) : data?.Avatar ? (
                   <img
                     src={"https://irannobat.ir/images/Avatar/" + data?.Avatar}
                     alt="patientAvatar"
@@ -213,7 +213,7 @@ const PatientVerticalCard = ({
                 {taminPrescMode && (data?.Name ? data.Name : "")}
                 {!taminPrescMode && data?.name + " " + data?.lastName}
                 {taminPrescMode
-                  ? data.Age
+                  ? data?.Age
                     ? ", " + data.Age + " ساله"
                     : ""
                   : data?.age
@@ -222,8 +222,8 @@ const PatientVerticalCard = ({
               </div>
               <div className="PVCardjob">
                 {taminPrescMode
-                  ? data.NationalID
-                    ? data.NationalID
+                  ? data?.NationalID
+                    ? data?.NationalID
                     : "-"
                   : data?.nationalNumber
                     ? data?.nationalNumber
@@ -236,7 +236,7 @@ const PatientVerticalCard = ({
             <div className="PVCardboxall">
               <span className="PVCardvalue">
                 {taminPrescMode
-                  ? data.InsuranceType && data.InsuranceType === "2"
+                  ? data?.InsuranceType && data?.InsuranceType === "2"
                     ? "تحت قرارداد بیمه می باشد"
                     : "تحت قرارداد بیمه نمی باشد"
                   : data?.isCovered

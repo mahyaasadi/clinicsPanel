@@ -196,9 +196,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -290,6 +289,16 @@ const Sidebar = () => {
                 </Link>
               </li>
 
+              <li className={router.pathname == "/callLogsHistory" ? "active" : ""}>
+                <Link href="/callLogsHistory">
+                  <FeatherIcon
+                    icon="phone-call"
+                    style={{ width: "17px", height: "17px" }}
+                  />
+                  <span>سوابق تماس ها</span>
+                </Link>
+              </li>
+
               <li className="menu-title font-12">
                 <span>تنظیمات پایه</span>
               </li>
@@ -320,9 +329,8 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${
-                    formBuilderSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -354,9 +362,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={

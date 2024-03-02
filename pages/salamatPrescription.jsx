@@ -405,8 +405,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const handleAddFavPresc = async (favPresc) => {
-    console.log({ favPresc });
     setEditFavPrescData(favPresc);
+
+    let newPrescriptionItemsData = [];
 
     if (ActivePatientNID) {
       for (let i = 0; i < favPresc.Items[0].length; i++) {
@@ -432,8 +433,15 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.typeId,
           setIsLoading
         );
-        await FUAddToListItem(prescData, element.serviceInterfaceName);
+
+        const addedPrescItemData = await FUAddToListItem(prescData, element.serviceInterfaceName);
+        if (addedPrescItemData) {
+          newPrescriptionItemsData.push(addedPrescItemData);
+        }
       }
+
+      // Update state after the loop with all accumulated data
+      setPrescriptionItemsData([...prescriptionItemsData, ...newPrescriptionItemsData]);
     } else {
       ErrorAlert("", "استعلام بیمار گرفته نشده است!");
     }
@@ -443,18 +451,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
     setFavPrescData([...favPrescData, favPresc]);
   };
 
-  console.log({ existingCheckCodes });
-
   // Add Services To List
   const FUAddToListItem = async (_prescData, _name) => {
-    console.log({ _prescData });
-
     setIsLoading(true);
 
     let url = "BimehSalamat/SubscriptionCheckOrder";
     let prescData = {};
     if (_prescData) {
-      console.log("object");
       prescData = _prescData;
     } else {
       prescData = await salamatPrescItemCreator(
@@ -478,92 +481,154 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
 
     let findConsumptionLbl = consumptionOptions.find(
-      (x) => x.value === selectedConsumption
+      (x) => x.value === selectedConsumption ? selectedConsumption : prescData.consumption
     );
 
     let findInstructionLbl = instructionOptions.find(
-      (x) => x.value === selectedConsumptionInstruction
+      (x) => x.value === selectedConsumptionInstruction ? selectedConsumptionInstruction : prescData.consumptionInstruction
     );
 
     console.log({ prescData });
 
-    axiosClient
-      .post(url, prescData)
-      .then((response) => {
-        if (response.data.res.info?.checkCode) {
-          console.log(response.data.res.info);
+    try {
+      const response = await axiosClient.post(url, prescData);
+      if (response.data.res.info?.checkCode) {
+        let addedPrescItemData = {
+          serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
+          numberOfRequest: $("#QtyInput").val(),
+          description: $("#eprscItemDescription").val(),
+          consumption: findConsumptionLbl?.label ? findConsumptionLbl?.label : null,
+          consumptionVal: findConsumptionLbl?.value ? findConsumptionLbl?.value : null,
+          consumptionInstruction: findInstructionLbl?.label ? findInstructionLbl?.label : null,
+          consumptionInstructionVal: findInstructionLbl?.value ? findInstructionLbl?.value : null,
+          numberOfPeriod: selectedNOPeriod ? selectedNOPeriod : prescData.numberOfPeriod,
+          snackMessages: response.data.res.info?.message?.snackMessage,
+          infoMessages: response.data.res.info?.message?.infoMessage,
+          checkCode: response.data.res.info?.checkCode,
+          prescTypeImg: ActivePrescImg,
+          typeId: ActivePrescTypeID,
+          prescTypeEngTitle: ActivePrescEngTitle ? ActivePrescEngTitle : prescData.PrescType,
+          shape: ActiveSrvShape ? ActiveSrvShape : prescData.SrvShape,
+          bulkId: ActivePrescTypeID ? (ActivePrescTypeID === 10 ? 1 : 0) : prescData.bulkId,
+          serviceNationalNumber: ActiveSrvNationalNumber ? ActiveSrvNationalNumber : prescData.nationalNumber,
+        };
 
-          let addedPrescItemData = {
-            serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
-            numberOfRequest: $("#QtyInput").val(),
-            description: $("#eprscItemDescription").val(),
-            consumption: findConsumptionLbl?.label,
-            consumptionVal: findConsumptionLbl?.value,
-            consumptionInstruction: findInstructionLbl?.label,
-            consumptionInstructionVal: findInstructionLbl?.value,
-            numberOfPeriod: selectedNOPeriod,
-            snackMessages: response.data.res.info?.message?.snackMessage,
-            infoMessages: response.data.res.info?.message?.infoMessage,
-            checkCode: response.data.res.info?.checkCode,
-            prescTypeImg: ActivePrescImg,
-            typeId: ActivePrescTypeID,
-            prescTypeEngTitle: ActivePrescEngTitle,
-            shape: ActiveSrvShape,
-            bulkId: ActivePrescTypeID === 10 ? 1 : 0,
-            serviceNationalNumber: ActiveSrvNationalNumber,
-          };
+        existingCheckCodes.push({
+          checkCode: response.data.res.info?.checkCode,
+        });
 
-          console.log({ addedPrescItemData });
-
-          existingCheckCodes.push({
-            checkCode: response.data.res.info?.checkCode,
-          });
-
-          if (editPrescSrvMode && favMode === false) {
-            updatePrescItem(
-              addedPrescItemData.serviceInterfaceName,
-              addedPrescItemData
-            );
-          } else {
-            setPrescriptionItemsData([
-              ...prescriptionItemsData,
-              addedPrescItemData,
-            ]);
-          }
-
-          // console.log({
-          //   prescriptionItemsData,
-          //   addedPrescItemData,
-          //   existingCheckCodes,
-          // });
-
-          // reset
-          activeSearch();
-        } else if (response.data.res.status === 409) {
-          WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
-        } else {
-          ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-          displayToastMessages(
-            response.data.res.info.message.snackMessage,
-            toast,
-            null
+        if (editPrescSrvMode && favMode === false) {
+          updatePrescItem(
+            addedPrescItemData.serviceInterfaceName,
+            addedPrescItemData
           );
+        } else if (!_prescData) {
+          setPrescriptionItemsData([
+            ...prescriptionItemsData,
+            addedPrescItemData,
+          ]);
         }
-        setIsLoading(false);
-        setSearchFromInput(true);
 
-        return true;
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-        if (err.response) {
-          ErrorAlert("خطا", err.response.data.resMessage);
-        } else {
-          ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-        }
-      });
+        // reset
+        activeSearch();
+        return addedPrescItemData;
+
+      } else if (response.data.res.status === 409) {
+        WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
+      } else {
+        ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+        displayToastMessages(
+          response.data.res.info.message.snackMessage,
+          toast,
+          null
+        );
+      }
+      setIsLoading(false);
+      setSearchFromInput(true);
+
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+      if (err.response) {
+        ErrorAlert("خطا", err.response.data.resMessage);
+      } else {
+        ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+      }
+      return false;
+    }
+
+    // axiosClient
+    //   .post(url, prescData)
+    //   .then((response) => {
+    //     if (response.data.res.info?.checkCode) {
+    //       let addedPrescItemData = {
+    //         serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
+    //         numberOfRequest: $("#QtyInput").val(),
+    //         description: $("#eprscItemDescription").val(),
+    //         consumption: findConsumptionLbl?.label,
+    //         consumptionVal: findConsumptionLbl?.value,
+    //         consumptionInstruction: findInstructionLbl?.label,
+    //         consumptionInstructionVal: findInstructionLbl?.value,
+    //         numberOfPeriod: selectedNOPeriod,
+    //         snackMessages: response.data.res.info?.message?.snackMessage,
+    //         infoMessages: response.data.res.info?.message?.infoMessage,
+    //         checkCode: response.data.res.info?.checkCode,
+    //         prescTypeImg: ActivePrescImg,
+    //         typeId: ActivePrescTypeID,
+    //         prescTypeEngTitle: ActivePrescEngTitle,
+    //         shape: ActiveSrvShape,
+    //         bulkId: ActivePrescTypeID === 10 ? 1 : 0,
+    //         serviceNationalNumber: ActiveSrvNationalNumber,
+    //       };
+
+    //       existingCheckCodes.push({
+    //         checkCode: response.data.res.info?.checkCode,
+    //       });
+
+    //       if (editPrescSrvMode && favMode === false) {
+    //         console.log("3");
+    //         updatePrescItem(
+    //           addedPrescItemData.serviceInterfaceName,
+    //           addedPrescItemData
+    //         );
+    //       } else {
+    //         setPrescriptionItemsData([
+    //           ...prescriptionItemsData,
+    //           addedPrescItemData,
+    //         ]);
+    //       }
+
+    //       // reset
+    //       activeSearch();
+    //     } else if (response.data.res.status === 409) {
+    //       WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
+    //     } else {
+    //       ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+    //       displayToastMessages(
+    //         response.data.res.info.message.snackMessage,
+    //         toast,
+    //         null
+    //       );
+    //     }
+    //     setIsLoading(false);
+    //     setSearchFromInput(true);
+
+    //     return true;
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setIsLoading(false);
+    //     if (err.response) {
+    //       ErrorAlert("خطا", err.response.data.resMessage);
+    //     } else {
+    //       ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
+    //     }
+    //   });
   };
+
+  useEffect(() => {
+    console.log({ prescriptionItemsData }, [prescriptionItemsData]);
+  })
 
   // Delete Service
   const deleteService = async (id, flag) => {
@@ -844,10 +909,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     if (!ActivePatientNID) $("#patientInfoCard2").hide();
   }, [ActivePatientNID]);
 
-  useEffect(() => {
-    console.log({ prescriptionItemsData });
-  }, [prescriptionItemsData]);
-
   return (
     <>
       <Head>
@@ -884,11 +945,11 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 favPrescData={favPrescData}
                 handleAddFavPresc={handleAddFavPresc}
                 editFavPrescData={editFavPrescData}
-                // removeFavItem={removeFavItem}
-                // setFavPrescItemsData={setFavPrescItemsData}
-                // removeFavPresc={removeFavPresc}
-                // handleReset={handleReset}
-                // editFavPresc={editFavPresc}
+              // removeFavItem={removeFavItem}
+              // setFavPrescItemsData={setFavPrescItemsData}
+              // removeFavPresc={removeFavPresc}
+              // handleReset={handleReset}
+              // editFavPresc={editFavPresc}
               />
             </div>
 
