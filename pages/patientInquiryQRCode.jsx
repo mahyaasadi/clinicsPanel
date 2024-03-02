@@ -82,7 +82,7 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
           </div>
 
           <div className="card-body">
-            <div className="showPrint">
+            <div className="showPrint d-flex justify-center align-items-center">
               <div className="text-center my-5 fw-bold font-17">
                 {/* <p className="">TEXT</p> */}
               </div>

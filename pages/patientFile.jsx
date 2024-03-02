@@ -310,14 +310,14 @@ const PatientFile = ({ ClinicUser }) => {
   const [measurementData, setMeasurementData] = useState([]);
   const [showMedicalParamModal, setShowMedicalParamModal] = useState(false);
   const [medModalMode, setMedModalMode] = useState("add");
-  const [medModalAddMode, setMedModalAddMode] = useState(false)
+  const [medModalAddMode, setMedModalAddMode] = useState(false);
   const [selectedParam, setSelectedParam] = useState(null);
   const [selectedParamId, setSelectedParamId] = useState(null);
 
   const handleCloseMedicalParamModal = () => setShowMedicalParamModal(false);
   const openMedicalParamModal = (id, addMode) => {
-    setMedModalMode("add")
-    setMedModalAddMode(addMode)
+    setMedModalMode("add");
+    setMedModalAddMode(addMode);
     setShowMedicalParamModal(true);
     setSelectedParamId(id);
   };
@@ -465,10 +465,10 @@ const PatientFile = ({ ClinicUser }) => {
                       href="#bottom-tab3"
                       data-bs-toggle="tab"
                     >
-                      پرونده های دستی
+                      یادداشت های دستی
                     </a>
                   </li>
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <a
                       className="nav-link"
                       href="#bottom-tab4"
@@ -476,13 +476,12 @@ const PatientFile = ({ ClinicUser }) => {
                     >
                       فرم ها
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
 
                 <div className="tab-content">
                   <div className="tab-pane show active" id="bottom-tab1">
                     <div className="row">
-
                       {measurementData.map((measure, index) => {
                         const id = measure._id;
                         const medicalData = patientMedicalParams[id];
@@ -490,31 +489,48 @@ const PatientFile = ({ ClinicUser }) => {
                         // Only render the card if medicalData exists for the current measurement
                         if (medicalData) {
                           return (
-                            <div className="col-lg-4 col-sm-6 col-12" key={index}>
+                            <div
+                              className="col-lg-4 col-sm-6 col-12"
+                              key={index}
+                            >
                               <div className="card border-gray">
                                 <div className="card-header text-secondary font-13 fw-bold d-flex align-items-cenetr">
                                   <div>نمودار {measure.Name}</div>
                                   <div className="col d-flex gap-1 justify-content-end">
                                     <button
-                                      onClick={() => openMedParamsListModal(measure.Name, medicalData)}
+                                      onClick={() =>
+                                        openMedParamsListModal(
+                                          measure.Name,
+                                          medicalData
+                                        )
+                                      }
                                       data-pr-position="right"
                                       className="btn btn-outline-secondary text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-1 formBtns editParamBtn"
                                     >
                                       <FeatherIcon icon="table" />
-                                      <Tooltip target=".editParamBtn">ویرایش اطلاعات نمودار</Tooltip>
+                                      <Tooltip target=".editParamBtn">
+                                        ویرایش اطلاعات نمودار
+                                      </Tooltip>
                                     </button>
                                     <button
-                                      onClick={() => openMedicalParamModal(id, false)}
+                                      onClick={() =>
+                                        openMedicalParamModal(id, false)
+                                      }
                                       data-pr-position="left"
                                       className="btn btn-outline-secondary text-secondary font-12 d-flex align-items-center gap-1 fw-bold p-1 formBtns newParamRecord"
                                     >
                                       <FeatherIcon icon="plus" />
-                                      <Tooltip target=".newParamRecord">سابقه جدید</Tooltip>
+                                      <Tooltip target=".newParamRecord">
+                                        سابقه جدید
+                                      </Tooltip>
                                     </button>
                                   </div>
                                 </div>
                                 <div className="card-body">
-                                  <MedicalParamsChart id={id} data={medicalData} />
+                                  <MedicalParamsChart
+                                    id={id}
+                                    data={medicalData}
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -619,6 +635,15 @@ const PatientFile = ({ ClinicUser }) => {
                       })} */}
                     </div>
 
+                    <div>
+                      <FormsList
+                        data={patientForms}
+                        openPatientFrmPreviewModal={openPatientFrmPreviewModal}
+                        openAddFrmToPatientModal={openAddFrmToPatientModal}
+                        deletePatientForm={deletePatientForm}
+                      />
+                    </div>
+
                     <div className="row mb-2">
                       <div className="col-lg-6 col-12">
                         <DiseaseRecordsList
@@ -687,7 +712,7 @@ const PatientFile = ({ ClinicUser }) => {
                     </div>
                   </div>
 
-                  <div className="tab-pane" id="bottom-tab4">
+                  {/* <div className="tab-pane" id="bottom-tab4">
                     <div>
                       <FormsList
                         data={patientForms}
@@ -696,7 +721,7 @@ const PatientFile = ({ ClinicUser }) => {
                         deletePatientForm={deletePatientForm}
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

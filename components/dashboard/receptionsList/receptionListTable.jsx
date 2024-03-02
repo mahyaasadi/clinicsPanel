@@ -83,6 +83,21 @@ const ReceptionListTable = ({
       width: "auto",
     },
     {
+      name: "خدمات",
+      selector: (row) => row.Items,
+      sortable: true,
+      cell: (row) => (
+        <div className="d-flex align-items-center gap-3 justify-center flex-wrap font-12">
+          {row.Items?.map((item, index) => (
+            <p className="mb-0" key={index}>
+              {item?.Name} {index < row.Items.length - 1 ? " | " : ""}
+            </p>
+          ))}
+        </div>
+      ),
+      width: "auto",
+    },
+    {
       name: "عملیات ها",
       selector: (row) => row.action,
       sortable: true,

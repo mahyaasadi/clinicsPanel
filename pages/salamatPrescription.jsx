@@ -10,12 +10,14 @@ import { displayToastMessages } from "utils/toastMessageGenerator";
 import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
 import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
-import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
+// import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import SalamatAddToListItems from "components/dashboard/prescription/salamat/salamatAddToListItems";
 import SalamatFavItemsModal from "components/dashboard/prescription/salamat/salamatFavItemsModal";
+import PrescQuickAccessCard from "@/components/dashboard/prescription/favourites/prescQuickAccessCard";
+import ApplyFavPrescModal from "components/dashboard/prescription/favourites/applyFavPrescModal";
 import {
   ErrorAlert,
   WarningAlert,
@@ -319,20 +321,23 @@ const SalamatPrescription = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", true);
   };
 
-  // Fav Items
-  const openFavModal = () => setShowFavItemsModal(true);
-  const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
-  const handleTabChange = (tab) => setSelectedTab(tab);
+  // Fav Salamat Items
+  const [favItemIsLoading, setFavItemIsLoading] = useState(false);
 
   const getFavSalamatItems = () => {
+    setFavItemIsLoading(true);
     let url = `CenterFavEprsc/getSalamat/${ClinicID}`;
 
     axiosClient
       .get(url)
       .then((response) => {
+        setFavItemIsLoading(false);
         setFavSalamatItems(response.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setFavItemIsLoading(false);
+      });
   };
 
   const selectFavSalamatItem = (selectedSrv) => {
@@ -376,30 +381,101 @@ const SalamatPrescription = ({ ClinicUser }) => {
       .catch((err) => console.log(err));
   };
 
+  // Fav Presc
+  const [showApplyFavPrescModal, setShowApplyFavPrescModal] = useState(false);
+  const [favPrescData, setFavPrescData] = useState([]);
+  const [editFavPrescData, setEditFavPrescData] = useState([]);
+  const openApplyFavPrescModal = () => setShowApplyFavPrescModal(true);
+  const closeApplyFavPrescModal = () => setShowApplyFavPrescModal(false);
+
+  const getTaminFavPrescs = () => {
+    setFavItemIsLoading(true);
+    let url = `CenterFavEprsc/getAll/${ClinicID}/${"Salamat"}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        setFavItemIsLoading(false);
+        setFavPrescData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setFavItemIsLoading(false);
+      });
+  };
+
+  const handleAddFavPresc = async (favPresc) => {
+    console.log({ favPresc });
+    setEditFavPrescData(favPresc);
+
+    if (ActivePatientNID) {
+      for (let i = 0; i < favPresc.Items[0].length; i++) {
+        const element = favPresc.Items[0][i];
+
+        let prescData = await salamatPrescItemCreator(
+          1,
+          ClinicID,
+          SamadCode ? SamadCode : ActiveSamadCode,
+          CitizenSessionId,
+          element.prescTypeEngTitle,
+          element.serviceNationalNumber,
+          element.bulkId,
+          element.shape,
+          element.numberOfRequest,
+          element.description,
+          element.consumptionVal.toString(),
+          element.consumptionInstructionVal
+            ? element.consumptionInstructionVal
+            : null,
+          element.numberOfPeriod ? element.numberOfPeriod : null,
+          existingCheckCodes.length !== 0 ? existingCheckCodes : [],
+          element.typeId,
+          setIsLoading
+        );
+        await FUAddToListItem(prescData, element.serviceInterfaceName);
+      }
+    } else {
+      ErrorAlert("", "استعلام بیمار گرفته نشده است!");
+    }
+  };
+
+  const applyFavPresc = (favPresc) => {
+    setFavPrescData([...favPrescData, favPresc]);
+  };
+
+  console.log({ existingCheckCodes });
+
   // Add Services To List
-  const FUAddToListItem = async (e) => {
-    e.preventDefault();
+  const FUAddToListItem = async (_prescData, _name) => {
+    console.log({ _prescData });
+
     setIsLoading(true);
 
     let url = "BimehSalamat/SubscriptionCheckOrder";
-    let prescData = await salamatPrescItemCreator(
-      1,
-      ClinicID,
-      SamadCode ? SamadCode : ActiveSamadCode,
-      CitizenSessionId,
-      ActivePrescEngTitle,
-      ActiveSrvNationalNumber,
-      ActivePrescTypeID === 10 ? 1 : 0,
-      ActiveSrvShape,
-      $("#QtyInput").val(),
-      $("#eprscItemDescription").val(),
-      selectedConsumption?.toString(),
-      selectedConsumptionInstruction ? selectedConsumptionInstruction : null,
-      selectedNOPeriod ? selectedNOPeriod.toString() : null,
-      existingCheckCodes.length !== 0 ? existingCheckCodes : [],
-      ActivePrescTypeID,
-      setIsLoading
-    );
+    let prescData = {};
+    if (_prescData) {
+      console.log("object");
+      prescData = _prescData;
+    } else {
+      prescData = await salamatPrescItemCreator(
+        1,
+        ClinicID,
+        SamadCode ? SamadCode : ActiveSamadCode,
+        CitizenSessionId,
+        ActivePrescEngTitle,
+        ActiveSrvNationalNumber,
+        ActivePrescTypeID === 10 ? 1 : 0,
+        ActiveSrvShape,
+        $("#QtyInput").val(),
+        $("#eprscItemDescription").val(),
+        selectedConsumption?.toString(),
+        selectedConsumptionInstruction ? selectedConsumptionInstruction : null,
+        selectedNOPeriod ? selectedNOPeriod.toString() : null,
+        existingCheckCodes.length !== 0 ? existingCheckCodes : [],
+        ActivePrescTypeID,
+        setIsLoading
+      );
+    }
 
     let findConsumptionLbl = consumptionOptions.find(
       (x) => x.value === selectedConsumption
@@ -409,14 +485,16 @@ const SalamatPrescription = ({ ClinicUser }) => {
       (x) => x.value === selectedConsumptionInstruction
     );
 
+    console.log({ prescData });
+
     axiosClient
       .post(url, prescData)
       .then((response) => {
-        console.log(response.data);
-
         if (response.data.res.info?.checkCode) {
+          console.log(response.data.res.info);
+
           let addedPrescItemData = {
-            serviceInterfaceName: $("#srvSearchInput").val(),
+            serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
             numberOfRequest: $("#QtyInput").val(),
             description: $("#eprscItemDescription").val(),
             consumption: findConsumptionLbl?.label,
@@ -434,6 +512,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
             bulkId: ActivePrescTypeID === 10 ? 1 : 0,
             serviceNationalNumber: ActiveSrvNationalNumber,
           };
+
+          console.log({ addedPrescItemData });
 
           existingCheckCodes.push({
             checkCode: response.data.res.info?.checkCode,
@@ -471,6 +551,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
         }
         setIsLoading(false);
         setSearchFromInput(true);
+
+        return true;
       })
       .catch((err) => {
         console.log(err);
@@ -587,6 +669,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     if (favItemMode) {
       setTimeout(() => {
         $("#btnAddSalamatSrvItem").click();
+        setEditPrescSrvMode(false);
       }, 200);
     }
   };
@@ -632,88 +715,91 @@ const SalamatPrescription = ({ ClinicUser }) => {
       url += "/PrescriptionSave";
     }
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
+    console.log({ data });
 
-        if (response.data.res.resCode === -8402) {
-          ErrorAlert("خطا", response.data.res.resMessage);
-          setRegisterIsLoading(false);
-        }
-        if (response.data.res.status === 400) {
-          ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-          setRegisterIsLoading(false);
-        }
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     console.log(response.data);
 
-        if (response.data.res.info) {
-          setRegisterIsLoading(false);
+    //     if (response.data.res.resCode === -8402) {
+    //       ErrorAlert("خطا", response.data.res.resMessage);
+    //       setRegisterIsLoading(false);
+    //     }
+    //     if (response.data.res.status === 400) {
+    //       ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+    //       setRegisterIsLoading(false);
+    //     }
 
-          // toast messages
-          let registerMessages = [];
-          const infoMessageArray =
-            response.data.res.info.message.infoMessage || [];
-          const snackMessageArray =
-            response.data.res.info.message.snackMessage || [];
+    //     if (response.data.res.info) {
+    //       setRegisterIsLoading(false);
 
-          let sequenceNumberArray = [];
-          let seqObj = {
-            type: "S",
-            text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
-          };
-          sequenceNumberArray.push(seqObj);
+    //       // toast messages
+    //       let registerMessages = [];
+    //       const infoMessageArray =
+    //         response.data.res.info.message.infoMessage || [];
+    //       const snackMessageArray =
+    //         response.data.res.info.message.snackMessage || [];
 
-          let trackNumberArray = [];
-          let trackObj = {
-            type: "S",
-            text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
-          };
-          trackNumberArray.push(trackObj);
+    //       let sequenceNumberArray = [];
+    //       let seqObj = {
+    //         type: "S",
+    //         text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
+    //       };
+    //       sequenceNumberArray.push(seqObj);
 
-          registerMessages.push(
-            ...infoMessageArray,
-            ...snackMessageArray,
-            ...sequenceNumberArray,
-            ...trackNumberArray
-          );
+    //       let trackNumberArray = [];
+    //       let trackObj = {
+    //         type: "S",
+    //         text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
+    //       };
+    //       trackNumberArray.push(trackObj);
 
-          displayToastMessages(registerMessages, toast, null);
+    //       registerMessages.push(
+    //         ...infoMessageArray,
+    //         ...snackMessageArray,
+    //         ...sequenceNumberArray,
+    //         ...trackNumberArray
+    //       );
 
-          const sequenceNumber = response.data.res.info.sequenceNumber || "";
-          const trackingCode = response.data.res.info.trackingCode || "";
+    //       displayToastMessages(registerMessages, toast, null);
 
-          if (trackingCode || sequenceNumber) {
-            const seconds = 5;
-            const timerInMillis = seconds * 1000;
+    //       const sequenceNumber = response.data.res.info.sequenceNumber || "";
+    //       const trackingCode = response.data.res.info.trackingCode || "";
 
-            TimerAlert({
-              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
-                }
-              ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
-              با موفقیت ثبت گردید!
-              </div>`,
-              html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
-              timer: timerInMillis,
-              timerProgressBar: true,
-              cancelButton: {
-                text: "انصراف",
-              },
-              onConfirm: () => {
-                router.push("/salamatPrescRecords");
-              },
-            });
+    //       if (trackingCode || sequenceNumber) {
+    //         const seconds = 5;
+    //         const timerInMillis = seconds * 1000;
 
-            ActiveSamadCode = null;
-            existingCheckCodes = [];
-            deletedCheckCodes = [];
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-        setRegisterIsLoading(false);
-      });
+    //         TimerAlert({
+    //           title: `<div class="custom-title"> نسخه ${
+    //             trackingCode ? "با کد رهگیری : " + trackingCode : ""
+    //           }
+    //           ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
+    //           با موفقیت ثبت گردید!
+    //           </div>`,
+    //           html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
+    //           timer: timerInMillis,
+    //           timerProgressBar: true,
+    //           cancelButton: {
+    //             text: "انصراف",
+    //           },
+    //           onConfirm: () => {
+    //             router.push("/salamatPrescRecords");
+    //           },
+    //         });
+
+    //         ActiveSamadCode = null;
+    //         existingCheckCodes = [];
+    //         deletedCheckCodes = [];
+    //       }
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+    //     setRegisterIsLoading(false);
+    //   });
   };
 
   const CancelEdit = (srvData) => {
@@ -743,6 +829,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
 
     getFavSalamatItems();
+    getTaminFavPrescs();
 
     existingCheckCodes = [];
     deletedCheckCodes = [];
@@ -756,6 +843,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
   useEffect(() => {
     if (!ActivePatientNID) $("#patientInfoCard2").hide();
   }, [ActivePatientNID]);
+
+  useEffect(() => {
+    console.log({ prescriptionItemsData });
+  }, [prescriptionItemsData]);
 
   return (
     <>
@@ -779,13 +870,28 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 patientStatIsLoading={patientStatIsLoading}
               />
 
-              <PatientVerticalCard
-                data={patientInfo}
+              <PrescQuickAccessCard
+                quickAccessMode={"salamat"}
+                data={favSalamatItems}
+                handleEditService={handleEditService}
+                patientInfo={patientInfo}
                 ClinicID={ClinicID}
                 ActivePatientNID={ActivePatientNID}
                 setPatientInfo={setPatientInfo}
+                salamatHeaderList={salamatHeaderList}
+                favItemIsLoading={favItemIsLoading}
+                openApplyFavPrescModal={openApplyFavPrescModal}
+                favPrescData={favPrescData}
+                handleAddFavPresc={handleAddFavPresc}
+                editFavPrescData={editFavPrescData}
+                // removeFavItem={removeFavItem}
+                // setFavPrescItemsData={setFavPrescItemsData}
+                // removeFavPresc={removeFavPresc}
+                // handleReset={handleReset}
+                // editFavPresc={editFavPresc}
               />
             </div>
+
             <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12">
               <PrescriptionCard
                 isLoading={isLoading}
@@ -820,7 +926,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setEditSrvData={setEditSrvData}
                 prescriptionItemsData={prescriptionItemsData}
                 ActiveSamadCode={ActiveSamadCode}
-                openFavModal={openFavModal}
               />
 
               <div className="prescList">
@@ -839,7 +944,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           </div>
         </div>
 
-        <SalamatFavItemsModal
+        {/* <SalamatFavItemsModal
           data={favSalamatItems}
           show={showFavItemsModal}
           onHide={handleCloseFavItemsModal}
@@ -848,6 +953,15 @@ const SalamatPrescription = ({ ClinicUser }) => {
           salamatHeaderList={salamatHeaderList}
           selectedTab={selectedTab}
           handleTabChange={handleTabChange}
+        /> */}
+
+        <ApplyFavPrescModal
+          show={showApplyFavPrescModal}
+          onHide={closeApplyFavPrescModal}
+          ClinicID={ClinicID}
+          prescMode="Salamat"
+          prescriptionItemsData={prescriptionItemsData}
+          applyFavPresc={applyFavPresc}
         />
       </div>
     </>

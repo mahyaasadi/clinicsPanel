@@ -34,7 +34,7 @@ const PrescriptionCard = ({
   setEditSrvData,
   prescriptionItemsData,
   ActiveSamadCode,
-  openFavModal,
+  // openFavModal,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -72,17 +72,12 @@ const PrescriptionCard = ({
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
 
-    if (
-      ActiveSrvShape === "T" ||
-      ActiveSrvShape === "C" ||
-      ActiveSrvShape === "R" ||
-      ActiveSrvShape === "Z"
-    ) {
-      setSelectedNOPeriod(selectedValue);
-      setSelectedConsumptionInstruction(null);
-    } else {
+    if (ActiveSrvShape === "S" || ActiveSrvShape === "A") {
       setSelectedConsumptionInstruction(selectedValue);
       setSelectedNOPeriod(null);
+    } else {
+      setSelectedNOPeriod(selectedValue);
+      setSelectedConsumptionInstruction(null);
     }
   };
 
@@ -107,12 +102,12 @@ const PrescriptionCard = ({
           <div className="prescript-header">
             <div className="fw-bold text-secondary">نسخه جدید</div>
             <div className="d-flex gap-2">
-              <button
+              {/* <button
                 className="btn btn-outline-primary border-radius font-13"
                 onClick={openFavModal}
               >
                 خدمات پرمصرف
-              </button>
+              </button> */}
 
               {!registerIsLoading ? (
                 <button
@@ -297,18 +292,15 @@ const PrescriptionCard = ({
                 </label>
                 <Dropdown
                   value={
-                    selectedNOPeriod
-                      ? selectedNOPeriod
-                      : selectedConsumptionInstruction
+                    selectedConsumptionInstruction
+                      ? selectedConsumptionInstruction
+                      : selectedNOPeriod
                   }
                   onChange={handleDropdownChange}
                   options={
-                    ActiveSrvShape === "T" ||
-                      ActiveSrvShape === "C" ||
-                      ActiveSrvShape === "R" ||
-                      ActiveSrvShape === "Z"
-                      ? defaultConsumptionOptions
-                      : instructionOptions
+                    ActiveSrvShape === "S" || ActiveSrvShape === "A"
+                      ? instructionOptions
+                      : defaultConsumptionOptions
                   }
                   optionLabel="label"
                   placeholder="انتخاب کنید"
@@ -333,7 +325,7 @@ const PrescriptionCard = ({
                   !isLoading ? (
                     <button
                       className="btn rounded w-100 addToListBtn font-12"
-                      onClick={FUAddToListItem}
+                      onClick={() => FUAddToListItem()}
                     >
                       اضافه به لیست
                     </button>
@@ -354,7 +346,7 @@ const PrescriptionCard = ({
                       <button
                         className="btn rounded w-100 addToListBtn font-12"
                         id="btnAddSalamatSrvItem"
-                        onClick={FUAddToListItem}
+                        onClick={() => FUAddToListItem()}
                       >
                         ثبت تغییرات
                       </button>

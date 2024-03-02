@@ -22,30 +22,86 @@ const PrescQuickAccessCard = ({
   handleReset,
   editFavPresc,
   favItemIsLoading,
+  quickAccessMode,
+  salamatHeaderList,
 }) => {
   const [favSearchInput, setFavSearchInput] = useState("");
-  const [selectedTab, setSelectedTab] = useState("");
-  const handleTabChange = (tab) => setSelectedTab(tab);
 
-  const filteredData = () => {
-    if (selectedTab === 1) {
+  // Tamin Mode
+  const [selectedFavTaminTab, setSelectedFavTaminTab] = useState("");
+  const handleTaminFavTabChange = (tab) => setSelectedFavTaminTab(tab);
+
+  const filteredTaminData = () => {
+    if (selectedFavTaminTab === 1) {
       return data.filter((item) => item.prescId === 1);
-    } else if (selectedTab === 2) {
+    } else if (selectedFavTaminTab === 2) {
       return data.filter((item) => item.prescId === 2);
-    } else if (selectedTab === 5) {
+    } else if (selectedFavTaminTab === 5) {
       return data.filter((item) => item.prescId === 5);
     } else {
       return data;
     }
   };
 
-  const searchedFavItems = filteredData().filter(
+  const searchedFavTaminItems = filteredTaminData().filter(
     (item) =>
       item?.SrvName?.toLowerCase().includes(favSearchInput?.toLowerCase()) ||
       item?.SrvCode?.includes(favSearchInput)
   );
 
-  useEffect(() => handleTabChange(1), []);
+  useEffect(() => handleTaminFavTabChange(1), []);
+
+  // Salamat Mode
+  let firstMatchingId = null;
+
+  const [selectedFavSalamatTab, setSelectedFavSalamatTab] = useState("");
+  const [matchingIDs, setMatchingIDs] = useState([]);
+  const handleSalamatFavTabChange = (tab) => setSelectedFavSalamatTab(tab);
+
+  const searchedFavSalamatItems = data?.filter((item) =>
+    item?.serviceInterfaceName
+      ?.toLowerCase()
+      .includes(favSearchInput?.toLowerCase())
+  );
+
+  const filteredSalamatData = () => {
+    return searchedFavSalamatItems.filter(
+      (item) => item.typeId === selectedFavSalamatTab
+    );
+  };
+
+  useEffect(() => {
+    // Find the first matching id
+    salamatHeaderList?.some((item) => {
+      if (matchingIDs?.includes(item.id)) {
+        firstMatchingId = item.id;
+        return true; // Exit loop after finding the first matching id
+      }
+      return false;
+    });
+
+    handleSalamatFavTabChange(firstMatchingId);
+  }, [matchingIDs, salamatHeaderList]);
+
+  useEffect(() => {
+    const idsSet = new Set(); // to store unique values
+
+    searchedFavSalamatItems?.forEach((dataItem) => {
+      const matchingHeader = salamatHeaderList?.find(
+        (headerItem) => headerItem.id === dataItem.typeId
+      );
+
+      if (matchingHeader) {
+        idsSet.add(matchingHeader.id);
+      }
+    });
+
+    const uniqueIds = Array.from(idsSet); // convert Set back to array
+
+    setMatchingIDs(uniqueIds);
+  }, [data, salamatHeaderList]);
+
+  let firstMatchingIndex = -1;
 
   return (
     <>
@@ -101,86 +157,174 @@ const PrescQuickAccessCard = ({
                     />
                   </div>
 
-                  <ul className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b font-12">
-                    <li className="nav-item">
-                      <a
-                        className="nav-link active"
-                        href="#bottom-tab-1"
-                        data-bs-toggle="tab"
-                        onClick={() => handleTabChange(1)}
-                      >
-                        دارو
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        href="#bottom-tab-2"
-                        data-bs-toggle="tab"
-                        onClick={() => handleTabChange(2)}
-                      >
-                        پاراکلینیک
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        href="#bottom-tab-3"
-                        data-bs-toggle="tab"
-                        onClick={() => handleTabChange(5)}
-                      >
-                        خدمات
-                      </a>
-                    </li>
-                  </ul>
-
-                  <div
-                    className="favitemTab show active mt-3"
-                    id="bottom-tab-1"
-                  >
-                    <div className="dir-rtl p-1">
-                      {searchedFavItems?.map((srv, index) =>
-                        favItemIsLoading ? (
-                          <div className="favItemSkeleton mb-1" key={index}>
-                            <Skeleton></Skeleton>
-                          </div>
-                        ) : (
-                          <div
-                            className="d-flex justify-between text-secondary border-gray rounded my-1 p-1 quickAccessPrscBox"
-                            key={index}
+                  {quickAccessMode == "tamin" && (
+                    <>
+                      <ul className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b font-12">
+                        <li className="nav-item">
+                          <a
+                            className="nav-link active"
+                            href="#bottom-tab-1"
+                            data-bs-toggle="tab"
+                            onClick={() => handleTaminFavTabChange(1)}
                           >
-                            <div className="col d-flex flex-col font-12 fw-bold align-items-center gap-1">
-                              <p className="mb-1 w-75 text-center border-bottom-1">
-                                {srv.SrvCode}
-                              </p>
-                              <p className="mb-0 text-center">
-                                {srv.SrvName.substr(0, 27) + " ..."}
-                              </p>
-                            </div>
+                            دارو
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#bottom-tab-2"
+                            data-bs-toggle="tab"
+                            onClick={() => handleTaminFavTabChange(2)}
+                          >
+                            پاراکلینیک
+                          </a>
+                        </li>
+                        <li className="nav-item">
+                          <a
+                            className="nav-link"
+                            href="#bottom-tab-3"
+                            data-bs-toggle="tab"
+                            onClick={() => handleTaminFavTabChange(5)}
+                          >
+                            خدمات
+                          </a>
+                        </li>
+                      </ul>
 
-                            <div className="d-flex justify-end align-items-center">
-                              <button
-                                type="button"
-                                className="btn p-2 addBtn formBtns"
-                                data-pr-position="left"
-                                onClick={(e) => {
-                                  handleEditService(srv, true);
-                                }}
+                      <div
+                        className="favitemTab show active mt-3"
+                        id="bottom-tab-1"
+                      >
+                        <div className="dir-rtl p-1">
+                          {searchedFavTaminItems?.map((srv, index) =>
+                            favItemIsLoading ? (
+                              <div className="favItemSkeleton mb-1" key={index}>
+                                <Skeleton></Skeleton>
+                              </div>
+                            ) : (
+                              <div
+                                className="d-flex justify-between text-secondary border-gray rounded my-1 p-1 quickAccessPrscBox"
+                                key={index}
                               >
-                                <Tooltip target=".addBtn">
-                                  اضافه به لیست
-                                </Tooltip>
-                                <FeatherIcon
-                                  icon="plus"
-                                  className="prescItembtns"
-                                />
-                              </button>
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
+                                <div className="col d-flex flex-col font-12 fw-bold align-items-center gap-1">
+                                  <p className="mb-1 w-75 text-center border-bottom-1">
+                                    {srv.SrvCode}
+                                  </p>
+                                  <p className="mb-0 text-center">
+                                    {srv.SrvName.substr(0, 27) + " ..."}
+                                  </p>
+                                </div>
+
+                                <div className="d-flex justify-end align-items-center">
+                                  <button
+                                    type="button"
+                                    className="btn p-2 addBtn formBtns"
+                                    data-pr-position="left"
+                                    onClick={(e) => {
+                                      handleEditService(srv, true);
+                                    }}
+                                  >
+                                    <Tooltip target=".addBtn">
+                                      اضافه به لیست
+                                    </Tooltip>
+                                    <FeatherIcon
+                                      icon="plus"
+                                      className="prescItembtns"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {quickAccessMode == "salamat" && (
+                    <>
+                      <ul
+                        dir="rtl"
+                        className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b nav-tabs-scroll font-12 pb-0"
+                      >
+                        {salamatHeaderList.map((item, index) => {
+                          if (matchingIDs.includes(item.id)) {
+                            // If it's the first matching tab found, store its index
+                            if (firstMatchingIndex === -1) {
+                              firstMatchingIndex = index;
+                            }
+                            return (
+                              <li className="nav-item" key={index}>
+                                <a
+                                  className={`nav-link d-flex align-items-center justify-center gap-2 ${
+                                    index === firstMatchingIndex
+                                      ? "active"
+                                      : item.Active
+                                  }`}
+                                  href={`#salamat-bottom-tab${index + 1}`}
+                                  data-bs-toggle="tab"
+                                  onClick={() =>
+                                    handleSalamatFavTabChange(item.id)
+                                  }
+                                >
+                                  {item.name}
+                                </a>
+                              </li>
+                            );
+                          } else {
+                            return null; // Render nothing if the item's id is not in matchingIds
+                          }
+                        })}
+                      </ul>
+
+                      <div
+                        className="favitemTab show active mt-3"
+                        id="bottom-tab-1"
+                      >
+                        <div className="dir-rtl p-0">
+                          {filteredSalamatData()?.map((srv, index) =>
+                            favItemIsLoading ? (
+                              <div className="favItemSkeleton my-1" key={index}>
+                                <Skeleton></Skeleton>
+                              </div>
+                            ) : (
+                              <div
+                                className="d-flex justify-between text-secondary border-gray rounded align-items-center my-1 p-1 quickAccessPrscBox font-12 fw-bold"
+                                key={index}
+                              >
+                                <div className="col d-flex flex-col align-items-center text-center">
+                                  <p>
+                                    {srv.serviceInterfaceName.substr(0, 27) +
+                                      " ..."}
+                                  </p>
+                                </div>
+
+                                <div className="d-flex justify-end align-items-center">
+                                  <button
+                                    type="button"
+                                    className="btn p-2 addBtn formBtns"
+                                    data-pr-position="left"
+                                    onClick={(e) => {
+                                      handleEditService(srv, true);
+                                    }}
+                                  >
+                                    <Tooltip target=".addBtn">
+                                      اضافه به لیست
+                                    </Tooltip>
+                                    <FeatherIcon
+                                      icon="plus"
+                                      className="prescItembtns"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -188,116 +332,176 @@ const PrescQuickAccessCard = ({
             <div className="tab-pane" id="bottom-tab3">
               <div className="card quickAccessCardHeight">
                 <div className="card-body dir-rtl">
-                  <div className="d-flex gap-1">
-                    <div className="col">
-                      <button
-                        onClick={openApplyFavPrescModal}
-                        className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 addPrescBtn"
-                        data-pr-position="right"
-                      >
-                        <FeatherIcon
-                          icon="plus"
-                          style={{ width: "14px", height: "14px" }}
-                        />
+                  {quickAccessMode == "tamin" && (
+                    <>
+                      <div className="d-flex gap-1">
+                        <div className="col">
+                          <button
+                            onClick={openApplyFavPrescModal}
+                            className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 addPrescBtn"
+                            data-pr-position="right"
+                          >
+                            <FeatherIcon
+                              icon="plus"
+                              style={{ width: "14px", height: "14px" }}
+                            />
 
-                        {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
+                            {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
 
-                        <Tooltip target=".addPrescBtn">
-                          افزودن نسخه فعلی
-                        </Tooltip>
-                      </button>
-                    </div>
+                            <Tooltip target=".addPrescBtn">
+                              افزودن نسخه فعلی
+                            </Tooltip>
+                          </button>
+                        </div>
 
-                    {editFavPrescData.length !== 0 &&
-                      <div className="col">
-                        <button
-                          onClick={() => editFavPresc(editFavPrescData._id)}
-                          className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 editPrescBtn"
-                          data-pr-position="left"
-                        >
-                          <FeatherIcon
-                            icon="edit-2"
-                            style={{ width: "14px", height: "14px" }}
-                          />
+                        {editFavPrescData.length !== 0 && (
+                          <div className="col">
+                            <button
+                              onClick={() => editFavPresc(editFavPrescData._id)}
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 editPrescBtn"
+                              data-pr-position="left"
+                            >
+                              <FeatherIcon
+                                icon="edit-2"
+                                style={{ width: "14px", height: "14px" }}
+                              />
 
-                          <Tooltip target=".editPrescBtn">
-                            ویرایش نسخه فعلی
-                          </Tooltip>
-                        </button>
+                              <Tooltip target=".editPrescBtn">
+                                ویرایش نسخه فعلی
+                              </Tooltip>
+                            </button>
+                          </div>
+                        )}
                       </div>
-                    }
-                  </div>
 
-                  {editFavPrescData.length !== 0 && (
-                    <div className="d-flex gap-1 mt-1">
+                      {editFavPrescData.length !== 0 && (
+                        <div className="d-flex gap-1 mt-1">
+                          <div className="col">
+                            <button
+                              onClick={() =>
+                                removeFavPresc(editFavPrescData._id)
+                              }
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 removePrescBtn"
+                              data-pr-position="right"
+                            >
+                              <FeatherIcon
+                                icon="trash"
+                                style={{ width: "14px", height: "14px" }}
+                              />
+
+                              <Tooltip target=".removePrescBtn">
+                                {" "}
+                                حذف نسخه فعلی
+                              </Tooltip>
+                            </button>
+                          </div>
+
+                          <div className="col">
+                            <button
+                              onClick={handleReset}
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 refreshPrescBtn"
+                              data-pr-position="left"
+                            >
+                              <FeatherIcon
+                                icon="refresh-cw"
+                                style={{ width: "14px", height: "14px" }}
+                              />
+
+                              <Tooltip target=".refreshPrescBtn">
+                                تنظیم مجدد
+                              </Tooltip>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div
+                        className={`favitemTab mt-2 ${
+                          editFavPrescData.length == 0
+                            ? "d-flex flex-column-reverse"
+                            : "d-flex"
+                        } gap-1`}
+                      >
+                        <div
+                          className={`${
+                            editFavPrescData.length == 0 && "mt-1"
+                          } dir-rtl w-100`}
+                        >
+                          {favPrescData.map((item, index) =>
+                            favItemIsLoading ? (
+                              <div className="favItemSkeleton mb-1" key={index}>
+                                <Skeleton></Skeleton>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => handleAddFavPresc(item)}
+                                className={`${
+                                  editFavPrescData._id === item._id
+                                    ? "btn-outline-primary"
+                                    : "text-secondary border-gray"
+                                } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
+                                key={index}
+                              >
+                                <div>{item.Name}</div>
+                              </button>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {quickAccessMode == "salamat" && (
+                    <>
                       <div className="col">
                         <button
-                          onClick={() => removeFavPresc(editFavPrescData._id)}
-                          className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 removePrescBtn"
+                          onClick={openApplyFavPrescModal}
+                          className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 addPrescBtn"
                           data-pr-position="right"
                         >
                           <FeatherIcon
-                            icon="trash"
+                            icon="plus"
                             style={{ width: "14px", height: "14px" }}
                           />
 
-                          <Tooltip target=".removePrescBtn">
-                            {" "}
-                            حذف نسخه فعلی
+                          {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
+
+                          <Tooltip target=".addPrescBtn">
+                            افزودن نسخه فعلی
                           </Tooltip>
                         </button>
                       </div>
 
-                      <div className="col">
-                        <button
-                          onClick={handleReset}
-                          className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 refreshPrescBtn"
-                          data-pr-position="left"
-                        >
-                          <FeatherIcon
-                            icon="refresh-cw"
-                            style={{ width: "14px", height: "14px" }}
-                          />
-
-                          <Tooltip target=".refreshPrescBtn">
-                            تنظیم مجدد
-                          </Tooltip>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  <div
-                    className={`favitemTab mt-2 ${editFavPrescData.length == 0
-                      ? "d-flex flex-column-reverse"
-                      : "d-flex"
-                      } gap-1`}
-                  >
-                    <div
-                      className={`${editFavPrescData.length == 0 && "mt-1"
+                      <div
+                        className={`${
+                          editFavPrescData.length == 0 && "mt-1"
                         } dir-rtl w-100`}
-                    >
-                      {favPrescData.map((item, index) =>
-                        favItemIsLoading ? (
-                          <div className="favItemSkeleton mb-1" key={index}>
-                            <Skeleton></Skeleton>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => handleAddFavPresc(item)}
-                            className={`${editFavPrescData._id === item._id
-                              ? "btn-outline-primary"
-                              : "text-secondary border-gray"
+                      >
+                        {favPrescData.map((item, index) =>
+                          favItemIsLoading ? (
+                            <div className="favItemSkeleton mb-1" key={index}>
+                              <Skeleton></Skeleton>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleAddFavPresc(item)}
+                              // onClick={(e) => {
+                              //   handleEditService(srv, true);
+                              // }}
+                              className={`${
+                                editFavPrescData._id === item._id
+                                  ? "btn-outline-primary"
+                                  : "text-secondary border-gray"
                               } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
-                            key={index}
-                          >
-                            <div>{item.Name}</div>
-                            <div></div>
-                          </button>
-                        )
-                      )}
-                    </div>
-                  </div>
+                              key={index}
+                            >
+                              <div>{item.Name}</div>
+                            </button>
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

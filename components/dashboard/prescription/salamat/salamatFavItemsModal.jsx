@@ -32,8 +32,8 @@ const SalamatFavItemsModal = ({
 
   useEffect(() => {
     // Find the first matching id
-    salamatHeaderList.some((item) => {
-      if (matchingIDs.includes(item.id)) {
+    salamatHeaderList?.some((item) => {
+      if (matchingIDs?.includes(item.id)) {
         firstMatchingId = item.id;
         return true; // Exit loop after finding the first matching id
       }
@@ -48,7 +48,7 @@ const SalamatFavItemsModal = ({
     const idsSet = new Set(); // to store unique values
 
     searchedFavItems?.forEach((dataItem) => {
-      const matchingHeader = salamatHeaderList.find(
+      const matchingHeader = salamatHeaderList?.find(
         (headerItem) => headerItem.id === dataItem.typeId
       );
       if (matchingHeader) {
@@ -86,8 +86,9 @@ const SalamatFavItemsModal = ({
               return (
                 <li className="nav-item" key={index}>
                   <a
-                    className={`nav-link d-flex align-items-center justify-center gap-2 ${index === 0 ? "active" : item.Active
-                      }`}
+                    className={`nav-link d-flex align-items-center justify-center gap-2 ${
+                      index === 0 ? "active" : item.Active
+                    }`}
                     href={`#bottom-tab${index + 1}`}
                     data-bs-toggle="tab"
                     onClick={() => handleTabChange(item.id)}

@@ -33,8 +33,8 @@ const PrescriptionCard = ({
   setEditSrvData,
   ActivePrescHeadID,
   setShowPinModal,
-  openFavModal,
   setSearchFromInput,
+  // openFavModal,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -216,7 +216,6 @@ const PrescriptionCard = ({
                   id="srvSearchInput"
                   name="srvSearchInput"
                   className="form-control rounded-right w-50 padding-right-2"
-                  // onKeyUp={handleSearchKeyUp}
                   value={editSrvData?.SrvName}
                 />
 

@@ -357,12 +357,8 @@ const TaminPrescription = ({
   };
 
   //--- Fav Tamin Items ---//
-  const [showFavItemsModal, setShowFavItemsModal] = useState(false);
   const [favTaminItems, setFavTaminItems] = useState([]);
   const [favItemIsLoading, setFavItemIsLoading] = useState(false);
-
-  const openFavModal = () => setShowFavItemsModal(true);
-  const handleCloseFavItemsModal = () => setShowFavItemsModal(false);
 
   const getFavTaminItems = () => {
     setFavItemIsLoading(true);
@@ -928,6 +924,7 @@ const TaminPrescription = ({
               />
 
               <PrescQuickAccessCard
+                quickAccessMode={"tamin"}
                 data={favTaminItems}
                 favItemIsLoading={favItemIsLoading}
                 handleEditService={handleEditService}
@@ -977,7 +974,6 @@ const TaminPrescription = ({
                 setEditSrvData={setEditSrvData}
                 ActivePrescHeadID={ActivePrescHeadID}
                 setShowPinModal={setShowPinModal}
-                openFavModal={openFavModal}
                 setSearchFromInput={setSearchFromInput}
               />
 

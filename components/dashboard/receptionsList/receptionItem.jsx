@@ -152,7 +152,8 @@ const ReceptionItem = ({
                 >
                   <img
                     src={
-                      "https://irannobat.ir/images/Avatar/" + srv?.Patient.Avatar
+                      "https://irannobat.ir/images/Avatar/" +
+                      srv?.Patient.Avatar
                     }
                     alt="patientAvatar"
                     style={{
@@ -161,7 +162,8 @@ const ReceptionItem = ({
                       borderRadius: "10px",
                     }}
                     onError={({ currentTarget }) => {
-                      srv?.Patient?.Gender === "F" || srv?.Patient.Gender === "M"
+                      srv?.Patient?.Gender === "F" ||
+                      srv?.Patient.Gender === "M"
                         ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
                         : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                     }}
@@ -237,7 +239,7 @@ const ReceptionItem = ({
                 <span key={index}>
                   {item.Name}
                   {item.Des ? " (" + item.Des + ")" : ""}
-                  {" | "}
+                  {index < srv.Items.length - 1 ? " | " : ""}
                 </span>
               ))}
             </div>

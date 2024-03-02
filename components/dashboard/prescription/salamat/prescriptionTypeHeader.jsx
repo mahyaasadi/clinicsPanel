@@ -107,7 +107,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
               ? "w-190"
               : ""
           }`}
-          href={"#bottom-tab" + item.id}
+          href={"#salamat-bottom-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"
           onClick={selectPrescType}

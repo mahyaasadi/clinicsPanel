@@ -102,6 +102,7 @@ const FilterSalamatPrescs = ({
                   className="form-control rounded-sm font-11 articleSearchInput"
                 />
               </div>
+              
               <div className="col-md-12 col-lg-3">
                 <label className="lblAbs font-12">بازه های پیش فرض</label>
                 <Dropdown

@@ -12,6 +12,7 @@ const ApplyFavPrescModal = ({
   favPrescItemsData,
   applyFavPresc,
 }) => {
+  // console.log({ prescMode });
   const [isLoading, setIsLoading] = useState(false);
 
   const _applyFavPresc = (e) => {
@@ -27,8 +28,17 @@ const ApplyFavPrescModal = ({
       Name: formProps.prescName,
       Tamin: prescMode == "Tamin" ? true : false,
       Salamat: prescMode == "Salamat" ? true : false,
-      prescItems: favPrescItemsData,
+      prescItems: favPrescItemsData ? favPrescItemsData : prescriptionItemsData,
+      prescItems: favPrescItemsData
+        ? favPrescItemsData
+        : prescriptionItemsData.map((item) => {
+            //  remove unwanted properties
+            const { checkCode, infoMessages, snackMessages, ...rest } = item;
+            return rest;
+          }),
     };
+
+    console.log({ data });
 
     if (prescriptionItemsData.length == 0) {
       WarningAlert("", "خدمتی در نسخه ثبت نشده است!");

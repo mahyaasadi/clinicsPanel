@@ -4,11 +4,7 @@ import { axiosClient } from "class/axiosConfig";
 import { QuestionAlert } from "class/AlertManage";
 import ImageViewer from "components/commonComponents/imageViewer";
 
-const NotesList = ({
-  openNoteCreatorModal,
-  patientNotesData,
-  RemoveNote,
-}) => {
+const NotesList = ({ openNoteCreatorModal, patientNotesData, RemoveNote }) => {
   const router = useRouter();
 
   const _removeNote = async (id) => {
@@ -41,7 +37,7 @@ const NotesList = ({
           <div className="row align-items-center p-2 pt-0 mb-2">
             <div className="col">
               <p className="card-title font-14 text-secondary">
-                پرونده های دستی
+                یادداشت های دستی
               </p>
             </div>
 
