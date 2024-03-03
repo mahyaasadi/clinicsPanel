@@ -10,17 +10,43 @@ import { convertDateFormat } from "utils/convertDateFormat";
 const TaminPrescRecordsList = ({ data, prepareDelete }) => {
   const columns = [
     {
+      name: "مشخصات بیمار",
+      selector: (row) => row.Patient,
+      style: {
+        display: "flex",
+        justifyContent: "flex-start",
+      },
+      sortable: true,
+      cell: (row) => (
+        <div className="d-flex align-items-center gap-3">
+          <img
+            src={"https://irannobat.ir/images/Avatar/" + row.Patient?.Avatar}
+            alt="patientAvatar"
+            onError={({ currentTarget }) => {
+              row.Patient?.Gender === "M" || row.Patient?.Gender === "F"
+                ? (currentTarget.src = `assets/img/avatar-${row.Patient.Gender}-pic.png`)
+                : (currentTarget.src = `assets/img/avatar-O-pic.png`);
+            }}
+            style={{
+              width: "42px",
+              height: "42px",
+              borderRadius: "8px",
+            }}
+          />
+          <div>
+            <p className="mb-0">{row.Patient?.Name}</p>
+            <p className="fw-bold">{row.NID}</p>
+          </div>
+        </div>
+      ),
+      width: "auto",
+    },
+    {
       name: "نوع نسخه",
       selector: (row) => row.Type,
       sortable: true,
       width: "auto",
       height: "auto",
-    },
-    {
-      name: "کد ملی",
-      selector: (row) => row.NID,
-      sortable: true,
-      width: "auto",
     },
     {
       name: "کد پیگیری",
@@ -52,15 +78,15 @@ const TaminPrescRecordsList = ({ data, prepareDelete }) => {
             data-bs-placement="top"
             title="حذف"
             onClick={() => prepareDelete(row.head_EPRSC_ID, row._id)}
-          // href={{
-          //   pathname: "/taminPrescription",
-          //   query: {
-          //     headID: row.head_EPRSC_ID,
-          //     pid: row.NID,
-          //     prId: row._id,
-          //     // centerID: row.CenterID,
-          //   },
-          // }}
+            // href={{
+            //   pathname: "/taminPrescription",
+            //   query: {
+            //     headID: row.head_EPRSC_ID,
+            //     pid: row.NID,
+            //     prId: row._id,
+            //     // centerID: row.CenterID,
+            //   },
+            // }}
           >
             <FeatherIcon
               icon="trash-2"

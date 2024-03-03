@@ -11780,6 +11780,17 @@ thead {
   stroke: gray;
 }
 
+.prescBtn:hover .insLogoSvg {
+  fill: white;
+  stroke: white;
+  transition: ease-in 0.2s all;
+}
+
+.insLogoSvg {
+  fill: #b45309;
+  stroke: #b45309;
+}
+
 /* Salamat Prescription */
 .SalamatPrscHeader {
   margin-bottom: 1rem;

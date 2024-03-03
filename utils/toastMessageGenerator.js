@@ -1,7 +1,7 @@
 const displayToastMessages = (messages, toastRef, successMessage) => {
   const toastMessages = [];
 
-  if (toastRef && messages && messages.length !== 0) {
+  if (toastRef.current && messages && messages.length !== 0) {
     for (let i = 0; i < messages.length; i++) {
       const element = messages[i];
       let obj = {
@@ -9,14 +9,12 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
           element.type === "S"
             ? "Success"
             : element.type === "I"
-              ? "Info"
-              : element.type === "E"
-                ? "Error"
-                : "Warning",
+            ? "Info"
+            : element.type === "E"
+            ? "Error"
+            : "Warning",
         summary:
-          element.type === "E"
-            ? "خطا!"
-            : element.type === "W" ? "هشدار!" : "",
+          element.type === "E" ? "خطا!" : element.type === "W" ? "هشدار!" : "",
         detail: element.text,
         life: 5000,
       };

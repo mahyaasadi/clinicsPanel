@@ -12,7 +12,6 @@ const ApplyFavPrescModal = ({
   favPrescItemsData,
   applyFavPresc,
 }) => {
-  // console.log({ prescMode });
   const [isLoading, setIsLoading] = useState(false);
 
   const _applyFavPresc = (e) => {
@@ -37,8 +36,6 @@ const ApplyFavPrescModal = ({
             return rest;
           }),
     };
-
-    console.log({ data });
 
     if (prescriptionItemsData.length == 0) {
       WarningAlert("", "خدمتی در نسخه ثبت نشده است!");

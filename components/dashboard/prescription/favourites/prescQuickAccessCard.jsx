@@ -24,6 +24,7 @@ const PrescQuickAccessCard = ({
   favItemIsLoading,
   quickAccessMode,
   salamatHeaderList,
+  isLoading,
 }) => {
   const [favSearchInput, setFavSearchInput] = useState("");
 
@@ -441,6 +442,7 @@ const PrescQuickAccessCard = ({
                                     : "text-secondary border-gray"
                                 } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
                                 key={index}
+                                disabled={isLoading ? disabled : false}
                               >
                                 <div>{item.Name}</div>
                               </button>
@@ -453,30 +455,88 @@ const PrescQuickAccessCard = ({
 
                   {quickAccessMode == "salamat" && (
                     <>
-                      <div className="col">
-                        <button
-                          onClick={openApplyFavPrescModal}
-                          className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 addPrescBtn"
-                          data-pr-position="right"
-                        >
-                          <FeatherIcon
-                            icon="plus"
-                            style={{ width: "14px", height: "14px" }}
-                          />
+                      <div className="d-flex gap-1">
+                        <div className="col">
+                          <button
+                            onClick={openApplyFavPrescModal}
+                            className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 addPrescBtn"
+                            data-pr-position="right"
+                          >
+                            <FeatherIcon
+                              icon="plus"
+                              style={{ width: "14px", height: "14px" }}
+                            />
 
-                          {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
+                            {editFavPrescData.length == 0 && "افزودن نسخه فعلی"}
 
-                          <Tooltip target=".addPrescBtn">
-                            افزودن نسخه فعلی
-                          </Tooltip>
-                        </button>
+                            <Tooltip target=".addPrescBtn">
+                              افزودن نسخه فعلی
+                            </Tooltip>
+                          </button>
+                        </div>
+
+                        {editFavPrescData.length !== 0 && (
+                          <div className="col">
+                            <button
+                              onClick={() => editFavPresc(editFavPrescData._id)}
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 editPrescBtn"
+                              data-pr-position="left"
+                            >
+                              <FeatherIcon
+                                icon="edit-2"
+                                style={{ width: "14px", height: "14px" }}
+                              />
+
+                              <Tooltip target=".editPrescBtn">
+                                ویرایش نسخه فعلی
+                              </Tooltip>
+                            </button>
+                          </div>
+                        )}
                       </div>
 
-                      <div
-                        className={`${
-                          editFavPrescData.length == 0 && "mt-1"
-                        } dir-rtl w-100`}
-                      >
+                      {editFavPrescData.length !== 0 && (
+                        <div className="d-flex gap-1 mt-1">
+                          <div className="col">
+                            <button
+                              onClick={() =>
+                                removeFavPresc(editFavPrescData._id)
+                              }
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 removePrescBtn"
+                              data-pr-position="right"
+                            >
+                              <FeatherIcon
+                                icon="trash"
+                                style={{ width: "14px", height: "14px" }}
+                              />
+
+                              <Tooltip target=".removePrescBtn">
+                                {" "}
+                                حذف نسخه فعلی
+                              </Tooltip>
+                            </button>
+                          </div>
+
+                          <div className="col">
+                            <button
+                              onClick={handleReset}
+                              className="height-40 btn btn-outline-primary w-100 font-12 d-flex align-items-center justify-center gap-2 refreshPrescBtn"
+                              data-pr-position="left"
+                            >
+                              <FeatherIcon
+                                icon="refresh-cw"
+                                style={{ width: "14px", height: "14px" }}
+                              />
+
+                              <Tooltip target=".refreshPrescBtn">
+                                تنظیم مجدد
+                              </Tooltip>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-2 dir-rtl w-100">
                         {favPrescData.map((item, index) =>
                           favItemIsLoading ? (
                             <div className="favItemSkeleton mb-1" key={index}>

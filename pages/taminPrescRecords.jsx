@@ -79,8 +79,6 @@ const TaminPrescRecords = ({ ClinicUser }) => {
     let url = "TaminEprsc/PrescriptionDelete";
     let data = { headerID, prID, CenterID: ClinicID, otpCode };
 
-    console.log({ data });
-
     axiosClient
       .delete(url, { data })
       .then((response) => {

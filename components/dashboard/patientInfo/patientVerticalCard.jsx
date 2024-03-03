@@ -143,6 +143,7 @@ const PatientVerticalCard = ({
             "خطا",
             "تغییر بیمه بیمار ، به دلیل عدم پوشش بیمه امکان پذیر نیست"
           );
+          setIsLoading(false);
           return false;
         }
         setIsLoading(false);
@@ -217,8 +218,8 @@ const PatientVerticalCard = ({
                     ? ", " + data.Age + " ساله"
                     : ""
                   : data?.age
-                    ? ", " + data?.age + " ساله"
-                    : ""}
+                  ? ", " + data?.age + " ساله"
+                  : ""}
               </div>
               <div className="PVCardjob">
                 {taminPrescMode
@@ -226,8 +227,8 @@ const PatientVerticalCard = ({
                     ? data?.NationalID
                     : "-"
                   : data?.nationalNumber
-                    ? data?.nationalNumber
-                    : "-"}
+                  ? data?.nationalNumber
+                  : "-"}
               </div>
             </div>
           </div>
@@ -240,15 +241,15 @@ const PatientVerticalCard = ({
                     ? "تحت قرارداد بیمه می باشد"
                     : "تحت قرارداد بیمه نمی باشد"
                   : data?.isCovered
-                    ? "تحت قرارداد بیمه می باشد"
-                    : "تحت قرارداد بیمه نمی باشد"}
+                  ? "تحت قرارداد بیمه می باشد"
+                  : "تحت قرارداد بیمه نمی باشد"}
               </span>
               <span className="PVCardparameter">
                 {taminPrescMode
                   ? ""
                   : data?.isReferenceable
-                    ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
-                    : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
+                  ? "امکان پذيرش بيمار از مسير ارجاع وجود دارد"
+                  : "امکان پذيرش بيمار از مسير ارجاع وجود ندارد"}
               </span>
             </div>
 
@@ -261,8 +262,8 @@ const PatientVerticalCard = ({
                       ? data.InsuranceName
                       : "مشخص نمی باشد"
                     : data?.productName
-                      ? data.productName
-                      : "مشخص نمی باشد"}
+                    ? data.productName
+                    : "مشخص نمی باشد"}
                 </div>
 
                 {taminPrescMode && (
@@ -308,7 +309,7 @@ const PatientVerticalCard = ({
                 {taminPrescMode
                   ? ""
                   : " پزشک خانواده : " +
-                  (data?.familyPhysician ? data?.familyPhysician : "-")}
+                    (data?.familyPhysician ? data?.familyPhysician : "-")}
               </span>
             </div>
           </div>

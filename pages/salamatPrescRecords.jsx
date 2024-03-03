@@ -55,7 +55,6 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.res.info) {
           setPrescRecords(response.data.res.info);
           setIsLoading(false);

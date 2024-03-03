@@ -388,7 +388,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const openApplyFavPrescModal = () => setShowApplyFavPrescModal(true);
   const closeApplyFavPrescModal = () => setShowApplyFavPrescModal(false);
 
-  const getTaminFavPrescs = () => {
+  const getSalamatFavPrescs = () => {
     setFavItemIsLoading(true);
     let url = `CenterFavEprsc/getAll/${ClinicID}/${"Salamat"}`;
 
@@ -404,12 +404,22 @@ const SalamatPrescription = ({ ClinicUser }) => {
       });
   };
 
+  const handleResetFavPresc = () => {
+    existingCheckCodes = [];
+    setEditFavPrescData([]);
+    setSearchFromInput(true);
+  };
+
   const handleAddFavPresc = async (favPresc) => {
-    setEditFavPrescData(favPresc);
-
-    let newPrescriptionItemsData = [];
-
     if (ActivePatientNID) {
+      await handleResetFavPresc();
+
+      activeSearch();
+      setPrescriptionItemsData([]);
+      let newPrescriptionItemsData = [];
+      let addedPrescItemData = {};
+      setEditFavPrescData(favPresc);
+
       for (let i = 0; i < favPresc.Items[0].length; i++) {
         const element = favPresc.Items[0][i];
 
@@ -424,7 +434,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.shape,
           element.numberOfRequest,
           element.description,
-          element.consumptionVal.toString(),
+          element.consumptionVal?.toString(),
           element.consumptionInstructionVal
             ? element.consumptionInstructionVal
             : null,
@@ -434,14 +444,18 @@ const SalamatPrescription = ({ ClinicUser }) => {
           setIsLoading
         );
 
-        const addedPrescItemData = await FUAddToListItem(prescData, element.serviceInterfaceName);
+        addedPrescItemData = await FUAddToListItem(
+          prescData,
+          element.serviceInterfaceName
+        );
+
         if (addedPrescItemData) {
           newPrescriptionItemsData.push(addedPrescItemData);
         }
       }
 
       // Update state after the loop with all accumulated data
-      setPrescriptionItemsData([...prescriptionItemsData, ...newPrescriptionItemsData]);
+      setPrescriptionItemsData(newPrescriptionItemsData);
     } else {
       ErrorAlert("", "استعلام بیمار گرفته نشده است!");
     }
@@ -449,6 +463,53 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
   const applyFavPresc = (favPresc) => {
     setFavPrescData([...favPrescData, favPresc]);
+  };
+
+  // Edit Fav Presc
+  const editFavPresc = (id) => {
+    let url = `CenterFavEprsc/update/${id}`;
+
+    let data = {
+      CenterID: ClinicID,
+      Name: editFavPrescData.Name,
+      Tamin: false,
+      Salamat: true,
+      prescItems: prescriptionItemsData,
+    };
+
+    axiosClient
+      .put(url, data)
+      .then((response) => {
+        let findFavPresc = favPrescData.filter(
+          (presc) => presc._id === response.data._id
+        );
+
+        findFavPresc.Items = response.data.Items;
+        getSalamatFavPrescs();
+        setTimeout(() => {
+          SuccessAlert("", "ویرایش نسخه با موفقیت انجام گردید!");
+        }, 200);
+        handleResetFavPresc();
+        activeSearch();
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ویرایش نسخه با خطا مواجه گردید!");
+      });
+  };
+
+  const removeFavSalamatPresc = (id) => {
+    let url = `CenterFavEprsc/delete/${id}`;
+
+    axiosClient
+      .delete(url)
+      .then((response) => {
+        setFavPrescData(favPrescData.filter((item) => item._id !== id));
+        handleResetFavPresc();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // Add Services To List
@@ -480,37 +541,67 @@ const SalamatPrescription = ({ ClinicUser }) => {
       );
     }
 
-    let findConsumptionLbl = consumptionOptions.find(
-      (x) => x.value === selectedConsumption ? selectedConsumption : prescData.consumption
-    );
+    let findConsumptionLbl = null;
+    if (selectedConsumption) {
+      findConsumptionLbl = consumptionOptions.find(
+        (x) => x.value === selectedConsumption
+      );
+    } else {
+      findConsumptionLbl = consumptionOptions.find(
+        (x) => x.value.toString() === prescData.consumption
+      );
+    }
 
-    let findInstructionLbl = instructionOptions.find(
-      (x) => x.value === selectedConsumptionInstruction ? selectedConsumptionInstruction : prescData.consumptionInstruction
-    );
-
-    console.log({ prescData });
+    let findInstructionLbl = null;
+    if (selectedConsumptionInstruction) {
+      findInstructionLbl = instructionOptions.find(
+        (x) => x.value === selectedConsumptionInstruction
+      );
+    } else {
+      findInstructionLbl = instructionOptions.find(
+        (x) => x.value.toString() === prescData.consumptionInstruction
+      );
+    }
 
     try {
       const response = await axiosClient.post(url, prescData);
       if (response.data.res.info?.checkCode) {
         let addedPrescItemData = {
           serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
-          numberOfRequest: $("#QtyInput").val(),
+          numberOfRequest: prescData.QTY ? prescData.QTY : $("#QtyInput").val(),
           description: $("#eprscItemDescription").val(),
-          consumption: findConsumptionLbl?.label ? findConsumptionLbl?.label : null,
-          consumptionVal: findConsumptionLbl?.value ? findConsumptionLbl?.value : null,
-          consumptionInstruction: findInstructionLbl?.label ? findInstructionLbl?.label : null,
-          consumptionInstructionVal: findInstructionLbl?.value ? findInstructionLbl?.value : null,
-          numberOfPeriod: selectedNOPeriod ? selectedNOPeriod : prescData.numberOfPeriod,
+          consumption: findConsumptionLbl?.label
+            ? findConsumptionLbl?.label
+            : null,
+          consumptionVal: findConsumptionLbl?.value
+            ? findConsumptionLbl?.value
+            : null,
+          consumptionInstruction: findInstructionLbl?.label
+            ? findInstructionLbl?.label
+            : null,
+          consumptionInstructionVal: findInstructionLbl?.value
+            ? findInstructionLbl?.value
+            : null,
+          numberOfPeriod: selectedNOPeriod
+            ? selectedNOPeriod
+            : prescData.numberOfPeriod,
           snackMessages: response.data.res.info?.message?.snackMessage,
           infoMessages: response.data.res.info?.message?.infoMessage,
           checkCode: response.data.res.info?.checkCode,
           prescTypeImg: ActivePrescImg,
           typeId: ActivePrescTypeID,
-          prescTypeEngTitle: ActivePrescEngTitle ? ActivePrescEngTitle : prescData.PrescType,
+          prescTypeEngTitle: ActivePrescEngTitle
+            ? ActivePrescEngTitle
+            : prescData.PrescType,
           shape: ActiveSrvShape ? ActiveSrvShape : prescData.SrvShape,
-          bulkId: ActivePrescTypeID ? (ActivePrescTypeID === 10 ? 1 : 0) : prescData.bulkId,
-          serviceNationalNumber: ActiveSrvNationalNumber ? ActiveSrvNationalNumber : prescData.nationalNumber,
+          bulkId: ActivePrescTypeID
+            ? ActivePrescTypeID === 10
+              ? 1
+              : 0
+            : prescData.bulkId,
+          serviceNationalNumber: ActiveSrvNationalNumber
+            ? ActiveSrvNationalNumber
+            : prescData.nationalNumber,
         };
 
         existingCheckCodes.push({
@@ -531,8 +622,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
         // reset
         activeSearch();
+        setIsLoading(false);
+        setSearchFromInput(true);
         return addedPrescItemData;
-
       } else if (response.data.res.status === 409) {
         WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
       } else {
@@ -543,9 +635,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
           null
         );
       }
-      setIsLoading(false);
-      setSearchFromInput(true);
 
+      // setIsLoading(false);
+      // setSearchFromInput(true);
     } catch (err) {
       console.log(err);
       setIsLoading(false);
@@ -586,7 +678,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //       });
 
     //       if (editPrescSrvMode && favMode === false) {
-    //         console.log("3");
     //         updatePrescItem(
     //           addedPrescItemData.serviceInterfaceName,
     //           addedPrescItemData
@@ -626,10 +717,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //   });
   };
 
-  useEffect(() => {
-    console.log({ prescriptionItemsData }, [prescriptionItemsData]);
-  })
-
   // Delete Service
   const deleteService = async (id, flag) => {
     let result = await QuestionAlert("حذف سرویس!", "آیا از حذف اطمینان دارید؟");
@@ -668,9 +755,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
+          console.log(response.data);
+
           response.data.info.subscriptionInfos.map((x, index) => {
             response.data.info.subscriptionInfos[index].salamatPresc = 1;
           });
+
           setPrescriptionItemsData(response.data.info.subscriptionInfos);
           setPrescDataIsLoading(false);
         })
@@ -745,6 +835,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     let index = prescriptionItemsData.findIndex(
       (x) => x.serviceInterfaceName === id
     );
+
     let g = prescriptionItemsData[index];
     g = newArr;
 
@@ -782,89 +873,87 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     console.log({ data });
 
-    // axiosClient
-    //   .post(url, data)
-    //   .then((response) => {
-    //     console.log(response.data);
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        if (response.data.res.resCode === -8402) {
+          ErrorAlert("خطا", response.data.res.resMessage);
+          setRegisterIsLoading(false);
+        }
+        if (response.data.res.status === 400) {
+          ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+          setRegisterIsLoading(false);
+        }
 
-    //     if (response.data.res.resCode === -8402) {
-    //       ErrorAlert("خطا", response.data.res.resMessage);
-    //       setRegisterIsLoading(false);
-    //     }
-    //     if (response.data.res.status === 400) {
-    //       ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-    //       setRegisterIsLoading(false);
-    //     }
+        if (response.data.res.info) {
+          setRegisterIsLoading(false);
 
-    //     if (response.data.res.info) {
-    //       setRegisterIsLoading(false);
+          // toast messages
+          let registerMessages = [];
+          const infoMessageArray =
+            response.data.res.info.message.infoMessage || [];
+          const snackMessageArray =
+            response.data.res.info.message.snackMessage || [];
 
-    //       // toast messages
-    //       let registerMessages = [];
-    //       const infoMessageArray =
-    //         response.data.res.info.message.infoMessage || [];
-    //       const snackMessageArray =
-    //         response.data.res.info.message.snackMessage || [];
+          let sequenceNumberArray = [];
+          let seqObj = {
+            type: "S",
+            text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
+          };
+          sequenceNumberArray.push(seqObj);
 
-    //       let sequenceNumberArray = [];
-    //       let seqObj = {
-    //         type: "S",
-    //         text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
-    //       };
-    //       sequenceNumberArray.push(seqObj);
+          let trackNumberArray = [];
+          let trackObj = {
+            type: "S",
+            text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
+          };
+          trackNumberArray.push(trackObj);
 
-    //       let trackNumberArray = [];
-    //       let trackObj = {
-    //         type: "S",
-    //         text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
-    //       };
-    //       trackNumberArray.push(trackObj);
+          registerMessages.push(
+            ...infoMessageArray,
+            ...snackMessageArray,
+            ...sequenceNumberArray,
+            ...trackNumberArray
+          );
 
-    //       registerMessages.push(
-    //         ...infoMessageArray,
-    //         ...snackMessageArray,
-    //         ...sequenceNumberArray,
-    //         ...trackNumberArray
-    //       );
+          displayToastMessages(registerMessages, toast, null);
 
-    //       displayToastMessages(registerMessages, toast, null);
+          const sequenceNumber = response.data.res.info.sequenceNumber || "";
+          const trackingCode = response.data.res.info.trackingCode || "";
 
-    //       const sequenceNumber = response.data.res.info.sequenceNumber || "";
-    //       const trackingCode = response.data.res.info.trackingCode || "";
+          if (trackingCode || sequenceNumber) {
+            const seconds = 5;
+            const timerInMillis = seconds * 1000;
 
-    //       if (trackingCode || sequenceNumber) {
-    //         const seconds = 5;
-    //         const timerInMillis = seconds * 1000;
+            TimerAlert({
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
+              ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
+              با موفقیت ثبت گردید!
+              </div>`,
+              html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
+              timer: timerInMillis,
+              timerProgressBar: true,
+              cancelButton: {
+                text: "انصراف",
+              },
+              onConfirm: () => {
+                router.push("/salamatPrescRecords");
+              },
+            });
 
-    //         TimerAlert({
-    //           title: `<div class="custom-title"> نسخه ${
-    //             trackingCode ? "با کد رهگیری : " + trackingCode : ""
-    //           }
-    //           ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
-    //           با موفقیت ثبت گردید!
-    //           </div>`,
-    //           html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
-    //           timer: timerInMillis,
-    //           timerProgressBar: true,
-    //           cancelButton: {
-    //             text: "انصراف",
-    //           },
-    //           onConfirm: () => {
-    //             router.push("/salamatPrescRecords");
-    //           },
-    //         });
-
-    //         ActiveSamadCode = null;
-    //         existingCheckCodes = [];
-    //         deletedCheckCodes = [];
-    //       }
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-    //     setRegisterIsLoading(false);
-    //   });
+            ActiveSamadCode = null;
+            existingCheckCodes = [];
+            deletedCheckCodes = [];
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+        setRegisterIsLoading(false);
+      });
   };
 
   const CancelEdit = (srvData) => {
@@ -894,15 +983,25 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
 
     getFavSalamatItems();
-    getTaminFavPrescs();
+    getSalamatFavPrescs();
 
     existingCheckCodes = [];
     deletedCheckCodes = [];
   }, [router.isReady]);
 
   useEffect(() => {
-    if (CitizenSessionId && editPrescMode)
+    if (
+      CitizenSessionId &&
+      editPrescMode &&
+      router.query.directPresc !== "true"
+    ) {
       getPrescBySamadCode(CitizenSessionId);
+    }
+
+    if (CitizenSessionId && router.query.directPresc == "true") {
+      console.log("object");
+      generateSamadCode();
+    }
   }, [router.isReady, CitizenSessionId]);
 
   useEffect(() => {
@@ -932,6 +1031,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
               />
 
               <PrescQuickAccessCard
+                isLoading={isLoading}
                 quickAccessMode={"salamat"}
                 data={favSalamatItems}
                 handleEditService={handleEditService}
@@ -945,11 +1045,11 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 favPrescData={favPrescData}
                 handleAddFavPresc={handleAddFavPresc}
                 editFavPrescData={editFavPrescData}
-              // removeFavItem={removeFavItem}
-              // setFavPrescItemsData={setFavPrescItemsData}
-              // removeFavPresc={removeFavPresc}
-              // handleReset={handleReset}
-              // editFavPresc={editFavPresc}
+                handleReset={handleResetFavPresc}
+                removeFavPresc={removeFavSalamatPresc}
+                editFavPresc={editFavPresc}
+                // setFavPrescItemsData={setFavPrescItemsData}
+                // removeFavItem={removeFavItem}
               />
             </div>
 
