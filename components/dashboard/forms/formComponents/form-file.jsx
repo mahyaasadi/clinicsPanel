@@ -1,6 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormFile = ({ data, defaultValue, disabled }) => {
+const FormFile = ({ data, defaultValue, disabled, formDirection }) => {
   return (
     <>
       <div className="form-group mt-2">

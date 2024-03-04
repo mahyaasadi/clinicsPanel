@@ -1,6 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormNumber = ({ data, defaultValue, disabled }) => {
+const FormNumber = ({ data, defaultValue, disabled, formDirection }) => {
   return (
     <>
       <div className="w-25 mt-3">

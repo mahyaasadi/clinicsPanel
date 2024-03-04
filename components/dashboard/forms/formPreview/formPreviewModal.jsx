@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { Modal } from "react-bootstrap";
 
-const FormPreview = ({ data, show, onHide }) => {
+const FormPreview = ({ data, show, onHide, formDirection }) => {
   let componentsArr = [];
 
   data?.map((x, index) => {
@@ -9,7 +9,9 @@ const FormPreview = ({ data, show, onHide }) => {
       import("components/dashboard/forms/formComponents/form-" + x?.type)
     );
 
-    componentsArr.push(<MyComponent data={x} index={index} />);
+    componentsArr.push(
+      <MyComponent data={x} index={index} formDirection={formDirection} />
+    );
   });
 
   return (

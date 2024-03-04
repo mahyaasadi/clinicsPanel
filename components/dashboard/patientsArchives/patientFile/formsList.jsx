@@ -27,7 +27,8 @@ const FormsList = ({
         <div className="text-center">
           <p className="mb-1">{row.RegisterDate ? row.RegisterDate : ""}</p>
           <p className="">{row.RegisterTime ? row.RegisterTime : ""}</p>
-        </div>),
+        </div>
+      ),
       width: "auto",
     },
     {
@@ -38,7 +39,8 @@ const FormsList = ({
         <div className="text-center">
           <p className="mb-1">{row.EditDate ? row.EditDate : ""}</p>
           <p className="">{row.EditTime ? row.EditTime : ""}</p>
-        </div>),
+        </div>
+      ),
       width: "auto",
     },
     {

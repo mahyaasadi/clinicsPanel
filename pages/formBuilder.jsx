@@ -44,6 +44,7 @@ const FormBuilder = ({ ClinicUser }) => {
   const [editFormData, setEditFormData] = useState([]);
   const [frmIsLoading, setFrmIsLoading] = useState(true);
   const [prevData, setPrevData] = useState([]);
+  const [formDirection, setFormDirection] = useState(false);
 
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const openPreviewModal = () => setShowPreviewModal(true);
@@ -69,6 +70,8 @@ const FormBuilder = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
+        console.log(response.data);
+        setFormDirection(response.data.ltr);
         setEditFormData(response.data);
         formData = response.data.formData[0];
 
@@ -90,6 +93,8 @@ const FormBuilder = ({ ClinicUser }) => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
   }, [router.isReady]);
+
+  console.log({ prevData });
 
   return (
     <>
@@ -264,7 +269,12 @@ const FormBuilder = ({ ClinicUser }) => {
         }}
       />
 
-      <FormPreview data={prevData} show={showPreviewModal} onHide={onHide} />
+      <FormPreview
+        data={prevData}
+        show={showPreviewModal}
+        onHide={onHide}
+        formDirection={formDirection}
+      />
     </>
   );
 };

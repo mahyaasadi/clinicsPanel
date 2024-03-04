@@ -4,16 +4,44 @@ import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
+
+const tableCustomStyles = {
+  rows: {
+    style: {
+      cursor: "pointer",
+    },
+  },
+  cells: {
+    style: {
+      fontSize: "14px !important",
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  headCells: {
+    style: {
+      fontSize: "13px !important",
+      fontWeight: "800 !important",
+      color: "gray",
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  pagination: {
+    style: {
+      fontSize: "13px !important",
+      direction: "ltr !important",
+      display: "flex !important",
+      justifyContent: "flex-start !important",
+    },
+  },
+};
 
 const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
   const router = useRouter();
 
-  const handleAppointmentBtn = (patient) => {
-    const seconds = 3;
-    const timerInMillis = seconds * 1000;
-
+  const handlePrescBtn = (patient) => {
     if (patient.Insurance === "2" || patient.InsuranceType === "2") {
       router.push({
         pathname: "/taminPrescription",
@@ -27,19 +55,28 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
     }
   };
 
+  const handleRowClick = (row) => {
+    if (row.Patient) {
+      router.push({
+        pathname: "/patientFile",
+        query: { id: row.Patient?._id },
+      });
+    }
+  };
+
   const columns = [
     {
       name: "اطلاعات تماس گیرنده",
       selector: (row) => row.Patient,
       sortable: true,
-      //   style: {
-      //     display: "flex",
-      //     justifyContent: "flex-start",
-      //   },
+      // style: {
+      //   display: "flex",
+      //   justifyContent: "flex-start",
+      // },
       cell: (row) => (
         <div className="">
           {!row.Patient ? (
-            "ناشناس"
+            <p>ناشناس</p>
           ) : (
             <div className="d-flex align-items-center gap-2">
               <Link
@@ -135,7 +172,7 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
 
             <div>
               <button
-                onClick={() => handleAppointmentBtn(row.Patient)}
+                onClick={() => handlePrescBtn(row.Patient)}
                 className="btn btn-sm btn-outline-primary btn-border-l prescBtn d-flex align-items-center m-1"
                 data-pr-position="top"
               >
@@ -339,6 +376,7 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
               </div>
             }
             customStyles={tableCustomStyles}
+            onRowClicked={handleRowClick}
           />
         </DataTableExtensions>
       </div>

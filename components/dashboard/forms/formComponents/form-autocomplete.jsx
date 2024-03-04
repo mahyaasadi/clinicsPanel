@@ -3,7 +3,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { Tooltip } from "primereact/tooltip";
 
-const FormAutoComplete = ({ data, defaultValue }) => {
+const FormAutoComplete = ({ data, defaultValue, formDirection }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   let options = [];

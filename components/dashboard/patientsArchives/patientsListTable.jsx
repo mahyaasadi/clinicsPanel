@@ -4,8 +4,39 @@ import FeatherIcon from "feather-icons-react";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
-import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
+
+const tableCustomStyles = {
+  rows: {
+    style: {
+      cursor: "pointer",
+    },
+  },
+  cells: {
+    style: {
+      fontSize: "14px !important",
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  headCells: {
+    style: {
+      fontSize: "13px !important",
+      fontWeight: "800 !important",
+      color: "gray",
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  pagination: {
+    style: {
+      fontSize: "13px !important",
+      direction: "ltr !important",
+      display: "flex !important",
+      justifyContent: "flex-start !important",
+    },
+  },
+};
 
 const PatientsListTable = ({
   data,
@@ -31,9 +62,16 @@ const PatientsListTable = ({
     }
   };
 
+  const handleRowClick = (row) => {
+    router.push({
+      pathname: "/patientFile",
+      query: { id: row._id },
+    });
+  };
+
   const columns = [
     {
-      name: "بیمار",
+      name: "مشخصات بیمار",
       selector: (row) => row.Name,
       sortable: true,
       style: {
@@ -61,6 +99,7 @@ const PatientsListTable = ({
                   ? (currentTarget.src = `assets/img/avatar-${row.Gender}-pic.png`)
                   : (currentTarget.src = `assets/img/avatar-O-pic.png`);
               }}
+              className="receptionImgLink"
             />
           </div>
           <div>
@@ -95,7 +134,7 @@ const PatientsListTable = ({
       sortable: true,
       cell: (row) => (
         <div className="actions d-flex w-100">
-          <Link
+          {/* <Link
             href={{
               pathname: "/editPatientsInfo",
               query: { id: row._id },
@@ -108,7 +147,7 @@ const PatientsListTable = ({
               icon="edit-3"
               style={{ width: "15px", height: "16px" }}
             />
-          </Link>
+          </Link> */}
 
           <Link
             className="btn btn-sm btn-outline-primary btn-border-l receptionBtn d-flex align-items-center float-end m-1"
@@ -307,7 +346,7 @@ const PatientsListTable = ({
             </svg>
             <Tooltip target=".newFormBtn">افزودن فرم</Tooltip>
           </button>
-          <Link
+          {/* <Link
             className="btn btn-sm btn-outline-primary btn-border-l filesBtn d-flex align-items-center float-end m-1"
             data-pr-position="top"
             href={{
@@ -320,7 +359,7 @@ const PatientsListTable = ({
               icon="folder"
               style={{ width: "15px", height: "16px" }}
             />
-          </Link>
+          </Link> */}
         </div>
       ),
       width: "auto",
@@ -350,6 +389,7 @@ const PatientsListTable = ({
                 </div>
               }
               customStyles={tableCustomStyles}
+              onRowClicked={handleRowClick}
             />
           </DataTableExtensions>
         </div>

@@ -7,25 +7,27 @@ const FormPreviewInline = ({
   patientData,
   formDirection,
 }) => {
+  console.log({ data });
+
   let componentsArr = [];
+  if (data.formData) {
+    JSON.parse(data.formData[0])?.map((x, index) => {
+      const MyComponent = dynamic(() =>
+        import("components/dashboard/forms/formComponents/form-" + x?.type)
+      );
 
-  data?.map((x, index) => {
-    const MyComponent = dynamic(() =>
-      import("components/dashboard/forms/formComponents/form-" + x?.type)
-    );
-
-    componentsArr.push(
-      <MyComponent
-        data={x}
-        key={index}
-        index={index}
-        defaultValue={formValues ? formValues[x.name] : []}
-        disabled={false}
-        formDirection={formDirection}
-      />
-    );
-  });
-
+      componentsArr.push(
+        <MyComponent
+          data={x}
+          key={index}
+          index={index}
+          defaultValue={formValues ? formValues[x.name] : []}
+          disabled={false}
+          formDirection={formDirection ? formDirection : data.ltr}
+        />
+      );
+    });
+  }
   return (
     <>
       <div className="row">

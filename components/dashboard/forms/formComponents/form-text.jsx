@@ -1,10 +1,19 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormText = ({ data, defaultValue, disabled }) => {
+const FormText = ({ data, defaultValue, disabled, formDirection }) => {
   return (
     <>
-      <div className={data.className.replace("form-control", "") + " my-4"}>
-        <label className="lblAbs font-12">
+      <div
+        className={`
+         ${data.className.replace("form-control", "")} my-4 ${
+          formDirection ? "dir-ltr" : "dir-rtl"
+        }`}
+      >
+        <label
+          className={`lblAbs font-12 fw-bold ${
+            formDirection ? "dir-ltr mx-3" : "dir-rtl"
+          }`}
+        >
           {data.label} {data.required && <span className="text-danger">*</span>}{" "}
           {data.description && (
             <span
@@ -18,7 +27,7 @@ const FormText = ({ data, defaultValue, disabled }) => {
         </label>
 
         <input
-          className={data.className}
+          className={`${data.className} p-4`}
           name={data.name}
           placeholder={data.placeholder}
           defaultValue={defaultValue ? defaultValue : data.value}

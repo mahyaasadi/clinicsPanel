@@ -66,7 +66,7 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
         });
 
         setFormDirection(response.data.ltr);
-        setSelectedFormData(JSON.parse(response.data.formData[0]));
+        setSelectedFormData(response.data);
 
         ActiveFormName = response.data.Name;
         setIsLoading(false);
@@ -95,7 +95,8 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
             checkboxFormsArr.push({ name: x.name });
         });
 
-        setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
+        // setSelectedFormData(JSON.parse(response.data.formData.formData[0]));
+        setSelectedFormData(response.data.formData);
         setFormValues(response.data.Values);
         setPatientData(response.data.Patient);
 
@@ -273,8 +274,9 @@ const AttachFormToPatientFile = ({ ClinicUser }) => {
               }
             >
               <div
-                className={`card p-4 height-45 ${formDirection ? "dir-ltr" : "dir-rtl"
-                  }`}
+                className={`card p-4 height-45 ${
+                  formDirection ? "dir-ltr" : "dir-rtl"
+                }`}
               >
                 <FormPreviewInline
                   data={selectedFormData}

@@ -11,6 +11,8 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 };
 
 const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
+  // console.log({ srv });
+
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">
@@ -18,7 +20,7 @@ const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
           <Modal.Title className="text-secondary fw-bold">
             <p className="mb-2 font-15">شرح پذیرش</p>
             <p className="font-13">
-              {srv.Patient.Name} {" | "} {srv.Date}
+              {srv?.Patient?.Name} {" | "} {srv?.Date}
             </p>
           </Modal.Title>
         </Modal.Header>

@@ -1,6 +1,6 @@
 import { Tooltip } from "primereact/tooltip";
 
-const FormTextarea = ({ data, defaultValue, disabled }) => {
+const FormTextarea = ({ data, defaultValue, disabled, formDirection }) => {
   return (
     <>
       <div className={`${data.className.replace("form-control", "")} mb-3`}>

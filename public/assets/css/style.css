@@ -10739,6 +10739,24 @@ ul li .active {
   font-size: 10px !important;
 }
 
+.customDropdown .p-placeholder {
+  font-size: 12px !important
+}
+
+.customDropdownOption:hover {
+  color: #b45309;
+}
+
+.customDropdownOption:hover .accessSvg {
+  fill: #b45309;
+  stroke: #b45309;
+}
+
+.customDropdownOption:hover .access2Svg {
+  /* fill: #b45309; */
+  stroke: #b45309;
+}
+
 .p-dropdown:not(.p-disabled).p-focus {
   box-shadow: 0 0 0 0.1rem #b45309 !important;
 }
@@ -10920,6 +10938,12 @@ ul li .active {
 .p-speeddial-action:hover {
   background-color: #b45309 !important;
   color: white !important;
+}
+
+.p-speeddial-action:hover .insLogoSvg {
+  fill: white;
+  stroke: white;
+  transition-duration: 0.4s;
 }
 
 .p-speeddial-list {
@@ -11349,6 +11373,7 @@ thead {
 
 .receptionImgLink:hover {
   scale: 1.2;
+  transition-duration: 0.4s;
 }
 
 .receptionLink {
@@ -11697,6 +11722,8 @@ thead {
 .patientFrmInput {
   border: 1px solid lightgray;
   border-radius: 4px;
+  /*  */
+  min-height: 10rem;
 }
 
 .CardPayment {

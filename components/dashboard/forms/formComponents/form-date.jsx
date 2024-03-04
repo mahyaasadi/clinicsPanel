@@ -2,7 +2,7 @@ import { useState } from "react";
 import SingleDatePicker from "components/commonComponents/datepicker/singleDatePicker";
 import { Tooltip } from "primereact/tooltip";
 
-const FormDate = ({ data, defaultValue, disabled }) => {
+const FormDate = ({ data, defaultValue, disabled, formDirection }) => {
   const [date, setDate] = useState(null);
 
   return (

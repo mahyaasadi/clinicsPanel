@@ -3,7 +3,7 @@ import SelectField from "components/commonComponents/selectfield";
 import selectfieldColourStyles from "class/selectfieldStyle";
 
 let findSelectedOption = null;
-const FormSelect = ({ data, defaultValue, disabled }) => {
+const FormSelect = ({ data, defaultValue, disabled, formDirection }) => {
   let selectedOption = null;
   const FUSelectOption = (value) => (selectedOption = value);
 

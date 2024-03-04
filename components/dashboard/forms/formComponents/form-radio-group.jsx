@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Tooltip } from "primereact/tooltip";
 import RadioButton from "components/commonComponents/radioButton";
 
-const FormRadioGroup = ({ data, defaultValue }) => {
+const FormRadioGroup = ({ data, defaultValue, formDirection }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const onChangeRadio = (e) => setSelectedOption(e.target.value);

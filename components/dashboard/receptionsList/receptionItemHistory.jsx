@@ -9,6 +9,7 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
   }
   return 0;
 };
+
 const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
   const renderEditHistory = (historyArray) => {
     return (
@@ -117,7 +118,7 @@ const ReceptionItemHistoryModal = ({ srv, show, onHide }) => {
         <Modal.Header closeButton>
           <Modal.Title>
             <p className="mb-0 text-secondary font-14 fw-bold">
-              تاریخچه پذیرش {srv.ReceptionID}
+              تاریخچه پذیرش {srv?.ReceptionID}
             </p>
           </Modal.Title>
         </Modal.Header>

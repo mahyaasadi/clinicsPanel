@@ -1,4 +1,4 @@
-const FormHeader = ({ data, index }) => {
+const FormHeader = ({ data, index, formDirection }) => {
   return (
     <>
       {index !== 0 && <hr className="mt-4" />}

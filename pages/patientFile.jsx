@@ -64,7 +64,8 @@ const PatientFile = ({ ClinicUser }) => {
   const closePatientFrmPreviewModal = () => setShowPrevModal(false);
   const openPatientFrmPreviewModal = (PFData) => {
     setShowPrevModal(true);
-    setPatientFormData(JSON.parse(PFData.formData.formData[0]));
+    // setPatientFormData(JSON.parse(PFData.formData.formData[0]));
+    setPatientFormData(PFData);
     setPatientFormValues(PFData.Values);
   };
 
@@ -431,6 +432,27 @@ const PatientFile = ({ ClinicUser }) => {
         ) : (
           <div className="content container-fluid">
             <div className="card-body p-4 dir-rtl">
+              {/* <div className="d-flex justify-between">
+                <div className="row row-col col-1">
+                  <div className="w-100">
+                    <button className="btn btn-outline-primary h-100 w-100">
+                      a
+                    </button>
+                  </div>
+                  <div className="">
+                    <button className="btn btn-outline-primary h-100 w-100">
+                      b
+                    </button>
+                  </div>
+
+                  <div className="">
+                    <button className="btn btn-outline-primary h-100 w-100">
+                      c
+                    </button>
+                  </div>
+                </div>
+
+                <div className="col-11"> */}
               <PatientHorizontalCard
                 data={patientData}
                 ClinicUserID={ClinicUserID}
@@ -438,6 +460,8 @@ const PatientFile = ({ ClinicUser }) => {
                 avatarEditMode={true}
                 generalEditMode={true}
               />
+              {/* </div>
+              </div> */}
 
               <div className="mt-4">
                 <ul className="nav nav-tabs nav-justified nav-tabs-bottom navTabBorder-b fw-bold font-14">
