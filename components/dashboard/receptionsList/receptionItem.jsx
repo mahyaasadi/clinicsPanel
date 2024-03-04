@@ -269,7 +269,7 @@ const ReceptionItem = ({
                 <button
                   type="button"
                   data-pr-position="left"
-                  className="btn btn-outline-primary editBtn receptBtnPadding appointment"
+                  className="btn btn-outline-primary receptBtnPadding appointment"
                   onClick={() =>
                     openAppointmentModal(srv?.Patient, srv?.Modality)
                   }
@@ -321,7 +321,7 @@ const ReceptionItem = ({
                     }}
                     onError={({ currentTarget }) => {
                       srv?.Patient?.Gender === "F" ||
-                      srv?.Patient.Gender === "M"
+                        srv?.Patient.Gender === "M"
                         ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
                         : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                     }}

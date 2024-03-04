@@ -155,7 +155,7 @@ const ReceptionListTable = ({
             onClick={() => handlePrescBtn(row.Patient)}
           >
             {row.Patient?.Insurance == "2" ||
-            row.Patient?.InsuranceType == "2" ? (
+              row.Patient?.InsuranceType == "2" ? (
               <svg
                 version="1.0"
                 xmlns="http://www.w3.org/2000/svg"
@@ -310,9 +310,10 @@ const ReceptionListTable = ({
             />
             <Tooltip target=".appointment">نوبت دهی</Tooltip>
           </button>
+
           <button
             className="btn btn-outline-primary btn-border-left editBtn d-flex align-items-center"
-            data-pr-position="top"
+            data-pr-position="right"
             onClick={() =>
               router.push({
                 pathname: "/reception",
@@ -322,8 +323,8 @@ const ReceptionListTable = ({
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
             <FeatherIcon
-              icon="edit-3"
-              style={{ width: "16px", height: "16px" }}
+              icon="edit-2"
+              style={{ width: "15px", height: "15px" }}
             />
           </button>
         </div>

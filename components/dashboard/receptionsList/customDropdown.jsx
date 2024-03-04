@@ -34,9 +34,9 @@ const CustomDropdown = ({
 
   const options = [
     { label: "افزودن فرم", action: "openFrmOptionsModal" },
-    { label: "حذف پذیرش", action: "deleteReception" },
     { label: "تاریخچه پذیرش", action: "showHistoryModal" },
     { label: "جزئیات پذیرش", action: "showInfoModal" },
+    { label: "حذف پذیرش", action: "deleteReception" },
   ];
 
   const handleDropdownChange = (option) => {
@@ -86,6 +86,8 @@ const CustomDropdown = ({
     );
   };
 
+  const customDropdownIcon = <FeatherIcon icon="more-vertical" />
+
   return (
     <div className="dir-rtl customDropdown">
       <Dropdown
@@ -97,8 +99,9 @@ const CustomDropdown = ({
         }
         value={selectedOption ? selectedOption.label : "انتخاب نمایید"}
         itemTemplate={ActionOptionTemplate}
-        placeholder="سایر عملیات ها"
-        // optionLabel="label"
+        dropdownIcon={customDropdownIcon}
+      // placeholder="سایر عملیات ها"
+      // optionLabel="label"
       />
     </div>
   );
