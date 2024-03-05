@@ -46,7 +46,6 @@ const ReceptionListTable = ({
   };
 
   const openHistoryModal = (openMode, srv) => {
-    console.log({ srv });
     setShowHistoryModal(openMode);
     setSrvData(srv);
   };
@@ -139,23 +138,26 @@ const ReceptionListTable = ({
       selector: (row) => row.action,
       sortable: true,
       cell: (row) => (
-        <div className="actions d-flex gap-1">
-          <CustomDropdown
-            row={row}
-            openFrmOptionsModal={openFrmOptionsModal}
-            // handlePrescBtn={handlePrescBtn}
-            deleteReception={deleteReception}
-            openHistoryModal={openHistoryModal}
-            openInfoModal={openInfoModal}
-          />
+        <div className="actions d-flex gap-2">
+          <div className="othersDropdown" data-pr-position="left">
+            <CustomDropdown
+              row={row}
+              openFrmOptionsModal={openFrmOptionsModal}
+              deleteReception={deleteReception}
+              openHistoryModal={openHistoryModal}
+              openInfoModal={openInfoModal}
+            />
+
+            <Tooltip target=".othersDropdown">سایر</Tooltip>
+          </div>
 
           <button
-            className="btn btn-outline-primary btn-border-left prescBtn d-flex align-items-center"
+            className="btn btn-outline-primary btn-border-left prescBtn d-flex align-items-center px-2 py-1"
             data-pr-position="top"
             onClick={() => handlePrescBtn(row.Patient)}
           >
             {row.Patient?.Insurance == "2" ||
-              row.Patient?.InsuranceType == "2" ? (
+            row.Patient?.InsuranceType == "2" ? (
               <svg
                 version="1.0"
                 xmlns="http://www.w3.org/2000/svg"
@@ -300,7 +302,7 @@ const ReceptionListTable = ({
           <button
             type="button"
             data-pr-position="top"
-            className="btn btn-outline-primary appointment"
+            className="btn btn-outline-primary appointment px-2 py-1"
             onClick={() => openAppointmentModal(row?.Patient, row?.Modality)}
           >
             <FeatherIcon
@@ -312,7 +314,7 @@ const ReceptionListTable = ({
           </button>
 
           <button
-            className="btn btn-outline-primary btn-border-left editBtn d-flex align-items-center"
+            className="btn btn-outline-primary btn-border-left editBtn d-flex align-items-center px-2 py-1"
             data-pr-position="right"
             onClick={() =>
               router.push({

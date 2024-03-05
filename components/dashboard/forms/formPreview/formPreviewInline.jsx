@@ -7,8 +7,6 @@ const FormPreviewInline = ({
   patientData,
   formDirection,
 }) => {
-  console.log({ data });
-
   let componentsArr = [];
   if (data.formData) {
     JSON.parse(data.formData[0])?.map((x, index) => {

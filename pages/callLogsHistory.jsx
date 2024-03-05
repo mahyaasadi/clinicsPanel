@@ -88,7 +88,6 @@ const CallLogsHistory = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setCallLogsData(response.data);
         setIsLoading(false);
       })

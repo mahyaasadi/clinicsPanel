@@ -10,6 +10,7 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
     });
 
     let insuranceImg = "";
+
     if (user.Insurance) {
       insuranceImg = (
         <img
@@ -34,7 +35,12 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
               className={"avatar avatar-offline Patient" + patient?._id}
             >
               <img
-                src={"https://irannobat.ir/images/" + patient?.Avatar}
+                src={
+                  patient?.Avatar
+                    ? "https://irannobat.ir/images/Avatar/" +
+                      patient.Avatar?.replace("Avatar/", "")
+                    : "https://irannobat.ir/admin/assets/img/profiles/NoAvatar.png"
+                }
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null;
                   currentTarget.src =

@@ -1,4 +1,4 @@
-import ChatUser from "components/dashboard/chat/ChatUser";
+import ChatUser from "components/dashboard/chat/chatUser";
 
 export default function CentersList({
   UserChats,

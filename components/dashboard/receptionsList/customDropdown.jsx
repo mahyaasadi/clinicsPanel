@@ -12,7 +12,6 @@ const CustomDropdown = ({
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionClick = (action) => {
-    // Perform action based on the selected option
     switch (action) {
       case "openFrmOptionsModal":
         openFrmOptionsModal(row);
@@ -86,7 +85,7 @@ const CustomDropdown = ({
     );
   };
 
-  const customDropdownIcon = <FeatherIcon icon="more-vertical" />
+  const customDropdownIcon = <FeatherIcon icon="more-vertical" />;
 
   return (
     <div className="dir-rtl customDropdown">
@@ -100,8 +99,6 @@ const CustomDropdown = ({
         value={selectedOption ? selectedOption.label : "انتخاب نمایید"}
         itemTemplate={ActionOptionTemplate}
         dropdownIcon={customDropdownIcon}
-      // placeholder="سایر عملیات ها"
-      // optionLabel="label"
       />
     </div>
   );

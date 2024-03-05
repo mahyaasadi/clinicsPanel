@@ -7,10 +7,12 @@ import { axiosClient } from "class/axiosConfig";
 import { SuccessAlert, QuestionAlert } from "class/AlertManage";
 import { convertBase64 } from "utils/convertBase64";
 import Loading from "components/commonComponents/loading/loading";
+import ChatPage from "components/dashboard/chat";
+import CentersList from "components/dashboard/chat/centersList";
+import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import Viewer from "viewerjs";
 import "viewerjs/dist/viewer.css";
-import CentersList from "components/dashboard/chat/centersList";
-import ChatPage from "components/dashboard/chat";
 import "../public/assets/css/style-patient.css";
 
 let ClinicUserID = null;
@@ -40,11 +42,14 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 };
 
+let ActivePatientID = null;
 const PatientChat = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
   ClinicUserID = ClinicUser._id;
   ChatClinicID = ClinicID;
   ChatClinicUserID = ClinicUserID;
+
+  const router = useRouter();
 
   // ChatClinicID = "6512a2347939420d31a6da4e";
   // ChatClinicID = "61f0002404bcad2461519db6";
@@ -55,8 +60,6 @@ const PatientChat = ({ ClinicUser }) => {
     transports: ["websocket"],
     credentials: true,
   });
-
-  const router = useRouter();
 
   const [UserChats, setUserChats] = useState([]);
   const [Centers, setCenters] = useState([]);
@@ -82,12 +85,14 @@ const PatientChat = ({ ClinicUser }) => {
 
   // centers & chatsrooms
   const centers = () => {
+    setIsLoading(true);
+
     let url = "ChatRoom/GetData/Admin";
     let data = {
       User2: ChatClinicID,
       MyID: ChatClinicUserID,
     };
-    setIsLoading(true);
+
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -114,6 +119,7 @@ const PatientChat = ({ ClinicUser }) => {
       Array.from(imageMess).map((el) => {
         ul.appendChild(el);
       });
+
       gallery = new Viewer(ul, {
         fullscreen: true,
       });
@@ -123,24 +129,24 @@ const PatientChat = ({ ClinicUser }) => {
 
   // chats
   const getChatRommData = (id) => {
-    // setChatRoomBody([]);
     let url = `/ChatRoom/GetChatRoomData`;
+
     axiosClient
       .post(url, { id })
       .then((response) => {
         ActiveChatRoom = id;
-        setIsLoading(false);
         setMessageStatus(response.data.MessageStatus);
         setUsers(response.data.Users);
-        ChatRoomsMessages = response.data.ChatRooms.ChatsDate;
         setChatRoomBody(ChatRoomsMessages);
-        // console.log(response.data.MessageStatus);
+        ChatRoomsMessages = response.data.ChatRooms.ChatsDate;
         $(".chat-window").addClass("chat-slide");
-        setIsLoading(false);
+
         //scroll to end
         setTimeout(() => {
           ScroolTobottom();
         }, 100);
+
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -154,8 +160,8 @@ const PatientChat = ({ ClinicUser }) => {
   }
 
   const GetChatRoomDataNotList = (id) => {
-    // setChatRoomBody([]);
     let url = `/ChatRoom/GetChatRoomDataNotList`;
+
     axiosClient
       .post(url, { id })
       .then((response) => {
@@ -165,6 +171,7 @@ const PatientChat = ({ ClinicUser }) => {
           Tel: response.data.Patient.Tel,
           P: "Patient",
         };
+
         let dataToSaveChatRoom = response.data.ChatRooms;
         UserChatsList.unshift(dataToSaveChatRoom);
         setUserChats(UserChatsList);
@@ -239,6 +246,28 @@ const PatientChat = ({ ClinicUser }) => {
     // });
 
     // ReceiveMessage
+    socket.on("PhoneCall", async (data) => {
+      let msg = `<div class="PhoneCallBox">
+        <div class="card shadow">
+            <div class="card-body h-100">
+                <div class="row dir-rtl">
+                    <div class="col-4"><button class="btn btn-success btn-PhoneCallBox"><i class="fe fe-phone"></i></button></div>
+                    <div class="col-8 font-13">
+                    ${data.Name}
+                    <br />
+                    ${data.Tel}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+      $("body").append(msg);
+      setTimeout(() => {
+        $(".PhoneCallBox").remove();
+      }, 15000);
+    });
+
     socket.on("ReceiveMessage", async (data) => {
       if (LastID != data._id) {
         LastID = data._id;
@@ -301,6 +330,7 @@ const PatientChat = ({ ClinicUser }) => {
             GetChatRoomDataNotList(data.ChatRoomID);
           }
         }
+
         $("#Chat-" + ActiveChatRoom).addClass("active");
         setTimeout(() => {
           ScroolTobottom();
@@ -338,6 +368,7 @@ const PatientChat = ({ ClinicUser }) => {
           Tel: data.Tel,
           P: "Patient",
         };
+
         UserChatsList.unshift(data.dataToSaveChatRoom);
         setUserChats(UserChatsList);
         setPatients([p, ...PatientList]);
@@ -372,6 +403,7 @@ const PatientChat = ({ ClinicUser }) => {
 
   const sendTextToChatBox = (e) => {
     e.preventDefault();
+
     const jdate = new JDate();
     const formattedDate = jdate.format("YYYY/MM/DD");
 
@@ -407,18 +439,19 @@ const PatientChat = ({ ClinicUser }) => {
       socket.emit("SendMessage", { Data: message });
       e.target.reset();
     }
+
     setTimeout(() => {
       ScroolTobottom();
     }, 150);
   };
 
   const UpdateUserChats = (newObj) => {
-    console.log(newObj);
     // let index = UserChatsList.findIndex((x) => x._id === newObj._id);
     // UserChatsList = UserChatsList.slice(index + 1)
     UserChatsList = UserChatsList.filter(function (obj) {
       return obj._id !== newObj._id;
     });
+
     UserChatsList.unshift(newObj);
     setUserChats(UserChatsList);
   };
@@ -427,6 +460,7 @@ const PatientChat = ({ ClinicUser }) => {
     let index = ChatRoomsMessages.findIndex((x) => x._id === newObj._id);
     let g = ChatRoomsMessages[index];
     g = newObj;
+
     setChatRoomBody([
       ...ChatRoomsMessages.slice(0, index),
       g,
@@ -486,7 +520,7 @@ const PatientChat = ({ ClinicUser }) => {
     );
 
     if (res) {
-      let url = `/Sms2/Clinic/unreadMessage`;
+      let url = `Sms2/Clinic/unreadMessage`;
 
       let data = {
         Title: Name,
@@ -510,6 +544,43 @@ const PatientChat = ({ ClinicUser }) => {
   function hex(value) {
     return Math.floor(value).toString(16);
   }
+
+  // Appointment Modal
+  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [defaultDepValue, setDefaultDepValue] = useState();
+  const [ActiveModalityData, setActiveModalityData] = useState(null);
+  const handleCloseAppointmentModal = () => setShowAppointmentModal(false);
+
+  const { data: clinicDepartments, isLoading: itIsLoading } =
+    useGetAllClinicDepartmentsQuery(ClinicID);
+
+  let modalityOptions = [];
+  for (let i = 0; i < clinicDepartments?.length; i++) {
+    const item = clinicDepartments[i];
+    let obj = {
+      value: item._id,
+      label: item.Name,
+    };
+    modalityOptions.push(obj);
+  }
+
+  const openAppointmentModal = (patientID) => {
+    ActivePatientID = patientID;
+    setShowAppointmentModal(true);
+    setActiveModalityData(clinicDepartments[0]);
+
+    setDefaultDepValue({
+      Name: modalityOptions[0].label,
+      _id: modalityOptions[0].value,
+    });
+  };
+
+  const addAppointment = (data) => {
+    if (data) {
+      setShowAppointmentModal(false);
+      SuccessAlert("موفق", "ثبت نوبت با موفقیت انجام گردید!");
+    }
+  };
 
   useEffect(() => centers(), []);
 
@@ -567,27 +638,25 @@ const PatientChat = ({ ClinicUser }) => {
                         BackToChatList={BackToChatList}
                         sendTextToChatBox={sendTextToChatBox}
                         ClinicUserID={ClinicUserID}
+                        openAppointmentModal={openAppointmentModal}
                       />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* <Script
-                src="/assets/js/jquery-3.2.1.min.js"
-                strategy="beforeInteractive"
-            />
-            <Script
-                src="/assets/js/bootstrap.bundle.min.js"
-                strategy="afterInteractive"
-            />
-            <Script
-                src="/assets/js/jquery.slimscroll.min.js"
-                strategy="afterInteractive"
-            />
-            <Script src="/assets/js/script.js" strategy="afterInteractive" /> */}
           </div>
+
+          <ApplyAppointmentModal
+            ClinicID={ClinicID}
+            show={showAppointmentModal}
+            onHide={handleCloseAppointmentModal}
+            addAppointment={addAppointment}
+            ActivePatientID={ActivePatientID}
+            defaultDepValue={defaultDepValue}
+            ActiveModalityData={ActiveModalityData}
+            setActiveModalityData={setActiveModalityData}
+          />
         </div>
       )}
     </>

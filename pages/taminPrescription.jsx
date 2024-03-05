@@ -9,8 +9,6 @@ import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard"
 import AddNewPatient from "@/components/dashboard/patientInfo/addNewPatient";
 import PrescriptionCard from "components/dashboard/prescription/tamin/prescriptionCard";
 import AddToListItems from "components/dashboard/prescription/tamin/addToListItems";
-// import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
-// import TaminFavItemsModal from "components/dashboard/prescription/tamin/taminFavItemsModal";
 import PrescQuickAccessCard from "@/components/dashboard/prescription/favourites/prescQuickAccessCard";
 import ApplyFavPrescModal from "@/components/dashboard/prescription/favourites/applyFavPrescModal";
 import {

@@ -40,84 +40,79 @@ const PatientFormPreviewModal = ({
             {data.formData?.formData[0] &&
               JSON.parse(data.formData.formData[0])?.map(
                 (formComponent, index) => (
-                  console.log({ formComponent }),
-                  (
-                    <div
-                      key={index}
-                      className={`my-3 ${
-                        formComponent.type !== "header" && "col-md-6"
-                      }`}
-                    >
-                      {formComponent.type === "header" ? (
-                        <formComponent.subtype
-                          className={
-                            formComponent.type === "header"
-                              ? "text-center my-4"
-                              : ""
-                          }
-                        >
-                          <p className="fw-bold">{formComponent.label}</p>
-                          <hr />
-                        </formComponent.subtype>
-                      ) : (
-                        <div
-                          className={`my-3 ${
-                            data.formData.ltr ? "dir-ltr" : "dir-rtl"
+                  <div
+                    key={index}
+                    className={`my-3 ${
+                      formComponent.type !== "header" && "col-md-6"
+                    }`}
+                  >
+                    {formComponent.type === "header" ? (
+                      <formComponent.subtype
+                        className={
+                          formComponent.type === "header"
+                            ? "text-center my-4"
+                            : ""
+                        }
+                      >
+                        <p className="fw-bold">{formComponent.label}</p>
+                        <hr />
+                      </formComponent.subtype>
+                    ) : (
+                      <div
+                        className={`my-3 ${
+                          data.formData.ltr ? "dir-ltr" : "dir-rtl"
+                        }`}
+                      >
+                        <label
+                          className={`lblAbs fw-bold font-15  ${
+                            data.formData.ltr && "mx-3"
                           }`}
+                          style={{ color: "#B45309" }}
                         >
-                          <label
-                            className={`lblAbs fw-bold font-15  ${
-                              data.formData.ltr && "mx-3"
-                            }`}
-                            style={{ color: "#B45309" }}
-                          >
-                            {formComponent.label}{" "}
-                            {formComponent.required && (
-                              <span className="text-danger">*</span>
-                            )}
-                            {formComponent.description && (
-                              <span
-                                className={`des-${index} autocompleteTooltip`}
-                                tooltip={formComponent.description}
-                                data-pr-position="top"
-                              >
-                                <span className="autocompleteTooltipIcon">
-                                  ?
-                                </span>
-                                <Tooltip target={`.des-${index}`}>
-                                  {formComponent.description}
-                                </Tooltip>
-                              </span>
-                            )}
-                          </label>
+                          {formComponent.label}{" "}
+                          {formComponent.required && (
+                            <span className="text-danger">*</span>
+                          )}
+                          {formComponent.description && (
+                            <span
+                              className={`des-${index} autocompleteTooltip`}
+                              tooltip={formComponent.description}
+                              data-pr-position="top"
+                            >
+                              <span className="autocompleteTooltipIcon">?</span>
+                              <Tooltip target={`.des-${index}`}>
+                                {formComponent.description}
+                              </Tooltip>
+                            </span>
+                          )}
+                        </label>
 
-                          <p className="p-4 patientFrmInput">
-                            {formValues &&
-                              (formComponent.type === "checkbox-group" &&
-                              Array.isArray(formValues[formComponent.name]) ? (
-                                <span className="mx-3">
-                                  {formValues[formComponent.name].map(
-                                    (value, index) => (
-                                      <span
-                                        key={index}
-                                        className="mx-2 fw-bold d-flex flex-col font-14 text-secondary"
-                                      >
-                                        {value}
-                                        {/* {index !==
+                        <p className="p-4 patientFrmInput">
+                          {formValues &&
+                            (formComponent.type === "checkbox-group" &&
+                            Array.isArray(formValues[formComponent.name]) ? (
+                              <span className="mx-3">
+                                {formValues[formComponent.name].map(
+                                  (value, index) => (
+                                    <span
+                                      key={index}
+                                      className="mx-2 fw-bold d-flex flex-col font-14 text-secondary"
+                                    >
+                                      {value}
+                                      {/* {index !==
                                         formValues[formComponent.name].length -
                                           1 && ","} */}
-                                      </span>
-                                    )
-                                  )}
-                                </span>
-                              ) : (
-                                formValues[formComponent.name]
-                              ))}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )
+                                    </span>
+                                  )
+                                )}
+                              </span>
+                            ) : (
+                              formValues[formComponent.name]
+                            ))}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )
               )}
           </div>

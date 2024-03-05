@@ -10,7 +10,6 @@ import { displayToastMessages } from "utils/toastMessageGenerator";
 import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
 import { generateSalamatPrescType } from "class/salamatPrescriptionData";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
-// import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
@@ -408,9 +407,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
     existingCheckCodes = [];
     setEditFavPrescData([]);
     setSearchFromInput(true);
+    setPrescriptionItemsData([]);
   };
 
   const handleAddFavPresc = async (favPresc) => {
+    setIsLoading(false);
+
     if (ActivePatientNID) {
       await handleResetFavPresc();
 
@@ -489,6 +491,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setTimeout(() => {
           SuccessAlert("", "ویرایش نسخه با موفقیت انجام گردید!");
         }, 200);
+
         handleResetFavPresc();
         activeSearch();
       })
@@ -566,6 +569,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
     try {
       const response = await axiosClient.post(url, prescData);
       if (response.data.res.info?.checkCode) {
+        setIsLoading(false);
+
         let addedPrescItemData = {
           serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
           numberOfRequest: prescData.QTY ? prescData.QTY : $("#QtyInput").val(),
@@ -626,8 +631,10 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setSearchFromInput(true);
         return addedPrescItemData;
       } else if (response.data.res.status === 409) {
+        setIsLoading(false);
         WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
       } else {
+        setIsLoading(false);
         ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
         displayToastMessages(
           response.data.res.info.message.snackMessage,
@@ -635,15 +642,14 @@ const SalamatPrescription = ({ ClinicUser }) => {
           null
         );
       }
-
-      // setIsLoading(false);
-      // setSearchFromInput(true);
     } catch (err) {
-      console.log(err);
       setIsLoading(false);
+      console.log(err);
       if (err.response) {
+        setIsLoading(false);
         ErrorAlert("خطا", err.response.data.resMessage);
       } else {
+        setIsLoading(false);
         ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
       }
       return false;
@@ -716,6 +722,11 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //     }
     //   });
   };
+
+  useEffect(
+    () => console.log({ prescriptionItemsData }),
+    [prescriptionItemsData]
+  );
 
   // Delete Service
   const deleteService = async (id, flag) => {
@@ -998,10 +1009,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
       getPrescBySamadCode(CitizenSessionId);
     }
 
-    if (CitizenSessionId && router.query.directPresc == "true") {
-      console.log("object");
+    if (CitizenSessionId && router.query.directPresc == "true")
       generateSamadCode();
-    }
   }, [router.isReady, CitizenSessionId]);
 
   useEffect(() => {
@@ -1104,17 +1113,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
             </div>
           </div>
         </div>
-
-        {/* <SalamatFavItemsModal
-          data={favSalamatItems}
-          show={showFavItemsModal}
-          onHide={handleCloseFavItemsModal}
-          handleEditService={handleEditService}
-          removeFavItem={removeFavItem}
-          salamatHeaderList={salamatHeaderList}
-          selectedTab={selectedTab}
-          handleTabChange={handleTabChange}
-        /> */}
 
         <ApplyFavPrescModal
           show={showApplyFavPrescModal}

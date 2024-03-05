@@ -159,7 +159,9 @@ const PrescriptionCard = ({
                           id="drugGenericOption"
                           value="generic"
                           className="checkbox-input frmCheckbox"
-                          onChange={(e) => setGenericCodeOption(e.target.checked)}
+                          onChange={(e) =>
+                            setGenericCodeOption(e.target.checked)
+                          }
                         />
                         <span className="checkmark" />
                       </label>
@@ -175,7 +177,9 @@ const PrescriptionCard = ({
                     value={editSrvData?.checkCode}
                   />
 
-                  <label className="lblAbs font-12">نام / کد خدمت یا دارو</label>
+                  <label className="lblAbs font-12">
+                    نام / کد خدمت یا دارو
+                  </label>
                   <input
                     type="text"
                     // autoComplete="off"
@@ -230,7 +234,9 @@ const PrescriptionCard = ({
 
               <div className="d-flex align-items-center gap-1 media-flex-column flex-wrap row">
                 <div className="col media-w-100">
-                  <label className="lblAbs margin-top-left font-12">تعداد</label>
+                  <label className="lblAbs margin-top-left font-12">
+                    تعداد
+                  </label>
                   <div className="row">
                     <div className="col-auto d-flex align-items-center">
                       <button

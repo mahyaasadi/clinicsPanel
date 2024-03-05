@@ -2,13 +2,13 @@ export default function RecieveMessage({
   recievemes,
   ImageGalleryRender,
   imageCunter,
-  img,
+  Patient,
   userInfo,
 }) {
   let Type = recievemes.Type;
   let content = null;
   let reciveimg = null;
-  /////////////
+
   if (Type === "Image") {
     content = (
       <>
@@ -44,26 +44,31 @@ export default function RecieveMessage({
     let str = urlify(recievemes.Text);
     content = <div dangerouslySetInnerHTML={{ __html: str }}></div>;
   }
+
   function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, function (url) {
       return '<a href="' + url + '">' + url + "</a>";
     });
   }
-  /////////////////
+
   if (Type === "") {
+    Patient = null;
     reciveimg = (
       <img
-        src={"https://irannobat.ir/CenterProfileImage/" + img?.Center?.Logo}
+        src="https://irannobat.ir/assets/img/200PX.png"
+        Title="ایجاد شده توسط ایران نوبت"
         alt="User "
         className="avatar-img rounded-circle"
       />
     );
   } else if (Type === "Robot") {
+    Patient = null;
     reciveimg = (
       <img
         src={"https://irannobat.ir/images/Robot.jpg"}
         alt="User "
+        Title="ایجاد شده توسط ایران نوبت"
         className="avatar-img rounded-circle"
       />
     );
@@ -71,9 +76,13 @@ export default function RecieveMessage({
     reciveimg = (
       <img
         src={
-          "https://irannobat.ir/admin/assets/img/profiles/" + userInfo?.Avatar
+          Patient?.Avatar
+            ? "https://irannobat.ir/images/Avatar/" +
+              Patient.Avatar?.replace("Avatar/", "")
+            : "https://irannobat.ir/admin/assets/img/profiles/NoAvatar.png"
         }
         alt="User "
+        Title={userInfo?.NickName ? userInfo.NickName : Patient?.Name}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null;
           currentTarget.src =
@@ -82,7 +91,6 @@ export default function RecieveMessage({
         className="avatar-img rounded-circle"
       />
     );
-  /////////////////
   return (
     <>
       <li className="media received d-flex " id="msg-box">
@@ -91,7 +99,9 @@ export default function RecieveMessage({
           <div className="msg-box">
             <div>
               <div id="messageText">
-                <span className="nickname"> {userInfo?.NickName} </span>
+                <span className="nickname">
+                  {userInfo?.NickName ? userInfo.NickName : Patient?.Name}
+                </span>
                 {content}
               </div>
 

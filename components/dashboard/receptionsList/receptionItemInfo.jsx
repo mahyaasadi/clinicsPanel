@@ -11,8 +11,6 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 };
 
 const ReceptionItemInfoModal = ({ srv, show, onHide }) => {
-  // console.log({ srv });
-
   return (
     <>
       <Modal show={show} onHide={onHide} centered size="lg">

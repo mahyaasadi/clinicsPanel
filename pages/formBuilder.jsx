@@ -70,7 +70,6 @@ const FormBuilder = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setFormDirection(response.data.ltr);
         setEditFormData(response.data);
         formData = response.data.formData[0];
@@ -93,8 +92,6 @@ const FormBuilder = ({ ClinicUser }) => {
     ActiveFormID = router.query.id;
     if (ActiveFormID) getOneFormData();
   }, [router.isReady]);
-
-  console.log({ prevData });
 
   return (
     <>

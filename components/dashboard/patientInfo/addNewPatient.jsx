@@ -40,7 +40,7 @@ const NewPatient = ({
       ErrorAlert("خطا", "کد ملی بیمار نمی تواند کمتر از 10 رقم باشد");
     } else if (formProps.PatientID.length < 12 && formProps.Foreigners) {
       ErrorAlert("خطا", "کد اتباع نمی تواند کمتر از 12 رقم باشد");
-    } else if (formProps.PatientTel.length != 11) {
+    } else if (formProps.PatientTel.length !== 11) {
       ErrorAlert("خطا", "شماره همراه باید حداقل 11 رقم باشد");
     } else {
       addNewPatient(formProps);
