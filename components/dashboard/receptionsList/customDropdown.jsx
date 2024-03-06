@@ -8,6 +8,7 @@ const CustomDropdown = ({
   deleteReception,
   openHistoryModal,
   openInfoModal,
+  openAttachImgFilesModal,
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -16,14 +17,17 @@ const CustomDropdown = ({
       case "openFrmOptionsModal":
         openFrmOptionsModal(row);
         break;
-      case "deleteReception":
-        deleteReception(row._id);
-        break;
       case "showHistoryModal":
         openHistoryModal(true, row);
         break;
       case "showInfoModal":
         openInfoModal(true, row);
+        break;
+      case "uploadImgFile":
+        openAttachImgFilesModal(row);
+        break;
+      case "deleteReception":
+        deleteReception(row._id);
         break;
       default:
         break;
@@ -35,6 +39,7 @@ const CustomDropdown = ({
     { label: "افزودن فرم", action: "openFrmOptionsModal" },
     { label: "تاریخچه پذیرش", action: "showHistoryModal" },
     { label: "جزئیات پذیرش", action: "showInfoModal" },
+    { label: "آپلود تصویر", action: "uploadImgFile" },
     { label: "حذف پذیرش", action: "deleteReception" },
   ];
 
@@ -69,6 +74,12 @@ const CustomDropdown = ({
         ) : option.action == "showHistoryModal" ? (
           <FeatherIcon
             icon="clock"
+            size="18"
+            className="text-secondary access2Svg"
+          />
+        ) : option.action == "uploadImgFile" ? (
+          <FeatherIcon
+            icon="upload"
             size="18"
             className="text-secondary access2Svg"
           />

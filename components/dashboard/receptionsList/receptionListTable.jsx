@@ -17,6 +17,7 @@ const ReceptionListTable = ({
   deleteReception,
   openAppointmentModal,
   openFrmOptionsModal,
+  openAttachImgFilesModal,
 }) => {
   const router = useRouter();
 
@@ -146,6 +147,7 @@ const ReceptionListTable = ({
               deleteReception={deleteReception}
               openHistoryModal={openHistoryModal}
               openInfoModal={openInfoModal}
+              openAttachImgFilesModal={openAttachImgFilesModal}
             />
 
             <Tooltip target=".othersDropdown">سایر</Tooltip>

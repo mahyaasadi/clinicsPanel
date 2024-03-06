@@ -165,7 +165,7 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
                 <Tooltip target=".receptionBtn">پذیرش</Tooltip>
                 <FeatherIcon
                   icon="clipboard"
-                  style={{ width: "15px", height: "16px" }}
+                  style={{ width: "15px", height: "17px" }}
                 />
               </Link>
             </div>
@@ -330,7 +330,7 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
                 <Tooltip target=".appointBtn">نوبت دهی</Tooltip>
                 <FeatherIcon
                   icon="calendar"
-                  style={{ width: "15px", height: "16px" }}
+                  style={{ width: "15px", height: "17px" }}
                 />
               </button>
             </div>
@@ -346,7 +346,7 @@ const CallLogsList = ({ data, openAppointmentModal, openNewPatientModal }) => {
 
               <FeatherIcon
                 icon="user-plus"
-                style={{ width: "15px", height: "16px" }}
+                style={{ width: "15px", height: "17px" }}
               />
             </button>
           </div>

@@ -14,13 +14,17 @@ const QRCodeGeneratorModal = ({ show, onHide, url, token }) => {
         //   `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=https://clinic.irannobat.ir/${url}?token=${token}&choe=UTF-8`
         // );
 
-        setQrCodeUrl(`https://clinic.irannobat.ir/${url}?token=${token}`);
+        //http://192.168.1.116:3000/
+        // setQrCodeUrl(`https://clinic.irannobat.ir/${url}?token=${token}`);
+        setQrCodeUrl(`http://192.168.1.116:3000/${url}?token=${token}`);
         setIsLoading(false);
       }, 2000);
 
       return () => clearTimeout(timer);
     }
   }, [show, url, token]);
+
+  console.log({ url, token });
 
   return (
     <Modal show={show} onHide={onHide} centered>

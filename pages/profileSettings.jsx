@@ -7,8 +7,10 @@ import { setSession } from "lib/SessionMange";
 import { axiosClient } from "class/axiosConfig";
 import { convertBase64 } from "utils/convertBase64";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
+import { setPatientAvatarUrl } from "lib/session";
 import Loading from "components/commonComponents/loading/loading";
 import AvatarSettings from "components/userProfile/avatarSettings";
+import QRCodeGeneratorModal from "components/commonComponents/qrcode";
 import PasswordSettings from "components/userProfile/passwordSettings";
 import GeneralUserInfoSettings from "components/userProfile/generalUserInfoSettings";
 
@@ -144,6 +146,8 @@ const ProfileSettings = ({ ClinicUser }) => {
 
           userInfo.Avatar = "https://irannobat.ir" + response.data.Avatar;
 
+          console.log({ userInfo });
+
           // reset cookies
           let clinicSession = await setSession(userInfo);
           Cookies.set("clinicSession", clinicSession, { expires: 1 });
@@ -191,6 +195,13 @@ const ProfileSettings = ({ ClinicUser }) => {
         ErrorAlert("خطا", "تغییر رمز عبور با خطا مواجه گردید!");
       });
   };
+
+  // QRCode Modal
+  const [showQRCodeModal, setShowQRCodeModal] = useState(false);
+  const openQRCodeModal = () => setShowQRCodeModal(true);
+  const closeQRCodeModal = () => setShowQRCodeModal(false);
+
+  let AvatarImgFileURL = setPatientAvatarUrl(ClinicUser._id);
 
   useEffect(() => {
     getClinicUserById();
@@ -258,6 +269,7 @@ const ProfileSettings = ({ ClinicUser }) => {
                         userInfo={userInfo}
                         changeUserAvatar={changeUserAvatar}
                         avatarIsLoading={avatarIsLoading}
+                        openQRCodeModal={openQRCodeModal}
                       />
                     </div>
                   </div>
@@ -279,6 +291,13 @@ const ProfileSettings = ({ ClinicUser }) => {
             </div>
           </div>
         )}
+
+        <QRCodeGeneratorModal
+          show={showQRCodeModal}
+          onHide={closeQRCodeModal}
+          url={"changePatientAvatar"}
+          token={AvatarImgFileURL}
+        />
       </div>
     </>
   );

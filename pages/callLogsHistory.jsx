@@ -106,13 +106,9 @@ const CallLogsHistory = ({ ClinicUser }) => {
     data.Clinic = true;
     data.CallLog = true;
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
-
         if (response.data === false) {
           ErrorAlert(
             "خطا",

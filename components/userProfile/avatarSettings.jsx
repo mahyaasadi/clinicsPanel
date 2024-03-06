@@ -9,6 +9,7 @@ const AvatarSettings = ({
   changeUserAvatar,
   avatarIsLoading,
   ClinicUser,
+  openQRCodeModal,
 }) => {
   const router = useRouter();
 
@@ -83,38 +84,52 @@ const AvatarSettings = ({
                   </div>
                 </div>
 
-                <div className="d-flex gap-1 justify-center margin-top-3 media-flex-col">
-                  {!avatarIsLoading ? (
-                    <button
-                      type="submit"
-                      id="submitUserBtn"
-                      className="btn btn-primary rounded col-lg-6 col-12 font-13"
-                    >
-                      ثبت
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="btn btn-primary rounded col-lg-6 col-12 font-13"
-                      disabled
-                    >
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                      ></span>
-                      در حال ثبت
-                    </button>
-                  )}
+                <div className="row justify-center margin-top-3 media-gap-sm">
+                  <div className="col-lg-4 col-12">
+                    {!avatarIsLoading ? (
+                      <button
+                        type="submit"
+                        id="submitUserBtn"
+                        className="btn btn-primary rounded font-13 w-100"
+                      >
+                        ثبت
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="btn btn-primary rounded font-13"
+                        disabled
+                      >
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                        ></span>
+                        در حال ثبت
+                      </button>
+                    )}
+                  </div>
 
-                  <button
-                    type="button"
-                    href="/profileSettings"
-                    className="btn btn-outline-primary rounded profileSettingsBtn col-lg-6 col-12 font-13"
-                    id="cancelAvatarEdit"
-                    onClick={handleCancelBtn}
-                  >
-                    انصراف
-                  </button>
+                  <div className="col-lg-4 col-12">
+                    <button
+                      onClick={openQRCodeModal}
+                      type="button"
+                      className="btn btn-outline-primary rounded w-100 font-13"
+                    >
+                      استفاده از گوشی همراه
+                    </button>
+                  </div>
+
+                  <div className="col-lg-4 col-12">
+                    <button
+                      type="button"
+                      href="/profileSettings"
+                      className="btn btn-outline-primary rounded profileSettingsBtn w-100 font-13"
+                      id="cancelAvatarEdit"
+                      onClick={handleCancelBtn}
+                    >
+                      انصراف
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>

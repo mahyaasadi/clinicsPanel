@@ -14,6 +14,7 @@ const AttachImgFileModal = ({
   ActivePatientID,
   ClinicID,
   AttachImgFile,
+  ActiveReceptionID,
 }) => {
   const [selectedTab, setSelectedTab] = useState("");
   const [date, setDate] = useState(null);
@@ -47,7 +48,7 @@ const AttachImgFileModal = ({
     let data = {
       PatientID: ActivePatientID,
       ClinicID,
-      ClinicPatientReception: null,
+      ClinicPatientReception: ActiveReceptionID ? ActiveReceptionID : null,
       Image: imgSrc,
       TypeID: selectedTab,
       Title: $("#attachImgTitle").val(),
@@ -177,7 +178,7 @@ const AttachImgFileModal = ({
                 </div>
                 <input
                   type="file"
-                  accept=".jpg,.jpeg,.png,.gif,.webp"
+                  // accept=".jpg,.jpeg,.png,.gif,.webp"
                   className="upload"
                   id="attachImgFile"
                   name="attachImgFile"

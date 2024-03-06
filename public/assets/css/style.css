@@ -10856,7 +10856,7 @@ ul li .active {
 }
 
 .p-speeddial {
-  left: 105px !important;
+  left: 88px !important;
 }
 
 .p-speeddial-button {
@@ -10895,6 +10895,7 @@ ul li .active {
 
 .p-speeddial-list {
   margin-left: 0.75rem !important;
+  margin-bottom: 4px;
   gap: 3px;
 }
 

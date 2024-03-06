@@ -109,7 +109,7 @@ const UploadPatientImgFile = () => {
                 </div>
                 <input
                   type="file"
-                  accept=".jpg,.jpeg,.png,.gif,.webp"
+                  // accept=".jpg,.jpeg,.png,.gif,.webp"
                   className="upload"
                   name="uploadPatientImgFile"
                   onChange={(e) => resizeImgFile(e, setImgSrc)}
@@ -147,7 +147,6 @@ const UploadPatientImgFile = () => {
                       className="spinner-border spinner-border-sm"
                       role="status"
                     ></span>
-                    در حال ثبت
                   </button>
                 )}
               </div>

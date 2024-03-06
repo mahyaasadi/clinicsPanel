@@ -14,16 +14,6 @@ const UploadAvatarModal = ({
   setAvatarSrc,
   imageElement,
 }) => {
-  // const displayNewAvatar = (e) => {
-  //   var urlCreator = window.URL || window.webkitURL;
-
-  //   if (e.target.files.length !== 0) {
-  //     var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-  //     $("#patientAvatar").attr("src", imageUrl);
-  //     setAvatarSrc(imageUrl);
-  //   }
-  // };
-
   return (
     <Modal show={show} onHide={onHide} centered size="lg">
       <Modal.Header>

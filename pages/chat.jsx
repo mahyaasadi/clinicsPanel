@@ -238,7 +238,6 @@ const PatientChat = ({ ClinicUser }) => {
     //   });
     // });
     // socket.on("ChangeUserStatusToOffline", (data) => {
-    //   console.log(data);
     //       $(".Center-" +data.UserConnect).attr(
     //         "class",
     //         "Center-" + data.UserConnect + " avatar avatar-offline"

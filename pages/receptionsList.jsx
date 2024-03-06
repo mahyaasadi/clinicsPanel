@@ -11,6 +11,7 @@ import FilterReceptionItems from "@/components/dashboard/receptionsList/filterRe
 import ReceptionItem from "@/components/dashboard/receptionsList/receptionItem";
 import ReceptionListTable from "@/components/dashboard/receptionsList/receptionListTable";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
+import AttachImgFileModal from "components/dashboard/patientsArchives/patientFile/imgFiles/attachImgFileModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -151,6 +152,26 @@ const ReceptionsList = ({ ClinicUser }) => {
     setShowFormOptionsModal(true);
   };
 
+  // attach imgFiles to patient
+  const [ActiveReceptionID, setActiveReceptionID] = useState(null);
+  const [ActivePatientName, setActivePatientName] = useState("");
+  const [showAttachImgModal, setShowAttachImgFile] = useState(false);
+
+  const openAttachImgFilesModal = (srv) => {
+    setShowAttachImgFile(true);
+    ActivePatientID = srv.Patient._id;
+    setActiveReceptionID(srv.ReceptionID);
+    setActivePatientName(srv.Patient.Name);
+  };
+
+  // attach imgFile
+  const AttachImgFile = (uploadedFile) => {
+    SuccessAlert(
+      "",
+      `تصویر با موفقیت به پرونده ${ActivePatientName} اضافه گردید!`
+    );
+  };
+
   return (
     <>
       <Head>
@@ -179,7 +200,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                           className={`nav-link ${
                             activeTab === 0 ? "active" : ""
                           }`}
-                          href="#solid-rounded-tab1"
+                          href="#view-solid-rounded-tab1"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(0)}
                         >
@@ -191,7 +212,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                           className={`nav-link ${
                             activeTab === 1 ? "active" : ""
                           }`}
-                          href="#solid-rounded-tab2"
+                          href="#view-solid-rounded-tab2"
                           data-bs-toggle="tab"
                           onClick={() => handleTabClick(1)}
                         >
@@ -206,7 +227,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                       className={`tab-pane show ${
                         activeTab === 0 ? "active" : ""
                       }`}
-                      id="solid-rounded-tab1"
+                      id="view-solid-rounded-tab1"
                     >
                       <div className="row">
                         {currentItems.map((item, index) => (
@@ -216,6 +237,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                             deleteReception={deleteReception}
                             openAppointmentModal={openAppointmentModal}
                             openFrmOptionsModal={openFrmOptionsModal}
+                            openAttachImgFilesModal={openAttachImgFilesModal}
                           />
                         ))}
                       </div>
@@ -230,7 +252,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                     </div>
 
                     <div
-                      id="solid-rounded-tab2"
+                      id="view-solid-rounded-tab2"
                       className={`tab-pane ${activeTab === 1 ? "active" : ""}`}
                     >
                       <div className="card">
@@ -239,6 +261,7 @@ const ReceptionsList = ({ ClinicUser }) => {
                           deleteReception={deleteReception}
                           openAppointmentModal={openAppointmentModal}
                           openFrmOptionsModal={openFrmOptionsModal}
+                          openAttachImgFilesModal={openAttachImgFilesModal}
                         />
                       </div>
                     </div>
@@ -267,6 +290,15 @@ const ReceptionsList = ({ ClinicUser }) => {
           ClinicUserID={ClinicUserID}
           ActivePatientID={ActivePatientID}
           ActiveReceptionObjID={ActiveReceptionObjID}
+        />
+
+        <AttachImgFileModal
+          ClinicID={ClinicID}
+          show={showAttachImgModal}
+          setShowModal={setShowAttachImgFile}
+          ActivePatientID={ActivePatientID}
+          AttachImgFile={AttachImgFile}
+          ActiveReceptionID={ActiveReceptionID}
         />
       </div>
     </>

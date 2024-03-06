@@ -55,12 +55,9 @@ const SalamatPrescRecords = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        setIsLoading(false);
         if (response.data.res.info) {
           setPrescRecords(response.data.res.info);
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-          ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
         }
       })
       .catch((err) => {

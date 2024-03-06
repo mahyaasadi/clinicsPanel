@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { setSession } from "lib/SessionMange";
 import FeatherIcon from "feather-icons-react";
 import { axiosClient } from "class/axiosConfig";
 import { convertBase64 } from "utils/convertBase64";
@@ -15,11 +17,12 @@ const ChangePatientAvatar = () => {
   let router = useRouter();
 
   const [avatarIsLoading, setAvatarIsLoading] = useState(false);
-  const [fileLength, setFileLength] = useState(0);
   const [avatarSrc, setAvatarSrc] = useState(null);
   const [imageElement, handleSubmit] = useImageCropper(avatarSrc, 1);
+  const [userInfo, setUserInfo] = useState([]);
 
   let IDs = getPatientAvatarUrl(router.query.token);
+  console.log(IDs);
   if (IDs) {
     IDs = IDs.split(";");
     ActivePatientID = IDs[0];
@@ -30,15 +33,28 @@ const ChangePatientAvatar = () => {
     await submitUpload(blob);
   };
 
-  // const displayNewAvatar = (e) => {
-  //   var urlCreator = window.URL || window.webkitURL;
-  //   setFileLength(e.target.files.length);
+  const getClinicUserById = () => {
+    // setIsLoading(true);
 
-  //   if (e.target.files.length !== 0) {
-  //     var imageUrl = urlCreator.createObjectURL(e.target.files[0]);
-  //     setAvatarSrc(imageUrl);
-  //   }
-  // };
+    let url = "ClinicUser/getUserById";
+    let data = {
+      UserID: getPatientAvatarUrl(router.query.token),
+    };
+
+    console.log({ data });
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+        setUserInfo(response.data);
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setIsLoading(false);
+      });
+  };
 
   let avatarBlob = null;
   const submitUpload = async (blob) => {
@@ -51,18 +67,29 @@ const ChangePatientAvatar = () => {
         Avatar: avatarBlob,
       };
 
-      if (ActivePatientID === 0) {
+      if (!UserID) {
         url = "ClinicUser/ChangeAvatar";
-        // editData.UserID = UserID,
+        editData.UserID = ActivePatientID;
       } else {
         url = "Patient/ChangeAvatar";
         editData.PatientID = ActivePatientID;
       }
 
+      console.log({ url, editData });
       axiosClient
         .put(url, editData)
-        .then((response) => {
+        .then(async (response) => {
+          console.log(response.data);
+          setUserInfo({ ...userInfo, Avatar: response.data.Avatar });
+
           SuccessAlert("موفق", "آپلود تصویر با موفقیت انجام گردید!");
+
+          if (!UserID) {
+            userInfo.Avatar = "https://irannobat.ir" + response.data.Avatar;
+
+            let clinicSession = await setSession(userInfo);
+            Cookies.set("clinicSession", clinicSession, { expires: 1 });
+          }
           setAvatarIsLoading(false);
         })
         .catch((err) => {
@@ -72,6 +99,12 @@ const ChangePatientAvatar = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (router.query.token) {
+      getClinicUserById();
+    }
+  }, [router.isReady]);
 
   return (
     <>
@@ -104,7 +137,7 @@ const ChangePatientAvatar = () => {
               </div>
             </div>
 
-            {fileLength !== 0 && (
+            {avatarSrc && (
               <div className="previewImgContainer">
                 <img
                   src={avatarSrc}
@@ -136,7 +169,6 @@ const ChangePatientAvatar = () => {
                       className="spinner-border spinner-border-sm me-2"
                       role="status"
                     ></span>
-                    در حال ثبت
                   </button>
                 )}
               </div>
