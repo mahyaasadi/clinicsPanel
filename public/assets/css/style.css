@@ -9066,6 +9066,13 @@ body.darkmode {
     transition: all 0.4s ease;
   }
 
+  .page-wrapper-qr {
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    transition: all 0.4s ease !important;
+  }
+
   .login-wrapper .loginbox {
     padding: 30px;
   }

@@ -39,8 +39,9 @@ const Header = ({ ClinicUser }) => {
     $(".hiddenSidebar").attr("style", "display: none");
   };
 
-  const handlesidebarmobilemenu = () =>
+  const handlesidebarmobilemenu = () => {
     document.body.classList.toggle("slide-nav");
+  };
 
   const fetchUserToken = async (data) => {
     document.getElementById("userName").innerHTML = data.FullName;

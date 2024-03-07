@@ -76,6 +76,7 @@ const ChangePatientAvatar = () => {
       }
 
       console.log({ url, editData });
+
       axiosClient
         .put(url, editData)
         .then(async (response) => {

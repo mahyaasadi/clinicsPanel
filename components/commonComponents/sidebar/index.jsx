@@ -59,6 +59,14 @@ const Sidebar = () => {
     }
   }, [router.pathname]);
 
+  const handlesidebarmobilemenu = () => {
+    document.body.classList.toggle("slide-nav");
+    $(".sidebar-overlay").attr(
+      "style",
+      "background-color: transparent !important"
+    );
+  };
+
   return (
     <>
       <div className="sidebar shadow" id="sidebar">
@@ -69,7 +77,7 @@ const Sidebar = () => {
                 <span>اصلی</span>
               </li>
               <li className={router.pathname == "/dashboard" ? "active" : ""}>
-                <Link href="/dashboard">
+                <Link href="/dashboard" onClick={handlesidebarmobilemenu}>
                   <FeatherIcon icon="home" />
                   <span>داشبورد</span>
                 </Link>
@@ -80,7 +88,10 @@ const Sidebar = () => {
                   router.pathname == "/patientsArchives" ? "active" : ""
                 }
               >
-                <Link href="/patientsArchives">
+                <Link
+                  href="/patientsArchives"
+                  onClick={handlesidebarmobilemenu}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -104,7 +115,7 @@ const Sidebar = () => {
               </li>
 
               <li className={router.pathname == "/reception" ? "active" : ""}>
-                <Link href="/reception">
+                <Link href="/reception" onClick={handlesidebarmobilemenu}>
                   <FeatherIcon
                     icon="clipboard"
                     style={{ width: "17px", height: "17px" }}
@@ -115,6 +126,7 @@ const Sidebar = () => {
 
               <li
                 className={router.pathname == "/receptionsList" ? "active" : ""}
+                onClick={handlesidebarmobilemenu}
               >
                 <Link href="/receptionsList">
                   <svg
@@ -136,7 +148,10 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className={router.pathname == "/cashDesk" ? "active" : ""}>
+              <li
+                className={router.pathname == "/cashDesk" ? "active" : ""}
+                onClick={handlesidebarmobilemenu}
+              >
                 <Link href="/cashDesk">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +172,10 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className={router.pathname == "/appointment" ? "active" : ""}>
+              <li
+                className={router.pathname == "/appointment" ? "active" : ""}
+                onClick={handlesidebarmobilemenu}
+              >
                 <Link href="/appointment">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -204,6 +222,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/taminPrescription" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/taminPrescription" className="font-12">
                       تامین اجتماعی
@@ -213,6 +232,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/taminPrescRecords" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/taminPrescRecords" className="font-12">
                       نسخ تامین اجتماعی
@@ -223,6 +243,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/salamatPrescription" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/salamatPrescription" className="font-12">
                       خدمات درمانی
@@ -232,6 +253,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/salamatPrescRecords" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/salamatPrescRecords" className="font-12">
                       نسخ خدمات درمانی
@@ -240,48 +262,10 @@ const Sidebar = () => {
                 </ul>
               </li>
 
-              {/* <li className="submenu">
-                <a
-                  href="#"
-                  onClick={() => setPrescFavsSubmenuOpen(!prescFavsSubmenuOpen)}
-                >
-                  <FeatherIcon
-                    icon="star"
-                    style={{ width: "17px", height: "17px" }}
-                  />
-                  <span>علاقه مندی ها</span>
-                  <span className="menu-arrow"></span>
-                </a>
-                <ul
-                  className={`hiddenSidebar ${
-                    prescFavsSubmenuOpen ? "d-block" : "hidden"
-                  }`}
-                >
-                  <li
-                    className={
-                      router.pathname == "/favPrescItems" ? "active" : ""
-                    }
-                  >
-                    <Link href="/favPrescItems" className="font-12">
-                      خدمات پرمصرف
-                    </Link>
-                  </li>
-                  <li
-                    className={
-                      router.pathname == "/favPrescTemplates" ? "active" : ""
-                    }
-                  >
-                    <Link href="/favPrescTemplates" className="font-12">
-                      نسخ پرمصرف
-                    </Link>
-                  </li>
-                </ul>
-              </li> */}
-
               <li className="menu-title font-12"></li>
 
               <li className={router.pathname == "/chat" ? "active" : ""}>
-                <Link href="/chat">
+                <Link href="/chat" onClick={handlesidebarmobilemenu}>
                   <FeatherIcon
                     icon="message-circle"
                     style={{ width: "17px", height: "17px" }}
@@ -294,6 +278,7 @@ const Sidebar = () => {
                 className={
                   router.pathname == "/callLogsHistory" ? "active" : ""
                 }
+                onClick={handlesidebarmobilemenu}
               >
                 <Link href="/callLogsHistory">
                   <FeatherIcon
@@ -342,12 +327,16 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/formBuilder" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/formBuilder" className="font-12">
                       فرم جدید
                     </Link>
                   </li>
-                  <li className={router.pathname == "/forms" ? "active" : ""}>
+                  <li
+                    className={router.pathname == "/forms" ? "active" : ""}
+                    onClick={handlesidebarmobilemenu}
+                  >
                     <Link href="/forms" className="font-12">
                       فرم ها
                     </Link>
@@ -376,6 +365,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/insuranceSettings" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/insuranceSettings" className="font-12">
                       بیمه ها
@@ -385,6 +375,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/departments" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/departments" className="font-12">
                       بخش ها
@@ -392,6 +383,7 @@ const Sidebar = () => {
                   </li>
                   <li
                     className={router.pathname == "/discounts" ? "active" : ""}
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/discounts" className="font-12">
                       تخفیفات
@@ -401,12 +393,16 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/measurements" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/measurements" className="font-12">
                       پارامترهای اندازه گیری
                     </Link>
                   </li>
-                  <li className={router.pathname == "/karts" ? "active" : ""}>
+                  <li
+                    className={router.pathname == "/karts" ? "active" : ""}
+                    onClick={handlesidebarmobilemenu}
+                  >
                     <Link href="/karts" className="font-12">
                       کارت ها
                     </Link>
@@ -415,6 +411,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/reciptSettings" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/reciptSettings" className="font-12">
                       تنظیمات چاپ قبض
@@ -424,6 +421,7 @@ const Sidebar = () => {
                     className={
                       router.pathname == "/patientInquiryQRCode" ? "active" : ""
                     }
+                    onClick={handlesidebarmobilemenu}
                   >
                     <Link href="/patientInquiryQRCode" className="font-12">
                       کیوسک آنلاین
