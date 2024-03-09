@@ -19,6 +19,7 @@ import {
   ErrorAlert,
   SuccessAlert,
   WarningAlert,
+  QuestionAlert,
   TimerAlert,
 } from "class/AlertManage";
 
@@ -403,15 +404,41 @@ const TaminPrescription = ({
     }
   };
 
-  const removeFavItem = (srvcode) => {
-    let url = `/CenterFavEprsc/deleteTamin/${ClinicID}/${srvcode}`;
+  const removeFavItem = async (srvcode) => {
+    let result = await QuestionAlert("", "آیا از حذف خدمت از خدمات پرمصرف اطمینان دارید؟");
 
-    axiosClient
-      .delete(url)
-      .then((response) => {
-        setFavTaminItems(favTaminItems.filter((x) => x.SrvCode !== srvcode));
-      })
-      .catch((err) => console.log(err));
+    if (result) {
+      let url = `/CenterFavEprsc/deleteTamin/${ClinicID}/${srvcode}`;
+
+      axiosClient
+        .delete(url)
+        .then((response) => {
+          console.log(response.data);
+          setFavTaminItems(favTaminItems.filter((x) => x.SrvCode !== srvcode));
+          let findFavPrescItem = prescriptionItemsData.find((a) => a.SrvCode == srvcode);
+          findFavPrescItem.favItemMode = false;
+
+          let index = prescriptionItemsData.findIndex((x) => x.SrvCode === srvcode);
+          let g = prescriptionItemsData[index];
+          g = findFavPrescItem;
+
+          if (index === -1) {
+            console.log("no match");
+          } else {
+            setPrescriptionItemsData([]);
+
+            setTimeout(() => {
+              setPrescriptionItemsData([
+                ...prescriptionItemsData.slice(0, index),
+                g,
+                ...prescriptionItemsData.slice(index + 1),
+              ]);
+            }, 100);
+          }
+          // console.log({ findFavPrescItem });
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   //--- Fav Prescription ---//
@@ -577,6 +604,7 @@ const TaminPrescription = ({
 
   const [favItemMode, setFavItemMode] = useState(false);
   const handleEditService = (srvData, favItemMode) => {
+    console.log({ srvData });
     setFavItemMode(favItemMode);
     setEditSrvMode(true);
     setSearchFromInput(true);

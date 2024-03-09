@@ -16,8 +16,6 @@ const AddToListItems = ({
   selectFavTaminItem,
   removeFavItem,
 }) => {
-  console.log({ data });
-
   const _DeleteService = async (id, prescId) => {
     let result = await QuestionAlert("", "آیا از حذف اطمینان دارید؟");
 
@@ -111,15 +109,27 @@ const AddToListItems = ({
                       <FeatherIcon icon="edit-2" className="prescItembtns" />
                     </button>
 
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-primary favItem height-27"
-                      data-pr-position="top"
-                      onClick={() => selectFavTaminItem(srv)}
-                    >
-                      <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
-                      <FeatherIcon icon="star" className="prescItembtns" />
-                    </button>
+                    {!favItemMode ? (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-primary favItem height-27"
+                        data-pr-position="top"
+                        onClick={() => selectFavTaminItem(srv)}
+                      >
+                        <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
+                        <FeatherIcon icon="star" className="prescItembtns" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-primary favItem height-27"
+                        data-pr-position="top"
+                        onClick={() => removeFavItem(srv.SrvCode)}
+                      >
+                        <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
+                        <FeatherIcon icon="star" className="prescItembtns" />
+                      </button>
+                    )}
 
                     <button
                       type="button"
