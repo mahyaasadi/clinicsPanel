@@ -110,6 +110,8 @@ const UploadPatientImgFile = () => {
                 <input
                   type="file"
                   // accept=".jpg,.jpeg,.png,.gif,.webp"
+                  accept="image/*"
+                  capture="environment"
                   className="upload"
                   name="uploadPatientImgFile"
                   onChange={(e) => resizeImgFile(e, setImgSrc)}

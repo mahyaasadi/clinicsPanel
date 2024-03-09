@@ -54,6 +54,7 @@ const PrescQuickAccessCard = ({
 
   // Salamat Mode
   let firstMatchingId = null;
+  let firstMatchingIndex = -1;
 
   const [selectedFavSalamatTab, setSelectedFavSalamatTab] = useState("");
   const [matchingIDs, setMatchingIDs] = useState([]);
@@ -101,8 +102,6 @@ const PrescQuickAccessCard = ({
 
     setMatchingIDs(uniqueIds);
   }, [data, salamatHeaderList]);
-
-  let firstMatchingIndex = -1;
 
   return (
     <>

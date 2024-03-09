@@ -132,6 +132,8 @@ const ChangePatientAvatar = () => {
                   type="file"
                   className="upload"
                   name="editPatientAvatar"
+                  accept="image/*"
+                  capture="environment"
                   onChange={(e) => resizeImgFile(e, setAvatarSrc)}
                   required
                 />

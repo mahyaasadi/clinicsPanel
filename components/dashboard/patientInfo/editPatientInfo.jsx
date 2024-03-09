@@ -204,7 +204,7 @@ const EditPatientInfoModal = ({
 
       <Modal.Footer className="d-flex justify-center">
         {isLoading ? (
-          <Button variant="primary" disabled className="rounded w-25">
+          <Button variant="primary" className="rounded" disabled>
             <Spinner
               as="span"
               animation="border"
@@ -215,11 +215,7 @@ const EditPatientInfoModal = ({
             در حال ثبت
           </Button>
         ) : (
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            className="rounded w-25"
-          >
+          <Button variant="primary" onClick={handleSubmit} className="rounded">
             ثبت
           </Button>
         )}

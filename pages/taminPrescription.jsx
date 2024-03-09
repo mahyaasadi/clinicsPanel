@@ -375,8 +375,11 @@ const TaminPrescription = ({
   };
 
   const selectFavTaminItem = async (selectedSrv) => {
+    console.log({ selectedSrv });
+
     let url = "FavEprscItem/addTamin";
     selectedSrv.paraCode = ActiveParaCode;
+    selectedSrv.favItemMode = true;
 
     let data = {
       CenterID: ClinicID,
@@ -572,7 +575,9 @@ const TaminPrescription = ({
     }
   };
 
+  const [favItemMode, setFavItemMode] = useState(false);
   const handleEditService = (srvData, favItemMode) => {
+    setFavItemMode(favItemMode);
     setEditSrvMode(true);
     setSearchFromInput(true);
     setEditSrvData(srvData);
@@ -585,6 +590,20 @@ const TaminPrescription = ({
     ActivePrescImg = srvData.Img;
 
     if (favItemMode) {
+      switch (srvData.prescId) {
+        case 1:
+          ActiveSrvTypePrsc = "01";
+          break;
+        case 2:
+          ActiveSrvTypePrsc = "02";
+          break;
+        case 5:
+          ActiveSrvTypePrsc = "17";
+          break;
+        default:
+          break;
+      }
+
       setTimeout(() => {
         setEditSrvData([]);
         $("#btnAddSrvItem").click();
@@ -598,13 +617,14 @@ const TaminPrescription = ({
       (a) => a.srvId.srvCode !== id
     );
 
-    // setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
+    visitPrescriptionData = visitPrescriptionData.filter((x) => x.Code !== id);
 
-    if (editFavPrescData.length !== 0) {
-      updateItem(id, combinedObject);
-    } else {
-      updateItem(id, prescItems);
-    }
+    setPrescriptionItemsData(
+      prescriptionItemsData.filter((a) => a.SrvCode !== id)
+    );
+
+    let findFavItem = favPrescItemsData.some((x) => x.SrvCode === id);
+    if (!favItemMode && prescItems !== 1) updateItem(id, prescItems);
   };
 
   // pinInput modal
@@ -702,12 +722,14 @@ const TaminPrescription = ({
 
     const combinedObject = { ...prescData, ...prescItems };
 
-    if (!editSrvMode) {
+    if (!editSrvMode || favItemMode) {
       if (
-        addPrescriptionitems.length > 0 &&
-        addPrescriptionitems.find(
-          ({ srvId }) => srvId.srvCode === ActiveSrvCode
-        )
+        (addPrescriptionitems.length > 0 &&
+          addPrescriptionitems.find(
+            ({ srvId }) => srvId.srvCode === ActiveSrvCode
+          )) ||
+        (prescriptionItemsData.length > 0 &&
+          prescriptionItemsData.find((a) => a.SrvCode === ActiveSrvCode))
       ) {
         ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
         return false;
@@ -715,7 +737,7 @@ const TaminPrescription = ({
     } else {
       DeleteService(ActiveEditSrvCode, prescItems, combinedObject);
       setEditSrvMode(false);
-      ActiveSrvCode = null;
+      // ActiveSrvCode = null;
     }
 
     if (prescData) {
@@ -724,11 +746,11 @@ const TaminPrescription = ({
         Code: ActiveSrvCode,
       };
 
-      if (!ActiveEditSrvCode) {
-        // favPresc
-        const combinedObject = { ...prescData, ...prescItems };
-        setFavPrescItemsData([...favPrescItemsData, combinedObject]);
-      }
+      // if (!ActiveEditSrvCode) {
+      // favPresc
+      const combinedObject = { ...prescData, ...prescItems };
+      setFavPrescItemsData([...favPrescItemsData, combinedObject]);
+      // }
 
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
@@ -736,10 +758,13 @@ const TaminPrescription = ({
       activeSearch();
     }
 
-    console.log({ visitPrescriptionData, addPrescriptionitems });
-
     setSearchFromInput(true);
   };
+
+  useEffect(
+    () => console.log({ prescriptionItemsData, favPrescItemsData }),
+    [prescriptionItemsData]
+  );
 
   // Registeration
   const registerEpresc = async (visit, otpCode) => {
@@ -838,46 +863,46 @@ const TaminPrescription = ({
         //   }
         // }
 
-        // axiosClient
-        //   .post(url, data)
-        //   .then(async (response) => {
-        //     setSaveRegIsLoading(false);
-        //     console.log(response.data);
+        axiosClient
+          .post(url, data)
+          .then(async (response) => {
+            console.log(response.data);
+            setSaveRegIsLoading(false);
 
-        //     if (response.data[0].data.data.result.trackingCode) {
-        //       let trackingCodes = [];
-        //       for (let i = 0; i < response.data.length; i++) {
-        //         const element = response.data[i];
-        //         trackingCodes.push(element.data.data.result.trackingCode);
-        //       }
-        //       trackingCodes = [...new Set(trackingCodes)];
+            if (response.data[0].data.data.result.trackingCode) {
+              let trackingCodes = [];
+              for (let i = 0; i < response.data.length; i++) {
+                const element = response.data[i];
+                trackingCodes.push(element.data.data.result.trackingCode);
+              }
+              trackingCodes = [...new Set(trackingCodes)];
 
-        //       const seconds = 5;
-        //       const timerInMillis = seconds * 1000;
+              const seconds = 5;
+              const timerInMillis = seconds * 1000;
 
-        //       TimerAlert({
-        //         title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
-        //         html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-        //         timer: timerInMillis,
-        //         timerProgressBar: true,
-        //         cancelButton: {
-        //           text: "انصراف",
-        //         },
-        //         onConfirm: () => {
-        //           router.push("/taminPrescRecords");
-        //         },
-        //       });
-        //     } else if (response.data[0].data.data.result.error_Code !== null) {
-        //       ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
-        //     } else if (response.data[0].data.data.result == null) {
-        //       ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     setSaveRegIsLoading(false);
-        //     ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-        //   });
+              TimerAlert({
+                title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
+                html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+                timer: timerInMillis,
+                timerProgressBar: true,
+                cancelButton: {
+                  text: "انصراف",
+                },
+                onConfirm: () => {
+                  router.push("/taminPrescRecords");
+                },
+              });
+            } else if (response.data[0].data.data.result.error_Code !== null) {
+              ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
+            } else if (response.data[0].data.data.result == null) {
+              ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            setSaveRegIsLoading(false);
+            ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
+          });
       }
     }
   };
@@ -986,8 +1011,10 @@ const TaminPrescription = ({
                   setPrescriptionItemsData={setPrescriptionItemsData}
                   setFavPrescItemsData={setFavPrescItemsData}
                   favPrescItemsData={favPrescItemsData}
+                  favItemMode={favItemMode}
                   prescDataIsLoading={prescDataIsLoading}
                   selectFavTaminItem={selectFavTaminItem}
+                  removeFavItem={removeFavItem}
                 />
               </div>
             </div>

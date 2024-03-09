@@ -27,7 +27,6 @@ const ApplyFavPrescModal = ({
       Name: formProps.prescName,
       Tamin: prescMode == "Tamin" ? true : false,
       Salamat: prescMode == "Salamat" ? true : false,
-      prescItems: favPrescItemsData ? favPrescItemsData : prescriptionItemsData,
       prescItems: favPrescItemsData
         ? favPrescItemsData
         : prescriptionItemsData.map((item) => {
@@ -36,6 +35,8 @@ const ApplyFavPrescModal = ({
             return rest;
           }),
     };
+
+    console.log({ data });
 
     if (prescriptionItemsData.length == 0) {
       WarningAlert("", "خدمتی در نسخه ثبت نشده است!");

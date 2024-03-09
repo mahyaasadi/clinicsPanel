@@ -6,26 +6,31 @@ import { QuestionAlert } from "class/AlertManage";
 
 const AddToListItems = ({
   data,
-  // DeleteService,
+  DeleteService,
   handleEditService,
   setPrescriptionItemsData,
   setFavPrescItemsData,
   favPrescItemsData,
+  favItemMode,
   prescDataIsLoading,
   selectFavTaminItem,
+  removeFavItem,
 }) => {
+  console.log({ data });
 
   const _DeleteService = async (id, prescId) => {
-    let result = await QuestionAlert("حذف سرویس!", "آیا از حذف اطمینان دارید؟");
+    let result = await QuestionAlert("", "آیا از حذف اطمینان دارید؟");
 
     if (result) {
       setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
-      setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id))
+      setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
-      // if (favPrescItemsData.length !== 0) {
-      //   return
+      // if (!favItemMode) {
+      //   console.log("111");
+      //   return;
       // } else {
-      //   DeleteService(id, prescId);
+      //   console.log("2222");
+      DeleteService(id, prescId);
       // }
     }
   };

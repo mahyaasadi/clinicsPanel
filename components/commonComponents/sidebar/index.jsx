@@ -66,10 +66,7 @@ const Sidebar = () => {
       "background-color: transparent !important"
     );
 
-    $(".sidebar-overlay").attr(
-      "style",
-      "display: contents !important"
-    );
+    $(".sidebar-overlay").attr("style", "display: contents !important");
   };
 
   return (
@@ -81,8 +78,11 @@ const Sidebar = () => {
               <li className="menu-title">
                 <span>اصلی</span>
               </li>
-              <li className={router.pathname == "/dashboard" ? "active" : ""}>
-                <Link href="/dashboard" onClick={handlesidebarmobilemenu}>
+              <li
+                className={router.pathname == "/dashboard" ? "active" : ""}
+                onClick={handlesidebarmobilemenu}
+              >
+                <Link href="/dashboard">
                   <FeatherIcon icon="home" />
                   <span>داشبورد</span>
                 </Link>
@@ -92,11 +92,9 @@ const Sidebar = () => {
                 className={
                   router.pathname == "/patientsArchives" ? "active" : ""
                 }
+                onClick={handlesidebarmobilemenu}
               >
-                <Link
-                  href="/patientsArchives"
-                  onClick={handlesidebarmobilemenu}
-                >
+                <Link href="/patientsArchives">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -219,8 +217,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    prescriptionSubmenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -323,8 +322,9 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    formBuilderSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={
@@ -360,8 +360,9 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
-                    }`}
+                  className={`hiddenSidebar ${
+                    settingsSubMenuOpen ? "d-block" : "hidden"
+                  }`}
                 >
                   <li
                     className={

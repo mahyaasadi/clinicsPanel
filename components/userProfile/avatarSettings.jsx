@@ -85,7 +85,7 @@ const AvatarSettings = ({
                 </div>
 
                 <div className="row justify-center margin-top-3 media-gap-sm">
-                  <div className="col-lg-4 col-12">
+                  <div className="col-lg-6 col-12">
                     {!avatarIsLoading ? (
                       <button
                         type="submit"
@@ -97,7 +97,7 @@ const AvatarSettings = ({
                     ) : (
                       <button
                         type="submit"
-                        className="btn btn-primary rounded font-13"
+                        className="btn btn-primary rounded font-13 w-100"
                         disabled
                       >
                         <span
@@ -109,7 +109,7 @@ const AvatarSettings = ({
                     )}
                   </div>
 
-                  <div className="col-lg-4 col-12">
+                  {/* <div className="col-lg-4 col-12">
                     <button
                       onClick={openQRCodeModal}
                       type="button"
@@ -117,9 +117,9 @@ const AvatarSettings = ({
                     >
                       استفاده از گوشی همراه
                     </button>
-                  </div>
+                  </div> */}
 
-                  <div className="col-lg-4 col-12">
+                  <div className="col-lg-6 col-12">
                     <button
                       type="button"
                       href="/profileSettings"

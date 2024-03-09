@@ -24,8 +24,6 @@ const QRCodeGeneratorModal = ({ show, onHide, url, token }) => {
     }
   }, [show, url, token]);
 
-  console.log({ url, token });
-
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>

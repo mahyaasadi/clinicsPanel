@@ -179,6 +179,8 @@ const AttachImgFileModal = ({
                 <input
                   type="file"
                   // accept=".jpg,.jpeg,.png,.gif,.webp"
+                  accept="image/*"
+                  capture="environment"
                   className="upload"
                   id="attachImgFile"
                   name="attachImgFile"
