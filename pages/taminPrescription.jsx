@@ -319,6 +319,7 @@ const TaminPrescription = ({
           console.log(err);
           setSearchIsLoading(false);
           setSearchFromInput(false);
+          ErrorAlert("", "جستجوی خدمات در حال حاضر امکان پذیر نمی باشد!");
         });
     }
   };
@@ -376,8 +377,6 @@ const TaminPrescription = ({
   };
 
   const selectFavTaminItem = async (selectedSrv) => {
-    console.log({ selectedSrv });
-
     let url = "FavEprscItem/addTamin";
     selectedSrv.paraCode = ActiveParaCode;
     selectedSrv.favItemMode = true;
@@ -391,7 +390,7 @@ const TaminPrescription = ({
       favTaminItems.length > 0 &&
       favTaminItems.find((x) => x.SrvCode === selectedSrv.SrvCode)
     ) {
-      ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+      ErrorAlert("", "انتخاب سرویس تکراری امکان پذیر نمی باشد.");
       return false;
     } else {
       axiosClient
@@ -405,7 +404,10 @@ const TaminPrescription = ({
   };
 
   const removeFavItem = async (srvcode) => {
-    let result = await QuestionAlert("", "آیا از حذف خدمت از خدمات پرمصرف اطمینان دارید؟");
+    let result = await QuestionAlert(
+      "",
+      "آیا از حذف خدمت از خدمات پرمصرف اطمینان دارید؟"
+    );
 
     if (result) {
       let url = `/CenterFavEprsc/deleteTamin/${ClinicID}/${srvcode}`;
@@ -413,29 +415,20 @@ const TaminPrescription = ({
       axiosClient
         .delete(url)
         .then((response) => {
-          console.log(response.data);
-          setFavTaminItems(favTaminItems.filter((x) => x.SrvCode !== srvcode));
-          let findFavPrescItem = prescriptionItemsData.find((a) => a.SrvCode == srvcode);
-          findFavPrescItem.favItemMode = false;
+          if (response.data.Status === "ok") {
+            const removedFav = prescriptionItemsData.map((presc) => {
+              if (presc.SrvCode === srvcode) {
+                return { ...presc, favItemMode: false };
+              }
+              return presc;
+            });
 
-          let index = prescriptionItemsData.findIndex((x) => x.SrvCode === srvcode);
-          let g = prescriptionItemsData[index];
-          g = findFavPrescItem;
+            setPrescriptionItemsData(removedFav);
 
-          if (index === -1) {
-            console.log("no match");
-          } else {
-            setPrescriptionItemsData([]);
-
-            setTimeout(() => {
-              setPrescriptionItemsData([
-                ...prescriptionItemsData.slice(0, index),
-                g,
-                ...prescriptionItemsData.slice(index + 1),
-              ]);
-            }, 100);
+            setFavTaminItems(
+              favTaminItems.filter((x) => x.SrvCode !== srvcode)
+            );
           }
-          // console.log({ findFavPrescItem });
         })
         .catch((err) => console.log(err));
     }
@@ -479,6 +472,8 @@ const TaminPrescription = ({
 
     for (let i = 0; i < favPresc.Items[0].length; i++) {
       const item = favPresc.Items[0][i];
+
+      ActivePrescImg = item.Img;
 
       let { prescData, prescItems } = await taminPrescItemCreator(
         item.prescId,
@@ -603,8 +598,8 @@ const TaminPrescription = ({
   };
 
   const [favItemMode, setFavItemMode] = useState(false);
+
   const handleEditService = (srvData, favItemMode) => {
-    console.log({ srvData });
     setFavItemMode(favItemMode);
     setEditSrvMode(true);
     setSearchFromInput(true);
@@ -614,10 +609,16 @@ const TaminPrescription = ({
     ActiveSrvName = srvData.SrvName;
     ActiveEditSrvCode = srvData.SrvCode;
 
+    let _Activetype = ActivePrescTypeID;
+    let _ActivePrescImg = ActivePrescImg;
+    let _ActivePrescTypeID = ActivePrescTypeID;
+    let _ActivePrescName = ActivePrescName;
+
     ActivePrescTypeID = srvData.prescId;
     ActivePrescImg = srvData.Img;
+    ActivePrescName = srvData.PrescType;
 
-    if (favItemMode) {
+    if (srvData.favItemMode) {
       switch (srvData.prescId) {
         case 1:
           ActiveSrvTypePrsc = "01";
@@ -633,8 +634,20 @@ const TaminPrescription = ({
       }
 
       setTimeout(() => {
-        setEditSrvData([]);
-        $("#btnAddSrvItem").click();
+        if (
+          prescriptionItemsData.length > 0 &&
+          prescriptionItemsData.find((a) => a.SrvCode === ActiveSrvCode)
+        ) {
+          ErrorAlert("", "انتخاب سرویس تکراری امکان پذیر نمی باشد.");
+          return false;
+        } else {
+          setEditSrvData([]);
+          $("#btnAddSrvItem").click();
+          ActivePrescTypeID = _Activetype;
+          ActivePrescImg = _ActivePrescImg;
+          ActivePrescTypeID = _ActivePrescTypeID;
+          ActivePrescName = _ActivePrescName;
+        }
       }, 200);
     }
   };
@@ -644,14 +657,11 @@ const TaminPrescription = ({
     addPrescriptionitems = addPrescriptionitems.filter(
       (a) => a.srvId.srvCode !== id
     );
-
     visitPrescriptionData = visitPrescriptionData.filter((x) => x.Code !== id);
-
     setPrescriptionItemsData(
       prescriptionItemsData.filter((a) => a.SrvCode !== id)
     );
 
-    let findFavItem = favPrescItemsData.some((x) => x.SrvCode === id);
     if (!favItemMode && prescItems !== 1) updateItem(id, prescItems);
   };
 
@@ -745,12 +755,13 @@ const TaminPrescription = ({
       ActivePrescName,
       ActiveSrvTypePrsc,
       ActiveParaCode,
-      $("#eprscItemDescription").val()
+      $("#eprscItemDescription").val(),
+      favItemMode
     );
 
     const combinedObject = { ...prescData, ...prescItems };
 
-    if (!editSrvMode || favItemMode) {
+    if (!editSrvMode) {
       if (
         (addPrescriptionitems.length > 0 &&
           addPrescriptionitems.find(
@@ -759,11 +770,12 @@ const TaminPrescription = ({
         (prescriptionItemsData.length > 0 &&
           prescriptionItemsData.find((a) => a.SrvCode === ActiveSrvCode))
       ) {
-        ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+        ErrorAlert("", "انتخاب سرویس تکراری امکان پذیر نمی باشد.");
         return false;
       }
     } else {
-      DeleteService(ActiveEditSrvCode, prescItems, combinedObject);
+      if (!prescItems.favItemMode)
+        DeleteService(ActiveEditSrvCode, prescItems, combinedObject);
       setEditSrvMode(false);
       // ActiveSrvCode = null;
     }
@@ -787,10 +799,11 @@ const TaminPrescription = ({
     }
 
     setSearchFromInput(true);
+    setFavItemMode(false);
   };
 
   useEffect(
-    () => console.log({ prescriptionItemsData, favPrescItemsData }),
+    () => console.log({ prescriptionItemsData }),
     [prescriptionItemsData]
   );
 
@@ -1039,10 +1052,10 @@ const TaminPrescription = ({
                   setPrescriptionItemsData={setPrescriptionItemsData}
                   setFavPrescItemsData={setFavPrescItemsData}
                   favPrescItemsData={favPrescItemsData}
-                  favItemMode={favItemMode}
                   prescDataIsLoading={prescDataIsLoading}
                   selectFavTaminItem={selectFavTaminItem}
                   removeFavItem={removeFavItem}
+                  ActivePrescImg={ActivePrescImg}
                 />
               </div>
             </div>

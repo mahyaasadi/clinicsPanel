@@ -4722,3 +4722,41 @@
   left: 20px;
   top: 20px;
 }
+
+.PhoneCallBox {
+  width: 250px;
+  position: absolute;
+  bottom: 10px;
+  right: 25px;
+  z-index: 99999999;
+  /* border: 1px solid #edeef2; */
+  /* background-color:white; */
+}
+
+.btn-PhoneCallBox {
+  animation: ripple 2s infinite;
+  font-size: 20px;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes ripple {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  }
+
+  100% {
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  }
+
+  100% {
+    -moz-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 30px rgba(0, 0, 0, 0);
+  }
+}

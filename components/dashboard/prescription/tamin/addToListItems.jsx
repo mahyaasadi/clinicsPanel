@@ -11,10 +11,10 @@ const AddToListItems = ({
   setPrescriptionItemsData,
   setFavPrescItemsData,
   favPrescItemsData,
-  favItemMode,
   prescDataIsLoading,
   selectFavTaminItem,
   removeFavItem,
+  ActivePrescImg,
 }) => {
   const _DeleteService = async (id, prescId) => {
     let result = await QuestionAlert("", "آیا از حذف اطمینان دارید؟");
@@ -23,13 +23,7 @@ const AddToListItems = ({
       setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
       setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
-      // if (!favItemMode) {
-      //   console.log("111");
-      //   return;
-      // } else {
-      //   console.log("2222");
       DeleteService(id, prescId);
-      // }
     }
   };
 
@@ -42,9 +36,9 @@ const AddToListItems = ({
               <div className="card-body receptionInfoText d-flex justify-between">
                 <div className="align-items-center justify-between">
                   <div className="d-flex gap-3 font-13 fw-bold">
-                    {srv?.Img ? (
+                    {srv?.Img || ActivePrescImg ? (
                       <Image
-                        src={srv.Img}
+                        src={srv.Img ? srv.Img : ActivePrescImg}
                         alt="serviceIcon"
                         width="30"
                         height="30"
@@ -109,7 +103,7 @@ const AddToListItems = ({
                       <FeatherIcon icon="edit-2" className="prescItembtns" />
                     </button>
 
-                    {!favItemMode ? (
+                    {!srv.favItemMode && (
                       <button
                         type="button"
                         className="btn btn-sm btn-outline-primary favItem height-27"
@@ -119,14 +113,18 @@ const AddToListItems = ({
                         <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
                         <FeatherIcon icon="star" className="prescItembtns" />
                       </button>
-                    ) : (
+                    )}
+
+                    {srv.favItemMode && (
                       <button
                         type="button"
-                        className="btn btn-sm btn-primary favItem height-27"
-                        data-pr-position="top"
+                        className="btn btn-sm btn-primary removefavItem height-27"
+                        data-pr-position="bottom"
                         onClick={() => removeFavItem(srv.SrvCode)}
                       >
-                        <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
+                        <Tooltip target=".removefavItem">
+                          حذف از خدمات پرمصرف
+                        </Tooltip>
                         <FeatherIcon icon="star" className="prescItembtns" />
                       </button>
                     )}

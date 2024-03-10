@@ -12,6 +12,7 @@ const SalamatAddToListItems = ({
   deleteService,
   prescDataIsLoading,
   selectFavSalamatItem,
+  removeFavItem,
 }) => {
   let consumptionLbl = "";
   let SrvPrescImage = "";
@@ -52,15 +53,31 @@ const SalamatAddToListItems = ({
                     <FeatherIcon icon="edit-2" className="prescItembtns" />
                   </button>
 
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-primary favItem height-27"
-                    data-pr-position="top"
-                    onClick={() => selectFavSalamatItem(srv)}
-                  >
-                    <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
-                    <FeatherIcon icon="star" className="prescItembtns" />
-                  </button>
+                  {!srv.favItemMode && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-outline-primary favItem height-27"
+                      data-pr-position="top"
+                      onClick={() => selectFavSalamatItem(srv)}
+                    >
+                      <Tooltip target=".favItem">خدمت پرمصرف</Tooltip>
+                      <FeatherIcon icon="star" className="prescItembtns" />
+                    </button>
+                  )}
+
+                  {srv.favItemMode && (
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-primary removefavItem height-27"
+                      data-pr-position="bottom"
+                      onClick={() => removeFavItem(srv.serviceNationalNumber)}
+                    >
+                      <Tooltip target=".removefavItem">
+                        حذف از خدمات پرمصرف
+                      </Tooltip>
+                      <FeatherIcon icon="star" className="prescItembtns" />
+                    </button>
+                  )}
 
                   <button
                     type="button"

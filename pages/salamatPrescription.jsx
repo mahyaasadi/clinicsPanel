@@ -98,7 +98,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
   // fav items
   const [favSalamatItems, setFavSalamatItems] = useState([]);
-  const [favMode, setFavMode] = useState(false);
+  const [favItemMode, setFavItemMode] = useState(false);
   const [showFavItemsModal, setShowFavItemsModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState("");
 
@@ -345,6 +345,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       CenterID: ClinicID,
       prescItem: selectedSrv,
     };
+    selectedSrv.favItemMode = true;
 
     if (
       favSalamatItems.length > 0 &&
@@ -352,7 +353,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         (x) => x.serviceNationalNumber === selectedSrv.serviceNationalNumber
       )
     ) {
-      ErrorAlert("خطا", "سرویس انتخابی تکراری می باشد");
+      ErrorAlert("", "انتخاب سرویس تکراری امکان پذیر نمی باشد.");
       return false;
     } else {
       axiosClient
@@ -371,11 +372,22 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .delete(url)
       .then((response) => {
-        setFavSalamatItems(
-          favSalamatItems.filter(
-            (x) => x.serviceNationalNumber !== srvNationalNumber
-          )
-        );
+        if (response.data.Status === "ok") {
+          const removedFav = prescriptionItemsData.map((presc) => {
+            if (presc.serviceNationalNumber === srvNationalNumber) {
+              return { ...presc, favItemMode: false };
+            }
+            return presc;
+          });
+
+          setPrescriptionItemsData(removedFav);
+
+          setFavSalamatItems(
+            favSalamatItems.filter(
+              (x) => x.serviceNationalNumber !== srvNationalNumber
+            )
+          );
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -443,7 +455,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
           element.numberOfPeriod ? element.numberOfPeriod : null,
           existingCheckCodes.length !== 0 ? existingCheckCodes : [],
           element.typeId,
-          setIsLoading
+          setIsLoading,
+          favItemMode
         );
 
         addedPrescItemData = await FUAddToListItem(
@@ -540,7 +553,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
         selectedNOPeriod ? selectedNOPeriod.toString() : null,
         existingCheckCodes.length !== 0 ? existingCheckCodes : [],
         ActivePrescTypeID,
-        setIsLoading
+        setIsLoading,
+        favItemMode
       );
     }
 
@@ -607,13 +621,14 @@ const SalamatPrescription = ({ ClinicUser }) => {
           serviceNationalNumber: ActiveSrvNationalNumber
             ? ActiveSrvNationalNumber
             : prescData.nationalNumber,
+          favItemMode: favItemMode,
         };
 
         existingCheckCodes.push({
           checkCode: response.data.res.info?.checkCode,
         });
 
-        if (editPrescSrvMode && favMode === false) {
+        if (editPrescSrvMode && !favItemMode) {
           updatePrescItem(
             addedPrescItemData.serviceInterfaceName,
             addedPrescItemData
@@ -629,6 +644,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
         activeSearch();
         setIsLoading(false);
         setSearchFromInput(true);
+        setFavItemMode(false);
         return addedPrescItemData;
       } else if (response.data.res.status === 409) {
         setIsLoading(false);
@@ -677,6 +693,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //         shape: ActiveSrvShape,
     //         bulkId: ActivePrescTypeID === 10 ? 1 : 0,
     //         serviceNationalNumber: ActiveSrvNationalNumber,
+    //         favItemMode: favItemMode,
     //       };
 
     //       existingCheckCodes.push({
@@ -709,7 +726,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     //     }
     //     setIsLoading(false);
     //     setSearchFromInput(true);
-
+    //     setFavItemMode(false);
     //     return true;
     //   })
     //   .catch((err) => {
@@ -766,8 +783,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
-
           response.data.info.subscriptionInfos.map((x, index) => {
             response.data.info.subscriptionInfos[index].salamatPresc = 1;
           });
@@ -785,7 +800,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   };
 
   const handleEditService = (srvData, favItemMode) => {
-    setFavMode(favItemMode);
+    setFavItemMode(favItemMode);
     setEditSrvData(srvData);
     setEditPrescSrvMode(true);
     setSearchFromInput(true);
@@ -832,11 +847,21 @@ const SalamatPrescription = ({ ClinicUser }) => {
       (a) => a.checkCode !== srvData.checkCode
     );
 
-    if (favItemMode) {
-      setTimeout(() => {
-        $("#btnAddSalamatSrvItem").click();
-        setEditPrescSrvMode(false);
-      }, 200);
+    if (srvData.favItemMode) {
+      if (
+        prescriptionItemsData.length > 0 &&
+        prescriptionItemsData.find(
+          (a) => a.serviceNationalNumber === ActiveSrvNationalNumber
+        )
+      ) {
+        ErrorAlert("", "انتخاب سرویس تکراری امکان پذیر نمی باشد.");
+        return false;
+      } else {
+        setTimeout(() => {
+          $("#btnAddSalamatSrvItem").click();
+          setEditPrescSrvMode(false);
+        }, 200);
+      }
     }
   };
 
@@ -1057,8 +1082,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 handleReset={handleResetFavPresc}
                 removeFavPresc={removeFavSalamatPresc}
                 editFavPresc={editFavPresc}
-                // setFavPrescItemsData={setFavPrescItemsData}
-                // removeFavItem={removeFavItem}
               />
             </div>
 
@@ -1068,6 +1091,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 registerIsLoading={registerIsLoading}
                 searchIsLoading={searchIsLoading}
                 salamatDataIsLoading={salamatDataIsLoading}
+                setSearchIsLoading={setSearchIsLoading}
                 CancelEdit={CancelEdit}
                 salamatHeaderList={salamatHeaderList}
                 changePrescTypeTab={changePrescTypeTab}
@@ -1108,6 +1132,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                   handleEditService={handleEditService}
                   deleteService={deleteService}
                   selectFavSalamatItem={selectFavSalamatItem}
+                  removeFavItem={removeFavItem}
                 />
               </div>
             </div>

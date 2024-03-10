@@ -13,7 +13,8 @@ const taminPrescItemCreator = async (
   PrscName,
   SrvTypePrsc,
   ParaCode,
-  description
+  description,
+  favItemMode = null
 ) => {
   let prescData = {};
   let prescItems = {};
@@ -39,6 +40,7 @@ const taminPrescItemCreator = async (
         PrescType: PrscName,
         prescId,
         description,
+        favItemMode: favItemMode,
       };
 
       prescData = null;

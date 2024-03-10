@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { Skeleton } from "primereact/skeleton";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
@@ -34,7 +35,7 @@ const PrescriptionCard = ({
   setEditSrvData,
   prescriptionItemsData,
   ActiveSamadCode,
-  // openFavModal,
+  setSearchIsLoading,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -49,7 +50,6 @@ const PrescriptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  // Search Recommendation
   const handleSearchKeyUp = (e) => {
     let inputCount = $("#srvSearchInput").val().length;
 
@@ -63,6 +63,38 @@ const PrescriptionCard = ({
       $(".unsuccessfullSearch").hide();
     }
   };
+
+  // Search Recommendation
+  // function delay(callback, ms) {
+  //   var timer = 0;
+  //   return function () {
+  //     var context = this,
+  //       args = arguments;
+  //     clearTimeout(timer);
+  //     timer = setTimeout(function () {
+  //       callback.apply(context, args);
+  //     }, ms || 0);
+  //   };
+  // }
+
+  // useEffect(() => {
+  //   $("#srvSearchInput").on(
+  //     "keyup input",
+  //     delay(function () {
+  //       // setSearchIsLoading(true);
+  //       let inputCount = $("#srvSearchInput").val().length;
+
+  //       if (inputCount > 2) {
+  //         $("#BtnServiceSearch").click();
+  //         // setSearchIsLoading(false);
+  //       } else {
+  //         $(".SearchDiv").hide();
+  //         $(".unsuccessfullSearch").hide();
+  //         // setSearchIsLoading(false);
+  //       }
+  //     }, 200)
+  //   );
+  // }, []);
 
   let defaultConsumptionOptions = [];
   for (let i = 1; i <= 14; i++) {
@@ -127,7 +159,6 @@ const PrescriptionCard = ({
             </div>
 
             <div className="card-body">
-              {/* <> */}
               <ul className="nav nav-tabs nav-tabs-bottom nav-tabs-scroll">
                 {salamatHeaderList?.map((item, index) => (
                   <PrescriptionTypeHeader
@@ -138,12 +169,8 @@ const PrescriptionCard = ({
                   />
                 ))}
               </ul>
+
               <hr className="mt-1" />
-              {/* </> */}
-              {/* ) : ( */}
-
-              {/* )} */}
-
               <form className="w-100 pt-2" onSubmit={onSubmit}>
                 {ActivePrescTypeID === 1 && (
                   <div className="">
@@ -182,7 +209,6 @@ const PrescriptionCard = ({
                   </label>
                   <input
                     type="text"
-                    // autoComplete="off"
                     id="srvSearchInput"
                     name="srvSearchInput"
                     className="form-control rounded-right w-50 padding-right-2"

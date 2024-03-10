@@ -107,7 +107,7 @@ const PrescQuickAccessCard = ({
     <>
       <div>
         <div>
-          <ul className="nav nav-tabs nav-tabs-bottom navTabBorder-b fw-bold d-flex justify-center">
+          <ul className="nav nav-tabs nav-tabs-bottom navTabBorder-b fw-bold d-flex justify-center align-items-center">
             <li className="nav-item">
               <a
                 className="nav-link active text-center"
@@ -204,7 +204,10 @@ const PrescQuickAccessCard = ({
                               </div>
                             ) : (
                               <div
-                                className="d-flex justify-between text-secondary border-gray rounded my-1 p-1 quickAccessPrscBox"
+                                className="btn d-flex justify-between text-secondary border-gray rounded my-1 p-1 quickAccessPrscBox"
+                                onClick={(e) => {
+                                  handleEditService(srv, true);
+                                }}
                                 key={index}
                               >
                                 <div className="col d-flex flex-col font-12 fw-bold align-items-center gap-1">
@@ -212,27 +215,10 @@ const PrescQuickAccessCard = ({
                                     {srv.SrvCode}
                                   </p>
                                   <p className="mb-0 text-center">
-                                    {srv.SrvName.substr(0, 27) + " ..."}
+                                    {srv.SrvName.length > 27
+                                      ? srv.SrvName.substr(0, 27) + " ..."
+                                      : srv.SrvName}
                                   </p>
-                                </div>
-
-                                <div className="d-flex justify-end align-items-center">
-                                  <button
-                                    type="button"
-                                    className="btn p-2 addBtn formBtns"
-                                    data-pr-position="left"
-                                    onClick={(e) => {
-                                      handleEditService(srv, true);
-                                    }}
-                                  >
-                                    <Tooltip target=".addBtn">
-                                      اضافه به لیست
-                                    </Tooltip>
-                                    <FeatherIcon
-                                      icon="plus"
-                                      className="prescItembtns"
-                                    />
-                                  </button>
                                 </div>
                               </div>
                             )
@@ -290,33 +276,19 @@ const PrescQuickAccessCard = ({
                               </div>
                             ) : (
                               <div
-                                className="d-flex justify-between text-secondary border-gray rounded align-items-center my-1 p-1 quickAccessPrscBox font-12 fw-bold"
                                 key={index}
+                                className="btn d-flex justify-between text-secondary border-gray rounded align-items-center my-1 p-2 quickAccessPrscBox font-12 fw-bold"
+                                onClick={(e) => {
+                                  handleEditService(srv, true);
+                                }}
                               >
                                 <div className="col d-flex flex-col align-items-center text-center">
                                   <p>
-                                    {srv.serviceInterfaceName.substr(0, 27) +
-                                      " ..."}
+                                    {srv.serviceInterfaceName.length > 27
+                                      ? srv.serviceInterfaceName.substr(0, 27) +
+                                        " ..."
+                                      : srv.serviceInterfaceName}
                                   </p>
-                                </div>
-
-                                <div className="d-flex justify-end align-items-center">
-                                  <button
-                                    type="button"
-                                    className="btn p-2 addBtn formBtns"
-                                    data-pr-position="left"
-                                    onClick={(e) => {
-                                      handleEditService(srv, true);
-                                    }}
-                                  >
-                                    <Tooltip target=".addBtn">
-                                      اضافه به لیست
-                                    </Tooltip>
-                                    <FeatherIcon
-                                      icon="plus"
-                                      className="prescItembtns"
-                                    />
-                                  </button>
                                 </div>
                               </div>
                             )

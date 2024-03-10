@@ -59,23 +59,6 @@ const PrescriptionCard = ({
     FUSelectInstruction(e.value);
   };
 
-  // Search Recommendation
-  // const handleSearchKeyUp = () => {
-  //   delay(function () {
-  //     setSearchIsLoading(true);
-  //     let inputCount = $("#srvSearchInput").val().length;
-
-  //     if (inputCount > 2) {
-  //       $("#BtnServiceSearch").click();
-  //       setSearchIsLoading(false);
-  //     } else {
-  //       $(".SearchDiv").hide();
-  //       $(".unsuccessfullSearch").hide();
-  //       setSearchIsLoading(false);
-  //     }
-  //   }, 500);
-  // };
-
   const editDrugInstructionData = drugInstructionList.find(
     (x) => x.label == editSrvData.DrugInstruction
   );
@@ -96,6 +79,7 @@ const PrescriptionCard = ({
     };
   }
 
+  // Search Recommendation
   useEffect(() => {
     $("#srvSearchInput").on(
       "keyup input",
