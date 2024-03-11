@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
+import { Toast } from "primereact/toast";
+import { displayToastMessages } from "utils/toastMessageGenerator";
 import { axiosClient } from "class/axiosConfig";
 import { taminPrescItemCreator } from "utils/taminPrescItemCreator";
 import GetPinInput from "components/commonComponents/pinInput";
@@ -91,6 +93,7 @@ const TaminPrescription = ({
 }) => {
   ClinicID = ClinicUser.ClinicID;
   const router = useRouter();
+  const toast = useRef(null);
 
   // Loaders
   const [searchIsLoading, setSearchIsLoading] = useState(false);
@@ -473,6 +476,8 @@ const TaminPrescription = ({
     for (let i = 0; i < favPresc.Items[0].length; i++) {
       const item = favPresc.Items[0][i];
 
+      console.log({ item });
+
       ActivePrescImg = item.Img;
 
       let { prescData, prescItems } = await taminPrescItemCreator(
@@ -484,12 +489,13 @@ const TaminPrescription = ({
         item.SrvCode,
         item.SrvName,
         item.Qty,
-        "",
+        item.Img,
         item.DrugInstruction,
         item.TimesADay,
         item.PrescType,
         item.srvId?.srvType.srvType,
-        item.srvId.parTarefGrp?.parGrpCode
+        item.srvId.parTarefGrp?.parGrpCode,
+        item.description
       );
 
       const visitData = {
@@ -618,7 +624,7 @@ const TaminPrescription = ({
     ActivePrescImg = srvData.Img;
     ActivePrescName = srvData.PrescType;
 
-    if (srvData.favItemMode) {
+    if (favItemMode) {
       switch (srvData.prescId) {
         case 1:
           ActiveSrvTypePrsc = "01";
@@ -635,6 +641,7 @@ const TaminPrescription = ({
 
       setTimeout(() => {
         if (
+          !editSrvMode &&
           prescriptionItemsData.length > 0 &&
           prescriptionItemsData.find((a) => a.SrvCode === ActiveSrvCode)
         ) {
@@ -657,12 +664,15 @@ const TaminPrescription = ({
     addPrescriptionitems = addPrescriptionitems.filter(
       (a) => a.srvId.srvCode !== id
     );
+
     visitPrescriptionData = visitPrescriptionData.filter((x) => x.Code !== id);
     setPrescriptionItemsData(
       prescriptionItemsData.filter((a) => a.SrvCode !== id)
     );
 
-    if (!favItemMode && prescItems !== 1) updateItem(id, prescItems);
+    if (!favItemMode && prescItems !== 1 && combinedObject) {
+      updateItem(id, prescItems);
+    }
   };
 
   // pinInput modal
@@ -802,11 +812,6 @@ const TaminPrescription = ({
     setFavItemMode(false);
   };
 
-  useEffect(
-    () => console.log({ prescriptionItemsData }),
-    [prescriptionItemsData]
-  );
-
   // Registeration
   const registerEpresc = async (visit, otpCode) => {
     let url = "TaminEprsc/PrescriptionAdd";
@@ -876,33 +881,31 @@ const TaminPrescription = ({
           prescTypeName: ActivePrescName,
         };
 
-        console.log({ data });
-
         // EditMode
-        // if (ActivePrescHeadID) {
-        // Wait for the pin input
-        //   await new Promise((resolve) => {
-        //     const checkPinInterval = setInterval(() => {
-        //       if (otpCode) {
-        //         clearInterval(checkPinInterval);
-        //         resolve();
-        //       }
-        //     }, 500);
-        //   });
+        if (ActivePrescHeadID) {
+          // Wait for the pin input
+          await new Promise((resolve) => {
+            const checkPinInterval = setInterval(() => {
+              if (otpCode) {
+                clearInterval(checkPinInterval);
+                resolve();
+              }
+            }, 500);
+          });
 
-        //   if (otpCode) {
-        //     url = "TaminEprsc/PrescriptionEdit";
-        //     let dataToSend = {
-        //       ...data,
-        //       PrID: ActivePrescID,
-        //       headerID: ActivePrescHeadID,
-        //       otpCode: otpCode,
-        //     };
+          if (otpCode) {
+            url = "TaminEprsc/PrescriptionEdit";
+            data = {
+              ...data,
+              PrID: ActivePrescID,
+              headerID: ActivePrescHeadID,
+              otpCode: otpCode,
+            };
 
-        //     console.log({ dataToSend });
-        //     setShowPinModal(false);
-        //   }
-        // }
+            setShowPinModal(false);
+          }
+        }
+        console.log({ data });
 
         axiosClient
           .post(url, data)
@@ -917,6 +920,12 @@ const TaminPrescription = ({
                 trackingCodes.push(element.data.data.result.trackingCode);
               }
               trackingCodes = [...new Set(trackingCodes)];
+
+              displayToastMessages(
+                [],
+                toast,
+                `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`
+              );
 
               const seconds = 5;
               const timerInMillis = seconds * 1000;
@@ -970,14 +979,21 @@ const TaminPrescription = ({
     $("#patientNID").val("");
   }, []);
 
+  useEffect(() => {
+    console.log({ prescriptionItemsData });
+  }, [prescriptionItemsData]);
+
   return (
     <>
       <Head>
         <title>نسخه نویسی تامین اجتماعی</title>
       </Head>
-
       <div className="page-wrapper">
         <div className="content container-fluid">
+          <div className="dir-rtl">
+            <Toast ref={toast} position="top-left" />
+          </div>
+
           <div className="row dir-rtl">
             <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-12">
               <PatientInfoCard

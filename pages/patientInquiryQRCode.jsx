@@ -6,6 +6,7 @@ import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 import { Skeleton } from "primereact/skeleton";
 import FeatherIcon from "feather-icons-react";
+import { qrcodeBanner } from "components/commonComponents/imagepath";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -26,6 +27,8 @@ export const getServerSideProps = async ({ req, res }) => {
 let ClinicID = null;
 const PatientInquiryQRCode = ({ ClinicUser }) => {
   ClinicID = setPatientAvatarUrl(ClinicUser.ClinicID);
+
+  console.log({ qrcodeBanner });
 
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -60,31 +63,30 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
       </Head>
       <div className="page-wrapper-qr">
         <div className="content container-fluid">
-          {/* <div className="card dir-rtl"> */}
-          <div className="card-header d-flex gap-1">
-            <div className="printBtn">
-              <button
-                onClick={() => handlePrint()}
-                className="btn btn-outline-primary "
-              >
-                <FeatherIcon icon="printer" />
-              </button>
+          <div className="card">
+            <div className="card-header d-flex gap-1">
+              <div className="printBtn">
+                <button
+                  onClick={() => handlePrint()}
+                  className="btn btn-outline-primary "
+                >
+                  <FeatherIcon icon="printer" />
+                </button>
+              </div>
+
+              <div className="downloadBtn">
+                <button
+                  onClick={handleDownload}
+                  className="btn btn-outline-primary "
+                >
+                  <FeatherIcon icon="download" />
+                </button>
+              </div>
             </div>
 
-            <div className="downloadBtn">
-              <button
-                onClick={handleDownload}
-                className="btn btn-outline-primary "
-              >
-                <FeatherIcon icon="download" />
-              </button>
-            </div>
-          </div>
-
-          <div className="card-body">
-            <div className="showPrint d-flex justify-center align-items-center">
+            <div className="card-body">
+              {/* <div className="showPrint d-flex justify-center align-items-center">
               <div className="text-center my-5 fw-bold font-17">
-                {/* <p className="">TEXT</p> */}
               </div>
               {isLoading ? (
                 <div className="qrcodeSkeleton d-flex justify-center">
@@ -105,9 +107,32 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                   />
                 </div>
               )}
+            </div> */}
+
+              <div className="p-relative">
+                <div className="">
+                  <QRCode
+                    size={70}
+                    style={{
+                      height: "300px",
+                      maxWidth: "400px",
+                      width: "300px",
+                    }}
+                    value={qrCodeUrl}
+                    viewBox={`0 0 100 100`}
+                    fgColor={"#633512"}
+                  />
+                </div>
+
+                <img
+                  src="/assets/img/clinicQrBanner.jpg"
+                  alt="clinicQrBanner"
+                  width="100%"
+                  height="100%"
+                />
+              </div>
             </div>
           </div>
-          {/* </div> */}
         </div>
       </div>
     </>

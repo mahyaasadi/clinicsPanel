@@ -16,7 +16,7 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
         summary:
           element.type === "E" ? "خطا!" : element.type === "W" ? "هشدار!" : "",
         detail: element.text,
-        life: 5000,
+        life: 6000,
       };
       toastMessages.push(obj);
     }
@@ -27,7 +27,7 @@ const displayToastMessages = (messages, toastRef, successMessage) => {
     let msObj = {
       severity: "Success",
       detail: successMessage,
-      life: 8000,
+      life: 9000,
     };
     toastRef.current.show([msObj]);
   }

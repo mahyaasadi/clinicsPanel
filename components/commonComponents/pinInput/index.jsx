@@ -1,7 +1,17 @@
+import { useEffect, useState, useRef } from "react";
 import { Modal } from "react-bootstrap";
 import PinInput from "react-pin-input";
 
 const GetPinInput = ({ show, onHide, getPinInputValue }) => {
+  const [pinInputRef, setPinInputRef] = useState(null);
+
+  const handlePinInputRef = (ref) => {
+    if (ref) {
+      setPinInputRef(ref);
+      ref.focus();
+    }
+  };
+
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -21,13 +31,11 @@ const GetPinInput = ({ show, onHide, getPinInputValue }) => {
               type="numeric"
               inputMode="numeric"
               focus="true"
-              // secret
-              // secretDelay={800}
-              // onChange={(value, index) => {}}
+              ref={handlePinInputRef}
               onComplete={(value, index) => getPinInputValue(value)}
               autoSelect={true}
               regexCriteria={/^[ A-Za-z0-9_@./#&+-]*$/}
-              inputFocusStyle={{ borderColor: "blue" }}
+              inputFocusStyle={{ borderColor: "#b45309" }}
               style={{
                 padding: "10px",
                 display: "flex",

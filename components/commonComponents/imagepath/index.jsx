@@ -36,3 +36,5 @@ export { default as imgNotFound } from "public/assets/img/NotFoundAvatar.jpeg";
 export { default as salamatLogo } from "public/assets/img/salamatLogo.png";
 export { default as headerLogo } from "public/assets/img/icon/logo-orange-545.png";
 export { default as whitePlainBg } from "public/assets/img/whitePlainBg.jpg";
+export { default as qrcodeBanner } from "public/assets/img/clinicQrBanner.jpg";
+

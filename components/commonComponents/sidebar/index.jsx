@@ -286,9 +286,21 @@ const Sidebar = () => {
                 <Link href="/callLogsHistory">
                   <FeatherIcon
                     icon="phone-call"
-                    style={{ width: "15px", height: "15px" }}
+                    style={{ width: "16px", height: "16px" }}
                   />
                   <span>سوابق تماس ها</span>
+                </Link>
+              </li>
+
+              <li className="menu-title font-12"></li>
+
+              <li className={router.pathname == "/storage" ? "active" : ""}>
+                <Link href="/storage" onClick={handlesidebarmobilemenu}>
+                  <FeatherIcon
+                    icon="archive"
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                  <span>انبار</span>
                 </Link>
               </li>
 

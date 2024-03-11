@@ -9,6 +9,7 @@ import { convertToFixedNumber } from "utils/convertToFixedNumber";
 import { displayToastMessages } from "utils/toastMessageGenerator";
 import { salamatPrescItemCreator } from "utils/salamatPrescItemCreator";
 import { generateSalamatPrescType } from "class/salamatPrescriptionData";
+import GetPinInput from "components/commonComponents/pinInput";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PrescriptionCard from "components/dashboard/prescription/salamat/prescriptionCard";
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
@@ -102,6 +103,14 @@ const SalamatPrescription = ({ ClinicUser }) => {
   const [showFavItemsModal, setShowFavItemsModal] = useState(false);
   const [selectedTab, setSelectedTab] = useState("");
 
+  // PinInput Modal
+  const [showPinInputModal, setShowPinInputModal] = useState(false);
+  const closePinInputModal = () => setShowPinInputModal(false);
+
+  const getPinInputValue = (code) => {
+    checkCPartyOtp(code);
+  };
+
   //------ Patient Info ------//
   const getPatientInfo = (e) => {
     e && e.preventDefault();
@@ -122,6 +131,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
+        console.log(response.data);
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
         setPatientInfo(response.data.res.info);
 
@@ -136,9 +146,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
               null
             );
           }, 1000);
-        } else {
-          ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
+        } else if ((response.data.res.status = 400)) {
+          setShowPinInputModal(true);
         }
+        // else {
+        //   ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
+        // }
 
         setTimeout(() => {
           setPatientStatIsLoading(false);
@@ -155,6 +168,35 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setPatientStatIsLoading(false);
         $("#patientNID").prop("readonly", false);
       });
+  };
+
+  // check CParty otp
+  const checkCPartyOtp = async (otpCode) => {
+    let url = "BimehSalamat/CpartyOtpCheck";
+
+    if (otpCode) {
+      setShowPinInputModal(false);
+
+      let data = {
+        CenterID: ClinicID,
+        otp: otpCode,
+        PatientID:
+          $("#patientNID").length !== 0
+            ? convertToFixedNumber($("#patientNID").val())
+            : ActivePatientNID,
+      };
+
+      console.log({ data });
+
+      // axiosClient
+      //   .post(url, data)
+      //   .then((response) => {
+      //     console.log(response.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    }
   };
 
   const getPatientActiveSearch = () => {
@@ -670,74 +712,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       }
       return false;
     }
-
-    // axiosClient
-    //   .post(url, prescData)
-    //   .then((response) => {
-    //     if (response.data.res.info?.checkCode) {
-    //       let addedPrescItemData = {
-    //         serviceInterfaceName: _name ? _name : $("#srvSearchInput").val(),
-    //         numberOfRequest: $("#QtyInput").val(),
-    //         description: $("#eprscItemDescription").val(),
-    //         consumption: findConsumptionLbl?.label,
-    //         consumptionVal: findConsumptionLbl?.value,
-    //         consumptionInstruction: findInstructionLbl?.label,
-    //         consumptionInstructionVal: findInstructionLbl?.value,
-    //         numberOfPeriod: selectedNOPeriod,
-    //         snackMessages: response.data.res.info?.message?.snackMessage,
-    //         infoMessages: response.data.res.info?.message?.infoMessage,
-    //         checkCode: response.data.res.info?.checkCode,
-    //         prescTypeImg: ActivePrescImg,
-    //         typeId: ActivePrescTypeID,
-    //         prescTypeEngTitle: ActivePrescEngTitle,
-    //         shape: ActiveSrvShape,
-    //         bulkId: ActivePrescTypeID === 10 ? 1 : 0,
-    //         serviceNationalNumber: ActiveSrvNationalNumber,
-    //         favItemMode: favItemMode,
-    //       };
-
-    //       existingCheckCodes.push({
-    //         checkCode: response.data.res.info?.checkCode,
-    //       });
-
-    //       if (editPrescSrvMode && favMode === false) {
-    //         updatePrescItem(
-    //           addedPrescItemData.serviceInterfaceName,
-    //           addedPrescItemData
-    //         );
-    //       } else {
-    //         setPrescriptionItemsData([
-    //           ...prescriptionItemsData,
-    //           addedPrescItemData,
-    //         ]);
-    //       }
-
-    //       // reset
-    //       activeSearch();
-    //     } else if (response.data.res.status === 409) {
-    //       WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
-    //     } else {
-    //       ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-    //       displayToastMessages(
-    //         response.data.res.info.message.snackMessage,
-    //         toast,
-    //         null
-    //       );
-    //     }
-    //     setIsLoading(false);
-    //     setSearchFromInput(true);
-    //     setFavItemMode(false);
-    //     return true;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setIsLoading(false);
-    //     if (err.response) {
-    //       ErrorAlert("خطا", err.response.data.resMessage);
-    //     } else {
-    //       ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
-    //     }
-    //   });
   };
 
   useEffect(
@@ -847,7 +821,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       (a) => a.checkCode !== srvData.checkCode
     );
 
-    if (srvData.favItemMode) {
+    if (favItemMode) {
       if (
         prescriptionItemsData.length > 0 &&
         prescriptionItemsData.find(
@@ -916,6 +890,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           ErrorAlert("خطا", response.data.res.resMessage);
           setRegisterIsLoading(false);
         }
+
         if (response.data.res.status === 400) {
           ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
           setRegisterIsLoading(false);
@@ -1146,6 +1121,12 @@ const SalamatPrescription = ({ ClinicUser }) => {
           prescMode="Salamat"
           prescriptionItemsData={prescriptionItemsData}
           applyFavPresc={applyFavPresc}
+        />
+
+        <GetPinInput
+          show={showPinInputModal}
+          onHide={closePinInputModal}
+          getPinInputValue={getPinInputValue}
         />
       </div>
     </>

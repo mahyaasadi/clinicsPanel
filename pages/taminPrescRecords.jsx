@@ -79,11 +79,13 @@ const TaminPrescRecords = ({ ClinicUser }) => {
     let url = "TaminEprsc/PrescriptionDelete";
     let data = { headerID, prID, CenterID: ClinicID, otpCode };
 
+    console.log({ data });
+
     axiosClient
-      .delete(url, { data })
+      .post(url, data)
       .then((response) => {
         console.log(response.data);
-        // setTaminPrescList(taminPrescList.filter((a) => a._id !== prID));
+        setTaminPrescList(taminPrescList.filter((a) => a._id !== prID));
       })
       .catch((error) => {
         console.error(error);
@@ -94,6 +96,7 @@ const TaminPrescRecords = ({ ClinicUser }) => {
     if (prescData) {
       deletePresc(prescData.headerID, prescData.prID, ClinicID, code);
     }
+
     setShowPinModal(false); // Close the modal after sending request
   };
 

@@ -78,15 +78,6 @@ const TaminPrescRecordsList = ({ data, prepareDelete }) => {
             data-bs-placement="top"
             title="حذف"
             onClick={() => prepareDelete(row.head_EPRSC_ID, row._id)}
-            // href={{
-            //   pathname: "/taminPrescription",
-            //   query: {
-            //     headID: row.head_EPRSC_ID,
-            //     pid: row.NID,
-            //     prId: row._id,
-            //     // centerID: row.CenterID,
-            //   },
-            // }}
           >
             <FeatherIcon
               icon="trash-2"
@@ -143,4 +134,3 @@ const TaminPrescRecordsList = ({ data, prepareDelete }) => {
 };
 
 export default TaminPrescRecordsList;
-

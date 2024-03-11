@@ -20,7 +20,7 @@ const AddToListItems = ({
     let result = await QuestionAlert("", "آیا از حذف اطمینان دارید؟");
 
     if (result) {
-      setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
+      // setPrescriptionItemsData(data.filter((a) => a.SrvCode !== id));
       setFavPrescItemsData(favPrescItemsData.filter((x) => x.SrvCode !== id));
 
       DeleteService(id, prescId);
@@ -50,7 +50,7 @@ const AddToListItems = ({
                     <div className="d-flex gap-2 font-13 align-items-center">
                       <p className="mb-0">{srv?.SrvCode}</p>
                       <p className="mb-0">|</p>
-                      <p>{srv?.SrvName.substr(0, 180)}</p>
+                      <p>{srv?.SrvName?.substr(0, 180)}</p>
                     </div>
                   </div>
 

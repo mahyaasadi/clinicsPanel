@@ -34,7 +34,6 @@ const PrescriptionCard = ({
   ActivePrescHeadID,
   setShowPinModal,
   setSearchFromInput,
-  // openFavModal,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();

@@ -84,6 +84,8 @@ const PrescriptionCard = ({
   //       // setSearchIsLoading(true);
   //       let inputCount = $("#srvSearchInput").val().length;
 
+  //       console.log({ inputCount });
+
   //       if (inputCount > 2) {
   //         $("#BtnServiceSearch").click();
   //         // setSearchIsLoading(false);
