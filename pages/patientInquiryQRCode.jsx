@@ -28,8 +28,6 @@ let ClinicID = null;
 const PatientInquiryQRCode = ({ ClinicUser }) => {
   ClinicID = setPatientAvatarUrl(ClinicUser.ClinicID);
 
-  console.log({ qrcodeBanner });
-
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -77,7 +75,7 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
               <div className="downloadBtn">
                 <button
                   onClick={handleDownload}
-                  className="btn btn-outline-primary "
+                  className="btn btn-outline-primary"
                 >
                   <FeatherIcon icon="download" />
                 </button>
@@ -85,51 +83,27 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
             </div>
 
             <div className="card-body">
-              {/* <div className="showPrint d-flex justify-center align-items-center">
-              <div className="text-center my-5 fw-bold font-17">
-              </div>
-              {isLoading ? (
-                <div className="qrcodeSkeleton d-flex justify-center">
-                  <Skeleton></Skeleton>
-                </div>
-              ) : (
-                <div className="d-flex justify-center p-0" id="qr-code">
-                  <QRCode
-                    size={70}
-                    style={{
-                      height: "300px",
-                      maxWidth: "400px",
-                      width: "300px",
-                    }}
-                    value={qrCodeUrl}
-                    viewBox={`0 0 100 100`}
-                    fgColor={"#633512"}
-                  />
-                </div>
-              )}
-            </div> */}
-
-              <div className="p-relative">
-                <div className="">
-                  <QRCode
-                    size={70}
-                    style={{
-                      height: "300px",
-                      maxWidth: "400px",
-                      width: "300px",
-                    }}
-                    value={qrCodeUrl}
-                    viewBox={`0 0 100 100`}
-                    fgColor={"#633512"}
-                  />
-                </div>
-
-                <img
-                  src="/assets/img/clinicQrBanner.jpg"
-                  alt="clinicQrBanner"
-                  width="100%"
-                  height="100%"
-                />
+              <div className="showPrint d-flex justify-center align-items-center">
+                <div className="text-center my-5 fw-bold font-17"></div>
+                {isLoading ? (
+                  <div className="qrcodeSkeleton d-flex justify-center">
+                    <Skeleton></Skeleton>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-center p-0" id="qr-code">
+                    <QRCode
+                      size={70}
+                      style={{
+                        height: "300px",
+                        maxWidth: "400px",
+                        width: "300px",
+                      }}
+                      value={qrCodeUrl}
+                      viewBox={`0 0 100 100`}
+                      fgColor={"#633512"}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -140,3 +114,26 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
 };
 
 export default PatientInquiryQRCode;
+
+// <div className="p-relative">
+//   <div className="">
+//     <QRCode
+//       size={70}
+//       style={{
+//         height: "300px",
+//         maxWidth: "400px",
+//         width: "300px",
+//       }}
+//       value={qrCodeUrl}
+//       viewBox={`0 0 100 100`}
+//       fgColor={"#633512"}
+//     />
+//   </div>
+
+//   <img
+//   src="/assets/img/clinicQrBanner.jpg"
+//   alt="clinicQrBanner"
+//   width="100%"
+//   height="100%"
+// />
+// </div>;

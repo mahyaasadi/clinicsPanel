@@ -3,10 +3,10 @@ import Head from "next/head";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig";
 import { ErrorAlert, QuestionAlert } from "class/AlertManage";
-import Loading from "components/commonComponents/loading/loading";
-import TaminPrescRecordsList from "components/dashboard/prescription/tamin/taminPrescRecords/taminPrescRecordsList";
-import FilterTaminPrescs from "components/dashboard/prescription/tamin/taminPrescRecords/filterTaminPrescs";
 import GetPinInput from "components/commonComponents/pinInput";
+import Loading from "components/commonComponents/loading/loading";
+import FilterTaminPrescs from "components/dashboard/prescription/tamin/taminPrescRecords/filterTaminPrescs";
+import TaminPrescRecordsList from "components/dashboard/prescription/tamin/taminPrescRecords/taminPrescRecordsList";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -25,7 +25,6 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let ClinicID = null;
-// ActivePrescHeadID
 const TaminPrescRecords = ({ ClinicUser }) => {
   ClinicID = ClinicUser.ClinicID;
 
@@ -69,27 +68,23 @@ const TaminPrescRecords = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log(response.data);
+          console.log("getOneEprsc", response.data);
         })
         .catch((error) => console.log(error));
     }
   };
 
-  const deletePresc = (headerID, prID, centerID, otpCode) => {
-    let url = "TaminEprsc/PrescriptionDelete";
-    let data = { headerID, prID, CenterID: ClinicID, otpCode };
+  const prepareDelete = async (headerID, prID) => {
+    let result = await QuestionAlert("", "آیا از حذف نسخه اطمینان دارید؟");
 
-    console.log({ data });
+    if (result) {
+      setPrescData({ headerID, prID });
+      getOneEprscData(headerID, prID);
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
-        setTaminPrescList(taminPrescList.filter((a) => a._id !== prID));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      setTimeout(() => {
+        setShowPinModal(true);
+      }, 1000);
+    }
   };
 
   const getPinInputValue = (code) => {
@@ -97,16 +92,21 @@ const TaminPrescRecords = ({ ClinicUser }) => {
       deletePresc(prescData.headerID, prescData.prID, ClinicID, code);
     }
 
-    setShowPinModal(false); // Close the modal after sending request
+    setShowPinModal(false);
   };
 
-  const prepareDelete = (headerID, prID) => {
-    setPrescData({ headerID, prID });
-    getOneEprscData(headerID, prID);
+  const deletePresc = (headerID, prID, centerID, otpCode) => {
+    let url = "TaminEprsc/PrescriptionDelete";
+    let data = { headerID, PrID: prID, CenterID: ClinicID, otpCode };
 
-    setTimeout(() => {
-      setShowPinModal(true);
-    }, 1000);
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        setTaminPrescList(taminPrescList.filter((a) => a._id !== prID));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => getAllTaminPrescRecords(), []);

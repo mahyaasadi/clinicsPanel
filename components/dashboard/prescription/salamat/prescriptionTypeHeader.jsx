@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import Image from "next/image";
 
-const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
+const PrescriptionTypeHeader = ({
+  item,
+  index,
+  changePrescTypeTab,
+  ActivePrescTypeID,
+}) => {
   const handleSearchDivs = () => {
     $("#unsuccessfullSearch").hide();
     $("#searchDiv").hide();
@@ -101,7 +106,7 @@ const PrescriptionTypeHeader = ({ item, index, changePrescTypeTab }) => {
       <li className="nav-item">
         <a
           className={`nav-link media-nav-link ${
-            index === 0 ? "active" : item.Active
+            item.id === ActivePrescTypeID ? "active" : item.Active
           } ${
             index === 1 || index === 3 || index === 6 || index === 7
               ? "w-190"

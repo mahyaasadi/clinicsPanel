@@ -32,7 +32,7 @@ const NoteCreator = ({ show, onHide, ClinicID, addNote }) => {
 
     document
       .getElementById("saveToImage")
-      .addEventListener("click", function () { });
+      .addEventListener("click", function () {});
 
     document.getElementById("eraser").addEventListener("click", eraser);
     document.getElementById("clear").addEventListener("click", createCanvas);

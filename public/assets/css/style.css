@@ -12100,6 +12100,11 @@ canvas {
   transition: ease-in 0.3s all;
 }
 
+.quickAccessPrscBox:hover .border-bottom-1 {
+  border-color: #b45309;
+  transition: ease-in 0.4s all;
+}
+
 .quickAccessPrscBox:hover .formBtns {
   color: #b45309 !important;
 }

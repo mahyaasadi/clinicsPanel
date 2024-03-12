@@ -214,6 +214,7 @@ const PrescQuickAccessCard = ({
                                   <p className="mb-1 w-75 text-center border-bottom-1">
                                     {srv.SrvCode}
                                   </p>
+
                                   <p className="mb-0 text-center">
                                     {srv.SrvName.length > 27
                                       ? srv.SrvName.substr(0, 27) + " ..."

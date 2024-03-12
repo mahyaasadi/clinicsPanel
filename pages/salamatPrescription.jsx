@@ -131,7 +131,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setCitizenSessionId(response.data.res.info?.citizenSessionId);
         setPatientInfo(response.data.res.info);
 
@@ -146,12 +145,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
               null
             );
           }, 1000);
-        } else if ((response.data.res.status = 400)) {
-          setShowPinInputModal(true);
         }
-        // else {
-        //   ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
+        // else if ((response.data.res.status = 400)) {
+        //   setShowPinInputModal(true);
         // }
+        else {
+          ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
+        }
 
         setTimeout(() => {
           setPatientStatIsLoading(false);
@@ -498,7 +498,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
           existingCheckCodes.length !== 0 ? existingCheckCodes : [],
           element.typeId,
           setIsLoading,
-          favItemMode
+          favItemMode,
+          true
         );
 
         addedPrescItemData = await FUAddToListItem(
@@ -650,7 +651,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           infoMessages: response.data.res.info?.message?.infoMessage,
           checkCode: response.data.res.info?.checkCode,
           prescTypeImg: ActivePrescImg,
-          typeId: ActivePrescTypeID,
+          typeId: prescData.typeId ? prescData.typeId : ActivePrescTypeID,
           prescTypeEngTitle: ActivePrescEngTitle
             ? ActivePrescEngTitle
             : prescData.PrescType,
@@ -714,10 +715,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
   };
 
-  useEffect(
-    () => console.log({ prescriptionItemsData }),
-    [prescriptionItemsData]
-  );
+  useEffect(() => {
+    console.log({ prescriptionItemsData });
+  }, [prescriptionItemsData]);
 
   // Delete Service
   const deleteService = async (id, flag) => {
@@ -863,7 +863,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
   // Final Register Or Visit
   const registerSalamatEprsc = () => {
-    setRegisterIsLoading(true);
+    // setRegisterIsLoading(true);
 
     let url = "BimehSalamat";
     let data = {
@@ -881,90 +881,90 @@ const SalamatPrescription = ({ ClinicUser }) => {
       url += "/PrescriptionSave";
     }
 
-    console.log({ data });
+    console.log({ data, existingCheckCodes });
 
-    axiosClient
-      .post(url, data)
-      .then((response) => {
-        if (response.data.res.resCode === -8402) {
-          ErrorAlert("خطا", response.data.res.resMessage);
-          setRegisterIsLoading(false);
-        }
+    // axiosClient
+    //   .post(url, data)
+    //   .then((response) => {
+    //     if (response.data.res.resCode === -8402) {
+    //       ErrorAlert("خطا", response.data.res.resMessage);
+    //       setRegisterIsLoading(false);
+    //     }
 
-        if (response.data.res.status === 400) {
-          ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-          setRegisterIsLoading(false);
-        }
+    //     if (response.data.res.status === 400) {
+    //       ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+    //       setRegisterIsLoading(false);
+    //     }
 
-        if (response.data.res.info) {
-          setRegisterIsLoading(false);
+    //     if (response.data.res.info) {
+    //       setRegisterIsLoading(false);
 
-          // toast messages
-          let registerMessages = [];
-          const infoMessageArray =
-            response.data.res.info.message.infoMessage || [];
-          const snackMessageArray =
-            response.data.res.info.message.snackMessage || [];
+    //       // toast messages
+    //       let registerMessages = [];
+    //       const infoMessageArray =
+    //         response.data.res.info.message.infoMessage || [];
+    //       const snackMessageArray =
+    //         response.data.res.info.message.snackMessage || [];
 
-          let sequenceNumberArray = [];
-          let seqObj = {
-            type: "S",
-            text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
-          };
-          sequenceNumberArray.push(seqObj);
+    //       let sequenceNumberArray = [];
+    //       let seqObj = {
+    //         type: "S",
+    //         text: "کد توالی نسخه : " + response.data.res.info.sequenceNumber,
+    //       };
+    //       sequenceNumberArray.push(seqObj);
 
-          let trackNumberArray = [];
-          let trackObj = {
-            type: "S",
-            text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
-          };
-          trackNumberArray.push(trackObj);
+    //       let trackNumberArray = [];
+    //       let trackObj = {
+    //         type: "S",
+    //         text: "کد رهگیری نسخه : " + response.data.res.info.trackingCode,
+    //       };
+    //       trackNumberArray.push(trackObj);
 
-          registerMessages.push(
-            ...infoMessageArray,
-            ...snackMessageArray,
-            ...sequenceNumberArray,
-            ...trackNumberArray
-          );
+    //       registerMessages.push(
+    //         ...infoMessageArray,
+    //         ...snackMessageArray,
+    //         ...sequenceNumberArray,
+    //         ...trackNumberArray
+    //       );
 
-          displayToastMessages(registerMessages, toast, null);
+    //       displayToastMessages(registerMessages, toast, null);
 
-          const sequenceNumber = response.data.res.info.sequenceNumber || "";
-          const trackingCode = response.data.res.info.trackingCode || "";
+    //       const sequenceNumber = response.data.res.info.sequenceNumber || "";
+    //       const trackingCode = response.data.res.info.trackingCode || "";
 
-          if (trackingCode || sequenceNumber) {
-            const seconds = 5;
-            const timerInMillis = seconds * 1000;
+    //       if (trackingCode || sequenceNumber) {
+    //         const seconds = 5;
+    //         const timerInMillis = seconds * 1000;
 
-            TimerAlert({
-              title: `<div class="custom-title"> نسخه ${
-                trackingCode ? "با کد رهگیری : " + trackingCode : ""
-              }
-              ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
-              با موفقیت ثبت گردید!
-              </div>`,
-              html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
-              timer: timerInMillis,
-              timerProgressBar: true,
-              cancelButton: {
-                text: "انصراف",
-              },
-              onConfirm: () => {
-                router.push("/salamatPrescRecords");
-              },
-            });
+    //         TimerAlert({
+    //           title: `<div class="custom-title"> نسخه ${
+    //             trackingCode ? "با کد رهگیری : " + trackingCode : ""
+    //           }
+    //           ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
+    //           با موفقیت ثبت گردید!
+    //           </div>`,
+    //           html: `<div class="custom-content">در حال انتقال به صفحه نسخ خدمات در<b>${seconds}</b> ثانیه</div>`,
+    //           timer: timerInMillis,
+    //           timerProgressBar: true,
+    //           cancelButton: {
+    //             text: "انصراف",
+    //           },
+    //           onConfirm: () => {
+    //             router.push("/salamatPrescRecords");
+    //           },
+    //         });
 
-            ActiveSamadCode = null;
-            existingCheckCodes = [];
-            deletedCheckCodes = [];
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
-        setRegisterIsLoading(false);
-      });
+    //         ActiveSamadCode = null;
+    //         existingCheckCodes = [];
+    //         deletedCheckCodes = [];
+    //       }
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
+    //     setRegisterIsLoading(false);
+    //   });
   };
 
   const CancelEdit = (srvData) => {
@@ -1099,8 +1099,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
               <div className="prescList">
                 <SalamatAddToListItems
-                  prescDataIsLoading={prescDataIsLoading}
                   data={prescriptionItemsData}
+                  prescDataIsLoading={prescDataIsLoading}
                   salamatHeaderList={salamatHeaderList}
                   editPrescMode={editPrescMode}
                   consumptionOptions={consumptionOptions}

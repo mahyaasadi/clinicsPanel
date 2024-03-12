@@ -17,8 +17,11 @@ const salamatPrescItemCreator = async (
   otherServices,
   ActivePrescTypeID,
   setIsLoading,
-  favItemMode = null
+  favItemMode = null,
+  favPrescMode
 ) => {
+  console.log({ favPrescMode, ActivePrescTypeID });
+
   let prescData = {
     SavePresc,
     CenterID,
@@ -36,6 +39,8 @@ const salamatPrescItemCreator = async (
     otherServices,
     favItemMode: favItemMode,
   };
+
+  if (favPrescMode) prescData.typeId = ActivePrescTypeID;
 
   if (
     (ActivePrescTypeID === 1 || ActivePrescTypeID === 10) &&

@@ -84,8 +84,6 @@ const PrescriptionCard = ({
   //       // setSearchIsLoading(true);
   //       let inputCount = $("#srvSearchInput").val().length;
 
-  //       console.log({ inputCount });
-
   //       if (inputCount > 2) {
   //         $("#BtnServiceSearch").click();
   //         // setSearchIsLoading(false);
@@ -168,6 +166,7 @@ const PrescriptionCard = ({
                     index={index}
                     item={item}
                     changePrescTypeTab={changePrescTypeTab}
+                    ActivePrescTypeID={ActivePrescTypeID}
                   />
                 ))}
               </ul>

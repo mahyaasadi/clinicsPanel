@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getSession } from "lib/session";
+import { axiosClient } from "class/axiosConfig";
 import { Toast } from "primereact/toast";
 import { displayToastMessages } from "utils/toastMessageGenerator";
-import { axiosClient } from "class/axiosConfig";
 import { taminPrescItemCreator } from "utils/taminPrescItemCreator";
 import GetPinInput from "components/commonComponents/pinInput";
 import PatientInfoCard from "@/components/dashboard/patientInfo/patientInfoCard";
@@ -476,8 +476,6 @@ const TaminPrescription = ({
     for (let i = 0; i < favPresc.Items[0].length; i++) {
       const item = favPresc.Items[0][i];
 
-      console.log({ item });
-
       ActivePrescImg = item.Img;
 
       let { prescData, prescItems } = await taminPrescItemCreator(
@@ -881,7 +879,7 @@ const TaminPrescription = ({
           prescTypeName: ActivePrescName,
         };
 
-        // EditMode
+        // Edit Mode
         if (ActivePrescHeadID) {
           // Wait for the pin input
           await new Promise((resolve) => {
@@ -905,6 +903,7 @@ const TaminPrescription = ({
             setShowPinModal(false);
           }
         }
+
         console.log({ data });
 
         axiosClient
