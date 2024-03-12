@@ -6,7 +6,6 @@ import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 import { Skeleton } from "primereact/skeleton";
 import FeatherIcon from "feather-icons-react";
-import { qrcodeBanner } from "components/commonComponents/imagepath";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -66,7 +65,7 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
               <div className="printBtn">
                 <button
                   onClick={() => handlePrint()}
-                  className="btn btn-outline-primary "
+                  className="btn btn-outline-primary"
                 >
                   <FeatherIcon icon="printer" />
                 </button>
@@ -83,7 +82,7 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
             </div>
 
             <div className="card-body">
-              <div className="showPrint d-flex justify-center align-items-center">
+              {/* <div className="showPrint d-flex justify-center align-items-center">
                 <div className="text-center my-5 fw-bold font-17"></div>
                 {isLoading ? (
                   <div className="qrcodeSkeleton d-flex justify-center">
@@ -104,6 +103,35 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                     />
                   </div>
                 )}
+              </div> */}
+
+              <div className="p-relative" id="qr-code">
+                <img
+                  src="/assets/img/clinicQrBanner.jpg"
+                  alt="clinicQrBanner"
+                  style={{ width: '100%', height: 'auto' }}
+                />
+
+                {isLoading ? (
+                  <div className="qrcodeSkeleton d-flex justify-center">
+                    <Skeleton></Skeleton>
+                  </div>
+                ) : (
+
+                  <QRCode
+                    size={70}
+                    style={{
+                      height: 'auto',
+                      width: "230px",
+                      maxWidth: '20%',
+                      position: "absolute", bottom: "8%", right: "16%"
+                    }}
+                    value={qrCodeUrl}
+                    viewBox={`0 0 100 100`}
+                    fgColor={"#633512"}
+                  />
+
+                )}
               </div>
             </div>
           </div>
@@ -114,26 +142,3 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
 };
 
 export default PatientInquiryQRCode;
-
-// <div className="p-relative">
-//   <div className="">
-//     <QRCode
-//       size={70}
-//       style={{
-//         height: "300px",
-//         maxWidth: "400px",
-//         width: "300px",
-//       }}
-//       value={qrCodeUrl}
-//       viewBox={`0 0 100 100`}
-//       fgColor={"#633512"}
-//     />
-//   </div>
-
-//   <img
-//   src="/assets/img/clinicQrBanner.jpg"
-//   alt="clinicQrBanner"
-//   width="100%"
-//   height="100%"
-// />
-// </div>;
