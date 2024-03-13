@@ -5,7 +5,6 @@ import html2canvas from "html2canvas";
 import { axiosClient } from "class/axiosConfig";
 import { getSession } from "lib/session";
 import { setPatientAvatarUrl } from "lib/session";
-import { Skeleton } from "primereact/skeleton";
 import FeatherIcon from "feather-icons-react";
 import Loading from "components/commonComponents/loading/loading";
 
@@ -52,63 +51,32 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
 
   const handlePrint = () => window.print();
 
-  // const handleDownload = () => {
-  //   const qrCodeElement = document.getElementById("qr-code");
-
-  //   console.log({ qrCodeElement });
-  //   html2canvas(qrCodeElement).then((canvas) => {
-  //     const link = document.createElement("a");
-  //     link.download = "qr-code.png";
-  //     link.href = canvas.toDataURL();
-  //     link.click();
-  //   });
-  // };
-
-  // const handleDownload = () => {
-  //   const qrCodeElement = document.getElementById("qr-code");
-
-  //   if (!qrCodeElement) {
-  //     console.error("QR Code element not found!");
-  //     return;
-  //   }
-
-  //   // Adding a delay to ensure everything is rendered
-  //   setTimeout(() => {
-  //     html2canvas(qrCodeElement, {
-  //       scale: 2, // Increases the output resolution
-  //       logging: true, // Enables detailed logging for debugging
-  //       useCORS: true, // Tries to load images using CORS (important for external images)
-  //       allowTaint: true, // Allows tainting (careful with cross-origin images)
-  //       scrollX: -window.scrollX, // Adjusts for any current page scrolling
-  //       scrollY: -window.scrollY,
-  //       windowWidth: document.documentElement.offsetWidth, // Captures the full element width
-  //       windowHeight: document.documentElement.offsetHeight,
-  //     }).then((canvas) => {
-  //       const link = document.createElement("a");
-  //       link.download = "qr-code.png";
-  //       link.href = canvas.toDataURL("image/png");
-  //       document.body.appendChild(link); // This line can help in certain browsers
-  //       link.click();
-  //       document.body.removeChild(link); // Clean up
-  //     });
-  //   }, 3000); // Adjust delay as needed
-  // };
-
   const handleDownload = () => {
-    if (qrCodeRef.current) {
-      html2canvas(qrCodeRef.current, {
-        useCORS: true, // loaded from another domain
-        logging: true,
-      })
-        .then((canvas) => {
-          const link = document.createElement("a");
-          link.download = "qr-code.png";
-          link.href = canvas.toDataURL("image/png");
-          link.click();
-        })
-        .catch((err) => console.error("html2canvas error:", err));
-    }
+    const qrCodeElement = document.getElementById("qr-code");
+
+    html2canvas(qrCodeElement).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "qr-code.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
   };
+
+  // const handleDownload = () => {
+  //   if (qrCodeRef.current) {
+  //     html2canvas(qrCodeRef.current, {
+  //       useCORS: true, // loaded from another domain
+  //       logging: true,
+  //     })
+  //       .then((canvas) => {
+  //         const link = document.createElement("a");
+  //         link.download = "qr-code.png";
+  //         link.href = canvas.toDataURL("image/png");
+  //         link.click();
+  //       })
+  //       .catch((err) => console.error("html2canvas error:", err));
+  //   }
+  // };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -175,7 +143,8 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                 )}
               </div> */}
 
-                <div className="p-relative">
+                <div className="p-relative"
+                >
                   <img
                     src="/assets/img/clinicQrBanner.jpg"
                     alt="clinicQrBanner"
@@ -187,9 +156,9 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                     alt="clinicQrBanner"
                     className="BannerLogoContainer"
                   />
-                  <div id="qr-code" ref={qrCodeRef}>
+
+                  <div id="qr-code">
                     <QRCode
-                      ref={qrCodeRef}
                       size={70}
                       className="qrCodeContainer"
                       value={qrCodeUrl}
@@ -197,6 +166,7 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                       fgColor={"#AC3C24"}
                     />
                   </div>
+
                 </div>
               </div>
             </div>
