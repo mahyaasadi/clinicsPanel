@@ -292,9 +292,9 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className="menu-title font-12"></li>
+              {/* <li className="menu-title font-12"></li> */}
 
-              <li className={router.pathname == "/storage" ? "active" : ""}>
+              {/* <li className={router.pathname == "/storage" ? "active" : ""}>
                 <Link href="/storage" onClick={handlesidebarmobilemenu}>
                   <FeatherIcon
                     icon="archive"
@@ -302,7 +302,7 @@ const Sidebar = () => {
                   />
                   <span>انبار</span>
                 </Link>
-              </li>
+              </li> */}
 
               <li className="menu-title font-12">
                 <span>تنظیمات پایه</span>

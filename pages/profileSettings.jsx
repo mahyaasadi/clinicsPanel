@@ -146,8 +146,6 @@ const ProfileSettings = ({ ClinicUser }) => {
 
           userInfo.Avatar = "https://irannobat.ir" + response.data.Avatar;
 
-          console.log({ userInfo });
-
           // reset cookies
           let clinicSession = await setSession(userInfo);
           Cookies.set("clinicSession", clinicSession, { expires: 1 });
@@ -162,7 +160,6 @@ const ProfileSettings = ({ ClinicUser }) => {
         .catch((err) => {
           console.log(err);
           setAvatarIsLoading(false);
-
           ErrorAlert("خطا", "تغییر آواتار با خطا مواجه گردید!");
         });
     }

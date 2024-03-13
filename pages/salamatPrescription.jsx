@@ -128,16 +128,19 @@ const SalamatPrescription = ({ ClinicUser }) => {
       SavePresc: 1,
     };
 
+    console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
-        setCitizenSessionId(response.data.res.info?.citizenSessionId);
-        setPatientInfo(response.data.res.info);
+        console.log(response.data);
+        if (response.data.isTwoStep) setShowPinInputModal(true);
+        else {
+          setCitizenSessionId(response.data.res.info?.citizenSessionId);
+          setPatientInfo(response.data.res.info);
 
-        $("#patientNID").prop("readonly", true);
-        $("#patientInfoCard2").show();
-
-        if (response.data.res.info) {
+          $("#patientNID").prop("readonly", true);
+          $("#patientInfoCard2").show();
           setTimeout(() => {
             displayToastMessages(
               response.data.res.info.message.snackMessage,
@@ -145,12 +148,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
               null
             );
           }, 1000);
-        }
-        // else if ((response.data.res.status = 400)) {
-        //   setShowPinInputModal(true);
-        // }
-        else {
-          ErrorAlert("خطا", "اطلاعات وارد شده را دوباره بررسی نمایید!");
         }
 
         setTimeout(() => {
@@ -173,6 +170,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
   // check CParty otp
   const checkCPartyOtp = async (otpCode) => {
     let url = "BimehSalamat/CpartyOtpCheck";
+    setPatientStatIsLoading(true);
 
     if (otpCode) {
       setShowPinInputModal(false);
@@ -180,6 +178,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       let data = {
         CenterID: ClinicID,
         otp: otpCode,
+        SavePresc: 1,
         PatientID:
           $("#patientNID").length !== 0
             ? convertToFixedNumber($("#patientNID").val())
@@ -188,14 +187,21 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
       console.log({ data });
 
-      // axiosClient
-      //   .post(url, data)
-      //   .then((response) => {
-      //     console.log(response.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      axiosClient
+        .post(url, data)
+        .then((response) => {
+          console.log(response.data);
+          setActivePatientNID($("#patientNID").val());
+
+          setTimeout(() => {
+            getPatientInfo();
+          }, 1000);
+          setPatientStatIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPatientStatIsLoading(false);
+        });
     }
   };
 
@@ -672,11 +678,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
         });
 
         if (editPrescSrvMode && !favItemMode) {
+          console.log("111");
           updatePrescItem(
             addedPrescItemData.serviceInterfaceName,
             addedPrescItemData
           );
         } else if (!_prescData) {
+          console.log("222");
           setPrescriptionItemsData([
             ...prescriptionItemsData,
             addedPrescItemData,
@@ -714,6 +722,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
       return false;
     }
   };
+
+  console.log({ existingCheckCodes, deletedCheckCodes });
 
   useEffect(() => {
     console.log({ prescriptionItemsData });
@@ -881,7 +891,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
       url += "/PrescriptionSave";
     }
 
-    console.log({ data, existingCheckCodes });
+    console.log({ data });
 
     // axiosClient
     //   .post(url, data)

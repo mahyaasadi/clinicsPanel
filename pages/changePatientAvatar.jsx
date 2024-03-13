@@ -22,7 +22,6 @@ const ChangePatientAvatar = () => {
   const [userInfo, setUserInfo] = useState([]);
 
   let IDs = getPatientAvatarUrl(router.query.token);
-  console.log(IDs);
   if (IDs) {
     IDs = IDs.split(";");
     ActivePatientID = IDs[0];
@@ -41,12 +40,9 @@ const ChangePatientAvatar = () => {
       UserID: getPatientAvatarUrl(router.query.token),
     };
 
-    console.log({ data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
-        console.log(response.data);
         setUserInfo(response.data);
         // setIsLoading(false);
       })
@@ -75,12 +71,9 @@ const ChangePatientAvatar = () => {
         editData.PatientID = ActivePatientID;
       }
 
-      console.log({ url, editData });
-
       axiosClient
         .put(url, editData)
         .then(async (response) => {
-          console.log(response.data);
           setUserInfo({ ...userInfo, Avatar: response.data.Avatar });
 
           SuccessAlert("موفق", "آپلود تصویر با موفقیت انجام گردید!");

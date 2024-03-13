@@ -12149,3 +12149,37 @@ canvas {
 .form-check-label {
   margin-bottom: 7px !important;
 }
+
+.qrCodeContainer {
+  position: absolute;
+  width: 230px;
+  height: auto;
+  max-width: 20%;
+  right: 16%;
+  bottom: 8%;
+}
+
+@media (min-width: 1400px) {
+  .qrCodeContainer {
+    right: 19% !important;
+    bottom: 12% !important;
+  }
+}
+
+.BannerLogoContainer {
+  position: absolute;
+  top: 8%;
+  right: 16%;
+  width: 230px;
+  height: auto;
+  max-width: 20%;
+}
+
+@media (min-width: 1400px) {
+  .BannerLogoContainer {
+    top: 11% !important;
+    right: 16% !important;
+    width: 280px;
+    max-width: 70%;
+  }
+}

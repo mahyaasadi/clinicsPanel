@@ -20,8 +20,6 @@ const salamatPrescItemCreator = async (
   favItemMode = null,
   favPrescMode
 ) => {
-  console.log({ favPrescMode, ActivePrescTypeID });
-
   let prescData = {
     SavePresc,
     CenterID,

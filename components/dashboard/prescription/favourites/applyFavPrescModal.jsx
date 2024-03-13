@@ -36,8 +36,6 @@ const ApplyFavPrescModal = ({
           }),
     };
 
-    console.log({ data });
-
     if (prescriptionItemsData.length == 0) {
       WarningAlert("", "خدمتی در نسخه ثبت نشده است!");
       setIsLoading(false);

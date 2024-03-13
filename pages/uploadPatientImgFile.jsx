@@ -109,7 +109,6 @@ const UploadPatientImgFile = () => {
                 </div>
                 <input
                   type="file"
-                  // accept=".jpg,.jpeg,.png,.gif,.webp"
                   accept="image/*"
                   capture="environment"
                   className="upload"
