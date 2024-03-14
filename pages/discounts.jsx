@@ -260,7 +260,6 @@ const Discounts = ({ ClinicUser }) => {
                 </div>
               </div>
             </div>
-
           </div>
         )}
       </div>

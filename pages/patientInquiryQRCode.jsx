@@ -62,22 +62,6 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
     });
   };
 
-  // const handleDownload = () => {
-  //   if (qrCodeRef.current) {
-  //     html2canvas(qrCodeRef.current, {
-  //       useCORS: true, // loaded from another domain
-  //       logging: true,
-  //     })
-  //       .then((canvas) => {
-  //         const link = document.createElement("a");
-  //         link.download = "qr-code.png";
-  //         link.href = canvas.toDataURL("image/png");
-  //         link.click();
-  //       })
-  //       .catch((err) => console.error("html2canvas error:", err));
-  //   }
-  // };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setQrCodeUrl(
@@ -120,31 +104,8 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                 </div>
               </div>
 
-              <div className="card-body">
-                {/* <div className="showPrint d-flex justify-center align-items-center">
-                {isLoading ? (
-                  <div className="qrcodeSkeleton d-flex justify-center">
-                    <Skeleton></Skeleton>
-                  </div>
-                ) : (
-                  <div className="d-flex justify-center p-0" id="qr-code">
-                    <QRCode
-                      size={70}
-                      style={{
-                        height: "300px",
-                        maxWidth: "400px",
-                        width: "300px",
-                      }}
-                      value={qrCodeUrl}
-                      viewBox={`0 0 100 100`}
-                      fgColor={"#633512"}
-                    />
-                  </div>
-                )}
-              </div> */}
-
-                <div className="p-relative"
-                >
+              <div className="card-body" id="qr-code">
+                <div className="p-relative">
                   <img
                     src="/assets/img/clinicQrBanner.jpg"
                     alt="clinicQrBanner"
@@ -157,16 +118,14 @@ const PatientInquiryQRCode = ({ ClinicUser }) => {
                     className="BannerLogoContainer"
                   />
 
-                  <div id="qr-code">
+                  <div class="qrCodeContainer">
                     <QRCode
-                      size={70}
-                      className="qrCodeContainer"
+                      className="img-fluid"
                       value={qrCodeUrl}
                       viewBox={`0 0 100 100`}
                       fgColor={"#AC3C24"}
                     />
                   </div>
-
                 </div>
               </div>
             </div>
