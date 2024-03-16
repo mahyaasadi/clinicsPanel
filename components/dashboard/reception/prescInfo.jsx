@@ -1,4 +1,4 @@
-import AdditionalCostsModal from "components/dashboard/reception/additionalCostsModal";
+import FeatherIcon from "feather-icons-react";
 
 const calculateDiscount = (srvItem, totalPatientCost) => {
   if (srvItem.Discount?.Percent) {
@@ -11,17 +11,10 @@ const calculateDiscount = (srvItem, totalPatientCost) => {
 
 const PrescInfo = ({
   data,
-  submitReceptionPrescript,
   isLoading,
-  mode,
-  show,
-  onHide,
   openAdditionalCostsModal,
-  submitAdditionalCosts,
-  additionalCost,
-  setAdditionalCost,
-  editSrvData,
-  editAdditionalCost,
+  openWarehouseReceptionModal,
+  submitReceptionPrescript,
 }) => {
   let qty = 0;
   let price = 0;
@@ -53,17 +46,67 @@ const PrescInfo = ({
         <div className="card-body">
           <div className="d-flex gap-3 align-items-center justify-between prescDetails">
             <div>
-              <p className="text-secondary fw-bold">اطلاعات پذیرش</p>
+              <p className="text-secondary font-14 fw-bold">اطلاعات پذیرش</p>
             </div>
 
             {!isLoading ? (
               <div className="d-flex gap-2">
-                <div>
+                <div className="btn-group prescInfoBtnContainer " role="group">
                   <button
-                    className="btn btn-outline-primary border-radius px-4 font-13 w-100"
+                    type="button"
+                    className="btn prescInfoBtn font-13 text-secondary fw-bold border-left px-3 d-flex align-items-center gap-1"
                     onClick={() => openAdditionalCostsModal(true)}
                   >
+                    <FeatherIcon
+                      icon="plus-circle"
+                      style={{ width: "15px", height: "15px" }}
+                    />
                     افزودن هزینه
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn prescInfoBtn font-13 text-secondary fw-bold px-3 d-flex align-items-center gap-1"
+                    onClick={openWarehouseReceptionModal}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2px"
+                      style={{ width: "15px", height: "15px" }}
+                    >
+                      <defs></defs>
+                      <title />
+                      <path
+                        className="a"
+                        d="M.749,16.5H16.707a1.5,1.5,0,0,0,1.484-1.277L20.058,2.777A1.5,1.5,0,0,1,21.541,1.5h1.708"
+                      />
+                      <rect
+                        className="a"
+                        height="6"
+                        rx="0.75"
+                        ry="0.75"
+                        width="6"
+                        x="2.249"
+                        y="7.5"
+                      />
+                      <rect
+                        className="a"
+                        height="9"
+                        rx="0.75"
+                        ry="0.75"
+                        width="7.5"
+                        x="8.249"
+                        y="4.5"
+                      />
+                      <circle className="a" cx="4.124" cy="20.625" r="1.875" />
+                      <circle className="a" cx="14.624" cy="20.625" r="1.875" />
+                    </svg>
+                    دسترسی به انبار
                   </button>
                 </div>
                 <div>
@@ -116,16 +159,6 @@ const PrescInfo = ({
             </div>
           </div>
         </div>
-
-        <AdditionalCostsModal
-          show={show}
-          onHide={onHide}
-          onSubmit={!mode ? submitAdditionalCosts : editAdditionalCost}
-          mode={mode}
-          additionalCost={additionalCost}
-          setAdditionalCost={setAdditionalCost}
-          editSrvData={editSrvData}
-        />
       </div>
     </>
   );

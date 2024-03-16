@@ -7,6 +7,7 @@ import { QuestionAlert, ErrorAlert } from "class/AlertManage";
 import Loading from "components/commonComponents/loading/loading";
 import WarehouseItemsList from "components/dashboard/warehouse/warehouseItemsList";
 import WarehouseModal from "components/dashboard/warehouse/warehouseModal";
+import ChangeItemStockModal from "components/dashboard/warehouse/changeItemStockModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -165,7 +166,6 @@ const Warehouse = ({ ClinicUser }) => {
       await axiosClient
         .delete(url)
         .then((response) => {
-          console.log(response.data);
           setWarehouseItemsData(warehouseItemsData.filter((a) => a._id !== id));
           setActionIsLoading(false);
         })
@@ -175,6 +175,66 @@ const Warehouse = ({ ClinicUser }) => {
           setActionIsLoading(false);
         });
     }
+  };
+
+  // Change Stock Modal
+  const [stockModalMode, setStockModalMode] = useState("increase");
+  const [showStockModal, setShowStockModal] = useState(false);
+  const [ActiveItemID, setActiveItemID] = useState(null);
+  const [itemQty, setItemQty] = useState(0);
+  const closeStockModal = () => {
+    setShowStockModal(false);
+    setItemQty(0);
+  };
+
+  const openIncreaseStockModal = (data) => {
+    setEditWarehouseItemsData(data);
+    setActiveItemID(data._id);
+    setStockModalMode("increase");
+    setShowStockModal(true);
+  };
+
+  const openDecreaseStockModal = (data) => {
+    setEditWarehouseItemsData(data);
+    setActiveItemID(data._id);
+    setStockModalMode("decrease");
+    setShowStockModal(true);
+  };
+
+  const changeStockQuantity = (e) => {
+    e.preventDefault();
+    setActionIsLoading(true);
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let url =
+      stockModalMode == "increase"
+        ? `Warehouse/StockIncrease/${ActiveItemID}`
+        : `Warehouse/StockDecrease/${ActiveItemID}`;
+
+    let data = { Qty: itemQty };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        if (response.data.err) {
+          ErrorAlert("", response.data.msg);
+          setActionIsLoading(false);
+          setShowStockModal(false);
+          setItemQty(0);
+          return false;
+        } else {
+          updateItem(ActiveItemID, response.data);
+          setActionIsLoading(false);
+          setItemQty(0);
+          setShowStockModal(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setActionIsLoading(false);
+      });
   };
 
   useEffect(() => getAllWarehouseItems(), []);
@@ -222,6 +282,8 @@ const Warehouse = ({ ClinicUser }) => {
                     data={warehouseItemsData}
                     openEditModal={openEditModal}
                     removeWarehouseItem={removeWarehouseItem}
+                    openIncreaseStockModal={openIncreaseStockModal}
+                    openDecreaseStockModal={openDecreaseStockModal}
                   />
                 </div>
               </div>
@@ -237,6 +299,17 @@ const Warehouse = ({ ClinicUser }) => {
         actionIsLoading={actionIsLoading}
         data={editWarehouseItemsData}
         onSubmit={modalMode == "edit" ? editWarehouseItem : addItemToWarehouse}
+      />
+
+      <ChangeItemStockModal
+        mode={stockModalMode}
+        show={showStockModal}
+        onHide={closeStockModal}
+        actionIsLoading={actionIsLoading}
+        onSubmit={changeStockQuantity}
+        data={editWarehouseItemsData}
+        itemQty={itemQty}
+        setItemQty={setItemQty}
       />
     </>
   );

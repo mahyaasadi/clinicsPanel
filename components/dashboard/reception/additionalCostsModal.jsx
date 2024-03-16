@@ -61,7 +61,7 @@ const AdditionalCostsModal = ({
 
             <div className="marginb-md1">
               <label className="lblAbs margin-top-left font-12">تعداد</label>
-              <div className="row">
+              <div className="row d-flex align-items-center">
                 <div className="col-auto">
                   <button
                     type="button"

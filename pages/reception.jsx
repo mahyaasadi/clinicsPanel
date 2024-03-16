@@ -11,6 +11,8 @@ import AddToListItems from "components/dashboard/reception/addToListItems";
 import PrescInfo from "components/dashboard/reception/prescInfo";
 import NewPatient from "components/dashboard/patientInfo/addNewPatient";
 import CashDeskActions from "components/dashboard/cashDesk/actionsModal";
+import AdditionalCostsModal from "components/dashboard/reception/additionalCostsModal";
+import WarehouseReceptionModal from "components/dashboard/reception/warehouseReceptionModal";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);
@@ -29,7 +31,6 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let additionalCostCode = 100000;
-// let Services = [];
 let ClinicID,
   ClinicUserID,
   ActiveSrvID,
@@ -354,7 +355,6 @@ const Reception = ({ ClinicUser }) => {
       Name: formProps.additionalSrvName,
       Qty: formProps.additionalSrvQty,
       Price: additionalCost,
-
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -388,28 +388,10 @@ const Reception = ({ ClinicUser }) => {
       ModalityID: ActiveModalityID,
     };
 
-    updateAdditionalCostItem(formProps.additionalSrvID, data);
+    updateSrvItem(formProps.additionalSrvID, data);
     handleCloseAdditionalCostsModal();
     e.target.reset();
     setEditAdditionalCostMode(false);
-  };
-
-  const updateAdditionalCostItem = (id, newArr) => {
-    let index = addedSrvItems.findIndex((x) => x._id === id);
-    let g = addedSrvItems[index];
-    g = newArr;
-
-    if (index === -1) {
-      console.log("no match");
-    } else {
-      setTimeout(() => {
-        setAddedSrvItems([
-          ...addedSrvItems.slice(0, index),
-          g,
-          ...addedSrvItems.slice(index + 1),
-        ]);
-      }, 5);
-    }
   };
 
   //----- Edit Service -----//
@@ -435,9 +417,13 @@ const Reception = ({ ClinicUser }) => {
   };
 
   const handleEditService = (srvData) => {
+    console.log({ srvData });
     setEditSrvData(srvData);
 
-    if (parseInt(srvData.Code) >= 100000) {
+    if (parseInt(srvData.Code) >= 300000) {
+      setWarehouseModalMode("edit");
+      openWarehouseReceptionModal();
+    } else if (parseInt(srvData.Code) >= 100000) {
       openAdditionalCostsModal();
       setEditAdditionalCostMode(true);
     } else {
@@ -638,6 +624,8 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
+  console.log({ addedSrvItems });
+
   //-----  cashDesk  -----//
   const [showActionModal, setShowActionModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -677,6 +665,18 @@ const Reception = ({ ClinicUser }) => {
       setShowPaymentModal(false);
     }
   };
+
+  // access warehouse items
+  const [showWarehouseReceptionModal, setShowWarehouseReceptionModal] =
+    useState(false);
+  const [warehouseModalMode, setWarehouseModalMode] = useState("add");
+
+  const openWarehouseReceptionModal = () => {
+    setShowWarehouseReceptionModal(true);
+    setEditSrvData([]);
+  };
+
+  const closeWarehouseModal = () => setShowWarehouseReceptionModal(false);
 
   useEffect(() => {
     $("#BtnActiveSearch").hide();
@@ -774,17 +774,11 @@ const Reception = ({ ClinicUser }) => {
             <div className="col-md-12 prescInfoCard">
               <PrescInfo
                 data={addedSrvItems}
-                mode={editAdditionalCostMode}
-                submitReceptionPrescript={submitReceptionPrescript}
                 isLoading={isLoading}
-                show={showAdditionalCostsModal}
-                onHide={handleCloseAdditionalCostsModal}
-                openAdditionalCostsModal={openAdditionalCostsModal}
-                submitAdditionalCosts={submitAdditionalCosts}
-                editAdditionalCost={editAdditionalCost}
-                additionalCost={additionalCost}
-                setAdditionalCost={setAdditionalCost}
                 editSrvData={editSrvData}
+                openAdditionalCostsModal={openAdditionalCostsModal}
+                openWarehouseReceptionModal={openWarehouseReceptionModal}
+                submitReceptionPrescript={submitReceptionPrescript}
               />
             </div>
           </div>
@@ -812,6 +806,29 @@ const Reception = ({ ClinicUser }) => {
           showPaymentModal={showPaymentModal}
           setShowPaymentModal={setShowPaymentModal}
           ApplyCashDeskActions={ApplyCashDeskActions}
+        />
+
+        <AdditionalCostsModal
+          show={showAdditionalCostsModal}
+          onHide={handleCloseAdditionalCostsModal}
+          onSubmit={
+            !editAdditionalCostMode ? submitAdditionalCosts : editAdditionalCost
+          }
+          mode={editAdditionalCostMode}
+          additionalCost={additionalCost}
+          setAdditionalCost={setAdditionalCost}
+          editSrvData={editSrvData}
+        />
+
+        <WarehouseReceptionModal
+          show={showWarehouseReceptionModal}
+          onHide={closeWarehouseModal}
+          mode={warehouseModalMode}
+          ClinicID={ClinicID}
+          ActiveModalityID={ActiveModalityID}
+          addedSrvItems={addedSrvItems}
+          setAddedSrvItems={setAddedSrvItems}
+          editSrvData={editSrvData}
         />
       </div>
     </>

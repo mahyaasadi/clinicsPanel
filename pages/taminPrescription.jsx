@@ -812,147 +812,121 @@ const TaminPrescription = ({
 
   // Registeration
   const registerEpresc = async (visit, otpCode) => {
-    let url = "TaminEprsc/PrescriptionAdd";
+    let url =
+      otpCode && ActivePrescHeadID
+        ? "TaminEprsc/PrescriptionEdit"
+        : "TaminEprsc/PrescriptionAdd";
+
+    let isVisit = visit === 1;
+    let isLoadingFunction = isVisit
+      ? setVisitRegIsLoading
+      : setSaveRegIsLoading;
+
     let data = {
       CenterID: ClinicID,
       NID: ActiveNID,
       PMN: patientInfo.Tel,
       Comment: $("#eprscItemDescription").val(),
       PatientID: ActivePatientID,
+      PTI: isVisit ? 3 : ActivePrescTypeID,
+      note: isVisit ? [] : addPrescriptionitems,
+      SrvNames: isVisit ? [] : visitPrescriptionData,
+      prescTypeName: isVisit ? "ویزیت" : ActivePrescName,
     };
+
+    isLoadingFunction(true);
 
     if (!ActivePatientID) {
       WarningAlert("", "استعلام بیمار صورت نگرفته است!");
+      isLoadingFunction(false);
       return;
-    } else {
-      if (visit === 1) {
-        setVisitRegIsLoading(true);
-        data = {
-          ...data,
-          PTI: 3,
-          note: [],
-          SrvNames: [],
-          prescTypeName: "ویزیت",
-        };
+    }
 
-        axiosClient
-          .post(url, data)
-          .then((response) => {
-            setVisitRegIsLoading(false);
-
-            if (response.data[0].data.data.result.trackingCode !== null) {
-              const seconds = 5;
-              const timerInMillis = seconds * 1000;
-              TimerAlert({
-                title: `ویزیت با کد رهگیری ${response.data[0].data.data.result.trackingCode} با موفقیت ثبت گردید!`,
-                html: `<div class="custom-content">در حال انتقال به لیست نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-                timer: timerInMillis,
-                timerProgressBar: true,
-                cancelButton: {
-                  text: "انصراف",
-                },
-                onConfirm: () => {
-                  router.push("/taminPrescRecords");
-                },
-              });
-            } else if (
-              response.data[0].data.data.result.error_Msg == "نسخه تکراری است"
-            ) {
-              WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
-            } else if (ActiveNID === undefined) {
-              WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            ErrorAlert("خطا", "ثبت ویزیت با خطا مواجه گردید!");
-            setVisitRegIsLoading(false);
-          });
-      } else {
-        setSaveRegIsLoading(true);
-
-        data = {
-          ...data,
-          PTI: ActivePrescTypeID,
-          note: addPrescriptionitems,
-          SrvNames: visitPrescriptionData,
-          prescTypeName: ActivePrescName,
-        };
-
-        // Edit Mode
-        if (ActivePrescHeadID) {
-          // Wait for the pin input
-          await new Promise((resolve) => {
-            const checkPinInterval = setInterval(() => {
-              if (otpCode) {
-                clearInterval(checkPinInterval);
-                resolve();
-              }
-            }, 500);
-          });
-
+    // Edit Mode
+    if (!isVisit && ActivePrescHeadID) {
+      // Wait for the pin input if not a visit and editing is enabled
+      await new Promise((resolve) => {
+        const checkPinInterval = setInterval(() => {
           if (otpCode) {
-            url = "TaminEprsc/PrescriptionEdit";
-            data = {
-              ...data,
-              PrID: ActivePrescID,
-              headerID: ActivePrescHeadID,
-              otpCode: otpCode,
-            };
-
-            setShowPinModal(false);
+            clearInterval(checkPinInterval);
+            resolve();
           }
-        }
+        }, 500);
+      });
 
-        console.log({ data });
-
-        axiosClient
-          .post(url, data)
-          .then(async (response) => {
-            console.log(response.data);
-            setSaveRegIsLoading(false);
-
-            if (response.data[0].data.data.result.trackingCode) {
-              let trackingCodes = [];
-              for (let i = 0; i < response.data.length; i++) {
-                const element = response.data[i];
-                trackingCodes.push(element.data.data.result.trackingCode);
-              }
-              trackingCodes = [...new Set(trackingCodes)];
-
-              displayToastMessages(
-                [],
-                toast,
-                `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`
-              );
-
-              const seconds = 5;
-              const timerInMillis = seconds * 1000;
-
-              TimerAlert({
-                title: `نسخه با کد رهگیری ${trackingCodes[0]} با موفقیت ثبت گردید!`,
-                html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
-                timer: timerInMillis,
-                timerProgressBar: true,
-                cancelButton: {
-                  text: "انصراف",
-                },
-                onConfirm: () => {
-                  router.push("/taminPrescRecords");
-                },
-              });
-            } else if (response.data[0].data.data.result.error_Code !== null) {
-              ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
-            } else if (response.data[0].data.data.result == null) {
-              ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            setSaveRegIsLoading(false);
-            ErrorAlert("خطا", "ثبت نسخه با خطا مواجه گردید!");
-          });
+      if (otpCode) {
+        data = {
+          ...data,
+          PrID: ActivePrescID,
+          headerID: ActivePrescHeadID,
+          otpCode: otpCode,
+        };
+        setShowPinModal(false);
       }
+    }
+
+    try {
+      const response = await axiosClient.post(url, data);
+      handleRegisterResponse(response, isVisit);
+    } catch (err) {
+      console.log(err);
+      ErrorAlert(
+        "خطا",
+        `ثبت ${isVisit ? "ویزیت" : "نسخه"} با خطا مواجه گردید!`
+      );
+    } finally {
+      isLoadingFunction(false);
+    }
+  };
+
+  const handleRegisterResponse = (response, isVisit) => {
+    if (response.data[0].data.data.result.trackingCode) {
+      let title, trackingCode;
+
+      if (isVisit) {
+        trackingCode = response.data[0].data.data.result.trackingCode;
+        title = `ویزیت با کد رهگیری ${trackingCode} با موفقیت ثبت گردید!`;
+      } else {
+        let trackingCodes = [];
+        for (let i = 0; i < response.data.length; i++) {
+          const element = response.data[i];
+          trackingCodes.push(element.data.data.result.trackingCode);
+        }
+        trackingCodes = [...new Set(trackingCodes)];
+        trackingCode = trackingCodes[0];
+
+        title = `نسخه با کد رهگیری ${trackingCode} با موفقیت ثبت گردید!`;
+      }
+
+      displayToastMessages([], toast, title);
+
+      const seconds = 5;
+      const timerInMillis = seconds * 1000;
+
+      TimerAlert({
+        title: title,
+        html: `<div class="custom-content">در حال انتقال به صفحه نسخ تامین اجتماعی در ${seconds} ثانیه</div>`,
+        timer: timerInMillis,
+        timerProgressBar: true,
+        cancelButton: {
+          text: "انصراف",
+        },
+        onConfirm: () => {
+          router.push("/taminPrescRecords");
+        },
+      });
+    } else if (response.data[0].data.data.result.error_Msg) {
+      if (response.data[0].data.data.result.error_Msg == "نسخه تکراری است") {
+        WarningAlert("هشدار", "نسخه ثبت شده تکراری می باشد!");
+      } else {
+        ErrorAlert("خطا!", response.data[0].data.data.result.error_Msg);
+      }
+
+      if (ActiveNID === undefined) {
+        WarningAlert("هشدار", "کد ملی وارد شده معتبر نمی باشد");
+      }
+    } else {
+      ErrorAlert("خطا", "سرور در حال حاضر در دسترس نمی باشد!");
     }
   };
 

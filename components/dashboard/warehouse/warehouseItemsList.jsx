@@ -5,7 +5,13 @@ import "react-data-table-component-extensions/dist/index.css";
 import { tableCustomStyles } from "components/commonComponents/customTableStyle/tableStyle.jsx";
 import { Tooltip } from "primereact/tooltip";
 
-const WarehouseItemsList = ({ data, openEditModal, removeWarehouseItem }) => {
+const WarehouseItemsList = ({
+  data,
+  openEditModal,
+  removeWarehouseItem,
+  openIncreaseStockModal,
+  openDecreaseStockModal,
+}) => {
   data?.map((center, index) => (data[index].rowNumber = index + 1));
 
   const columns = [
@@ -28,14 +34,14 @@ const WarehouseItemsList = ({ data, openEditModal, removeWarehouseItem }) => {
       width: "auto",
     },
     {
-      name: "عنوان واحد",
-      selector: (row) => row.UnitName,
+      name: "مقدار واحد",
+      selector: (row) => row.Unit,
       sortable: true,
       width: "auto",
     },
     {
-      name: "مقدار واحد",
-      selector: (row) => row.Unit,
+      name: "عنوان واحد",
+      selector: (row) => row.UnitName,
       sortable: true,
       width: "auto",
     },
@@ -43,6 +49,39 @@ const WarehouseItemsList = ({ data, openEditModal, removeWarehouseItem }) => {
       name: "مقدار مصرف واحد",
       selector: (row) => row.ConsumptionUnit,
       sortable: true,
+      width: "auto",
+    },
+    {
+      name: "میزان موجودی",
+      selector: (row) => row.Stock,
+      sortable: true,
+      cell: (row) => (
+        <div className="actions d-flex gap-2 align-items-center">
+          <button
+            className="btn p-2 eventBtns decreaseBtn d-flex align-items-center"
+            onClick={() => openDecreaseStockModal(row)}
+            data-pr-position="left"
+          >
+            <Tooltip target=".decreaseBtn">کاستن از موجودی</Tooltip>
+            <FeatherIcon
+              icon="minus-square"
+              style={{ width: "16px", height: "16px" }}
+            />
+          </button>
+          <p className="mb-1">{row.Stock}</p>
+          <button
+            className="btn p-2 eventBtns increaseBtn d-flex align-items-center"
+            onClick={() => openIncreaseStockModal(row)}
+            data-pr-position="right"
+          >
+            <Tooltip target=".increaseBtn">افزودن به موجودی</Tooltip>
+            <FeatherIcon
+              icon="plus-square"
+              style={{ width: "16px", height: "16px" }}
+            />
+          </button>
+        </div>
+      ),
       width: "auto",
     },
     {
@@ -58,7 +97,7 @@ const WarehouseItemsList = ({ data, openEditModal, removeWarehouseItem }) => {
       cell: (row) => (
         <div className="actions d-flex gap-1">
           <button
-            className="btn p-2 btn-outline-danger reomveBtn d-flex align-items-center"
+            className="btn p-2 eventBtns reomveBtn d-flex align-items-center"
             onClick={() => removeWarehouseItem(row._id)}
             data-pr-position="top"
           >
@@ -69,16 +108,39 @@ const WarehouseItemsList = ({ data, openEditModal, removeWarehouseItem }) => {
             />
           </button>
           <button
-            className="btn p-2 btn-outline-primary btn-border-left editBtn d-flex align-items-center"
+            className="btn p-2 eventBtns editBtn d-flex align-items-center"
             onClick={() => openEditModal(row)}
-            data-pr-position="right"
+            data-pr-position="top"
           >
             <Tooltip target=".editBtn">ویرایش</Tooltip>
             <FeatherIcon
-              icon="edit-3"
+              icon="edit-2"
               style={{ width: "16px", height: "16px" }}
             />
           </button>
+
+          {/* <button
+            className="btn p-2 eventBtns increaseBtn d-flex align-items-center"
+            onClick={() => changeStockQuantity("increase", row._id)}
+            data-pr-position="top"
+          >
+            <Tooltip target=".increaseBtn">افزودن به موجودی</Tooltip>
+            <FeatherIcon
+              icon="plus-circle"
+              style={{ width: "16px", height: "16px" }}
+            />
+          </button>
+          <button
+            className="btn p-2 eventBtns decreaseBtn d-flex align-items-center"
+            onClick={() => changeStockQuantity("decrease", row._id)}
+            data-pr-position="right"
+          >
+            <Tooltip target=".decreaseBtn">کاستن از موجودی</Tooltip>
+            <FeatherIcon
+              icon="minus-circle"
+              style={{ width: "16px", height: "16px" }}
+            />
+          </button> */}
         </div>
       ),
       width: "auto",
