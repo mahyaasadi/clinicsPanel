@@ -71,7 +71,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="sidebar shadow" id="sidebar">
+      <div className="sidebar" id="sidebar">
         <div className="sidebar-inner slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
             <ul>
@@ -171,78 +171,6 @@ const Sidebar = () => {
                     />
                   </svg>
 
-                  {/* <svg
-                    height="64"
-                    viewBox="0 0 64 64"
-                    width="64"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinejoin="round"
-                    strokeWidth="3"
-                    style={{ width: "18px", height: "18px" }}
-                  >
-                    <defs></defs>
-                    <title />
-                    <g data-name="24-Cash Register" id="_24-Cash_Register">
-                      <path
-                        className="cls-1"
-                        d="M63,45V61a2,2,0,0,1-2,2H3a2,2,0,0,1-2-2V45Z"
-                      />
-                      <polyline
-                        className="cls-1"
-                        points="3 45 3 39 5 37 59 37 61 39 61 45"
-                      />
-                      <path
-                        className="cls-1"
-                        d="M59,37V14a1.959,1.959,0,0,0-2-2H54"
-                      />
-                      <path
-                        className="cls-1"
-                        d="M5,37V14a1.959,1.959,0,0,1,2-2h3"
-                      />
-                      <rect
-                        className="cls-1"
-                        height="14"
-                        rx="1"
-                        ry="1"
-                        width="28"
-                        x="26"
-                        y="1"
-                      />
-                      <rect className="cls-1" height="6" width="20" x="30" y="5" />
-                      <polyline
-                        className="cls-1"
-                        points="1 49 25 49 26 53 38 53 39 49 63 49"
-                      />
-                      <line className="cls-1" x1="28" x2="36" y1="49" y2="49" />
-                      <polyline
-                        className="cls-1"
-                        points="26 24 30 24 30 20 26 20"
-                      />
-                      <rect className="cls-1" height="4" width="4" x="34" y="20" />
-                      <rect className="cls-1" height="4" width="4" x="42" y="20" />
-                      <rect className="cls-1" height="4" width="4" x="42" y="28" />
-                      <rect className="cls-1" height="4" width="4" x="34" y="28" />
-                      <rect className="cls-1" height="4" width="4" x="26" y="28" />
-                      <line className="cls-1" x1="6" x2="8" y1="41" y2="41" />
-                      <line className="cls-1" x1="56" x2="58" y1="41" y2="41" />
-                      <line className="cls-1" x1="10" x2="54" y1="41" y2="41" />
-                      <rect className="cls-1" height="15" width="12" x="10" y="5" />
-                      <line className="cls-1" x1="22" x2="26" y1="12" y2="12" />
-                      <rect className="cls-1" height="8" width="12" x="10" y="24" />
-                      <rect className="cls-1" height="13" width="4" x="50" y="19" />
-                      <line className="cls-1" x1="8" x2="24" y1="20" y2="20" />
-                      <line className="cls-1" x1="10" x2="22" y1="28" y2="28" />
-                      <line className="cls-1" x1="13" x2="19" y1="9" y2="9" />
-                      <line className="cls-1" x1="13" x2="15" y1="13" y2="13" />
-                      <line className="cls-1" x1="17" x2="19" y1="13" y2="13" />
-                      <path className="cls-1" d="M5,55v3a.979.979,0,0,0,1,1H9" />
-                    </g>
-
-                    
-                  </svg> */}
-
                   <span>صندوق</span>
                 </Link>
               </li>
@@ -289,9 +217,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    prescriptionSubmenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${prescriptionSubmenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -439,9 +366,8 @@ const Sidebar = () => {
                 </a>
 
                 <ul
-                  className={`hiddenSidebar ${
-                    formBuilderSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${formBuilderSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={
@@ -477,9 +403,8 @@ const Sidebar = () => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul
-                  className={`hiddenSidebar ${
-                    settingsSubMenuOpen ? "d-block" : "hidden"
-                  }`}
+                  className={`hiddenSidebar ${settingsSubMenuOpen ? "d-block" : "hidden"
+                    }`}
                 >
                   <li
                     className={

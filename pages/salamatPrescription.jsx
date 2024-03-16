@@ -15,7 +15,6 @@ import PrescriptionCard from "components/dashboard/prescription/salamat/prescrip
 import { generateSalamatConsumptionOptions } from "class/salamatConsumptionOptions";
 import { generateSalamatInstructionOptions } from "class/salamatInstructionOptions";
 import SalamatAddToListItems from "components/dashboard/prescription/salamat/salamatAddToListItems";
-import SalamatFavItemsModal from "components/dashboard/prescription/salamat/salamatFavItemsModal";
 import PrescQuickAccessCard from "@/components/dashboard/prescription/favourites/prescQuickAccessCard";
 import ApplyFavPrescModal from "components/dashboard/prescription/favourites/applyFavPrescModal";
 import {
@@ -224,7 +223,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
       CitizenSessionId,
     };
 
-    let samadMessage = [];
     axiosClient
       .post(url, data)
       .then((response) => {
