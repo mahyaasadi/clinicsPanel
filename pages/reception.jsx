@@ -381,8 +381,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -417,12 +417,10 @@ const Reception = ({ ClinicUser }) => {
   };
 
   const handleEditService = (srvData) => {
-    console.log({ srvData });
     setEditSrvData(srvData);
 
-    if (parseInt(srvData.Code) >= 300000) {
-      setWarehouseModalMode("edit");
-      openWarehouseReceptionModal();
+    if (parseInt(srvData.Code) >= 200000) {
+      openWarehouseReceptionModal(false, srvData);
     } else if (parseInt(srvData.Code) >= 100000) {
       openAdditionalCostsModal();
       setEditAdditionalCostMode(true);
@@ -570,10 +568,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     console.log({ dataToSubmit });
@@ -594,6 +592,9 @@ const Reception = ({ ClinicUser }) => {
 
           if (response.data.length === 1) {
             SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
+
+            addedSrvItems.filter(item => parseInt(item.Code) > 20000)
+              .forEach(item => changeStockQuantity(item._id, item.Qty));
 
             setTimeout(() => {
               openActionModal(response.data[0]._id, response.data[0]);
@@ -623,8 +624,6 @@ const Reception = ({ ClinicUser }) => {
         });
     }
   };
-
-  console.log({ addedSrvItems });
 
   //-----  cashDesk  -----//
   const [showActionModal, setShowActionModal] = useState(false);
@@ -671,12 +670,43 @@ const Reception = ({ ClinicUser }) => {
     useState(false);
   const [warehouseModalMode, setWarehouseModalMode] = useState("add");
 
-  const openWarehouseReceptionModal = () => {
+  const openWarehouseReceptionModal = (mode, data) => {
+    setWarehouseModalMode(mode)
+    setEditSrvData(data)
+
+    if (mode) {
+      setEditSrvData([]);
+    }
     setShowWarehouseReceptionModal(true);
-    setEditSrvData([]);
   };
 
-  const closeWarehouseModal = () => setShowWarehouseReceptionModal(false);
+  const closeWarehouseModal = () => {
+    setShowWarehouseReceptionModal(false);
+    setEditSrvData([])
+  }
+
+  const changeStockQuantity = (id, qty) => {
+    let url = `Warehouse/StockDecrease/${id}`
+
+    let data = { Qty: qty };
+
+    axiosClient
+      .post(url, data)
+      .then((response) => {
+        if (response.data.err) {
+          ErrorAlert("", response.data.msg);
+          return false;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const editWarehouseReceptionItem = (id, data) => {
+    updateSrvItem(id, data);
+    closeWarehouseModal()
+  };
 
   useEffect(() => {
     $("#BtnActiveSearch").hide();
@@ -829,6 +859,7 @@ const Reception = ({ ClinicUser }) => {
           addedSrvItems={addedSrvItems}
           setAddedSrvItems={setAddedSrvItems}
           editSrvData={editSrvData}
+          editWarehouseReceptionItem={editWarehouseReceptionItem}
         />
       </div>
     </>

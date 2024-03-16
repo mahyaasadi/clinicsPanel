@@ -111,26 +111,12 @@ const AdditionalCostsModal = ({
             </div>
 
             <div className="submit-section">
-              {/* {!appointmentIsLoading ? ( */}
               <button
                 type="submit"
                 className="btn btn-primary rounded btn-save font-13"
               >
                 ثبت
               </button>
-              {/* //   ) : ( */}
-              {/* //     <button
-            //       type="submit"
-            //       className="btn btn-primary rounded font-13"
-            //       disabled
-            //     >
-            //       <span
-            //         className="spinner-border spinner-border-sm me-2"
-            //         role="status"
-            //       ></span>
-            //       در حال ثبت
-            //     </button>
-            //   )} */}
             </div>
           </form>
         </Modal.Body>

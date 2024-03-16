@@ -67,7 +67,7 @@ const PrescInfo = ({
                   <button
                     type="button"
                     className="btn prescInfoBtn font-13 text-secondary fw-bold px-3 d-flex align-items-center gap-1"
-                    onClick={openWarehouseReceptionModal}
+                    onClick={() => openWarehouseReceptionModal(true, [])}
                   >
                     <svg
                       viewBox="0 0 24 24"

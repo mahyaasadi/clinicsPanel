@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
 import { axiosClient } from "class/axiosConfig";
 import { convertToLocaleString } from "utils/convertToLocaleString";
+import { ErrorAlert } from "class/AlertManage"
 
 const WarehouseReceptionModal = ({
   show,
@@ -13,10 +14,10 @@ const WarehouseReceptionModal = ({
   addedSrvItems,
   setAddedSrvItems,
   editSrvData,
+  editWarehouseReceptionItem
 }) => {
-  console.log({ mode, editSrvData });
 
-  let warehouseItemCode = 300000;
+  let warehouseItemCode = 200000;
   const [warehouseItemsData, setWarehouseItemsData] = useState([]);
 
   // Get All Warehouse Items
@@ -71,14 +72,34 @@ const WarehouseReceptionModal = ({
       ModalityID: ActiveModalityID,
     };
 
-    console.log({ data });
-
     e.target.reset();
     setWItemCost(0);
     setSelectedWItem(null);
     setAddedSrvItems([...addedSrvItems, data]);
     onHide();
   };
+
+  const _editWarehouseReceptionItem = (e) => {
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+    const formProps = Object.fromEntries(formData);
+
+    let data = {
+      _id: editSrvData._id,
+      Code: editSrvData.Code,
+      Name: editSrvData.Name,
+      Qty: formProps.warehouseItemQty,
+      Price: WItemCost ? WItemCost : editSrvData.Price,
+      OC: 0,
+      Discount: 0,
+      ModalityID: ActiveModalityID,
+    };
+
+    editWarehouseReceptionItem(editSrvData._id, data)
+
+    console.log({ data });
+  }
 
   useEffect(() => getAllWarehouseItems(), []);
 
@@ -88,35 +109,44 @@ const WarehouseReceptionModal = ({
         <Modal.Header>
           <Modal.Title>
             <p className="mb-0 text-secondary font-13 fw-bold">
-              {mode == "add" ? "افزودن کالا از انبار" : "ویرایش اطلاعات"}
+              {mode ? "افزودن کالا از انبار" : "ویرایش اطلاعات"}  {!mode && (
+                <>
+                  {"| "} {editSrvData.Name}
+                </>
+              )}
             </p>
+
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <form onSubmit={submitWarehouseItem}>
+          <form onSubmit={mode ? submitWarehouseItem : _editWarehouseReceptionItem}>
             <input
               type="hidden"
               name="WItemCode"
-              value={mode == "edit" ? editSrvData.Code : ""}
+              value={!mode ? editSrvData.Code : ""}
             />
             <input
               type="hidden"
               name="WItemID"
-              value={mode == "edit" ? editSrvData._id : ""}
+              value={!mode ? editSrvData._id : ""}
             />
 
-            <label className="lblAbs font-12">انتخاب کالا</label>
-            <Dropdown
-              value={selectedWItem}
-              onChange={(e) => FUSelectWItem(e.target.value)}
-              options={warehouseItemsData}
-              optionLabel="Name"
-              placeholder="انتخاب کنید"
-              filter
-              showClear
-              disabled={mode == "edit"}
-            />
+            {mode && (
+              <>
+                <label className="lblAbs font-12">انتخاب کالا</label>
+                <Dropdown
+                  value={selectedWItem}
+                  onChange={(e) => FUSelectWItem(e.target.value)}
+                  options={warehouseItemsData}
+                  optionLabel="Name"
+                  placeholder="انتخاب کنید"
+                  filter
+                  showClear
+                  disabled={!mode}
+                />
+              </>
+            )}
 
             <div className="my-3">
               <label className="lblAbs margin-top-left font-12">تعداد</label>
@@ -137,8 +167,7 @@ const WarehouseReceptionModal = ({
                     id="warehouseItemQty"
                     name="warehouseItemQty"
                     dir="ltr"
-                    // defaultValue="1"
-                    defaultValue={mode == "edit" ? editSrvData.Qty : "1"}
+                    defaultValue={!mode ? editSrvData.Qty : "1"}
                   />
                 </div>
                 <div className="col-auto">
@@ -160,8 +189,8 @@ const WarehouseReceptionModal = ({
                 type="text"
                 className="form-control floating inputPadding rounded"
                 name="additionalSrvCost"
-                value={WItemCost.toLocaleString()}
-                // defaultValue={mode ? editSrvData.Price : 0}
+                value={WItemCost !== 0 ? WItemCost.toLocaleString() : editSrvData?.Price?.toLocaleString()}
+                defaultValue={!mode ? editSrvData.Price : 0}
                 onChange={(e) => convertToLocaleString(e, setWItemCost)}
               />
             </div>

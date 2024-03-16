@@ -135,7 +135,7 @@ const ReceptionItem = ({
                   onClick={() => handlePrescBtn(srv.Patient)}
                 >
                   {srv.Patient.InsuranceType == "2" ||
-                  srv.Patient.Insurance == "2" ? (
+                    srv.Patient.Insurance == "2" ? (
                     <svg
                       version="1.0"
                       xmlns="http://www.w3.org/2000/svg"
@@ -332,7 +332,7 @@ const ReceptionItem = ({
                     }}
                     onError={({ currentTarget }) => {
                       srv?.Patient?.Gender === "F" ||
-                      srv?.Patient.Gender === "M"
+                        srv?.Patient.Gender === "M"
                         ? (currentTarget.src = `assets/img/avatar-${srv?.Patient?.Gender}-pic.png`)
                         : (currentTarget.src = `assets/img/avatar-O-pic.png`);
                     }}

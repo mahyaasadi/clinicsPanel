@@ -118,29 +118,6 @@ const WarehouseItemsList = ({
               style={{ width: "16px", height: "16px" }}
             />
           </button>
-
-          {/* <button
-            className="btn p-2 eventBtns increaseBtn d-flex align-items-center"
-            onClick={() => changeStockQuantity("increase", row._id)}
-            data-pr-position="top"
-          >
-            <Tooltip target=".increaseBtn">افزودن به موجودی</Tooltip>
-            <FeatherIcon
-              icon="plus-circle"
-              style={{ width: "16px", height: "16px" }}
-            />
-          </button>
-          <button
-            className="btn p-2 eventBtns decreaseBtn d-flex align-items-center"
-            onClick={() => changeStockQuantity("decrease", row._id)}
-            data-pr-position="right"
-          >
-            <Tooltip target=".decreaseBtn">کاستن از موجودی</Tooltip>
-            <FeatherIcon
-              icon="minus-circle"
-              style={{ width: "16px", height: "16px" }}
-            />
-          </button> */}
         </div>
       ),
       width: "auto",

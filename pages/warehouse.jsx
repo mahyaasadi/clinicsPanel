@@ -205,9 +205,6 @@ const Warehouse = ({ ClinicUser }) => {
     e.preventDefault();
     setActionIsLoading(true);
 
-    let formData = new FormData(e.target);
-    const formProps = Object.fromEntries(formData);
-
     let url =
       stockModalMode == "increase"
         ? `Warehouse/StockIncrease/${ActiveItemID}`

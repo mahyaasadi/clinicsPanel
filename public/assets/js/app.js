@@ -163,10 +163,20 @@ $(document).ready(function () {
   }
 
   // Tooltip
+  // if ($('[data-toggle="tooltip"]').length > 0) {
+  //   $('[data-toggle="tooltip"]').tooltip();
+  // }
+  // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  //   return new bootstrap.Tooltip(tooltipTriggerEl)
+  // })
 
-  if ($('[data-toggle="tooltip"]').length > 0) {
-    $('[data-toggle="tooltip"]').tooltip();
-  }
+
+  var tooltipTriggerList = $('[data-bs-toggle="tooltip"]');
+  tooltipTriggerList.each(function () {
+    new bootstrap.Tooltip(this);
+  });
+
 
   // Email Inbox
 
