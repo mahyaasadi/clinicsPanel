@@ -82,6 +82,13 @@ const Reception = ({ ClinicUser }) => {
     useState(false);
   const [additionalCost, setAdditionalCost] = useState(0);
 
+  //  warehouse items
+  const [updatedWItemData, setUpdatedWItemData] = useState([]);
+  const [warehouseItemsData, setWarehouseItemsData] = useState([]);
+  const [showWarehouseReceptionModal, setShowWarehouseReceptionModal] =
+    useState(false);
+  const [warehouseModalMode, setWarehouseModalMode] = useState("add");
+
   const openAdditionalCostsModal = (Add) => {
     if (Add) {
       setAdditionalCost(0);
@@ -381,8 +388,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -395,12 +402,14 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //----- Edit Service -----//
+  const [receptionItems, setReceptionItems] = useState([]);
   const getOneReception = () => {
     let url = `ClinicReception/getOne/${ReceptionObjectID}`;
 
     axiosClient
       .get(url)
       .then((response) => {
+        setReceptionItems(response.data.Items);
         setPatientInfo(response.data.Patient);
         setAddedSrvItems(response.data.Items);
 
@@ -473,8 +482,12 @@ const Reception = ({ ClinicUser }) => {
   };
 
   //----- Delete Service ------//
-  const deleteService = (id) => {
-    setAddedSrvItems(addedSrvItems.filter((a) => a._id !== id));
+  const [deletedSrvData, setDeletedSrvData] = useState([]);
+  const [foundWItem, setFoundWItem] = useState(null);
+  const deleteService = (srv) => {
+    setDeletedSrvData([...deletedSrvData, srv]);
+    setFoundWItem(warehouseItemsData.find((item) => item.Name === srv.Name));
+    setAddedSrvItems(addedSrvItems.filter((a) => a._id !== srv._id));
   };
 
   //---- Add an Item to List ----//
@@ -538,6 +551,13 @@ const Reception = ({ ClinicUser }) => {
     $("#srvSearchInput").prop("readonly", false);
   };
 
+  const notInReceptionItems = addedSrvItems.filter(
+    (item) =>
+      !receptionItems
+        .map((receptionItem) => receptionItem._id)
+        .includes(item._id)
+  );
+
   //------ Submit Reception ------//
   const submitReceptionPrescript = (
     totalQty,
@@ -568,13 +588,13 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
-    console.log({ dataToSubmit });
+    // console.log({ dataToSubmit });
 
     if (!ActivePatientID) {
       ErrorAlert("خطا", "اطلاعات بیمار را وارد نمایید!");
@@ -593,8 +613,25 @@ const Reception = ({ ClinicUser }) => {
           if (response.data.length === 1) {
             SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
 
-            addedSrvItems.filter(item => parseInt(item.Code) > 20000)
-              .forEach(item => changeStockQuantity(item._id, item.Qty));
+            // figure out if it has go up or down and if the item is not in receptionItems
+            console.log({ updatedWItemData, notInReceptionItems });
+            // in edit Mode, update the WItems compared with their original state
+            updatedWItemData.forEach((item) =>
+              changeStockQuantity(item.mode, item.id, item.Qty)
+            );
+
+            if (ReceptionID) {
+              deletedSrvData.forEach((item) =>
+                changeStockQuantity("Return", foundWItem._id, item.Qty)
+              );
+            }
+
+            // for new items => decrease from thier stock
+            notInReceptionItems
+              .filter((item) => parseInt(item.Code) > 20000)
+              .forEach((item) =>
+                changeStockQuantity("decrease", item._id, item.Qty)
+              );
 
             setTimeout(() => {
               openActionModal(response.data[0]._id, response.data[0]);
@@ -665,14 +702,25 @@ const Reception = ({ ClinicUser }) => {
     }
   };
 
-  // access warehouse items
-  const [showWarehouseReceptionModal, setShowWarehouseReceptionModal] =
-    useState(false);
-  const [warehouseModalMode, setWarehouseModalMode] = useState("add");
+  // Get All Warehouse Items
+  const getAllWarehouseItems = () => {
+    let url = `Warehouse/get/${ClinicID}`;
+
+    axiosClient
+      .get(url)
+      .then((response) => {
+        console.log(response.data);
+        setWarehouseItemsData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
+      });
+  };
 
   const openWarehouseReceptionModal = (mode, data) => {
-    setWarehouseModalMode(mode)
-    setEditSrvData(data)
+    setWarehouseModalMode(mode);
+    setEditSrvData(data);
 
     if (mode) {
       setEditSrvData([]);
@@ -682,13 +730,18 @@ const Reception = ({ ClinicUser }) => {
 
   const closeWarehouseModal = () => {
     setShowWarehouseReceptionModal(false);
-    setEditSrvData([])
-  }
+    setEditSrvData([]);
+  };
 
-  const changeStockQuantity = (id, qty) => {
-    let url = `Warehouse/StockDecrease/${id}`
+  const changeStockQuantity = (mode, id, qty) => {
+    let url =
+      mode == "decrease"
+        ? `Warehouse/StockDecrease/${id}`
+        : `Warehouse/Return/${id}`;
 
     let data = { Qty: qty };
+
+    console.log({ url, data });
 
     axiosClient
       .post(url, data)
@@ -703,15 +756,41 @@ const Reception = ({ ClinicUser }) => {
       });
   };
 
-  const editWarehouseReceptionItem = (id, data) => {
+  const editWarehouseReceptionItem = (id, data, WItemID) => {
+    if (ReceptionID) {
+      let prevWItem = receptionItems.filter((item) => item._id == id);
+      let obj = { id: WItemID };
+
+      if (parseInt(data.Qty) > parseInt(prevWItem[0].Qty)) {
+        obj.Qty = parseInt(data.Qty) - parseInt(prevWItem[0].Qty);
+        obj.mode = "decrease";
+      } else {
+        obj.Qty = parseInt(prevWItem[0].Qty) - parseInt(data.Qty);
+        obj.mode = "return";
+      }
+
+      const index = updatedWItemData.findIndex((x) => x.id === id);
+
+      if (index !== -1) {
+        // If the item exists, update it
+        setUpdatedWItemData(
+          updatedWItemData.map((item, i) => (i === index ? obj : item))
+        );
+      } else {
+        // If the item doesn't exist, add it
+        setUpdatedWItemData([...updatedWItemData, obj]);
+      }
+    }
+
     updateSrvItem(id, data);
-    closeWarehouseModal()
+    closeWarehouseModal();
   };
 
   useEffect(() => {
     $("#BtnActiveSearch").hide();
     $("#getPatientCloseBtn").hide();
     setShowBirthDigitsAlert(false);
+    getAllWarehouseItems();
   }, []);
 
   useEffect(() => {
@@ -854,7 +933,7 @@ const Reception = ({ ClinicUser }) => {
           show={showWarehouseReceptionModal}
           onHide={closeWarehouseModal}
           mode={warehouseModalMode}
-          ClinicID={ClinicID}
+          warehouseItemsData={warehouseItemsData}
           ActiveModalityID={ActiveModalityID}
           addedSrvItems={addedSrvItems}
           setAddedSrvItems={setAddedSrvItems}

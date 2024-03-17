@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import List from "components/dashboard/chat/chatUserMes/list";
+import VoiceRecorder from "components/commonComponents/voiceRecorder";
 
 export default function ChatPage({
   ChatHeader,
@@ -15,6 +16,7 @@ export default function ChatPage({
   SendFile,
   sendBackToChatSms,
   openAppointmentModal,
+  SendAudioMessage
 }) {
   const router = useRouter();
 
@@ -305,6 +307,7 @@ export default function ChatPage({
         <form onSubmit={sendTextToChatBox}>
           <div className="chat-footer">
             <div className="input-group">
+            <VoiceRecorder SendAudioMessage={SendAudioMessage}/>
               <div className="btn-file btn chatBtn">
                 <i className="fa fa-paperclip"></i>
                 <input

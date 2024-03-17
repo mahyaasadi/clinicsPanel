@@ -6,6 +6,7 @@ import { axiosClient } from "class/axiosConfig.js";
 import { Tooltip } from "primereact/tooltip";
 import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, QuestionAlert, SuccessAlert } from "class/AlertManage";
+import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import Loading from "components/commonComponents/loading/loading";
 import FormsList from "@/components/dashboard/patientsArchives/patientFile/formsList";
 import FormOptionsModal from "components/dashboard/patientsArchives/formOptionsModal";
@@ -27,7 +28,6 @@ import AttachImgFileModal from "components/dashboard/patientsArchives/patientFil
 import PatientFormPreviewModal from "components/dashboard/forms/formPreview/patientFormPreviewModal";
 import MedParamsList from "components/dashboard/patientsArchives/patientFile/medicalParams/medParamsList";
 import ApplyAppointmentModal from "components/dashboard/appointment/applyAppointmentModal";
-import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 
 export const getServerSideProps = async ({ req, res }) => {
   const result = await getSession(req, res);

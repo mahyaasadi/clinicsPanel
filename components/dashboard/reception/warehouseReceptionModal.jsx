@@ -1,40 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
-import { axiosClient } from "class/axiosConfig";
 import { convertToLocaleString } from "utils/convertToLocaleString";
-import { ErrorAlert } from "class/AlertManage"
 
+let warehouseItemCode = 200000;
 const WarehouseReceptionModal = ({
   show,
   onHide,
   mode,
-  ClinicID,
+  warehouseItemsData,
   ActiveModalityID,
   addedSrvItems,
   setAddedSrvItems,
   editSrvData,
-  editWarehouseReceptionItem
+  editWarehouseReceptionItem,
 }) => {
-
-  let warehouseItemCode = 200000;
-  const [warehouseItemsData, setWarehouseItemsData] = useState([]);
-
-  // Get All Warehouse Items
-  const getAllWarehouseItems = () => {
-    let url = `Warehouse/get/${ClinicID}`;
-
-    axiosClient
-      .get(url)
-      .then((response) => {
-        setWarehouseItemsData(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("خطا", "خطا در دریافت اطلاعات!");
-      });
-  };
-
   const [selectedWItem, setSelectedWItem] = useState(null);
   const [WItemCost, setWItemCost] = useState(0);
 
@@ -79,6 +59,10 @@ const WarehouseReceptionModal = ({
     onHide();
   };
 
+  const foundItem = warehouseItemsData.find(
+    (item) => item.Name === editSrvData.Name
+  );
+
   const _editWarehouseReceptionItem = (e) => {
     e.preventDefault();
 
@@ -96,12 +80,10 @@ const WarehouseReceptionModal = ({
       ModalityID: ActiveModalityID,
     };
 
-    editWarehouseReceptionItem(editSrvData._id, data)
-
     console.log({ data });
-  }
 
-  useEffect(() => getAllWarehouseItems(), []);
+    editWarehouseReceptionItem(editSrvData._id, data, foundItem._id);
+  };
 
   return (
     <>
@@ -109,18 +91,20 @@ const WarehouseReceptionModal = ({
         <Modal.Header>
           <Modal.Title>
             <p className="mb-0 text-secondary font-13 fw-bold">
-              {mode ? "افزودن کالا از انبار" : "ویرایش اطلاعات"}  {!mode && (
+              {mode ? "افزودن کالا از انبار" : "ویرایش اطلاعات"}{" "}
+              {!mode && (
                 <>
                   {"| "} {editSrvData.Name}
                 </>
               )}
             </p>
-
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <form onSubmit={mode ? submitWarehouseItem : _editWarehouseReceptionItem}>
+          <form
+            onSubmit={mode ? submitWarehouseItem : _editWarehouseReceptionItem}
+          >
             <input
               type="hidden"
               name="WItemCode"
@@ -189,7 +173,11 @@ const WarehouseReceptionModal = ({
                 type="text"
                 className="form-control floating inputPadding rounded"
                 name="additionalSrvCost"
-                value={WItemCost !== 0 ? WItemCost.toLocaleString() : editSrvData?.Price?.toLocaleString()}
+                value={
+                  WItemCost !== 0
+                    ? WItemCost.toLocaleString()
+                    : editSrvData?.Price?.toLocaleString()
+                }
                 defaultValue={!mode ? editSrvData.Price : 0}
                 onChange={(e) => convertToLocaleString(e, setWItemCost)}
               />

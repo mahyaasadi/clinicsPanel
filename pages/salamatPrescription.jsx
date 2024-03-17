@@ -706,14 +706,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
   };
 
-  useEffect(() => {
-    console.log({ existingCheckCodes, deletedCheckCodes });
-  }, [existingCheckCodes]);
-
-  useEffect(() => {
-    console.log({ prescriptionItemsData });
-  }, [prescriptionItemsData]);
-
   // Delete Service
   const deleteService = async (id, flag) => {
     let result = await QuestionAlert("حذف سرویس!", "آیا از حذف اطمینان دارید؟");

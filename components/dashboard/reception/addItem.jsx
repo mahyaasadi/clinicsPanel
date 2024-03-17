@@ -67,7 +67,7 @@ const AddItem = ({
               <button
                 type="button"
                 className="btn btn-sm btn-outline-danger removeBtn height-27"
-                onClick={() => deleteService(srv._id)}
+                onClick={() => deleteService(srv)}
                 data-pr-position="top"
               >
                 <Tooltip target=".removeBtn">حذف</Tooltip>

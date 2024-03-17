@@ -4760,3 +4760,9 @@
     box-shadow: 0 0 0 30px rgba(0, 0, 0, 0);
   }
 }
+
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3),
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px
+}
