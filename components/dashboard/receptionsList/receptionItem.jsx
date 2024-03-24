@@ -92,7 +92,7 @@ const ReceptionItem = ({
     <>
       <div className="col-sm-6 col-lg-4 col-xxl-3 mt-3">
         <div className="card shadow h-100 patientCard receptionHeader">
-          <div className=" card-header align-items-center">
+          <div className="card-header align-items-center p-relative">
             <div className="d-flex justify-between">
               {srv?.Modality?.Icon ? (
                 <img
@@ -121,7 +121,7 @@ const ReceptionItem = ({
                   onClick={handleEditBtnClick}
                 >
                   <FeatherIcon
-                    icon="edit-3"
+                    icon="edit-2"
                     className="prescItembtns"
                     style={{ width: "20px", height: "20px" }}
                   />

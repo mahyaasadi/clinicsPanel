@@ -1,10 +1,8 @@
-import { useGetAllClinicDepartmentsQuery } from "redux/slices/clinicDepartmentApiSlice";
 import SearchedServiceItems from "components/dashboard/reception/searchedSrvItems";
 import DepartmentsHeader from "./departmentsHeader";
 import { Skeleton } from "primereact/skeleton";
 
 const ReceptionCard = ({
-  ClinicID,
   handleDepTabChange,
   handleSearchService,
   searchedServices,
@@ -15,9 +13,9 @@ const ReceptionCard = ({
   editSrvMode,
   setEditSrvMode,
   activeSearch,
+  clinicDepartments,
+  depIsLoading
 }) => {
-  let activeClass = null;
-
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
     qty = parseInt(qty);
@@ -31,9 +29,6 @@ const ReceptionCard = ({
     $("#QtyInput").val(qty);
   }
 
-  const { data: clinicDepartments, isLoading } =
-    useGetAllClinicDepartmentsQuery(ClinicID);
-
   const handleCancelEdit = () => {
     setEditSrvMode(false);
     setEditSrvData([]);
@@ -43,7 +38,7 @@ const ReceptionCard = ({
 
   return (
     <>
-      {!isLoading ? (
+      {!depIsLoading ? (
         <div className="card shadow-sm presCard">
           <div className="card-body">
             {/* departments header */}

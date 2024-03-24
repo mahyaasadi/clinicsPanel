@@ -4,6 +4,7 @@ import FeatherIcon from "feather-icons-react";
 import { ErrorAlert, SuccessAlert } from "class/AlertManage";
 import EditPatientInfoModal from "./editPatientInfo";
 import EditInsuranceTypeModal from "./editInsuranceTypeModal";
+import { Skeleton } from "primereact/skeleton";
 
 const PatientInfoCard = ({
   data,
@@ -15,6 +16,8 @@ const PatientInfoCard = ({
   getPatientActiveSearch,
   handlePendingPatientClick,
   handleShowPendingPatients,
+  depIsLoading,
+  pendingMode
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -138,58 +141,59 @@ const PatientInfoCard = ({
 
   return (
     <>
-      <div className="card presCard mb-3 shadow-sm">
-        <div className="card-body">
-          <form className="w-100" onSubmit={getPatientInfo}>
-            <div className="input-group">
-              <label className="lblAbs font-12">کد ملی / کد اتباع بیمار</label>
-              <input
-                type="text"
-                name="nationalCode"
-                id="patientNID"
-                required
-                autoComplete="off"
-                className="form-control rounded-right GetPatientInput w-50"
-                defaultValue={ActivePatientNID}
-                onClick={handleShowPendingPatients}
-              />
+      {!depIsLoading ? (
+        <div className="card presCard mb-3 shadow-sm">
+          <div className="card-body">
+            <form className="w-100" onSubmit={getPatientInfo}>
+              <div className="input-group">
+                <label className="lblAbs font-11">کد ملی / کد اتباع بیمار</label>
+                <input
+                  type="text"
+                  name="nationalCode"
+                  id="patientNID"
+                  required
+                  autoComplete="off"
+                  className="form-control rounded-right GetPatientInput w-50"
+                  defaultValue={ActivePatientNID}
+                  onClick={handleShowPendingPatients}
+                />
 
-              <button
-                label="Multiple"
-                severity="warning"
-                className="btn btn-primary rounded-left w-10 disNone"
-                id="getPatientCloseBtn"
-                onClick={getPatientActiveSearch}
-                type="button"
-              >
-                <i className="fe fe-close"></i>
-              </button>
-
-              {!patientStatIsLoading ? (
                 <button
-                  className="btn btn-primary w-10 rounded-left font-12"
-                  id="frmPatientInfoBtnSubmit"
+                  label="Multiple"
+                  severity="warning"
+                  className="btn btn-primary rounded-left w-10 disNone"
+                  id="getPatientCloseBtn"
+                  onClick={getPatientActiveSearch}
+                  type="button"
                 >
-                  استعلام
+                  <i className="fe fe-close"></i>
                 </button>
-              ) : (
-                <button
-                  type="submit"
-                  id="frmPatientInfoBtnSubmit"
-                  className="btn-primary btn rounded-left"
-                  disabled
-                >
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                  ></span>
-                </button>
-              )}
-            </div>
 
-            <div className="pendingPaitentContainer">
-              {pendingPatients.length !== 0
-                ? pendingPatients.map((item, index) => (
+                {!patientStatIsLoading ? (
+                  <button
+                    className="btn btn-primary w-10 rounded-left font-12"
+                    id="frmPatientInfoBtnSubmit"
+                  >
+                    استعلام
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    id="frmPatientInfoBtnSubmit"
+                    className="btn-primary btn rounded-left"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                    ></span>
+                  </button>
+                )}
+              </div>
+
+              <div className="pendingPaitentContainer">
+                {pendingPatients.length !== 0 && pendingMode
+                  ? pendingPatients.map((item, index) => (
                     <div
                       className="card shadow-none w-100 mb-2 pendPatientCard pendPatient"
                       key={index}
@@ -232,11 +236,17 @@ const PatientInfoCard = ({
                       </div>
                     </div>
                   ))
-                : ""}
-            </div>
-          </form>
+                  : ""}
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="patientInfoSkeleton">
+          <Skeleton></Skeleton>
+        </div>
+      )}
+
 
       <EditPatientInfoModal
         data={data}

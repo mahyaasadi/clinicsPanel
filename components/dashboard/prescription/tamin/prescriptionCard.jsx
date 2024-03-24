@@ -3,6 +3,10 @@ import { Dropdown } from "primereact/dropdown";
 import PrescriptionTypeHeader from "./prescriptionTypeHeader";
 import ParaServicesDropdown from "./paraServicesDropdown";
 import TaminSearchedServices from "components/dashboard/prescription/tamin/taminSearchedServices";
+import {
+  TaminPrescType as taminHeaderList,
+  TaminParaServicesTypeList as taminParaServicesList,
+} from "class/taminPrescriptionData";
 
 const PrescriptionCard = ({
   setSearchIsLoading,
@@ -17,8 +21,6 @@ const PrescriptionCard = ({
   setSelectedAmount,
   FUSelectInstruction,
   FUSelectDrugAmount,
-  taminHeaderList,
-  taminParaServicesList,
   taminSrvSearchList,
   changePrescTypeTab,
   selectParaSrvType,

@@ -924,9 +924,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${
-                trackingCode ? "با کد رهگیری : " + trackingCode : ""
-              }
+              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
+                }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,
@@ -1024,6 +1023,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 ActivePatientNID={ActivePatientNID}
                 getPatientActiveSearch={getPatientActiveSearch}
                 patientStatIsLoading={patientStatIsLoading}
+                salamatDataIsLoading={salamatDataIsLoading}
+                depIsLoading={salamatDataIsLoading}
               />
 
               <PrescQuickAccessCard
@@ -1044,6 +1045,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 handleReset={handleResetFavPresc}
                 removeFavPresc={removeFavSalamatPresc}
                 editFavPresc={editFavPresc}
+                depIsLoading={salamatDataIsLoading}
               />
             </div>
 

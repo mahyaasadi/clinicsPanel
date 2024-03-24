@@ -31,7 +31,7 @@ const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
         <div className="pagination d-flex flex-wrap items-center justify-center gap-3 margint-3 marginb-3">
             <button onClick={prevPage} className="paginateBtn">
                 <FeatherIcon
-                    icon="arrow-right"
+                    icon="chevron-right"
                     style={{ width: "13px", color: "white" }}
                 />
             </button>
@@ -41,7 +41,7 @@ const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
                     <button
                         key={idx}
                         onClick={() => typeof pgNumber === 'number' && setCurrentPage(pgNumber)}
-                        className={`paginateBtn gap-2 ${currentPage === pgNumber ? "activePaginateBtn" : ""}`}
+                        className={`paginateBtn ${currentPage === pgNumber ? "activePaginateBtn" : ""}`}
                     >
                         {pgNumber}
                     </button>
@@ -50,7 +50,7 @@ const Paginator = ({ nPages, currentPage, setCurrentPage }) => {
 
             <button onClick={nextPage} className="paginateBtn">
                 <FeatherIcon
-                    icon="arrow-left"
+                    icon="chevron-left"
                     style={{ width: "13px", color: "white" }}
                 />
             </button>

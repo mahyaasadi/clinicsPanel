@@ -14,10 +14,6 @@ import AddToListItems from "components/dashboard/prescription/tamin/addToListIte
 import PrescQuickAccessCard from "@/components/dashboard/prescription/favourites/prescQuickAccessCard";
 import ApplyFavPrescModal from "@/components/dashboard/prescription/favourites/applyFavPrescModal";
 import {
-  TaminPrescType,
-  TaminParaServicesTypeList,
-} from "class/taminPrescriptionData";
-import {
   ErrorAlert,
   SuccessAlert,
   WarningAlert,
@@ -1014,8 +1010,6 @@ const TaminPrescription = ({
                 setSelectedAmount={setSelectedAmount}
                 FUSelectInstruction={FUSelectInstruction}
                 FUSelectDrugAmount={FUSelectDrugAmount}
-                taminHeaderList={TaminPrescType}
-                taminParaServicesList={TaminParaServicesTypeList}
                 changePrescTypeTab={changePrescTypeTab}
                 selectParaSrvType={selectParaSrvType}
                 searchTaminSrv={searchTaminSrv}

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { getSession } from "lib/session";
 import { axiosClient } from "class/axiosConfig.js";
 import { ErrorAlert, SuccessAlert, TimerAlert } from "class/AlertManage";
+import { useGetAllClinicDepartmentsQuery } from "@/redux/slices/clinicDepartmentApiSlice";
 import PatientInfoCard from "components/dashboard/patientInfo/patientInfoCard";
 import PatientVerticalCard from "components/dashboard/patientInfo/patientVerticalCard";
 import ReceptionCard from "components/dashboard/reception/receptionCard";
@@ -88,6 +89,10 @@ const Reception = ({ ClinicUser }) => {
   const [showWarehouseReceptionModal, setShowWarehouseReceptionModal] =
     useState(false);
   const [warehouseModalMode, setWarehouseModalMode] = useState("add");
+
+  // Departments Header
+  const { data: clinicDepartments, isLoading: depIsLoading } =
+    useGetAllClinicDepartmentsQuery(ClinicID);
 
   const openAdditionalCostsModal = (Add) => {
     if (Add) {
@@ -388,8 +393,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-        : 0,
+          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+          : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -588,10 +593,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-          ...data,
-          ReceptionID,
-          ReceptionObjectID,
-        })
+        ...data,
+        ReceptionID,
+        ReceptionObjectID,
+      })
       : (dataToSubmit = data);
 
     // console.log({ dataToSubmit });
@@ -613,8 +618,6 @@ const Reception = ({ ClinicUser }) => {
           if (response.data.length === 1) {
             SuccessAlert("موفق", "ثبت پذیرش با موفقیت انجام گردید!");
 
-            // figure out if it has go up or down and if the item is not in receptionItems
-            console.log({ updatedWItemData, notInReceptionItems });
             // in edit Mode, update the WItems compared with their original state
             updatedWItemData.forEach((item) =>
               changeStockQuantity(item.mode, item.id, item.Qty)
@@ -624,6 +627,8 @@ const Reception = ({ ClinicUser }) => {
               deletedSrvData.forEach((item) =>
                 changeStockQuantity("Return", foundWItem._id, item.Qty)
               );
+
+              console.log({ foundWItem });
             }
 
             // for new items => decrease from thier stock
@@ -741,8 +746,6 @@ const Reception = ({ ClinicUser }) => {
 
     let data = { Qty: qty };
 
-    console.log({ url, data });
-
     axiosClient
       .post(url, data)
       .then((response) => {
@@ -836,6 +839,8 @@ const Reception = ({ ClinicUser }) => {
                   getPatientActiveSearch={getPatientActiveSearch}
                   handlePendingPatientClick={handlePendingPatientClick}
                   handleShowPendingPatients={handleShowPendingPatients}
+                  depIsLoading={depIsLoading}
+                  pendingMode={true}
                 />
 
                 <PatientVerticalCard
@@ -848,7 +853,6 @@ const Reception = ({ ClinicUser }) => {
 
               <div className="col-xxl-9 col-xl-8 col-lg-7 col-md-12 paddingL-0">
                 <ReceptionCard
-                  ClinicID={ClinicID}
                   handleDepTabChange={handleDepTabChange}
                   handleSearchService={handleSearchService}
                   searchedServices={searchedServices}
@@ -859,6 +863,8 @@ const Reception = ({ ClinicUser }) => {
                   editSrvMode={editSrvMode}
                   setEditSrvMode={setEditSrvMode}
                   activeSearch={activeSearch}
+                  clinicDepartments={clinicDepartments}
+                  depIsLoading={depIsLoading}
                 />
 
                 <div className="prescList">
@@ -888,6 +894,7 @@ const Reception = ({ ClinicUser }) => {
                 openAdditionalCostsModal={openAdditionalCostsModal}
                 openWarehouseReceptionModal={openWarehouseReceptionModal}
                 submitReceptionPrescript={submitReceptionPrescript}
+                depIsLoading={depIsLoading}
               />
             </div>
           </div>

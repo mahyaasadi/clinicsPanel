@@ -25,6 +25,7 @@ const PrescQuickAccessCard = ({
   quickAccessMode,
   salamatHeaderList,
   isLoading,
+  depIsLoading
 }) => {
   const [favSearchInput, setFavSearchInput] = useState("");
 
@@ -105,7 +106,7 @@ const PrescQuickAccessCard = ({
 
   return (
     <>
-      <div>
+      {!depIsLoading ? (
         <div>
           <ul className="nav nav-tabs nav-tabs-bottom navTabBorder-b fw-bold d-flex justify-center align-items-center">
             <li className="nav-item">
@@ -504,15 +505,12 @@ const PrescQuickAccessCard = ({
                             </div>
                           ) : (
                             <button
+                              key={index}
                               onClick={() => handleAddFavPresc(item)}
-                              // onClick={(e) => {
-                              //   handleEditService(srv, true);
-                              // }}
                               className={`${editFavPrescData._id === item._id
                                 ? "btn-outline-primary"
                                 : "text-secondary border-gray"
                                 } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
-                              key={index}
                             >
                               <div>{item.Name}</div>
                             </button>
@@ -526,7 +524,11 @@ const PrescQuickAccessCard = ({
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="quickAccessSkeleton mt-2">
+          <Skeleton></Skeleton>
+        </div>
+      )}
     </>
   );
 };
