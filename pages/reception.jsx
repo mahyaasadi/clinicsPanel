@@ -32,6 +32,7 @@ export const getServerSideProps = async ({ req, res }) => {
 };
 
 let additionalCostCode = 100000;
+let warehouseItemCode = 200000;
 let ClinicID,
   ClinicUserID,
   ActiveSrvID,
@@ -393,8 +394,8 @@ const Reception = ({ ClinicUser }) => {
       Price: additionalCost
         ? additionalCost
         : formProps.additionalSrvCost !== 0
-          ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
-          : 0,
+        ? parseInt(formProps.additionalSrvCost.replaceAll(/,/g, ""))
+        : 0,
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
@@ -488,10 +489,9 @@ const Reception = ({ ClinicUser }) => {
 
   //----- Delete Service ------//
   const [deletedSrvData, setDeletedSrvData] = useState([]);
-  const [foundWItem, setFoundWItem] = useState(null);
+
   const deleteService = (srv) => {
     setDeletedSrvData([...deletedSrvData, srv]);
-    setFoundWItem(warehouseItemsData.find((item) => item.Name === srv.Name));
     setAddedSrvItems(addedSrvItems.filter((a) => a._id !== srv._id));
   };
 
@@ -593,10 +593,10 @@ const Reception = ({ ClinicUser }) => {
 
     ReceptionObjectID
       ? (dataToSubmit = {
-        ...data,
-        ReceptionID,
-        ReceptionObjectID,
-      })
+          ...data,
+          ReceptionID,
+          ReceptionObjectID,
+        })
       : (dataToSubmit = data);
 
     // console.log({ dataToSubmit });
@@ -611,8 +611,6 @@ const Reception = ({ ClinicUser }) => {
       axiosClient
         .post(url, dataToSubmit)
         .then((response) => {
-          console.log(response.data);
-
           setIsLoading(false);
 
           if (response.data.length === 1) {
@@ -624,11 +622,9 @@ const Reception = ({ ClinicUser }) => {
             );
 
             if (ReceptionID) {
-              deletedSrvData.forEach((item) =>
-                changeStockQuantity("Return", foundWItem._id, item.Qty)
-              );
-
-              console.log({ foundWItem });
+              deletedSrvData.forEach((item) => {
+                changeStockQuantity("Return", item.WItemID, item.Qty);
+              });
             }
 
             // for new items => decrease from thier stock
@@ -714,7 +710,6 @@ const Reception = ({ ClinicUser }) => {
     axiosClient
       .get(url)
       .then((response) => {
-        console.log(response.data);
         setWarehouseItemsData(response.data);
       })
       .catch((err) => {
@@ -761,7 +756,7 @@ const Reception = ({ ClinicUser }) => {
 
   const editWarehouseReceptionItem = (id, data, WItemID) => {
     if (ReceptionID) {
-      let prevWItem = receptionItems.filter((item) => item._id == id);
+      let prevWItem = addedSrvItems.filter((item) => item._id == id);
       let obj = { id: WItemID };
 
       if (parseInt(data.Qty) > parseInt(prevWItem[0].Qty)) {
@@ -946,6 +941,7 @@ const Reception = ({ ClinicUser }) => {
           setAddedSrvItems={setAddedSrvItems}
           editSrvData={editSrvData}
           editWarehouseReceptionItem={editWarehouseReceptionItem}
+          warehouseItemCode={warehouseItemCode}
         />
       </div>
     </>

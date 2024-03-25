@@ -3,7 +3,6 @@ import { Modal } from "react-bootstrap";
 import { Dropdown } from "primereact/dropdown";
 import { convertToLocaleString } from "utils/convertToLocaleString";
 
-let warehouseItemCode = 200000;
 const WarehouseReceptionModal = ({
   show,
   onHide,
@@ -14,6 +13,7 @@ const WarehouseReceptionModal = ({
   setAddedSrvItems,
   editSrvData,
   editWarehouseReceptionItem,
+  warehouseItemCode,
 }) => {
   const [selectedWItem, setSelectedWItem] = useState(null);
   const [WItemCost, setWItemCost] = useState(0);
@@ -35,6 +35,8 @@ const WarehouseReceptionModal = ({
     $("#warehouseItemQty").val(qty);
   };
 
+  console.log({ warehouseItemCode });
+
   const submitWarehouseItem = (e) => {
     e.preventDefault();
 
@@ -50,6 +52,7 @@ const WarehouseReceptionModal = ({
       OC: 0,
       Discount: 0,
       ModalityID: ActiveModalityID,
+      WItemID: selectedWItem._id,
     };
 
     e.target.reset();
@@ -70,19 +73,18 @@ const WarehouseReceptionModal = ({
     const formProps = Object.fromEntries(formData);
 
     let data = {
-      _id: editSrvData._id,
-      Code: editSrvData.Code,
+      _id: formProps.editWItemId,
+      Code: formProps.WItemCode,
       Name: editSrvData.Name,
       Qty: formProps.warehouseItemQty,
       Price: WItemCost ? WItemCost : editSrvData.Price,
       OC: 0,
       Discount: 0,
-      ModalityID: ActiveModalityID,
+      ModalityID: ActiveModalityID || formProps.editWItemModality,
+      WItemID: formProps.WItemID,
     };
 
-    console.log({ data });
-
-    editWarehouseReceptionItem(editSrvData._id, data, foundItem._id);
+    editWarehouseReceptionItem(data._id, data, data.WItemID);
   };
 
   return (
@@ -112,8 +114,18 @@ const WarehouseReceptionModal = ({
             />
             <input
               type="hidden"
-              name="WItemID"
+              name="editWItemId"
               value={!mode ? editSrvData._id : ""}
+            />
+            <input
+              type="hidden"
+              name="WItemID"
+              value={!mode ? editSrvData.WItemID : ""}
+            />
+            <input
+              type="hidden"
+              name="editWItemModality"
+              value={!mode ? editSrvData.ModalityID : ""}
             />
 
             {mode && (

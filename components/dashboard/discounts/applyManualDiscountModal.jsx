@@ -110,7 +110,7 @@ const ApplyDiscountModal = ({
                         onChange={(e) =>
                           FUSelectDiscountPercent(srv._id, e?.value)
                         }
-                      // required
+                        // required
                       />
                     </div>
                   </div>
