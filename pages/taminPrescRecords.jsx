@@ -57,6 +57,7 @@ const TaminPrescRecords = ({ ClinicUser }) => {
   const [showPinModal, setShowPinModal] = useState(false);
   const closePinModal = () => setShowPinModal(false);
 
+  // to trigger the pin send
   const getOneEprscData = (headerID, prID) => {
     let url = "TaminEprsc/GetEpresc";
     let data = {
@@ -68,7 +69,7 @@ const TaminPrescRecords = ({ ClinicUser }) => {
       axiosClient
         .post(url, data)
         .then((response) => {
-          console.log("getOneEprsc", response.data);
+          // console.log("getOneEprsc", response.data);
         })
         .catch((error) => console.log(error));
     }

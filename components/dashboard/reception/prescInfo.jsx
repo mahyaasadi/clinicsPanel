@@ -16,6 +16,7 @@ const PrescInfo = ({
   openAdditionalCostsModal,
   openWarehouseReceptionModal,
   submitReceptionPrescript,
+  ReceptionID,
   depIsLoading,
 }) => {
   let qty = 0;
@@ -126,7 +127,7 @@ const PrescInfo = ({
                         )
                       }
                     >
-                      ثبت پذیرش
+                      {!ReceptionID ? "ثبت پذیرش" : "ثبت تغییرات پذیرش"}
                     </button>
                   ) : (
                     <button

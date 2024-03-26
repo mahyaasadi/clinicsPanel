@@ -7,7 +7,7 @@ const PrescriptionTypeHeader = ({
   changePrescTypeTab,
   ActivePrescTypeID,
 }) => {
-  const handleSearchDivs = () => {
+  const handleReset = () => {
     $("#unsuccessfullSearch").hide();
     $("#searchDiv").hide();
     $("#srvSearchInput").val("");
@@ -15,86 +15,22 @@ const PrescriptionTypeHeader = ({
   };
 
   const selectPrescType = () => {
-    $(".prescService").hide();
     let prescTypeId = $(".prescTypeId" + item.id);
     prescTypeId.show();
 
-    switch (item.id) {
-      case 1:
-        $("#ServiceSearchSelect").val("1");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").show();
-        $("#drugAmount").show();
+    $("#ServiceSearchSelect").val(item.id);
+    $("#ServiceSearchSelect").hide();
 
-        changePrescTypeTab(item.img, item.title, 1);
-        handleSearchDivs();
-        break;
-      case 10:
-        $("#ServiceSearchSelect").val("10");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").show();
-        $("#drugAmount").show();
+    handleReset();
+    changePrescTypeTab(item.img, item.title, item.id);
 
-        changePrescTypeTab(item.img, item.title, 10);
-        handleSearchDivs();
-        break;
-      case 2:
-        $("#ServiceSearchSelect").val("2");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 2);
-        handleSearchDivs();
-        break;
-      case 3:
-        $("#ServiceSearchSelect").val("3");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 3);
-        handleSearchDivs();
-        break;
-      case 4:
-        $("#ServiceSearchSelect").val("4");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 4);
-        handleSearchDivs();
-        break;
-      case 5:
-        $("#ServiceSearchSelect").val("5");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 5);
-        handleSearchDivs();
-        break;
-      case 6:
-        $("#ServiceSearchSelect").val("6");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 6);
-        handleSearchDivs();
-        break;
-      case 7:
-        $("#ServiceSearchSelect").val("7");
-        $("#ServiceSearchSelect").hide();
-        $("#drugInstruction").hide();
-        $("#drugAmount").hide();
-
-        changePrescTypeTab(item.img, item.title, 7);
-        handleSearchDivs();
-        break;
-      default:
-        break;
-    }
+    // if (item.id === 1 || item.id === 10) {
+    //   $("#drugInstruction").show();
+    //   $("#drugAmount").show();
+    // } else {
+    //   $("#drugInstruction").hide();
+    //   $("#drugAmount").hide();
+    // }
   };
 
   useEffect(() => {

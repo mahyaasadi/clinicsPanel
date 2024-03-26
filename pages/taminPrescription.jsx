@@ -948,10 +948,6 @@ const TaminPrescription = ({
     $("#patientNID").val("");
   }, []);
 
-  useEffect(() => {
-    console.log({ prescriptionItemsData });
-  }, [prescriptionItemsData]);
-
   return (
     <>
       <Head>

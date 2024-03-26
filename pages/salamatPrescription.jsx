@@ -55,6 +55,7 @@ let ActiveSrvName,
   ActiveCheckCode = null;
 let existingCheckCodes = [];
 let deletedCheckCodes = [];
+let pendingCheckCode = [];
 
 let ClinicID = null;
 const SalamatPrescription = ({ ClinicUser }) => {
@@ -479,6 +480,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
       for (let i = 0; i < favPresc.Items[0].length; i++) {
         const element = favPresc.Items[0][i];
+        setActivePrescTypeID(element.typeId);
 
         let prescData = await salamatPrescItemCreator(
           1,
@@ -642,10 +644,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
           infoMessages: response.data.res.info?.message?.infoMessage,
           checkCode: response.data.res.info?.checkCode,
           prescTypeImg: ActivePrescImg,
-          typeId:
-            prescData.typeId || ActivePrescTypeID || ActivePrescTypeID === 10
-              ? 1
-              : 0,
+          typeId: prescData.typeId ? prescData.typeId : ActivePrescTypeID,
           prescTypeEngTitle: ActivePrescEngTitle || prescData.PrescType,
           shape: ActiveSrvShape || prescData.SrvShape,
           bulkId: ActivePrescTypeID
@@ -679,13 +678,13 @@ const SalamatPrescription = ({ ClinicUser }) => {
         setIsLoading(false);
         setSearchFromInput(true);
         setFavItemMode(false);
+        pendingCheckCode = [];
         return addedPrescItemData;
       } else if (response.data.res.status === 409) {
         setIsLoading(false);
         WarningAlert("هشدار", "اطلاعات ورودی را دوباره بررسی نمایید!");
       } else {
         setIsLoading(false);
-        ErrorAlert("خطا", "افزودن خدمت با خطا مواجه گردید!");
         displayToastMessages(
           response.data.res.info.message.snackMessage,
           toast,
@@ -802,6 +801,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
 
     if (srvData?.salamatPresc) {
       deletedCheckCodes.push({ checkCode: srvData.checkCode });
+    } else {
+      pendingCheckCode.push({ checkCode: srvData.checkCode });
     }
 
     existingCheckCodes = existingCheckCodes.filter(
@@ -824,6 +825,16 @@ const SalamatPrescription = ({ ClinicUser }) => {
         }, 200);
       }
     }
+  };
+
+  const handleCancelEdit = () => {
+    existingCheckCodes.push(pendingCheckCode[0]);
+
+    deletedCheckCodes = deletedCheckCodes.filter(
+      (a) => a.checkCode !== ActiveCheckCode
+    );
+
+    pendingCheckCode = [];
   };
 
   const updatePrescItem = (id, newArr) => {
@@ -924,8 +935,9 @@ const SalamatPrescription = ({ ClinicUser }) => {
             const timerInMillis = seconds * 1000;
 
             TimerAlert({
-              title: `<div class="custom-title"> نسخه ${trackingCode ? "با کد رهگیری : " + trackingCode : ""
-                }
+              title: `<div class="custom-title"> نسخه ${
+                trackingCode ? "با کد رهگیری : " + trackingCode : ""
+              }
               ${sequenceNumber ? "و کد توالی : " + sequenceNumber : ""}
               با موفقیت ثبت گردید!
               </div>`,
@@ -943,6 +955,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
             ActiveSamadCode = null;
             existingCheckCodes = [];
             deletedCheckCodes = [];
+            pendingCheckCode = [];
           }
         }
       })
@@ -951,12 +964,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
         ErrorAlert("خطا", "ثبت اطلاعات نسخه با خطا مواجه گردید!");
         setRegisterIsLoading(false);
       });
-  };
-
-  const CancelEdit = (srvData) => {
-    deletedCheckCodes = deletedCheckCodes.filter(
-      (a) => a.checkCode !== ActiveCheckCode
-    );
   };
 
   useEffect(() => {
@@ -985,6 +992,14 @@ const SalamatPrescription = ({ ClinicUser }) => {
     existingCheckCodes = [];
     deletedCheckCodes = [];
   }, [router.isReady]);
+
+  useEffect(() => {
+    console.log({
+      prescriptionItemsData,
+      existingCheckCodes,
+      deletedCheckCodes,
+    });
+  }, [prescriptionItemsData, existingCheckCodes, deletedCheckCodes]);
 
   useEffect(() => {
     if (
@@ -1056,7 +1071,6 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 searchIsLoading={searchIsLoading}
                 salamatDataIsLoading={salamatDataIsLoading}
                 setSearchIsLoading={setSearchIsLoading}
-                CancelEdit={CancelEdit}
                 salamatHeaderList={salamatHeaderList}
                 changePrescTypeTab={changePrescTypeTab}
                 activeSearch={activeSearch}
@@ -1084,6 +1098,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
                 setEditSrvData={setEditSrvData}
                 prescriptionItemsData={prescriptionItemsData}
                 ActiveSamadCode={ActiveSamadCode}
+                handleCancelEdit={handleCancelEdit}
               />
 
               <div className="prescList">

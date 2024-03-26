@@ -4,8 +4,6 @@ const ChatUser = ({ user, cenetrs, SelectChat, Patients, ChatStatus }) => {
     let LastMessageUser = "";
     let patient = Patients?.find((x) => x._id === user?.User1);
 
-    console.log({ patient });
-
     user.LastMessage.map((a) => {
       LastMessage = a;
       LastMessageUser = Patients?.find((x) => x._id === a.Sender);

@@ -889,6 +889,7 @@ const Reception = ({ ClinicUser }) => {
                 openAdditionalCostsModal={openAdditionalCostsModal}
                 openWarehouseReceptionModal={openWarehouseReceptionModal}
                 submitReceptionPrescript={submitReceptionPrescript}
+                ReceptionID={ReceptionID}
                 depIsLoading={depIsLoading}
               />
             </div>

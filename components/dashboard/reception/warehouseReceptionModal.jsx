@@ -35,8 +35,6 @@ const WarehouseReceptionModal = ({
     $("#warehouseItemQty").val(qty);
   };
 
-  console.log({ warehouseItemCode });
-
   const submitWarehouseItem = (e) => {
     e.preventDefault();
 

@@ -7,11 +7,10 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
     $("#searchDiv").hide();
     $("#srvSearchInput").val("");
     $("#QtyInput").val("1");
-    $("#eprscItemDescription").val("")
+    $("#eprscItemDescription").val("");
   };
 
   const selectPrescType = () => {
-    $(".prescService").hide();
     let prescTypeId = $(".prescTypeId" + item.id);
     prescTypeId.show();
 
@@ -58,14 +57,17 @@ const PrescriptionTypeHeader = ({ item, changePrescTypeTab }) => {
   };
 
   useEffect(() => {
-    if (item.Active === "active" && item.id === 1) changePrescTypeTab("01", item.img, item.name, 1)
+    if (item.Active === "active" && item.id === 1)
+      changePrescTypeTab("01", item.img, item.name, 1);
   }, []);
 
   return (
     <>
       <li className="nav-item">
         <a
-          className={"d-flex align-items-center nav-link media-nav-link " + item.Active}
+          className={
+            "d-flex align-items-center nav-link media-nav-link " + item.Active
+          }
           href={"#presc-tab" + item.id}
           id={"prescTypeId" + item.id}
           data-bs-toggle="tab"

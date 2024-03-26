@@ -16,8 +16,8 @@ const voiceRecorder = ({ SendAudioMessage }) => {
     reader.onloadend = function () {
       var base64data = reader.result;
       SendAudioMessage(base64data);
-      console.log(base64data);
     };
+
     // const url = URL.createObjectURL(blob);
     // const audio = document.createElement('audio');
     // audio.src = url;``
@@ -29,9 +29,9 @@ const voiceRecorder = ({ SendAudioMessage }) => {
     <AudioRecorder
       onRecordingComplete={(blob) => addAudioElement(blob)}
       recorderControls={recorderControls}
+      showVisualizer={true}
       // downloadOnSavePress={true}
       // downloadFileExtension="mp3"
-      showVisualizer={true}
     />
   );
 };

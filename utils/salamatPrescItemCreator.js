@@ -36,9 +36,10 @@ const salamatPrescItemCreator = async (
     numberOfPeriod,
     otherServices,
     favItemMode: favItemMode,
+    typeId: ActivePrescTypeID,
   };
 
-  if (favPrescMode) prescData.typeId = ActivePrescTypeID;
+  // if (favPrescMode) prescData.;
 
   if (
     (ActivePrescTypeID === 1 || ActivePrescTypeID === 10) &&

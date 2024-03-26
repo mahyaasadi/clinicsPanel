@@ -14,7 +14,7 @@ const ReceptionCard = ({
   setEditSrvMode,
   activeSearch,
   clinicDepartments,
-  depIsLoading
+  depIsLoading,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -104,7 +104,9 @@ const ReceptionCard = ({
 
               <div className="d-flex align-items-center media-flex-column media-gap margin-top-1 gap-2">
                 <div className="col-md-3  media-w-100">
-                  <label className="lblAbs margin-top-left font-12">تعداد</label>
+                  <label className="lblAbs margin-top-left font-12">
+                    تعداد
+                  </label>
                   <div className="row">
                     <div className="col-auto">
                       <button
@@ -178,7 +180,6 @@ const ReceptionCard = ({
           <Skeleton></Skeleton>
         </div>
       )}
-
     </>
   );
 };

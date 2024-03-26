@@ -9,7 +9,6 @@ const PrescriptionCard = ({
   searchIsLoading,
   salamatDataIsLoading,
   registerIsLoading,
-  CancelEdit,
   salamatHeaderList,
   changePrescTypeTab,
   activeSearch,
@@ -36,6 +35,7 @@ const PrescriptionCard = ({
   prescriptionItemsData,
   ActiveSamadCode,
   setSearchIsLoading,
+  handleCancelEdit,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -113,11 +113,9 @@ const PrescriptionCard = ({
     }
   };
 
-  const handleCancelEdit = (srvData) => {
+  const _handleCancelEdit = (srvData) => {
     setEditPrescSrvMode(false);
     setEditSrvData([]);
-    CancelEdit(srvData);
-
     setSelectedConsumption(null);
     setSelectedConsumptionInstruction(null);
     setSelectedNOPeriod(null);
@@ -125,6 +123,8 @@ const PrescriptionCard = ({
     $("#QtyInput").val("1");
     $("#eprscItemDescription").val("");
     $("#srvSearchInput").prop("readonly", false);
+
+    handleCancelEdit();
   };
 
   return (
@@ -294,42 +294,48 @@ const PrescriptionCard = ({
                   </div>
                 </div>
 
-                <div id="drugInstruction" className="col media-mt-1">
-                  <label className="lblAbs font-12">زمان مصرف</label>
-                  <Dropdown
-                    id="drugConsumption"
-                    value={selectedConsumption}
-                    onChange={(e) => setSelectedConsumption(e.target.value)}
-                    options={consumptionOptions}
-                    optionLabel="label"
-                    placeholder="انتخاب کنید"
-                    filter
-                    showClear
-                  />
-                </div>
+                {ActivePrescTypeID === 1 || ActivePrescTypeID == 10 ? (
+                  <>
+                    <div id="drugInstruction" className="col media-mt-1">
+                      <label className="lblAbs font-12">زمان مصرف</label>
+                      <Dropdown
+                        id="drugConsumption"
+                        value={selectedConsumption}
+                        onChange={(e) => setSelectedConsumption(e.target.value)}
+                        options={consumptionOptions}
+                        optionLabel="label"
+                        placeholder="انتخاب کنید"
+                        filter
+                        showClear
+                      />
+                    </div>
 
-                <div id="drugAmount" className="col media-mt-1">
-                  <label className="lblAbs font-12">
-                    دستور مصرف / تعداد در وعده
-                  </label>
-                  <Dropdown
-                    value={
-                      selectedConsumptionInstruction
-                        ? selectedConsumptionInstruction
-                        : selectedNOPeriod
-                    }
-                    onChange={handleDropdownChange}
-                    options={
-                      ActiveSrvShape === "S" || ActiveSrvShape === "A"
-                        ? instructionOptions
-                        : defaultConsumptionOptions
-                    }
-                    optionLabel="label"
-                    placeholder="انتخاب کنید"
-                    filter
-                    showClear
-                  />
-                </div>
+                    <div id="drugAmount" className="col media-mt-1">
+                      <label className="lblAbs font-12">
+                        دستور مصرف / تعداد در وعده
+                      </label>
+                      <Dropdown
+                        value={
+                          selectedConsumptionInstruction
+                            ? selectedConsumptionInstruction
+                            : selectedNOPeriod
+                        }
+                        onChange={handleDropdownChange}
+                        options={
+                          ActiveSrvShape === "S" || ActiveSrvShape === "A"
+                            ? instructionOptions
+                            : defaultConsumptionOptions
+                        }
+                        optionLabel="label"
+                        placeholder="انتخاب کنید"
+                        filter
+                        showClear
+                      />
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
 
               <div className="d-flex align-items-center media-flex-column media-gap mt-3 justify-between">
@@ -385,7 +391,7 @@ const PrescriptionCard = ({
                       )}
                       <button
                         className="btn btn-sm btn-outline-primary rounded w-100  font-12"
-                        onClick={() => handleCancelEdit(editSrvData)}
+                        onClick={() => _handleCancelEdit(editSrvData)}
                       >
                         انصراف
                       </button>

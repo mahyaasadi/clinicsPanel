@@ -25,7 +25,7 @@ const PrescQuickAccessCard = ({
   quickAccessMode,
   salamatHeaderList,
   isLoading,
-  depIsLoading
+  depIsLoading,
 }) => {
   const [favSearchInput, setFavSearchInput] = useState("");
 
@@ -59,7 +59,10 @@ const PrescQuickAccessCard = ({
 
   const [selectedFavSalamatTab, setSelectedFavSalamatTab] = useState("");
   const [matchingIDs, setMatchingIDs] = useState([]);
-  const handleSalamatFavTabChange = (tab) => setSelectedFavSalamatTab(tab);
+  const handleSalamatFavTabChange = (tab) => {
+    setSelectedFavSalamatTab(tab);
+    // $("#prescTypeId" + tab).click();
+  };
 
   const searchedFavSalamatItems = data?.filter((item) =>
     item?.serviceInterfaceName
@@ -245,10 +248,11 @@ const PrescQuickAccessCard = ({
                             return (
                               <li className="nav-item" key={index}>
                                 <a
-                                  className={`nav-link d-flex align-items-center justify-center gap-2 ${index === firstMatchingIndex
-                                    ? "active"
-                                    : item.Active
-                                    }`}
+                                  className={`nav-link d-flex align-items-center justify-center gap-2 ${
+                                    index === firstMatchingIndex
+                                      ? "active"
+                                      : item.Active
+                                  }`}
                                   href={`#salamat-bottom-tab${index + 1}`}
                                   data-bs-toggle="tab"
                                   onClick={() =>
@@ -268,6 +272,7 @@ const PrescQuickAccessCard = ({
                       <div
                         className="favitemTab show active mt-3"
                         id="bottom-tab-1"
+                        // onClick={${}}
                       >
                         <div className="dir-rtl p-0">
                           {filteredSalamatData()?.map((srv, index) =>
@@ -287,7 +292,7 @@ const PrescQuickAccessCard = ({
                                   <p>
                                     {srv.serviceInterfaceName.length > 27
                                       ? srv.serviceInterfaceName.substr(0, 27) +
-                                      " ..."
+                                        " ..."
                                       : srv.serviceInterfaceName}
                                   </p>
                                 </div>
@@ -385,14 +390,16 @@ const PrescQuickAccessCard = ({
                       )}
 
                       <div
-                        className={`favitemTab mt-2 ${editFavPrescData.length == 0
-                          ? "d-flex flex-column-reverse"
-                          : "d-flex"
-                          } gap-1`}
+                        className={`favitemTab mt-2 ${
+                          editFavPrescData.length == 0
+                            ? "d-flex flex-column-reverse"
+                            : "d-flex"
+                        } gap-1`}
                       >
                         <div
-                          className={`${editFavPrescData.length == 0 && "mt-1"
-                            } dir-rtl w-100`}
+                          className={`${
+                            editFavPrescData.length == 0 && "mt-1"
+                          } dir-rtl w-100`}
                         >
                           {favPrescData.map((item, index) =>
                             favItemIsLoading ? (
@@ -402,10 +409,11 @@ const PrescQuickAccessCard = ({
                             ) : (
                               <button
                                 onClick={() => handleAddFavPresc(item)}
-                                className={`${editFavPrescData._id === item._id
-                                  ? "btn-outline-primary"
-                                  : "text-secondary border-gray"
-                                  } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
+                                className={`${
+                                  editFavPrescData._id === item._id
+                                    ? "btn-outline-primary"
+                                    : "text-secondary border-gray"
+                                } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
                                 key={index}
                                 disabled={isLoading ? disabled : false}
                               >
@@ -507,10 +515,11 @@ const PrescQuickAccessCard = ({
                             <button
                               key={index}
                               onClick={() => handleAddFavPresc(item)}
-                              className={`${editFavPrescData._id === item._id
-                                ? "btn-outline-primary"
-                                : "text-secondary border-gray"
-                                } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
+                              className={`${
+                                editFavPrescData._id === item._id
+                                  ? "btn-outline-primary"
+                                  : "text-secondary border-gray"
+                              } btn btn-outline-primary w-100 rounded mb-1 py-2 px-3 font-14 d-flex align-items-center justify-between`}
                             >
                               <div>{item.Name}</div>
                             </button>
