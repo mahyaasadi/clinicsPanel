@@ -23,14 +23,6 @@ const PrescriptionTypeHeader = ({
 
     handleReset();
     changePrescTypeTab(item.img, item.title, item.id);
-
-    // if (item.id === 1 || item.id === 10) {
-    //   $("#drugInstruction").show();
-    //   $("#drugAmount").show();
-    // } else {
-    //   $("#drugInstruction").hide();
-    //   $("#drugAmount").hide();
-    // }
   };
 
   useEffect(() => {

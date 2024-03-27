@@ -154,7 +154,7 @@ const PatientInfoCard = ({
                   name="nationalCode"
                   id="patientNID"
                   required
-                  // autoComplete="off"
+                  autoComplete="off"
                   className="form-control rounded-right GetPatientInput w-50"
                   defaultValue={ActivePatientNID}
                   onClick={handleShowPendingPatients}

@@ -78,9 +78,12 @@ const FilterReceptionItems = ({
       }
     }
 
+    // console.log({ data });
+
     axiosClient
       .post(url, data)
       .then((response) => {
+        // console.log(response.data);
         ApplyFilterOnRecItems(response.data);
         setSearchIsLoading(false);
 

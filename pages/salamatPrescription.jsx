@@ -242,8 +242,8 @@ const SalamatPrescription = ({ ClinicUser }) => {
     ActivePrescEngTitle = prescEngTitle;
 
     setActivePrescTypeID(prescId);
-    activeSearch();
     setSearchFromInput(true);
+    activeSearch();
   };
 
   // Salamat Data Classes
@@ -410,7 +410,7 @@ const SalamatPrescription = ({ ClinicUser }) => {
     }
   };
 
-  const removeFavItem = (srvNationalNumber) => {
+  const removeFavItem = (srvNationalNumber, flag) => {
     let url = `CenterFavEprsc/deleteSalamat/${ClinicID}/${srvNationalNumber}`;
 
     axiosClient

@@ -8,7 +8,6 @@ import PatientVerticalCard from "components/dashboard/patientInfo/patientVertica
 const PrescQuickAccessCard = ({
   data,
   handleEditService,
-  // removeFavItem,
   patientInfo,
   ClinicID,
   ActivePatientNID,

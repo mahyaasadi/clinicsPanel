@@ -35,7 +35,7 @@ const CashDesk = ({ ClinicUser }) => {
   ClinicUserID = ClinicUser._id;
 
   const [isLoading, setIsLoading] = useState(false);
-  const [cashDeskDataIsLoading, setCashDeskDataIsLoading] = useState(false)
+  const [cashDeskDataIsLoading, setCashDeskDataIsLoading] = useState(false);
   const [patientsInfo, setPatientsInfo] = useState([]);
   const [receptionList, setReceptionList] = useState([]);
   const [showActionsModal, setShowActionsModal] = useState(false);
@@ -78,31 +78,34 @@ const CashDesk = ({ ClinicUser }) => {
   };
 
   const getCashDeskPatientsInfo = () => {
-    setCashDeskDataIsLoading(true);
+    setIsLoading(true);
     let url = `ClinicReception/CashDeskPatient/${ClinicID}`;
 
     return new Promise((resolve, reject) => {
       axiosClient
         .get(url)
         .then((response) => {
+          console.log(response.data);
           setReceptionList(response.data);
           if (response.data) getReceptionPatients(response.data);
           setTimeout(() => {
-            setCashDeskDataIsLoading(false);
+            setIsLoading(false);
           }, 100);
           resolve();
         })
         .catch((err) => {
           console.log(err);
           ErrorAlert("خطا", "خطا در دریافت اطلاعات");
-          setCashDeskDataIsLoading(false);
+          setIsLoading(false);
           reject(err);
         });
     });
   };
 
   const getReceptionPatients = (newReceptionList) => {
+    console.log({ newReceptionList });
     let patientItems = [];
+
     for (let i = 0; i < newReceptionList.length; i++) {
       const item = newReceptionList[i];
       let obj = {
@@ -127,7 +130,6 @@ const CashDesk = ({ ClinicUser }) => {
     if (data) {
       setPaymentData(data.CashDesk);
       setShowPaymentModal(false);
-      // getReceptionList()
       getCashDeskPatientsInfo()
         .then(() => {
           setIsLoading(false);
@@ -141,6 +143,7 @@ const CashDesk = ({ ClinicUser }) => {
   };
 
   const ApplyFilterOnRecItems = (data) => {
+    console.log({ data });
     if (data) getReceptionPatients(data);
   };
 
@@ -151,7 +154,6 @@ const CashDesk = ({ ClinicUser }) => {
   const closePatientPaymentsModal = () => setShowPatientPaymentsModal(false);
 
   useEffect(() => {
-    // getReceptionList();
     getCashDeskPatientsInfo();
     if (receptionList) {
       getReceptionPatients(receptionList);
@@ -222,3 +224,4 @@ const CashDesk = ({ ClinicUser }) => {
 };
 
 export default CashDesk;
+

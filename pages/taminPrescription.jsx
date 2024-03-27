@@ -278,6 +278,7 @@ const TaminPrescription = ({
     ActivePrescTypeID = prescId;
 
     setSearchFromInput(true);
+    activeSearch();
   };
 
   //---- ParaServices Dropdown ----//
@@ -326,12 +327,16 @@ const TaminPrescription = ({
   const activeSearch = () => {
     setSearchFromInput(!searchFromInput);
 
+    console.log("object");
+
     ActiveSrvCode = null;
+    ActiveSrvName = null;
+
     $("#srvSearchInput").val("");
-    $("#BtnActiveSearch").hide();
-    $("#srvSearchInput").prop("readonly", false);
-    $("#BtnServiceSearch").show();
     $("#srvSearchInput").focus();
+    $("#srvSearchInput").prop("readonly", false);
+    $("#BtnActiveSearch").hide();
+    $("#BtnServiceSearch").show();
     $("#QtyInput").val("1");
     setSelectedAmount(null);
     setSelectedAmountLbl(null);
@@ -799,9 +804,9 @@ const TaminPrescription = ({
       addPrescriptionitems.push(prescData);
       visitPrescriptionData.push(visitPrescData);
       setPrescriptionItemsData([...prescriptionItemsData, prescItems]);
-      activeSearch();
     }
 
+    activeSearch();
     setSearchFromInput(true);
     setFavItemMode(false);
   };
@@ -1021,6 +1026,7 @@ const TaminPrescription = ({
                 ActivePrescHeadID={ActivePrescHeadID}
                 setShowPinModal={setShowPinModal}
                 setSearchFromInput={setSearchFromInput}
+                ActivePrescTypeID={ActivePrescTypeID}
               />
 
               <div className="prescList">

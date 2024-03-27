@@ -611,6 +611,7 @@ const Reception = ({ ClinicUser }) => {
       axiosClient
         .post(url, dataToSubmit)
         .then((response) => {
+          console.log(response.data);
           setIsLoading(false);
 
           if (response.data.length === 1) {

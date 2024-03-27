@@ -17,6 +17,8 @@ const SalamatAddToListItems = ({
   let consumptionLbl = "";
   let SrvPrescImage = "";
 
+  console.log({ data });
+
   return (
     <div className="prescItemBox">
       {data.map((srv, index) =>

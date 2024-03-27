@@ -36,6 +36,7 @@ const PrescriptionCard = ({
   ActivePrescHeadID,
   setShowPinModal,
   setSearchFromInput,
+  ActivePrescTypeID,
 }) => {
   function QtyChange(ac) {
     let qty = $("#QtyInput").val();
@@ -179,7 +180,9 @@ const PrescriptionCard = ({
                 <PrescriptionTypeHeader
                   key={index}
                   item={item}
+                  index={index}
                   changePrescTypeTab={changePrescTypeTab}
+                  ActivePrescTypeID={ActivePrescTypeID}
                 />
               ))}
             </ul>
@@ -297,31 +300,35 @@ const PrescriptionCard = ({
                 </div>
               </div>
 
-              <div id="drugInstruction" className="col media-mt-1">
-                <label className="lblAbs font-12">زمان مصرف</label>
-                <Dropdown
-                  value={SelectedInstruction}
-                  onChange={handleDrugInstructionSelect}
-                  options={drugInstructionList}
-                  optionLabel="label"
-                  placeholder="انتخاب کنید"
-                  filter
-                  showClear
-                />
-              </div>
+              {ActivePrescTypeID === 1 && (
+                <>
+                  <div id="drugInstruction" className="col media-mt-1">
+                    <label className="lblAbs font-12">زمان مصرف</label>
+                    <Dropdown
+                      value={SelectedInstruction}
+                      onChange={handleDrugInstructionSelect}
+                      options={drugInstructionList}
+                      optionLabel="label"
+                      placeholder="انتخاب کنید"
+                      filter
+                      showClear
+                    />
+                  </div>
 
-              <div id="drugAmount" className="col media-mt-1">
-                <label className="lblAbs font-12">تعداد در وعده</label>
-                <Dropdown
-                  value={SelectedAmount}
-                  onChange={handleDrugAmountSelect}
-                  options={drugAmountList}
-                  optionLabel="label"
-                  placeholder="انتخاب کنید"
-                  filter
-                  showClear
-                />
-              </div>
+                  <div id="drugAmount" className="col media-mt-1">
+                    <label className="lblAbs font-12">تعداد در وعده</label>
+                    <Dropdown
+                      value={SelectedAmount}
+                      onChange={handleDrugAmountSelect}
+                      options={drugAmountList}
+                      optionLabel="label"
+                      placeholder="انتخاب کنید"
+                      filter
+                      showClear
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="d-flex align-items-center media-flex-column media-gap mt-3 justify-between">
